@@ -5,12 +5,14 @@ class HelpM
     self.common_opt
     print "orgs => show your organizations\n"
     print "repos => list your repositories\n\n"
+    print "set => move you to a specific repository\n"
 
   end
 
   def org()
     self.common_opt
-    print "repos => list your repositories of your organization\n"
+    print "repos => list the repositories of your organization\n"
+    print "set => move you to a specific repository\n"
     print "members => members of a organization\n"
     print "teams => teams of a organization\n\n"
   end

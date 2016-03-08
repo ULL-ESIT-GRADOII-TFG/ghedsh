@@ -11,6 +11,7 @@ class Interface
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
+  attr_accessor :teamlist
   LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks'].sort
 
   def initialize
@@ -53,7 +54,7 @@ class Interface
       when @deep == 10 then return @config["User"]+">"+@config["Repo"]+"> "
       when @deep == 2 then return @config["User"]+">"+@config["Org"]+"> "
       when @deep == 4 then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+"> "
-      when @deep == 4 then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+">"+@config["Repo"]+"> "
+      when @deep == 5 then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+">"+@config["Repo"]+"> "
       when @deep == 3 then return @config["User"]+">"+@config["Org"]+">"+@config["Repo"]+"> "
     end
   end
@@ -108,6 +109,9 @@ class Interface
       when @deep == 10
         @config["Repo"]=nil
         @deep=1
+      when @deep == 4
+        @config["Team"]=nil
+        @deep=2
     end
   end
 
@@ -116,9 +120,11 @@ class Interface
     when @deep==1
       @config["Org"]=path
       @deep=2
-    when @deep==2
-      @config["Repo"]=path
-      @deep=3
+    when @deep == 2
+      @config["Team"]=path
+      puts @teamlist[path]
+      @confing[:TeamID]=@teamlist[path]
+      @deep=4
     end
   end
 
@@ -145,12 +151,30 @@ class Interface
         m=eval(i.inspect)
         puts m[:login]
       end
+    when @deep==4
+      print "\n"
+      mem=@client.team_members(@config["TeamID"])
+      mem.each do |i|
+        #m=eval(i.inspect)
+        #puts m[:login]
+      end
     end
     print "\n"
   end
 
   #set the repo
-  def set
+  def set(path)
+    case
+    when @deep==1
+      @config["Repo"]=path
+      @deep=10
+    when @deep==2
+      @config["Repo"]=path
+      @deep=3
+    when @deep==4
+      @config["Repo"]=path
+      @deep=5
+    end
   end
 
   def commits()
@@ -162,6 +186,11 @@ class Interface
         #puts i.inspect
         print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
         #m=eval(i.inspect)
+      end
+    when @deep==10
+      mem=@client.commits(@config["User"]+"/"+@config["Repo"],"master")
+        mem.each do |i|
+        print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
       end
     end
     print "\n"
@@ -194,12 +223,15 @@ class Interface
   end
 
   def teams()
+    @teamlist=Hash.new
     case
     when @deep==2
       print "\n"
       mem=@client.organization_teams(@config["Org"])
       mem.each do |i|
         puts i.name
+        @teamlist[i.name]=i[:id]
+        #print "ID de equipo: ",i[:id],"\n"
       end
     end
     print "\n"
@@ -238,6 +270,9 @@ class Interface
           self.cd(opcd[1])
         #else
         #  self.cdback()
+        end
+        if opcd[0]=="set"
+          self.set(opcd[1])
         end
       end
     else
