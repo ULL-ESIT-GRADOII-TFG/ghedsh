@@ -11,7 +11,6 @@ class Interface
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
-  #@memory=Array.new
   LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks'].sort
 
   def initialize
@@ -31,14 +30,21 @@ class Interface
     end
   end
 
+  def add_history(value)
+    @memory.push(value)
+    self.write_memory
+  end
+
+  def write_memory
+    history=(LIST+@memory).sort
+    comp = proc { |s| history.grep( /^#{Regexp.escape(s)}/ ) }
+    Readline.completion_append_character = ""
+    Readline.completion_proc = comp
+  end
+
   def login(username,password,token)
     @client = Octokit::Client.new(:login=>username, :password=>password, :token =>token)
-    #puts @client.login
-    #puts @client.organizations(@config["User"]).url
-  ##  puts repo
 
-    #puts client.password
-    # opts=TeachersPet::Actions::Base.new.init_client_bash(username,password,token)
   end
 
   def prompt()
@@ -70,7 +76,7 @@ class Interface
         repo=@client.repositories
         repo.each do |i|
           puts i.name
-          @memory.push(i.name)
+          self.add_history(i.name)
         end
       when @deep ==2
         #puts @config["Org"]
@@ -78,13 +84,9 @@ class Interface
         repos=@client.organization_repositories(@config["Org"])
         repos.each do |y|
           puts y.name
-          @memory.push(y.name)
+          self.add_history(y.name)
         end
     end
-    history=(LIST+@memory).sort
-    comp = proc { |s| history.grep( /^#{Regexp.escape(s)}/ ) }
-    Readline.completion_append_character = ""
-    Readline.completion_proc = comp
     print "\n"
   end
 
@@ -126,14 +128,10 @@ class Interface
       org.each do |i|
         o=eval(i.inspect)
         puts o[:login]
-        @memory.push(o[:login])
+        self.add_history(o[:login])
       end
     end
     print "\n"
-    history=(LIST+@memory).sort
-    comp = proc { |s| history.grep( /^#{Regexp.escape(s)}/ ) }
-    Readline.completion_append_character = ""
-    Readline.completion_proc = comp
   end
 
   def members()
