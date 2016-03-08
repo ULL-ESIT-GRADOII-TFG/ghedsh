@@ -52,6 +52,8 @@ class Interface
       when @deep == 1 then return @config["User"]+"> "
       when @deep == 10 then return @config["User"]+">"+@config["Repo"]+"> "
       when @deep == 2 then return @config["User"]+">"+@config["Org"]+"> "
+      when @deep == 4 then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+"> "
+      when @deep == 4 then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+">"+@config["Repo"]+"> "
       when @deep == 3 then return @config["User"]+">"+@config["Org"]+">"+@config["Repo"]+"> "
     end
   end
@@ -147,6 +149,10 @@ class Interface
     print "\n"
   end
 
+  #set the repo
+  def set
+  end
+
   def commits()
     print "\n"
     case
@@ -207,6 +213,7 @@ class Interface
 
     Readline.completion_append_character = ""
     Readline.completion_proc = comp
+    HelpM.new.welcome()
 
     if self.load_config == true
       self.login(@config["User"],@config["Pass"], @config["Token"])
