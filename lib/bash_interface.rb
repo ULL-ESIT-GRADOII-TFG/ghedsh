@@ -69,6 +69,8 @@ class Interface
         HelpM.new.org_repo()
       when @deep == 10
         HelpM.new.user_repo()
+      when @deep == 4
+        HelpM.new.orgs_teams()
     end
   end
 
