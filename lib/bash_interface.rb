@@ -106,7 +106,20 @@ class Interface
 
   def create_team(name)
     if @deep==2
-      @client.create_team(@config["Org"],{:name=>name,:permission=>'push'})
+      m=@client.create_team(@config["Org"],{:name=>name,:permission=>'push'})
+      @teamlist[name]=m[:id]
+    end
+  end
+
+  def create_team_with_members(name,members)
+    if @deep==2
+
+      self.create_team(name)
+      @config["TeamID"]=@teamlist[name]
+
+      for i in 0..members.size
+        self.add_to_team(members[i])
+      end
     end
   end
 
@@ -305,12 +318,16 @@ class Interface
         if opcd[0]=="add_team_member"
           self.add_to_team(opcd[1])
         end
-        if opcd[0]=="create_team"
+        if opcd[0]=="create_team" and opcd.size==2
           self.create_team(opcd[1])
         end
         if opcd[0]=="delete_team"
           self.delete_team(opcd[1])
         end
+        if opcd[0]=="create_team" and opcd.size>2
+          self.create_team_with_members(opcd[1],opcd[2..opcd.size])
+        end
+
       end
     else
       puts "User: "
