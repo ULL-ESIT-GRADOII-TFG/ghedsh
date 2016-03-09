@@ -12,7 +12,7 @@ class Interface
   attr_accessor :deep
   attr_accessor :memory
   attr_accessor :teamlist
-  LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks'].sort
+  LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team '].sort
 
   def initialize
   end
@@ -72,7 +72,7 @@ class Interface
     end
   end
 
-  def ls()
+  def repos()
     case
       when @deep == 1
         print "\n"
@@ -89,12 +89,35 @@ class Interface
           puts y.name
           self.add_history(y.name)
         end
+      when @deep==4
+        print "\n"
+        mem=@client.team_repositories(@config["TeamID"])
+        mem.each do |x|
+          puts x.name
+          self.add_history(x.name)
+        end
     end
     print "\n"
   end
 
-  def lsl()
+  def add_to_team(path)
+    @client.add_team_member(@config["TeamID"],path)
+  end
 
+  def create_team(name)
+    if @deep==2
+      @client.create_team(@config["Org"],{:name=>name,:permission=>'push'})
+    end
+  end
+
+  def delete_team(name)
+    if @deep==2
+      @client.delete_team(@teamlist[name])
+    end
+  end
+
+  def get_data
+    puts @config
   end
 
   def cdback()
@@ -111,6 +134,7 @@ class Interface
         @deep=1
       when @deep == 4
         @config["Team"]=nil
+        @config["TeamID"]=nil
         @deep=2
     end
   end
@@ -122,9 +146,10 @@ class Interface
       @deep=2
     when @deep == 2
       @config["Team"]=path
-      puts @teamlist[path]
-      @confing[:TeamID]=@teamlist[path]
+      #puts @teamlist[path]
+      @config["TeamID"]=@teamlist[path]
       @deep=4
+      #self.get_data
     end
   end
 
@@ -150,13 +175,15 @@ class Interface
       mem.each do |i|
         m=eval(i.inspect)
         puts m[:login]
+        self.add_history(m[:login])
       end
     when @deep==4
       print "\n"
       mem=@client.team_members(@config["TeamID"])
       mem.each do |i|
-        #m=eval(i.inspect)
-        #puts m[:login]
+        m=eval(i.inspect)
+        puts m[:login]
+        self.add_history(m[:login])
       end
     end
     print "\n"
@@ -231,6 +258,7 @@ class Interface
       mem.each do |i|
         puts i.name
         @teamlist[i.name]=i[:id]
+        self.add_history(i.name)
         #print "ID de equipo: ",i[:id],"\n"
       end
     end
@@ -256,8 +284,8 @@ class Interface
         case
           when op == "exit" then ex=0
           when op == "help" then self.help()
-          when op == "repos" then self.ls()
-          when op == "ls -l" then self.lsl()
+          when op == "repos" then self.repos()
+          #when op == "ls -l" then self.lsl()
           when op == "orgs" then self.orgs()
           when op == "cd .." then self.cdback()
           when op == "members" then self.members()
@@ -273,6 +301,15 @@ class Interface
         end
         if opcd[0]=="set"
           self.set(opcd[1])
+        end
+        if opcd[0]=="add_team_member"
+          self.add_to_team(opcd[1])
+        end
+        if opcd[0]=="create_team"
+          self.create_team(opcd[1])
+        end
+        if opcd[0]=="delete_team"
+          self.delete_team(opcd[1])
         end
       end
     else
