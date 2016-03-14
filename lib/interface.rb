@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'require_all'
 require 'json'
 require_rel '.'
@@ -15,6 +16,8 @@ class Interface
   LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team '].sort
 
   def initialize
+    self.load_config
+    self.run
   end
 
 
@@ -347,5 +350,3 @@ class Interface
 end
 
 inp = Interface.new
-inp.load_config
-inp.run

@@ -3,7 +3,7 @@ require 'bundler/gem_tasks'
 
 #RSpec::Core::RakeTask.new(:spec)
 
-task default: :spec
+task default: :bash
 
 desc "Run simple interace"
 task :bash do

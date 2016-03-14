@@ -1,4 +1,4 @@
-require_relative 'bash_interface'
+#!/usr/bin/env ruby
+require_relative 'interface'
 
-#op=Interface.new
-#op.run
+#inp = Interface.new
