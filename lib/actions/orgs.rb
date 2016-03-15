@@ -5,6 +5,8 @@ require 'require_all'
 require_rel '.'
 
 class Organizations
+  
+  #all asignements stuff
 
 
 end

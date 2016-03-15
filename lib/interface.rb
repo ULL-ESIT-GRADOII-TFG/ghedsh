@@ -18,20 +18,20 @@ class Interface
   def initialize
     self.load_config
     self.run
+    @sysbh=Sys.new()
   end
 
-
+  #loading from config file
+  
   def load_config
-    json = File.read('./lib/configure/configure.json')
-    config=JSON.parse(json)
-
-    if config["User"] == nil
+    @config=Sys.new.load_config()
+    if @config["User"] == nil
       return false
     else
-      @config=config
       @deep=1
       return true
     end
+
   end
 
   def add_history(value)
@@ -46,10 +46,6 @@ class Interface
     Readline.completion_proc = comp
   end
 
-  def login(username,password,token)
-    @client = Octokit::Client.new(:login=>username, :password=>password, :token =>token)
-
-  end
 
   def prompt()
     case
@@ -294,8 +290,8 @@ class Interface
     HelpM.new.welcome()
 
     if self.load_config == true
-      self.login(@config["User"],@config["Pass"], @config["Token"])
-
+      @client=Sys.new.login(@config["User"],@config["Pass"], @config["Token"])
+	  
       while ex != 0
         op=Readline.readline(self.prompt,true)
         opcd=op.split
@@ -335,16 +331,10 @@ class Interface
 
       end
     else
-      puts "User: "
-      user = gets.chomp
-      puts "Pass: "
-      pass = gets.chomp
-      puts "Token: "
-      token = gets.chomp
-      self.login(user,pass,token)
+      Sys.new.set_loguin_data_sh()
     end
 
-    File.write('./lib/configure/configure.json',@config.to_json)
+    Sys.new.save_config(@config)
   end
 
 end
