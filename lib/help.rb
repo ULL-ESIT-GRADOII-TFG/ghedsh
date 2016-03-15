@@ -45,7 +45,7 @@ class HelpM
   end
 
   def welcome
-    puts "\nTeachers-Pet Terminal!"
-    puts "______________________\n\n"
+    puts "\nGitHub Education Shell!"
+    puts "_______________________\n\n"
   end
 end
