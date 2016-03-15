@@ -16,13 +16,13 @@ class Teams
   end
   
   def read_teamlist(client,config)
-    @teamlist=[]
+    @teamlist=Hash.new
     mem=client.organization_teams(config["Org"])
       mem.each do |i|
-        puts i.name
         @teamlist[i.name]=i[:id]
-        self.add_history(i.name)     
+        #self.add_history(i.name)     
       end
+    return @teamlist
   end
   
   def get_teamlist()
@@ -34,8 +34,8 @@ class Teams
   end
   
   def create_team_with_members(client,config,name,members)
-    self.create_team(client,config,name)
-      config["TeamID"]=teamlist[name]
+    t=self.create_team(client,config,name)
+    config["TeamID"]=t[:id]
 
       for i in 0..members.size
         self.add_to_team(client,config,members[i])
@@ -44,6 +44,17 @@ class Teams
   
   def delete_team(client,name)
     client.delete_team(@teamlist[name])
+  end
+  
+  def show_teams_bs(client,config)
+    print "\n"
+    mem=client.organization_teams(config["Org"])
+      mem.each do |i|
+        puts i.name
+        #print "ID: ",i[:id],"\n"
+      end
+    print "\n"
+    
   end
   
 

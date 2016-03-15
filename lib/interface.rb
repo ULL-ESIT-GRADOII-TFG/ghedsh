@@ -38,6 +38,13 @@ class Interface
     @memory.push(value)
     self.write_memory
   end
+  
+  def add_history_str(value)
+    value.each do |i|
+      @memory.push(i[0])
+      self.write_memory
+    end
+  end
 
   def write_memory
     history=(LIST+@memory).sort
@@ -105,25 +112,6 @@ class Interface
     @client.add_team_member(@config["TeamID"],path)
   end
 
-  def create_team(name)
-    if @deep==2
-      m=@client.create_team(@config["Org"],{:name=>name,:permission=>'push'})
-      @teamlist[name]=m[:id]
-    end
-  end
-
-  def create_team_with_members(name,members)
-    if @deep==2
-
-      self.create_team(name)
-      @config["TeamID"]=@teamlist[name]
-
-      for i in 0..members.size
-        self.add_to_team(members[i])
-      end
-    end
-  end
-
   def delete_team(name)
     if @deep==2
       @client.delete_team(@teamlist[name])
@@ -157,10 +145,13 @@ class Interface
     case
     when @deep==1
       @config["Org"]=path
+      
+      @temlist=Hash.new
+      @teamlist=Teams.new.read_teamlist(@client,@config)
+      self.add_history_str(@teamlist)
       @deep=2
     when @deep == 2
       @config["Team"]=path
-      #puts @teamlist[path]
       @config["TeamID"]=@teamlist[path]
       @deep=4
       #self.get_data
@@ -263,21 +254,6 @@ class Interface
     print "\n"
   end
 
-  def teams()
-    @teamlist=Hash.new
-    case
-    when @deep==2
-      print "\n"
-      mem=@client.organization_teams(@config["Org"])
-      mem.each do |i|
-        puts i.name
-        @teamlist[i.name]=i[:id]
-        self.add_history(i.name)
-        #print "ID de equipo: ",i[:id],"\n"
-      end
-    end
-    print "\n"
-  end
 
   def run
     ex=1
@@ -303,7 +279,10 @@ class Interface
           when op == "orgs" then self.orgs()
           when op == "cd .." then self.cdback()
           when op == "members" then self.members()
-          when op == "teams" then self.teams()
+          when op == "teams" #then self.teams()
+	    if @deep==2
+	      Teams.new.show_teams_bs(@client,@config)
+	    end 
           when op == "commits" then self.commits()
           when op == "col" then self.collaborators()
           when op == "forks" then self.show_forks()
@@ -320,13 +299,23 @@ class Interface
           self.add_to_team(opcd[1])
         end
         if opcd[0]=="create_team" and opcd.size==2
-          self.create_team(opcd[1])
+	  t=Teams.new
+	  t.create_team(@client,@config,opcd[1])
+	  @teamlist=t.read_teamlist(@client,@config)
+	  self.add_history_str(@teamlist)
+
         end
         if opcd[0]=="delete_team"
           self.delete_team(opcd[1])
+	  #@teamlist=t.read_teamlist(@client,@config)
         end
         if opcd[0]=="create_team" and opcd.size>2
-          self.create_team_with_members(opcd[1],opcd[2..opcd.size])
+
+	  t=Teams.new
+	  t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
+	  @teamlist=t.read_teamlist(@client,@config)
+	  self.add_history_str(@teamlist)
+	  
         end
 
       end
