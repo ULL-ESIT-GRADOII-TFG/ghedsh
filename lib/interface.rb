@@ -22,7 +22,7 @@ class Interface
   end
 
   #loading from config file
-  
+
   def load_config
     @config=Sys.new.load_config()
     if @config["User"] == nil
@@ -38,13 +38,27 @@ class Interface
     @memory.push(value)
     self.write_memory
   end
-  
-  def add_history_str(value)
-    value.each do |i|
-      @memory.push(i[0])
-      self.write_memory
+
+  def quit_history(value)
+    @memory.pop(value)
+    self.write_memory
+  end
+
+  def add_history_str(mode,value)
+    if mode==1
+      value.each do |i|
+        @memory.push(i[0])
+        self.write_memory
+      end
+    end
+    if mode==2
+      value.each do |i|
+        @memory.push(i)
+        self.write_memory
+      end
     end
   end
+
 
   def write_memory
     history=(LIST+@memory).sort
@@ -108,14 +122,10 @@ class Interface
     print "\n"
   end
 
+#need to factorize
+
   def add_to_team(path)
     @client.add_team_member(@config["TeamID"],path)
-  end
-
-  def delete_team(name)
-    if @deep==2
-      @client.delete_team(@teamlist[name])
-    end
   end
 
   def get_data
@@ -145,10 +155,10 @@ class Interface
     case
     when @deep==1
       @config["Org"]=path
-      
+
       @temlist=Hash.new
       @teamlist=Teams.new.read_teamlist(@client,@config)
-      self.add_history_str(@teamlist)
+      self.add_history_str(1,@teamlist)
       @deep=2
     when @deep == 2
       @config["Team"]=path
@@ -175,13 +185,8 @@ class Interface
   def members()
     case
     when @deep==2
-      print "\n"
-      mem=@client.organization_members(@config["Org"])
-      mem.each do |i|
-        m=eval(i.inspect)
-        puts m[:login]
-        self.add_history(m[:login])
-      end
+      self.add_history_str(2,Organizations.new.show_organization_members_bs(client,config))
+        #self.add_history(m[:login])
     when @deep==4
       print "\n"
       mem=@client.team_members(@config["TeamID"])
@@ -210,20 +215,12 @@ class Interface
   end
 
   def commits()
-    print "\n"
+    c=Repositories.new
     case
     when @deep==3
-      mem=@client.commits(@config["Org"]+"/"+@config["Repo"],"master")
-      mem.each do |i|
-        #puts i.inspect
-        print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
-        #m=eval(i.inspect)
-      end
+      c.show_commits(@client,@config,1)
     when @deep==10
-      mem=@client.commits(@config["User"]+"/"+@config["Repo"],"master")
-        mem.each do |i|
-        print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
-      end
+      c.show_commits(@client,@config,2)
     end
     print "\n"
   end
@@ -246,14 +243,13 @@ class Interface
     when @deep==3
       mem=@client.collaborators(@config["Org"]+"/"+@config["Repo"])
       mem.each do |i|
-        #puts i.name
         puts i[:author][:login]
-        #m=eval(i.inspect)
       end
     end
     print "\n"
   end
 
+#end need to factorize
 
   def run
     ex=1
@@ -264,10 +260,11 @@ class Interface
     Readline.completion_append_character = ""
     Readline.completion_proc = comp
     HelpM.new.welcome()
+    t=Teams.new
 
     if self.load_config == true
       @client=Sys.new.login(@config["User"],@config["Pass"], @config["Token"])
-	  
+
       while ex != 0
         op=Readline.readline(self.prompt,true)
         opcd=op.split
@@ -282,7 +279,7 @@ class Interface
           when op == "teams" #then self.teams()
 	    if @deep==2
 	      Teams.new.show_teams_bs(@client,@config)
-	    end 
+	    end
           when op == "commits" then self.commits()
           when op == "col" then self.collaborators()
           when op == "forks" then self.show_forks()
@@ -299,23 +296,21 @@ class Interface
           self.add_to_team(opcd[1])
         end
         if opcd[0]=="create_team" and opcd.size==2
-	  t=Teams.new
-	  t.create_team(@client,@config,opcd[1])
-	  @teamlist=t.read_teamlist(@client,@config)
-	  self.add_history_str(@teamlist)
+      	  t.create_team(@client,@config,opcd[1])
+      	  @teamlist=t.read_teamlist(@client,@config)
+      	  self.add_history_str(1,@teamlist)
 
         end
         if opcd[0]=="delete_team"
-          self.delete_team(opcd[1])
-	  #@teamlist=t.read_teamlist(@client,@config)
+          t.delete_team(@client,@teamlist[opcd[1]])
+          self.quit_history(@teamlist[opcd[1]])
+          @teamlist=t.read_teamlist(@client,@config)
+          self.add_history_str(1,@teamlist)
         end
         if opcd[0]=="create_team" and opcd.size>2
-
-	  t=Teams.new
-	  t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
-	  @teamlist=t.read_teamlist(@client,@config)
-	  self.add_history_str(@teamlist)
-	  
+      	  t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
+      	  @teamlist=t.read_teamlist(@client,@config)
+      	  self.add_history_str(1,@teamlist)
         end
 
       end
