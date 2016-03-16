@@ -37,7 +37,6 @@ class Repositories
     repo.each do |i|
       puts i.name
       reposlist.push(i.name)
-      #self.add_history(i.name)
     end
     print "\n"
     return reposlist
@@ -74,5 +73,5 @@ class Repositories
   end
 
 
-  
+
 end

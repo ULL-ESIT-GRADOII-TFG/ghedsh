@@ -30,7 +30,18 @@ class Organizations
       puts o[:login]
       orgslist.push(o[:login])
     end
-    print "\n"  
+    print "\n"
     return orgslist
   end
+
+  def read_orgs(client)
+    orgslist=[]
+    org=client.organizations
+    org.each do |i|
+      o=eval(i.inspect)
+      orgslist.push(o[:login])
+    end
+    return orgslist
+  end
+
 end

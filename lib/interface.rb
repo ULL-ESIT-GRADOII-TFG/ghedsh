@@ -219,6 +219,7 @@ class Interface
 
     if self.load_config == true
       @client=Sys.new.login(@config["User"],@config["Pass"], @config["Token"])
+      self.add_history_str(2,Organizations.new.read_orgs(@client))
 
       while ex != 0
         op=Readline.readline(self.prompt,true)

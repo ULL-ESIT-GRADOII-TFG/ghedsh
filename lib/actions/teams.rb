@@ -20,7 +20,6 @@ class Teams
     mem=client.organization_teams(config["Org"])
       mem.each do |i|
         @teamlist[i.name]=i[:id]
-        #self.add_history(i.name)
       end
     return @teamlist
   end
@@ -55,7 +54,6 @@ class Teams
     mem=client.organization_teams(config["Org"])
       mem.each do |i|
         puts i.name
-        #print "ID: ",i[:id],"\n"
       end
     print "\n"
   end
@@ -67,7 +65,6 @@ class Teams
     mem.each do |i|
       m=eval(i.inspect)
       puts m[:login]
-      #self.add_history(m[:login])
       memberlist.push(m[:login])
     end
     print "\n"

@@ -5,11 +5,11 @@ require 'require_all'
 require_rel '.'
 
 class Sys
-  
+
   def load_config
     json = File.read('./lib/configure/configure.json')
     config=JSON.parse(json)
-    
+
     if config["User"] == nil
       return false
     else
@@ -26,7 +26,7 @@ class Sys
 
   def login(username,password,token)
     user=Octokit::Client.new(:login=>username, :password=>password, :token =>token)
-    if user==nil
+    if user==false
       puts "Oauth error"
     else
       return user
