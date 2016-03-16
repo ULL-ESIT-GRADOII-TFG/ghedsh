@@ -94,39 +94,6 @@ class Interface
     end
   end
 
-  def repos()
-    case
-      when @deep == 1
-        print "\n"
-        repo=@client.repositories
-        repo.each do |i|
-          puts i.name
-          self.add_history(i.name)
-        end
-      when @deep ==2
-        #puts @config["Org"]
-        print "\n"
-        repos=@client.organization_repositories(@config["Org"])
-        repos.each do |y|
-          puts y.name
-          self.add_history(y.name)
-        end
-      when @deep==4
-        print "\n"
-        mem=@client.team_repositories(@config["TeamID"])
-        mem.each do |x|
-          puts x.name
-          self.add_history(x.name)
-        end
-    end
-    print "\n"
-  end
-
-#need to factorize
-
-  def add_to_team(path)
-    @client.add_team_member(@config["TeamID"],path)
-  end
 
   def get_data
     puts @config
@@ -168,37 +135,6 @@ class Interface
     end
   end
 
-  def orgs()
-    case
-    when @deep==1
-      print "\n"
-      org=@client.organizations
-      org.each do |i|
-        o=eval(i.inspect)
-        puts o[:login]
-        self.add_history(o[:login])
-      end
-    end
-    print "\n"
-  end
-
-  def members()
-    case
-    when @deep==2
-      self.add_history_str(2,Organizations.new.show_organization_members_bs(client,config))
-        #self.add_history(m[:login])
-    when @deep==4
-      print "\n"
-      mem=@client.team_members(@config["TeamID"])
-      mem.each do |i|
-        m=eval(i.inspect)
-        puts m[:login]
-        self.add_history(m[:login])
-      end
-    end
-    print "\n"
-  end
-
   #set the repo
   def set(path)
     case
@@ -214,6 +150,37 @@ class Interface
     end
   end
 
+  def orgs()
+    case
+    when @deep==1
+      self.add_history_str(2,Organizations.new.show_orgs(@client,@config))
+    end
+  end
+
+  def members()
+    case
+    when @deep==2
+      self.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
+    when @deep==4
+      self.add_history_str(2,Teams.new.show_team_members_bs(@client,@config))
+    end
+  end
+
+  def repos()
+    repo=Repositories.new()
+    case
+      when @deep == 1
+        list=repo.show_repos(@client,@config,1)
+        self.add_history_str(2,list)
+      when @deep ==2
+        list=repo.show_repos(@client,@config,2)
+        self.add_history_str(2,list)
+      when @deep==4
+        list=repo.show_repos(@client,@config,3)
+        self.add_history_str(2,list)
+    end
+  end
+
   def commits()
     c=Repositories.new
     case
@@ -226,30 +193,18 @@ class Interface
   end
 
   def show_forks()
-    print "\n"
     case
     when @deep==3
-      mem=@client.forks(@config["Org"]+"/"+@config["Repo"])
-      mem.each do |i|
-        puts i[:owner][:login]
-      end
+      Repositories.new.show_forks(@client,@config,1)
     end
-    print "\n"
   end
 
   def collaborators()
-    print "\n"
     case
     when @deep==3
-      mem=@client.collaborators(@config["Org"]+"/"+@config["Repo"])
-      mem.each do |i|
-        puts i[:author][:login]
-      end
+      Repositories.show_collaborators(@client,@config,1)
     end
-    print "\n"
   end
-
-#end need to factorize
 
   def run
     ex=1
@@ -293,7 +248,7 @@ class Interface
           self.set(opcd[1])
         end
         if opcd[0]=="add_team_member"
-          self.add_to_team(opcd[1])
+          t.add_to_team(@client,@config,opcd[1])
         end
         if opcd[0]=="create_team" and opcd.size==2
       	  t.create_team(@client,@config,opcd[1])
