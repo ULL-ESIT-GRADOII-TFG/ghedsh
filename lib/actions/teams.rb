@@ -42,6 +42,10 @@ class Teams
       end
   end
 
+  def add_to_team(client,config,path)
+    client.add_team_member(config["TeamID"],path)
+  end
+
   def delete_team(client,name)
     client.delete_team(name)
   end
@@ -54,8 +58,20 @@ class Teams
         #print "ID: ",i[:id],"\n"
       end
     print "\n"
-
   end
 
+  def show_team_members_bs(client,config)
+    print "\n"
+    memberlist=[]
+    mem=client.team_members(config["TeamID"])
+    mem.each do |i|
+      m=eval(i.inspect)
+      puts m[:login]
+      #self.add_history(m[:login])
+      memberlist.push(m[:login])
+    end
+    print "\n"
+    return memberlist
+  end
 
 end
