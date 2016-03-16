@@ -1,10 +1,15 @@
 #!/usr/bin/env ruby
 require 'require_all'
 require 'json'
-require_rel '.'
 require 'readline'
 require 'octokit'
 
+require 'help'
+require 'actions/orgs'
+require 'actions/repo'
+require 'actions/system'
+require 'actions/teams'
+require 'actions/user'
 
 class Interface
   attr_reader :option
@@ -279,4 +284,4 @@ class Interface
 
 end
 
-inp = Interface.new
+#inp = Interface.new

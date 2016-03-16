@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-require_relative 'interface'
+require '/Users/casiano/clementeTFG/teachers_pet-terminal/lib/interface.rb'
 
-#inp = Interface.new
+inp = Interface.new
