@@ -283,5 +283,3 @@ class Interface
   end
 
 end
-
-#inp = Interface.new

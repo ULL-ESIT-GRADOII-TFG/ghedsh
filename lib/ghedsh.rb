@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-require '/Users/casiano/clementeTFG/teachers_pet-terminal/lib/interface.rb'
+require './lib/interface.rb'
 
 inp = Interface.new
