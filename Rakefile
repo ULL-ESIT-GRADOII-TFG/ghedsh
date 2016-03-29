@@ -7,5 +7,5 @@ task default: :bash
 
 desc "Run simple interace"
 task :bash do
-	sh "ruby lib/ghedsh.rb"
+	sh "ruby -Ilib lib/ghedsh.rb"
 end

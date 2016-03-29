@@ -1,13 +1,14 @@
 Gem::Specification.new do |s|
  s.name = 'ghedsh'
- s.version = '1.0.1'
+ s.version = '1.0.2'
  s.description = "A command line program following the philosophy of GitHub Education."
  s.summary =""
+ s.executables   << 'ghedsh'
  s.authors = ["Javier Clemente"]
  s.email = 'nookstyle@gmail.com'
  s.files = ["lib/"]
  s.homepage = ''
- s.require_paths = ['lib']
+ s.require_paths = ['./lib']
  s.required_ruby_version = '>= 1.9.3'
  s.add_dependency 'octokit', '~> 3.3'
  s.add_dependency 'require_all', '~> 1.3.2'

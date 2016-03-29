@@ -11,7 +11,7 @@ class Sys
     config=JSON.parse(json)
 
     if config["User"] == nil
-      return false
+      return self.set_loguin_data_sh(config)
     else
       return config
     end
@@ -38,7 +38,7 @@ class Sys
   def get_config
   end
 
-  def login(username,password,token)
+  def login(token)
     user=Octokit::Client.new(:access_token =>token)
     if user==false
       puts "Oauth error"
@@ -47,13 +47,16 @@ class Sys
     end
   end
 
-  def set_loguin_data_sh
-    puts "User: "
-    user = gets.chomp
-    puts "Pass: "
-    pass = gets.chomp
-    puts "Token: "
+  def set_loguin_data_sh(config)
+    puts "Insert you Access Token: "
     token = gets.chomp
+    us=self.login(token)
+    if us!=nil
+      puts "Login succesful ",us.login
+      config["User"]=us.login
+      config["Token"]=token
+      return config
+    end
   end
 
 end

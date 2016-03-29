@@ -21,7 +21,6 @@ class Interface
   LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team '].sort
 
   def initialize
-    self.load_config
     self.run
     @sysbh=Sys.new()
   end
@@ -223,7 +222,8 @@ class Interface
     t=Teams.new
 
     if self.load_config == true
-      @client=Sys.new.login(@config["User"],@config["Pass"], @config["Token"])
+      self.load_config
+      @client=Sys.new.login(@config["Token"])
       self.add_history_str(2,Organizations.new.read_orgs(@client))
 
       while ex != 0

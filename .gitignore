@@ -1,5 +1,6 @@
 # project specific
 /lib/configure/configure.json
+/lib/configure/configure2.json
 
 *.gem
 *.rbc
