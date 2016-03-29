@@ -17,15 +17,29 @@ class Sys
     end
   end
 
+  def load_assig_db
+    json = File.read('./lib/db/assignments.json')
+    config=JSON.parse(json)
+    if config["Orgs"] == nil
+      return false
+    else
+      return config
+    end
+  end
+
   def save_config(data)
     File.write('./lib/configure/configure.json', data.to_json)
+  end
+
+  def save_db(data)
+    File.write('./lib/db/assignments.json', data.to_json)
   end
 
   def get_config
   end
 
   def login(username,password,token)
-    user=Octokit::Client.new(:login=>username, :password=>password, :token =>token)
+    user=Octokit::Client.new(:access_token =>token)
     if user==false
       puts "Oauth error"
     else

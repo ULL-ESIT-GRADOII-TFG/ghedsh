@@ -4,7 +4,7 @@ require 'json'
 require 'readline'
 require 'octokit'
 
-require 'help'
+require 'actions/help'
 require 'actions/orgs'
 require 'actions/repo'
 require 'actions/system'
