@@ -1,2 +1,4 @@
-#!/usr/bin/env ruby
-require './lib/ghedsh'
+#!/usr/bin/env ruby -Ilib
+require 'interface'
+
+Interface.new

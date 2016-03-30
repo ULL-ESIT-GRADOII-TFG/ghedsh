@@ -9,3 +9,10 @@ desc "Run simple interace"
 task :bash do
 	sh "ruby -Ilib lib/ghedsh.rb"
 end
+
+
+task :publish do
+  sh "rm ghedsh-*.gem"
+  sh "gem build ghedsh.gemspec"
+  sh "gem push ghedsh-*.gem"
+end
