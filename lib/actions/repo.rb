@@ -72,6 +72,9 @@ class Repositories
     return collalist
   end
 
-
+  def fork(client,config,repo)
+    mem=client.fork(repo)
+    return mem
+  end
 
 end
