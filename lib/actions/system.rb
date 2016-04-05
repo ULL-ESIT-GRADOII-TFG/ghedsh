@@ -20,11 +20,11 @@ class Sys
   def load_assig_db
     json = File.read('./lib/db/assignments.json')
     config=JSON.parse(json)
-    if config["Orgs"] == nil
-      return false
-    else
+    #if config["Orgs"] == nil
+      #return false
+    #else
       return config
-    end
+    #end
   end
 
   def save_config(data)

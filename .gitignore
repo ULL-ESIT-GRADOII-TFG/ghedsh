@@ -1,6 +1,8 @@
 # project specific
 /lib/configure/configure.json
 /lib/configure/configure2.json
+/lib/pruebas.rb
+/lib/db/assignments2.json
 
 *.gem
 *.rbc
