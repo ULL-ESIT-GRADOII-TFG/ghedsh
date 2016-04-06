@@ -18,7 +18,7 @@ class Interface
   attr_accessor :deep
   attr_accessor :memory
   attr_accessor :teamlist
-  LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team '].sort
+  LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team ','create_repository '].sort
 
   def initialize
     self.run
@@ -220,6 +220,7 @@ class Interface
     Readline.completion_proc = comp
     HelpM.new.welcome()
     t=Teams.new
+    r=Repositories.new
 
     if self.load_config == true
       self.load_config
@@ -238,9 +239,9 @@ class Interface
           when op == "cd .." then self.cdback()
           when op == "members" then self.members()
           when op == "teams" #then self.teams()
-	    if @deep==2
-	      Teams.new.show_teams_bs(@client,@config)
-	    end
+      	    if @deep==2
+      	      Teams.new.show_teams_bs(@client,@config)
+      	    end
           when op == "commits" then self.commits()
           when op == "col" then self.collaborators()
           when op == "forks" then self.show_forks()
@@ -260,7 +261,6 @@ class Interface
       	  t.create_team(@client,@config,opcd[1])
       	  @teamlist=t.read_teamlist(@client,@config)
       	  self.add_history_str(1,@teamlist)
-
         end
         if opcd[0]=="delete_team"
           t.delete_team(@client,@teamlist[opcd[1]])
@@ -273,7 +273,16 @@ class Interface
       	  @teamlist=t.read_teamlist(@client,@config)
       	  self.add_history_str(1,@teamlist)
         end
-
+        if opcd[0]=="create_repository" and opcd.size==2
+          case
+          when @deep==1
+            r.create_repository(@client,@config,opcd[1],1)
+          when @deep==2
+            r.create_repository(@client,@config,opcd[1],2)
+          when @deep==4
+            r.create_repository(@client,@config,opcd[1],4)
+          end
+        end
       end
     else
       Sys.new.set_loguin_data_sh()

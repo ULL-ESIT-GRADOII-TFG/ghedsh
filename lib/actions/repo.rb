@@ -77,4 +77,22 @@ class Repositories
     return mem
   end
 
+  def create_repository(client,config,repo,scope)
+    options=Hash.new
+    case
+    when scope==2
+      puts "created repository in org"
+      options[:organization]=config["Org"]
+      client.create_repository(repo,options)
+    when scope==1
+      puts "created repository in user"
+      client.create_repository(repo)
+    when scope==4
+      puts "created repository in org team"
+      options[:team_id]=config["TeamID"]
+      options[:organization]=config["Org"]
+      client.create_repository(config["Team"]+"/"+repo,options)
+    end
+
+  end
 end

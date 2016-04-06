@@ -16,7 +16,7 @@ Ir order to run this program, you need to make an **Access token** from Github w
 
 You can run this program downloading this repository directly, but you need to setting the configure file. Rename the file *configure_template.json* to *configure.json* in **./lib/configure/.**
 
-To start using the program, put "rake bash" or "rake" in your command line in the main folder of this program.
+To start using the program, put "rake bash" or "rake" in your command line in the main folder of this program. You can invoke the binary file using the command *ghedsh*.
 
 ##Using the gem
 Instead of download the program from the repository, you can download the gem **ghdesh** from rubygem.
