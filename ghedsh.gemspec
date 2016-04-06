@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
  s.name = 'ghedsh'
- s.version = '1.0.7'
+ s.version = '1.0.8'
  s.summary ="A command line program following the philosophy of GitHub Education."
  s.description = s.summary
  s.authors = ["Javier Clemente", "Casiano Rodriguez-Leon"]
