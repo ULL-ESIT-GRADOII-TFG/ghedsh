@@ -93,6 +93,21 @@ class Repositories
       options[:organization]=config["Org"]
       client.create_repository(config["Team"]+"/"+repo,options)
     end
+  end
 
+  def create_repository_by_teamlist(client,config,repo,list,list_id)
+    options=Hash.new
+    options[:organization]=config["Org"]
+    #puts list_id
+    y=0
+    list.each do |i|
+      options[:team_id]=list_id[y]
+      # puts i, list_id[y]
+      # puts repo
+      # puts options
+      # puts "\n"
+      client.create_repository(i+"/"+repo,options)
+      y=y+1
+    end
   end
 end

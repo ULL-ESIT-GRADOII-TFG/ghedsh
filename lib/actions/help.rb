@@ -5,6 +5,7 @@ class HelpM
     self.common_opt
     print "orgs => show your organizations\n"
     print "repos => list your repositories\n\n"
+    print "create_repository => create a repository in your personal account\n"
     print "set => move you to a specific repository\n"
 
   end
@@ -15,6 +16,7 @@ class HelpM
     print "set => move you to a specific repository\n"
     print "members => members of a organization\n"
     print "teams => teams of a organization\n"
+    print "create_repository => create a repository in your organization\n"
     print "delete_team => delete a team in you organization. Expected the name of the team\n"
     print "create_team => create a team in the organization. Expected the name of the team, and/or members given one by one\n\n"
   end
@@ -28,6 +30,7 @@ class HelpM
   def orgs_teams()
     self.common_opt
     print "members => members of the team\n"
+    print "create_repository => create a repository to this team\n"
     print "add_to_team => add a member in the team\n\n"
   end
 

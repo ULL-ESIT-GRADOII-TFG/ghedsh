@@ -185,6 +185,15 @@ class Interface
     end
   end
 
+  def get_teamlist(data)
+    list=Array.new
+    for i in 0..data.size-1
+      list.push(@teamlist[data[i]])
+      #puts @teamlist[data[i]]
+    end
+    return list
+  end
+
   def commits()
     c=Repositories.new
     case
@@ -281,6 +290,12 @@ class Interface
             r.create_repository(@client,@config,opcd[1],2)
           when @deep==4
             r.create_repository(@client,@config,opcd[1],4)
+          end
+        end
+        if opcd[0]=="create_repository" and opcd.size>2
+          case
+          when @deep==2
+            r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
           end
         end
       end

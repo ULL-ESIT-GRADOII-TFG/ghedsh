@@ -25,5 +25,18 @@ Instead of download the program from the repository, you can download the gem **
 
 To run the app you need to call the binary file "ghesh" in your command line after install it.  
 
+##Basic usage
+Logged in our app you start set in your personal profile. There you can list your repositories, create repositories, see your organizations and other options that you can see using the command *help* in your command line. You can go inside of a specific organization with the command *cd* and start to managing itself. Its possible to create task for the members your organization, create teamworks and many options that you can see again with *help*. You can move and go back in the tree directory as it is possible in the github structure.
+
+Levels
+└── User
+    ├── Organizations
+    │   ├── Teams
+    │   │    └── Team Repositories
+    │   ├── Assignments
+    │   └── Organization Repositories
+    └── User Repositories
+
+
 ##Aditional information
 [Github Education](https://education.github.com/)
