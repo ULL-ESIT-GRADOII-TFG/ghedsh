@@ -6,8 +6,8 @@ require_rel '.'
 
 class Sys
 
-  def load_config
-    json = File.read('./lib/configure/configure.json')
+  def load_config(configure_path)
+    json = File.read(configure_path)
     config=JSON.parse(json)
 
     if config["User"] == nil

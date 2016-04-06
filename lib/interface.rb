@@ -27,8 +27,9 @@ class Interface
 
   #loading from config file
 
-  def load_config
-    @config=Sys.new.load_config()
+  # './lib/configure/configure.json')
+  def load_config(config_path)
+    @config=Sys.new.load_config(config_path)
     if @config["User"] == nil
       return false
     else
@@ -231,8 +232,10 @@ class Interface
     t=Teams.new
     r=Repositories.new
 
-    if self.load_config == true
-      self.load_config
+    # orden de búsqueda: ~/.ghedsh.json ./ghedsh.json ENV["ghedsh"] --configpath path/to/file.json
+    config_path = './lib/configure/configure.json'
+    if self.load_config(config_path) == true
+      self.load_config(config_path)
       @client=Sys.new.login(@config["Token"])
       self.add_history_str(2,Organizations.new.read_orgs(@client))
 

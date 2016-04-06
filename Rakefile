@@ -11,6 +11,7 @@ task :bash do
 end
 
 
+desc "publish gem"
 task :publish do
   sh "rm ghedsh-*.gem"
   sh "gem build ghedsh.gemspec"
