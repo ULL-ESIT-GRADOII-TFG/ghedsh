@@ -42,7 +42,21 @@ class Repositories
     return reposlist
   end
 
-  def show_repos_smart()
+  def show_repos_smart(client,config,exp,scope)
+    reposlist=[]
+    case
+      when scope==1
+        repo=client.repositories
+      when scope==2
+        repo=client.organization_repositories(config["Org"])
+      when scope==3
+        repo=client.team_repositories(config["TeamID"])
+    end
+    repo.each do |i|
+      reposlist.push(i.name)
+    end
+    reposlist=Sys.new.search_rexp(reposlist,exp)
+    return reposlist
   end
 
   def show_forks(client,config,scope)
@@ -105,15 +119,27 @@ class Repositories
     y=0
     list.each do |i|
       options[:team_id]=list_id[y]
-      puts i, list_id[y]
-      puts repo
-      puts options
-      puts "\n"
-      #client.create_repository(i+"/"+repo,options)
+      # puts i, list_id[y]
+      # puts repo
+      # puts options
+      # puts "\n"
+      client.create_repository(i+"/"+repo,options)
       y=y+1
     end
   end
 
-  def clone_repo(client,config,list)
+  def clone_repo(client,config,list,exp,scope)
+    web="https://"
+    web2="git@"
+
+    list=Sys.new.search_rexp(list,exp)
+    case
+    when scope==1
+      command = "git clone #{web}#{@config["User"]}/#{list[i]}.git"
+      system(command)
+    when scope==2
+      command = "git clone #{web}#{@config["Org"]}/#{list[i]}.git"
+      system(command)
+    end
   end
 end
