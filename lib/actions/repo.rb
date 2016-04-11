@@ -42,6 +42,9 @@ class Repositories
     return reposlist
   end
 
+  def show_repos_smart()
+  end
+
   def show_forks(client,config,scope)
     print "\n"
     forklist=[]
@@ -102,12 +105,15 @@ class Repositories
     y=0
     list.each do |i|
       options[:team_id]=list_id[y]
-      # puts i, list_id[y]
-      # puts repo
-      # puts options
-      # puts "\n"
-      client.create_repository(i+"/"+repo,options)
+      puts i, list_id[y]
+      puts repo
+      puts options
+      puts "\n"
+      #client.create_repository(i+"/"+repo,options)
       y=y+1
     end
+  end
+
+  def clone_repo(client,config,list)
   end
 end

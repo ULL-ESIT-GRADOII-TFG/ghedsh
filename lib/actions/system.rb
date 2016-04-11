@@ -59,4 +59,8 @@ class Sys
     end
   end
 
+  def search_rexp(list,exp)
+    return list.select{|o| o.match(/#{exp}/)}
+  end
+
 end
