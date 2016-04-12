@@ -245,7 +245,7 @@ class Interface
         case
           when op == "exit" then ex=0
           when op == "help" then self.help()
-          when op == "repos" then self.repos()
+          #when op == "repos" then self.repos()
           #when op == "ls -l" then self.lsl()
           when op == "orgs" then self.orgs()
           when op == "cd .." then self.cdback()
@@ -265,6 +265,19 @@ class Interface
         end
         if opcd[0]=="set"
           self.set(opcd[1])
+        end
+        if opcd[0]=="repos" and opcd.size==1
+          self.repos()
+        end
+        if opcd[0]=="repos" and opcd.size>1
+          case
+            when @deep==1
+              r.show_repos_smart(@client,@config,opcd[1],1)
+            when @deep==2
+              r.show_repos_smart(@client,@config,opcd[1],2)
+            when @deep==3
+              r.show_repos_smart(@client,@config,opcd[1],3)  
+          end
         end
         if opcd[0]=="add_team_member"
           t.add_to_team(@client,@config,opcd[1])
@@ -300,6 +313,13 @@ class Interface
           when @deep==2
             r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
           end
+        end
+
+        if opcd[0]=="clone_repo" and opcd.size==2
+        end
+
+        if opcd[0]=="clone_repo" and opcd.size>2
+          #r.clone_repo(@client,@confing,opcd[1])
         end
       end
     else

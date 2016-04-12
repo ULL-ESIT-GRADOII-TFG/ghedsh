@@ -55,7 +55,9 @@ class Repositories
     repo.each do |i|
       reposlist.push(i.name)
     end
+    
     reposlist=Sys.new.search_rexp(reposlist,exp)
+    puts reposlist
     return reposlist
   end
 
@@ -129,17 +131,21 @@ class Repositories
   end
 
   def clone_repo(client,config,list,exp,scope)
-    web="https://"
-    web2="git@"
+    web="https://github.com/"
+    web2="git@github.com:"
 
     list=Sys.new.search_rexp(list,exp)
-    case
-    when scope==1
-      command = "git clone #{web}#{@config["User"]}/#{list[i]}.git"
-      system(command)
-    when scope==2
-      command = "git clone #{web}#{@config["Org"]}/#{list[i]}.git"
-      system(command)
+    if (list.empty?) == false
+      case
+      when scope==1
+        command = "git clone #{web}#{@config["User"]}/#{list[i]}.git"
+        system(command)
+      when scope==2
+        command = "git clone #{web}#{@config["Org"]}/#{list[i]}.git"
+        system(command)
+      end
+    else
+      puts "No repositories found it with the parameters given"
     end
   end
 end
