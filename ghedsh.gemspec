@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
  s.name = 'ghedsh'
  s.version =  Ghedsh::VERSION
  s.summary ="A command line program following the philosophy of GitHub Education."
- s.description = "Visit https://github.com/ULL-ESIT-GRADOII-TFG/ghedsh"
+ s.description = "A command line program following the philosophy of GitHub Education. More information: https://github.com/ULL-ESIT-GRADOII-TFG/ghedsh"
  s.authors = ["Javier Clemente", "Casiano Rodriguez-Leon"]
  s.email = 'nookstyle@gmail.com'
  s.licenses = ['MIT']
