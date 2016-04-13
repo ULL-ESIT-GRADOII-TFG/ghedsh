@@ -18,7 +18,7 @@ class Interface
   attr_accessor :deep
   attr_accessor :memory
   attr_accessor :teamlist
-  LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team ','create_repository '].sort
+  LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team ','create_repository ','clone_repo '].sort
 
   def initialize
     self.run
@@ -276,7 +276,7 @@ class Interface
             when @deep==2
               r.show_repos_smart(@client,@config,opcd[1],2)
             when @deep==3
-              r.show_repos_smart(@client,@config,opcd[1],3)  
+              r.show_repos_smart(@client,@config,opcd[1],3)
           end
         end
         if opcd[0]=="add_team_member"
@@ -299,14 +299,7 @@ class Interface
       	  self.add_history_str(1,@teamlist)
         end
         if opcd[0]=="create_repository" and opcd.size==2
-          case
-          when @deep==1
-            r.create_repository(@client,@config,opcd[1],1)
-          when @deep==2
-            r.create_repository(@client,@config,opcd[1],2)
-          when @deep==4
-            r.create_repository(@client,@config,opcd[1],4)
-          end
+          r.create_repository(@client,@config,opcd[1],@deep)
         end
         if opcd[0]=="create_repository" and opcd.size>2
           case
@@ -316,10 +309,11 @@ class Interface
         end
 
         if opcd[0]=="clone_repo" and opcd.size==2
+          r.clone_repo(@client,@config,opcd[1],@deep)
         end
 
         if opcd[0]=="clone_repo" and opcd.size>2
-          #r.clone_repo(@client,@confing,opcd[1])
+          #r.clone_repo(@client,@config,opcd[1])
         end
       end
     else

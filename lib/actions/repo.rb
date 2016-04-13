@@ -42,6 +42,7 @@ class Repositories
     return reposlist
   end
 
+
   def show_repos_smart(client,config,exp,scope)
     reposlist=[]
     case
@@ -55,7 +56,7 @@ class Repositories
     repo.each do |i|
       reposlist.push(i.name)
     end
-    
+
     reposlist=Sys.new.search_rexp(reposlist,exp)
     puts reposlist
     return reposlist
@@ -130,19 +131,41 @@ class Repositories
     end
   end
 
-  def clone_repo(client,config,list,exp,scope)
+  def get_repos_list(client,config,scope)
+    reposlist=[]
+    case
+      when scope==1
+        repo=client.repositories
+      when scope==2
+        repo=client.organization_repositories(config["Org"])
+      when scope==3
+        repo=client.team_repositories(config["TeamID"])
+    end
+    repo.each do |i|
+      reposlist.push(i.name)
+    end
+    return reposlist
+  end
+
+  def clone_repo(client,config,exp,scope)
     web="https://github.com/"
     web2="git@github.com:"
 
+    list=self.get_repos_list(client,config,scope)
     list=Sys.new.search_rexp(list,exp)
+
     if (list.empty?) == false
       case
       when scope==1
-        command = "git clone #{web}#{@config["User"]}/#{list[i]}.git"
-        system(command)
+        list.each do |i|
+          command = "git clone #{web}#{config["User"]}/#{i}.git"
+          system(command)
+        end
       when scope==2
-        command = "git clone #{web}#{@config["Org"]}/#{list[i]}.git"
-        system(command)
+        list.each do |i|
+          command = "git clone #{web}#{config["Org"]}/#{i}.git"
+          system(command)
+        end
       end
     else
       puts "No repositories found it with the parameters given"

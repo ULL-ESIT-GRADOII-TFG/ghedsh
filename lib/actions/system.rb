@@ -25,36 +25,6 @@ class Sys
     end
   end
 
-  def load_assig_db
-    json = File.read('./lib/db/assignments.json')
-    config=JSON.parse(json)
-    #if config["Orgs"] == nil
-      #return false
-    #else
-      return config
-    #end
-  end
-
-  def create_config(path)
-      con={:User=>nil,:Token=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
-      File.write(path,con.to_json)
-  end
-
-  def save_config(data)
-    if (File.exist?('./lib/configure/configure.json'))==true
-      File.write('./lib/configure/configure.json', data.to_json)
-    else
-      File.write("#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/configure/configure.json", data.to_json)
-    end
-  end
-
-  def save_db(data)
-    File.write('./lib/db/assignments.json', data.to_json)
-  end
-
-  def get_config
-  end
-
   def login(token)
     user=Octokit::Client.new(:access_token =>token)
     if user==false
@@ -75,6 +45,44 @@ class Sys
       return config
     end
   end
+
+  def load_assig_db
+    path='./lib/db/assignments.json'
+    if (File.exist?(path))==true
+      json = File.read(path)
+    else
+      path="#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/db/assignments.json"
+      json = File.read(path)
+    end
+      config=JSON.parse(json)
+      return config
+  end
+
+  def create_config(path)
+      con={:User=>nil,:Token=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
+      File.write(path,con.to_json)
+  end
+
+  def save_config(data)
+    if (File.exist?('./lib/configure/configure.json'))==true
+      File.write('./lib/configure/configure.json', data.to_json)
+    else
+      File.write("#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/configure/configure.json", data.to_json)
+    end
+  end
+
+  def save_db(data)
+    if (File.exist?('./lib/db/assignments.json'))==true
+      File.write('./lib/db/assignments.json', data.to_json)
+    else
+      File.write("#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/db/assignments.json", data.to_json)
+    end
+  end
+
+  def get_config
+    #todo
+  end
+
 
   def search_rexp(list,exp)
     list= list.select{|o| o.match(/#{exp}/)}
