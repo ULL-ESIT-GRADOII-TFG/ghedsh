@@ -2,7 +2,7 @@
 
 A command line program following the philosophy of GitHub Education.
 
-##How does it works?
+##How does it work?
 
 This program give you an interaction with Github like you was using your command line simulating a tree structure. Each level on the tree gives you several options of managing your Github account or your Organization.
 

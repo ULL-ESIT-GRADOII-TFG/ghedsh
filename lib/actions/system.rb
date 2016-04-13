@@ -1,19 +1,26 @@
 require 'readline'
 require 'octokit'
 require 'json'
-require 'require_all'
-require_rel '.'
+require 'actions/system'
+require 'version'
 
 class Sys
 
   def load_config(configure_path)
-    json = File.read(configure_path)
-    config=JSON.parse(json)
+    if (File.exist?(configure_path))==true
+      json = File.read(configure_path)
+      config=JSON.parse(json)
 
-    if config["User"] == nil
-      return self.set_loguin_data_sh(config)
+      if config["User"] == nil
+        return self.set_loguin_data_sh(config)
+      else
+        return config
+      end
     else
-      return config
+      puts "nope"
+      configure_path="#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/configure/configure.json"
+      self.create_config(configure_path)
+      load_config(configure_path)
     end
   end
 
@@ -25,6 +32,11 @@ class Sys
     #else
       return config
     #end
+  end
+
+  def create_config(path)
+      con={:User=>nil,:Token=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
+      File.write(path,con.to_json)
   end
 
   def save_config(data)
