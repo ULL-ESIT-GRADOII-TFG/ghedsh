@@ -17,9 +17,10 @@ class Sys
         return config
       end
     else
-      puts "nope"
       configure_path="#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/configure/configure.json"
-      self.create_config(configure_path)
+      if (File.exist?(configure_path))==false
+        self.create_config(configure_path)
+      end
       load_config(configure_path)
     end
   end
@@ -40,7 +41,11 @@ class Sys
   end
 
   def save_config(data)
-    File.write('./lib/configure/configure.json', data.to_json)
+    if (File.exist?('./lib/configure/configure.json'))==true
+      File.write('./lib/configure/configure.json', data.to_json)
+    else
+      File.write("#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/configure/configure.json", data.to_json)
+    end
   end
 
   def save_db(data)
@@ -64,7 +69,7 @@ class Sys
     token = gets.chomp
     us=self.login(token)
     if us!=nil
-      puts "Login succesful ",us.login
+      puts "Login succesful as #{us.login}"
       config["User"]=us.login
       config["Token"]=token
       return config
