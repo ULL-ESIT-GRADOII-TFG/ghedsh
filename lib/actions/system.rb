@@ -1,28 +1,34 @@
 require 'readline'
+require 'fileutils'
 require 'octokit'
 require 'json'
 require 'actions/system'
 require 'version'
 
 class Sys
+  attr_accessor :client
 
   def load_config(configure_path)
-    if (File.exist?(configure_path))==true
-      json = File.read(configure_path)
+    if File.exist?(configure_path)
+      token=File.read("#{configure_path}/ghedsh-token")
+      json = File.read("#{configure_path}/ghedsh-cache.json")
       config=JSON.parse(json)
 
-      if config["User"] == nil
-        return self.set_loguin_data_sh(config)
-      else
+      if token!=""
+        @client=self.login(token)
+        config["User"]=@client.login
         return config
+      else
+        return self.set_loguin_data_sh(config,configure_path)
       end
     else
-      configure_path="#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/configure/configure.json"
-      if (File.exist?(configure_path))==false
-        self.create_config(configure_path)
-      end
+      self.create_config(configure_path)
       load_config(configure_path)
     end
+  end
+
+  def save_token(path,token)
+    File.write(path,token)
   end
 
   def login(token)
@@ -34,54 +40,46 @@ class Sys
     end
   end
 
-  def set_loguin_data_sh(config)
+  def set_loguin_data_sh(config,configure_path)
     puts "Insert you Access Token: "
     token = gets.chomp
     us=self.login(token)
     if us!=nil
       puts "Login succesful as #{us.login}"
       config["User"]=us.login
-      config["Token"]=token
+      File.write("#{configure_path}/ghedsh-token",token) #config["Token"]=token
+      @client=us
       return config
     end
   end
 
-  def load_assig_db
-    path='./lib/db/assignments.json'
+  def load_assig_db(path)
     if (File.exist?(path))==true
-      json = File.read(path)
+      json = File.read("#{path}/db/assignments.json")
     else
-      path="#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/db/assignments.json"
-      json = File.read(path)
+      #path="/db/assignments.json"
+      #json = File.read(path)
     end
       config=JSON.parse(json)
       return config
   end
 
-  def create_config(path)
-      con={:User=>nil,:Token=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
-      File.write(path,con.to_json)
+  def create_config(configure_path)
+    con={:User=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
+    FileUtils.mkdir_p(configure_path)
+    File.new("#{configure_path}/ghedsh-token","w")
+    File.write("#{configure_path}/ghedsh-cache.json",con.to_json)
   end
 
-  def save_config(data)
-    if (File.exist?('./lib/configure/configure.json'))==true
-      File.write('./lib/configure/configure.json', data.to_json)
-    else
-      File.write("#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/configure/configure.json", data.to_json)
-    end
+
+  def save_cache(path,data)
+    File.write('./.ghedsh/ghedsh-cache.json',data.to_json)
   end
 
-  def save_db(data)
-    if (File.exist?('./lib/db/assignments.json'))==true
-      File.write('./lib/db/assignments.json', data.to_json)
-    else
-      File.write("#{ENV['GEM_HOME']}/gems/ghedsh-#{Ghedsh::VERSION}/lib/db/assignments.json", data.to_json)
-    end
+  def save_db(path,data)
+    File.write("#{path}/db/assignments.json", data.to_json)
   end
 
-  def get_config
-    #todo
-  end
 
 
   def search_rexp(list,exp)

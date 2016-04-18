@@ -3,6 +3,7 @@
 /lib/configure/configure2.json
 /lib/pruebas.rb
 /lib/db/assignments2.json
+.ghedsh
 
 *.gem
 *.rbc

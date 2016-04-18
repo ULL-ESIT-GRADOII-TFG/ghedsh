@@ -231,96 +231,101 @@ class Interface
     HelpM.new.welcome()
     t=Teams.new
     r=Repositories.new
-
+    s=Sys.new
     # orden de búsqueda: ~/.ghedsh.json ./ghedsh.json ENV["ghedsh"] --configpath path/to/file.json
-    config_path = './lib/configure/configure.json'
-    if self.load_config(config_path) == true
-      self.load_config(config_path)
-      @client=Sys.new.login(@config["Token"])
-      self.add_history_str(2,Organizations.new.read_orgs(@client))
+    #config_path = './lib/configure/configure.json'
+    config_path = './.ghedsh'
+    # if self.load_config(config_path) == true
+    #self.load_config(config_path)
+    @config=s.load_config(config_path)
+    @client=s.client
+    @deep=1
+    #@client=Sys.new.login(@config["Token"])
+    self.add_history_str(2,Organizations.new.read_orgs(@client))
 
-      while ex != 0
-        op=Readline.readline(self.prompt,true)
-        opcd=op.split
-        case
-          when op == "exit" then ex=0
-          when op == "help" then self.help()
+    while ex != 0
+      op=Readline.readline(self.prompt,true)
+      opcd=op.split
+      case
+        when op == "exit" then ex=0
+        when op == "help" then self.help()
           #when op == "repos" then self.repos()
           #when op == "ls -l" then self.lsl()
-          when op == "orgs" then self.orgs()
-          when op == "cd .." then self.cdback()
-          when op == "members" then self.members()
-          when op == "teams" #then self.teams()
-      	    if @deep==2
-      	      Teams.new.show_teams_bs(@client,@config)
-      	    end
-          when op == "commits" then self.commits()
-          when op == "col" then self.collaborators()
-          when op == "forks" then self.show_forks()
-        end
-        if opcd[0]=="cd" and opcd[1]!=".."
-          self.cd(opcd[1])
+        when op == "orgs" then self.orgs()
+        when op == "cd .." then self.cdback()
+        when op == "members" then self.members()
+        when op == "teams" #then self.teams()
+      	  if @deep==2
+      	    Teams.new.show_teams_bs(@client,@config)
+      	  end
+        when op == "commits" then self.commits()
+        when op == "col" then self.collaborators()
+        when op == "forks" then self.show_forks()
+      end
+      if opcd[0]=="cd" and opcd[1]!=".."
+        self.cd(opcd[1])
         #else
         #  self.cdback()
-        end
-        if opcd[0]=="set"
-          self.set(opcd[1])
-        end
-        if opcd[0]=="repos" and opcd.size==1
-          self.repos()
-        end
-        if opcd[0]=="repos" and opcd.size>1
-          case
-            when @deep==1
-              r.show_repos_smart(@client,@config,opcd[1],1)
-            when @deep==2
-              r.show_repos_smart(@client,@config,opcd[1],2)
-            when @deep==3
-              r.show_repos_smart(@client,@config,opcd[1],3)
-          end
-        end
-        if opcd[0]=="add_team_member"
-          t.add_to_team(@client,@config,opcd[1])
-        end
-        if opcd[0]=="create_team" and opcd.size==2
-      	  t.create_team(@client,@config,opcd[1])
-      	  @teamlist=t.read_teamlist(@client,@config)
-      	  self.add_history_str(1,@teamlist)
-        end
-        if opcd[0]=="delete_team"
-          t.delete_team(@client,@teamlist[opcd[1]])
-          self.quit_history(@teamlist[opcd[1]])
-          @teamlist=t.read_teamlist(@client,@config)
-          self.add_history_str(1,@teamlist)
-        end
-        if opcd[0]=="create_team" and opcd.size>2
-      	  t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
-      	  @teamlist=t.read_teamlist(@client,@config)
-      	  self.add_history_str(1,@teamlist)
-        end
-        if opcd[0]=="create_repository" and opcd.size==2
-          r.create_repository(@client,@config,opcd[1],@deep)
-        end
-        if opcd[0]=="create_repository" and opcd.size>2
-          case
+      end
+      if opcd[0]=="set"
+        self.set(opcd[1])
+      end
+      if opcd[0]=="repos" and opcd.size==1
+        self.repos()
+      end
+      if opcd[0]=="repos" and opcd.size>1
+        case
+          when @deep==1
+            r.show_repos_smart(@client,@config,opcd[1],1)
           when @deep==2
-            r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
-          end
-        end
-
-        if opcd[0]=="clone_repo" and opcd.size==2
-          r.clone_repo(@client,@config,opcd[1],@deep)
-        end
-
-        if opcd[0]=="clone_repo" and opcd.size>2
-          #r.clone_repo(@client,@config,opcd[1])
+            r.show_repos_smart(@client,@config,opcd[1],2)
+          when @deep==3
+            r.show_repos_smart(@client,@config,opcd[1],3)
         end
       end
-    else
-      Sys.new.set_loguin_data_sh()
-    end
+      if opcd[0]=="add_team_member"
+        t.add_to_team(@client,@config,opcd[1])
+      end
+      if opcd[0]=="create_team" and opcd.size==2
+      	t.create_team(@client,@config,opcd[1])
+      	@teamlist=t.read_teamlist(@client,@config)
+      	self.add_history_str(1,@teamlist)
+      end
+      if opcd[0]=="delete_team"
+        t.delete_team(@client,@teamlist[opcd[1]])
+        self.quit_history(@teamlist[opcd[1]])
+        @teamlist=t.read_teamlist(@client,@config)
+        self.add_history_str(1,@teamlist)
+      end
+      if opcd[0]=="create_team" and opcd.size>2
+      	t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
+      	@teamlist=t.read_teamlist(@client,@config)
+      	self.add_history_str(1,@teamlist)
+      end
+      if opcd[0]=="create_repository" and opcd.size==2
+        r.create_repository(@client,@config,opcd[1],@deep)
+      end
+      if opcd[0]=="create_repository" and opcd.size>2
+        case
+        when @deep==2
+          r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
+        end
+      end
 
-    Sys.new.save_config(@config)
+      if opcd[0]=="clone_repo" and opcd.size==2
+        r.clone_repo(@client,@config,opcd[1],@deep)
+      end
+
+      if opcd[0]=="clone_repo" and opcd.size>2
+          #r.clone_repo(@client,@config,opcd[1])
+      end
+    end
+    # else
+      # Sys.new.set_loguin_data_sh()
+    # end
+
+    #Sys.new.save_config(@config)
+    s.save_cache(config_path,@config)
   end
 
 end
