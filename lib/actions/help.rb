@@ -5,6 +5,7 @@ class HelpM
     self.common_opt
     print "orgs => show your organizations\n"
     print "repos => list your repositories\n\n"
+    print "clone_repo => clone a repository or a list of repositories using a regular expresion"
     print "create_repository => create a repository in your personal account\n"
     print "set => move you to a specific repository\n"
 
@@ -13,6 +14,7 @@ class HelpM
   def org()
     self.common_opt
     print "repos => list the repositories of your organization\n"
+    print "clone_repo => clone a repository or a list of repositories using a regular expresion"
     print "set => move you to a specific repository\n"
     print "members => members of a organization\n"
     print "teams => teams of a organization\n"
@@ -30,6 +32,7 @@ class HelpM
   def orgs_teams()
     self.common_opt
     print "members => members of the team\n"
+    print "clone_repo => clone a repository or a list of repositories using a regular expresion"
     print "create_repository => create a repository to this team\n"
     print "add_to_team => add a member in the team\n\n"
   end
@@ -50,5 +53,15 @@ class HelpM
   def welcome
     puts "\nGitHub Education Shell!"
     puts "_______________________\n\n"
+  end
+
+  def bin
+    puts "\nList of commands\n\n"
+    puts "ghedsh"
+    puts "Run with default configuration"
+    puts "ghedsh --token TOKEN"
+    puts "Provides a github access token by argument"
+    puts "ghedsh --help"
+    puts "Show the executable options"
   end
 end

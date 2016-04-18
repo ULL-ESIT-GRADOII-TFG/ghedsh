@@ -21,22 +21,23 @@ class Interface
   LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team ','create_repository ','clone_repo '].sort
 
   def initialize
-    self.run
     @sysbh=Sys.new()
-  end
 
-  #loading from config file
-
-  # './lib/configure/configure.json')
-  def load_config(config_path)
-    @config=Sys.new.load_config(config_path)
-    if @config["User"] == nil
-      return false
+    if ARGV.empty?
+      self.run('./.ghedsh')
     else
-      @deep=1
-      return true
+      case
+        when ARGV[0]=="--configpath"
+          if File.exist?(ARGV[1])
+            self.run(ARGV[1])
+          else
+            puts "the path doesn't exists"
+          end
+        when ARGV[0]=="--help"
+          HelpM.new.bin()
+        when ARGV[0]=="--token"
+      end
     end
-
   end
 
   def add_history(value)
@@ -85,17 +86,18 @@ class Interface
   end
 
   def help()
+    h=HelpM.new()
     case
       when @deep == 1
-        HelpM.new.user()
+        h.user()
       when @deep == 2
-        HelpM.new.org()
+        h.new.org()
       when @deep == 3
-        HelpM.new.org_repo()
+        h.new.org_repo()
       when @deep == 10
-        HelpM.new.user_repo()
+        h.new.user_repo()
       when @deep == 4
-        HelpM.new.orgs_teams()
+        h.new.orgs_teams()
     end
   end
 
@@ -220,7 +222,7 @@ class Interface
     end
   end
 
-  def run
+  def run(config_path)
     ex=1
     @memory=[]
     history=LIST+memory
@@ -233,14 +235,11 @@ class Interface
     r=Repositories.new
     s=Sys.new
     # orden de búsqueda: ~/.ghedsh.json ./ghedsh.json ENV["ghedsh"] --configpath path/to/file.json
-    #config_path = './lib/configure/configure.json'
-    config_path = './.ghedsh'
-    # if self.load_config(config_path) == true
-    #self.load_config(config_path)
+
+
     @config=s.load_config(config_path)
     @client=s.client
     @deep=1
-    #@client=Sys.new.login(@config["Token"])
     self.add_history_str(2,Organizations.new.read_orgs(@client))
 
     while ex != 0
@@ -256,7 +255,7 @@ class Interface
         when op == "members" then self.members()
         when op == "teams" #then self.teams()
       	  if @deep==2
-      	    Teams.new.show_teams_bs(@client,@config)
+      	    t.show_teams_bs(@client,@config)
       	  end
         when op == "commits" then self.commits()
         when op == "col" then self.collaborators()
@@ -320,11 +319,7 @@ class Interface
           #r.clone_repo(@client,@config,opcd[1])
       end
     end
-    # else
-      # Sys.new.set_loguin_data_sh()
-    # end
 
-    #Sys.new.save_config(@config)
     s.save_cache(config_path,@config)
   end
 
