@@ -8,27 +8,34 @@ require 'version'
 class Sys
   attr_accessor :client
 
-  def load_config(configure_path)
+  def load_config(configure_path,argv_token)
     if File.exist?(configure_path)
-      token=File.read("#{configure_path}/ghedsh-token")
+      if argv_token==nil
+        token=File.read("#{configure_path}/ghedsh-token")
+      else
+        token=argv_token
+      end
       json = File.read("#{configure_path}/ghedsh-cache.json")
       config=JSON.parse(json)
 
       if token!=""
         @client=self.login(token)
         config["User"]=@client.login
+        if argv_token!=nil
+          self.save_token(configure_path,argv_token)
+        end  
         return config
       else
         return self.set_loguin_data_sh(config,configure_path)
       end
     else
       self.create_config(configure_path)
-      load_config(configure_path)
+      load_config(configure_path,argv_token)
     end
   end
 
   def save_token(path,token)
-    File.write(path,token)
+    File.write("#{path}/ghedsh-token",token)
   end
 
   def login(token)

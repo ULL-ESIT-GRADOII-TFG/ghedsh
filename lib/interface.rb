@@ -24,18 +24,19 @@ class Interface
     @sysbh=Sys.new()
 
     if ARGV.empty?
-      self.run('./.ghedsh')
+      self.run('./.ghedsh',nil)
     else
       case
         when ARGV[0]=="--configpath"
           if File.exist?(ARGV[1])
-            self.run(ARGV[1])
+            self.run(ARGV[1],nil)
           else
             puts "the path doesn't exists"
           end
         when ARGV[0]=="--help"
           HelpM.new.bin()
         when ARGV[0]=="--token"
+          self.run('./.ghedsh',ARGV[1])
       end
     end
   end
@@ -91,13 +92,13 @@ class Interface
       when @deep == 1
         h.user()
       when @deep == 2
-        h.new.org()
+        h.org()
       when @deep == 3
-        h.new.org_repo()
+        h.org_repo()
       when @deep == 10
-        h.new.user_repo()
+        h.user_repo()
       when @deep == 4
-        h.new.orgs_teams()
+        h.orgs_teams()
     end
   end
 
@@ -192,7 +193,6 @@ class Interface
     list=Array.new
     for i in 0..data.size-1
       list.push(@teamlist[data[i]])
-      #puts @teamlist[data[i]]
     end
     return list
   end
@@ -222,7 +222,7 @@ class Interface
     end
   end
 
-  def run(config_path)
+  def run(config_path, argv_token)
     ex=1
     @memory=[]
     history=LIST+memory
@@ -237,7 +237,7 @@ class Interface
     # orden de búsqueda: ~/.ghedsh.json ./ghedsh.json ENV["ghedsh"] --configpath path/to/file.json
 
 
-    @config=s.load_config(config_path)
+    @config=s.load_config(config_path,argv_token)
     @client=s.client
     @deep=1
     self.add_history_str(2,Organizations.new.read_orgs(@client))

@@ -47,7 +47,7 @@ class Repositories
     reposlist=[]
     case
       when scope==1
-        repo=client.repositories
+        repo=client.all_repositories()
       when scope==2
         repo=client.organization_repositories(config["Org"])
       when scope==3
