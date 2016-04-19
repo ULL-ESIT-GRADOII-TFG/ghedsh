@@ -88,7 +88,9 @@ class Sys
     File.write("#{path}/db/assignments.json", data.to_json)
   end
 
-
+  def execute_bash(exp)
+    system(exp)
+  end
 
   def search_rexp(list,exp)
     list= list.select{|o| o.match(/#{exp}/)}

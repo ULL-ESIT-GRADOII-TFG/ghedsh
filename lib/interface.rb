@@ -316,7 +316,9 @@ class Interface
       if opcd[0]=="clone_repo" and opcd.size==2
         r.clone_repo(@client,@config,opcd[1],@deep)
       end
-
+      if opcd[0]=="!"
+        s.execute_bash(opcd[1])
+      end
       if opcd[0]=="clone_repo" and opcd.size>2
           #r.clone_repo(@client,@config,opcd[1])
       end
