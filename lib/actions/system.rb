@@ -23,7 +23,7 @@ class Sys
         config["User"]=@client.login
         if argv_token!=nil
           self.save_token(configure_path,argv_token)
-        end  
+        end
         return config
       else
         return self.set_loguin_data_sh(config,configure_path)
@@ -52,7 +52,7 @@ class Sys
     token = gets.chomp
     us=self.login(token)
     if us!=nil
-      puts "Login succesful as #{us.login}"
+      puts "Login succesful as #{us.login}\n"
       config["User"]=us.login
       File.write("#{configure_path}/ghedsh-token",token) #config["Token"]=token
       @client=us
@@ -76,6 +76,7 @@ class Sys
     FileUtils.mkdir_p(configure_path)
     File.new("#{configure_path}/ghedsh-token","w")
     File.write("#{configure_path}/ghedsh-cache.json",con.to_json)
+    puts "Confiration files created in #{configure_path}"
   end
 
 

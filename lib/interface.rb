@@ -10,6 +10,7 @@ require 'actions/repo'
 require 'actions/system'
 require 'actions/teams'
 require 'actions/user'
+require 'version'
 
 class Interface
   attr_reader :option
@@ -24,19 +25,22 @@ class Interface
     @sysbh=Sys.new()
 
     if ARGV.empty?
-      self.run('./.ghedsh',nil)
+      #self.run('./.ghedsh',nil)
+      self.run("#{ENV['HOME']}/.ghedsh",nil)
     else
       case
-        when ARGV[0]=="--configpath"
+        when ARGV[0]=="--configpath" || ARGV[0]=="-c"
           if File.exist?(ARGV[1])
             self.run(ARGV[1],nil)
           else
             puts "the path doesn't exists"
           end
-        when ARGV[0]=="--help"
+        when ARGV[0]=="--help" || ARGV[0]=="-h"
           HelpM.new.bin()
-        when ARGV[0]=="--token"
+        when ARGV[0]=="--token" || ARGV[0]=="-t"
           self.run('./.ghedsh',ARGV[1])
+        when ARGV[0]=="--version" || ARGV[0]=="-v"
+          puts "GitHub Education Shell v#{Ghedsh::VERSION}"
       end
     end
   end
@@ -248,8 +252,6 @@ class Interface
       case
         when op == "exit" then ex=0
         when op == "help" then self.help()
-          #when op == "repos" then self.repos()
-          #when op == "ls -l" then self.lsl()
         when op == "orgs" then self.orgs()
         when op == "cd .." then self.cdback()
         when op == "members" then self.members()

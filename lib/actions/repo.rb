@@ -151,8 +151,14 @@ class Repositories
     web="https://github.com/"
     web2="git@github.com:"
 
-    list=self.get_repos_list(client,config,scope)
-    list=Sys.new.search_rexp(list,exp)
+    if exp.match(/^\//)
+      exps=exp.split('/')
+      list=self.get_repos_list(client,config,scope)
+      list=Sys.new.search_rexp(list,exps[1])
+    else
+      list=[]
+      list.push(exp)
+    end
 
     if (list.empty?) == false
       case

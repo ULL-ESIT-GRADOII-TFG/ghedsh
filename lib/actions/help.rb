@@ -58,10 +58,12 @@ class HelpM
   def bin
     puts "\nList of commands\n\n"
     puts "ghedsh"
-    puts "Run with default configuration"
+    puts "Run with default configuration. Configuration files are being set in #{ENV['HOME']}"
     puts "ghedsh --token TOKEN"
-    puts "Provides a github access token by argument"
+    puts "Provides a github access token by argument. Also works with ghedsh -t"
+    puts "ghedsh --version"
+    puts "Show the current version of GHEDSH. Also works with ghedsh -v"
     puts "ghedsh --help"
-    puts "Show the executable options"
+    puts "Show the executable options. Also works with ghedsh -h\n\n"
   end
 end
