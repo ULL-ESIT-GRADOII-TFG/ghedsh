@@ -4,6 +4,7 @@ require 'json'
 require 'require_all'
 require_rel '.'
 
+
 class Repositories
 
   #scope = 1 -> organization repos
@@ -26,9 +27,16 @@ class Repositories
   def show_repos(client,config,scope)
     print "\n"
     reposlist=[]
+    options=Hash.new
+    o=Organizations.new
+
     case
       when scope==1
-        repo=client.repositories
+        #options[:affiliation]="organization_member"
+        repo=client.repositories(config["User"],options)
+        listorgs=o.read_orgs(client)
+        #self.show_user_orgs_repos(client,config,listorgs)
+
       when scope==2
         repo=client.organization_repositories(config["Org"])
       when scope==3
@@ -42,12 +50,24 @@ class Repositories
     return reposlist
   end
 
+  def show_user_orgs_repos(client,config,listorgs)
+    options=Hash.new
+    options[:member]=config["User"]
+    listorgs.each do |i|
+      repo=client.organization_repositories(i,options)
+          repo.each do |y|
+            puts y.name
+          end
+    end
+  end
+
 
   def show_repos_smart(client,config,exp,scope)
     reposlist=[]
     case
       when scope==1
-        repo=client.all_repositories()
+        repo=client.repositories(config["User"])
+        #repo=client.all_repositories()
       when scope==2
         repo=client.organization_repositories(config["Org"])
       when scope==3
