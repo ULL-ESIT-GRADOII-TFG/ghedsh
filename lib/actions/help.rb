@@ -62,6 +62,8 @@ class HelpM
     puts "Run with default configuration. Configuration files are being set in #{ENV['HOME']}"
     puts "ghedsh --token TOKEN"
     puts "Provides a github access token by argument. Also works with ghedsh -t"
+    puts "ghedsh --user USERNAME"
+    puts "Change your user from your user's list. Also works with ghedsh -u"
     puts "ghedsh --version"
     puts "Show the current version of GHEDSH. Also works with ghedsh -v"
     puts "ghedsh --help"

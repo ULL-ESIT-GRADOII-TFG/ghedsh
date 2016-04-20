@@ -21,6 +21,12 @@ class Sys
       if token!=""
         @client=self.login(token)
         config["User"]=@client.login
+        userslist=self.load_users(configure_path)
+
+        if userslist["#{config["User"]}"]==nil
+          userslist["#{config["User"]}"]=token
+          self.save_users(configure_path,userslist)
+        end
         if argv_token!=nil
           self.save_token(configure_path,argv_token)
         end
@@ -32,6 +38,32 @@ class Sys
       self.create_config(configure_path)
       load_config(configure_path,argv_token)
     end
+  end
+
+  def load_config_user(configure_path, user)
+    if File.exist?(configure_path)
+      list=self.load_users(configure_path)
+      if list["#{user}"]!=nil
+        json = File.read("#{configure_path}/ghedsh-cache.json")
+        config=JSON.parse(json)
+        @client=self.login(list["#{user}"])
+        config["User"]=@client.login
+        self.save_token(configure_path,list["#{user}"])
+        return config
+      else
+        puts "User not found"
+        return nil
+      end
+    else
+      puts "No user's history is available"
+      return nil
+    end
+  end
+
+  def load_users(path)
+    json=File.read("#{path}/ghedsh-users.json")
+    users=JSON.parse(json)
+    return users
   end
 
   def save_token(path,token)
@@ -51,9 +83,13 @@ class Sys
     puts "Insert you Access Token: "
     token = gets.chomp
     us=self.login(token)
+    userhash=Hash.new
+
     if us!=nil
       puts "Login succesful as #{us.login}\n"
       config["User"]=us.login
+      userhash["#{config["User"]}"]=token
+      self.save_users(configure_path,userhash)
       File.write("#{configure_path}/ghedsh-token",token) #config["Token"]=token
       @client=us
       return config
@@ -73,19 +109,25 @@ class Sys
 
   def create_config(configure_path)
     con={:User=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
+    us={}
     FileUtils.mkdir_p(configure_path)
     File.new("#{configure_path}/ghedsh-token","w")
     File.write("#{configure_path}/ghedsh-cache.json",con.to_json)
+    File.write("#{configure_path}/ghedsh-users.json",us.to_json)
     puts "Confiration files created in #{configure_path}"
   end
 
 
   def save_cache(path,data)
-    File.write('./.ghedsh/ghedsh-cache.json',data.to_json)
+    File.write("#{path}/ghedsh-cache.json",data.to_json)
   end
 
   def save_db(path,data)
     File.write("#{path}/db/assignments.json", data.to_json)
+  end
+
+  def save_users(path,data)
+    File.write("#{path}/ghedsh-users.json",data.to_json)
   end
 
   def execute_bash(exp)

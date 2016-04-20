@@ -25,20 +25,22 @@ class Interface
     @sysbh=Sys.new()
 
     if ARGV.empty?
-      #self.run('./.ghedsh',nil)
-      self.run("#{ENV['HOME']}/.ghedsh",nil)
+      #self.run('./.ghedsh',nil,nil)
+      self.run("#{ENV['HOME']}/.ghedsh",nil,nil)
     else
       case
         when ARGV[0]=="--configpath" || ARGV[0]=="-c"
           if File.exist?(ARGV[1])
-            self.run(ARGV[1],nil)
+            self.run(ARGV[1],nil,nil)
           else
             puts "the path doesn't exists"
           end
         when ARGV[0]=="--help" || ARGV[0]=="-h"
           HelpM.new.bin()
         when ARGV[0]=="--token" || ARGV[0]=="-t"
-          self.run('./.ghedsh',ARGV[1])
+          self.run("#{ENV['HOME']}/.ghedsh",ARGV[1],nil)
+        when ARGV[0]=="--user" || ARGV[0]=="-u"
+          self.run("#{ENV['HOME']}/.ghedsh",nil,ARGV[1])
         when ARGV[0]=="--version" || ARGV[0]=="-v"
           puts "GitHub Education Shell v#{Ghedsh::VERSION}"
       end
@@ -113,7 +115,6 @@ class Interface
 
   def cdback()
     case
-      #when @deep == 1 then @config["User"]=nil
       when @deep == 2
         @config["Org"]=nil
         @deep=1
@@ -143,7 +144,6 @@ class Interface
       @config["Team"]=path
       @config["TeamID"]=@teamlist[path]
       @deep=4
-      #self.get_data
     end
   end
 
@@ -226,7 +226,7 @@ class Interface
     end
   end
 
-  def run(config_path, argv_token)
+  def run(config_path, argv_token,user)
     ex=1
     @memory=[]
     history=LIST+memory
@@ -240,17 +240,28 @@ class Interface
     s=Sys.new
     # orden de búsqueda: ~/.ghedsh.json ./ghedsh.json ENV["ghedsh"] --configpath path/to/file.json
 
+    if user!=nil
+      @config=s.load_config_user(config_path,user)
+      @client=s.client
+      if @config==nil
+        ex=0
+      end
+    else
+      @config=s.load_config(config_path,argv_token)
+      @client=s.client
+    end
 
-    @config=s.load_config(config_path,argv_token)
-    @client=s.client
     @deep=1
-    self.add_history_str(2,Organizations.new.read_orgs(@client))
+    if @client!=nil
+      self.add_history_str(2,Organizations.new.read_orgs(@client))
+    end
 
     while ex != 0
       op=Readline.readline(self.prompt,true)
       opcd=op.split
       case
         when op == "exit" then ex=0
+          s.save_cache(config_path,@config)
         when op == "help" then self.help()
         when op == "orgs" then self.orgs()
         when op == "cd .." then self.cdback()
@@ -324,7 +335,6 @@ class Interface
       end
     end
 
-    s.save_cache(config_path,@config)
   end
 
 end
