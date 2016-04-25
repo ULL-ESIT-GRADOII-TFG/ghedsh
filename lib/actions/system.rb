@@ -164,7 +164,13 @@ class Sys
     		exit
     	end
     end
-    parser.parse!
+
+    begin
+      parser.parse!
+    rescue
+      puts "Argument error. Use ghedsh -v or ghedsh --help for more information about the usage of this program"
+      exit
+    end
     return options
   end
 
