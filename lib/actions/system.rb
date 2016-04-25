@@ -1,6 +1,7 @@
 require 'readline'
 require 'fileutils'
 require 'octokit'
+require 'optparse'
 require 'json'
 require 'actions/system'
 require 'version'
@@ -138,6 +139,33 @@ class Sys
     list= list.select{|o| o.match(/#{exp}/)}
     #puts list
     return list
+  end
+
+  def parse()
+    options = {:user => nil, :token => nil, :path => nil}
+
+    parser = OptionParser.new do|opts|
+    	opts.banner = "Usage: ghedsh [options]\nWith no options it runs with default configuration. Configuration files are being set in #{ENV['HOME']}/.ghedsh\n"
+    	opts.on('-t', '--token token', 'Provides a github access token by argument.') do |token|
+    		options[:token] = token;
+    	end
+      opts.on('-c', '--configpath path', 'Give your own path for GHEDSH configuration files') do |path|
+        options[:configpath] = path;
+      end
+    	opts.on('-u', '--user user', 'Change your user from your users list') do |user|
+    		options[:user] = user;
+    	end
+      opts.on('-v', '--version', 'Show the current version of GHEDSH') do
+        puts "GitHub Education Shell v#{Ghedsh::VERSION}"
+        exit
+      end
+    	opts.on('-h', '--help', 'Displays Help') do
+    		puts opts
+    		exit
+    	end
+    end
+    parser.parse!
+    return options
   end
 
 end

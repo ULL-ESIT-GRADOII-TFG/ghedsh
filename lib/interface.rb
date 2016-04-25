@@ -3,6 +3,7 @@ require 'require_all'
 require 'json'
 require 'readline'
 require 'octokit'
+require 'optparse'
 
 require 'actions/help'
 require 'actions/orgs'
@@ -22,28 +23,13 @@ class Interface
   LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team ','create_repository ','clone_repo '].sort
 
   def initialize
-    @sysbh=Sys.new()
+    sysbh=Sys.new()
+    options=sysbh.parse
 
-    if ARGV.empty?
-      #self.run('./.ghedsh',nil,nil)
-      self.run("#{ENV['HOME']}/.ghedsh",nil,nil)
+    if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
+      self.run(options[:path],options[:token],options[:user])
     else
-      case
-        when ARGV[0]=="--configpath" || ARGV[0]=="-c"
-          if File.exist?(ARGV[1])
-            self.run(ARGV[1],nil,nil)
-          else
-            puts "the path doesn't exists"
-          end
-        when ARGV[0]=="--help" || ARGV[0]=="-h"
-          HelpM.new.bin()
-        when ARGV[0]=="--token" || ARGV[0]=="-t"
-          self.run("#{ENV['HOME']}/.ghedsh",ARGV[1],nil)
-        when ARGV[0]=="--user" || ARGV[0]=="-u"
-          self.run("#{ENV['HOME']}/.ghedsh",nil,ARGV[1])
-        when ARGV[0]=="--version" || ARGV[0]=="-v"
-          puts "GitHub Education Shell v#{Ghedsh::VERSION}"
-      end
+      self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
     end
   end
 
