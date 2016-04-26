@@ -33,7 +33,7 @@ class Repositories
     case
       when scope==1
         #options[:affiliation]="organization_member"
-        repo=client.repositories(config["User"],options)
+        repo=client.repositories(options) #config["User"]
         listorgs=o.read_orgs(client)
         #self.show_user_orgs_repos(client,config,listorgs)
 
@@ -47,6 +47,7 @@ class Repositories
       reposlist.push(i.name)
     end
     print "\n"
+    puts "Repositories found: #{reposlist.size}"
     return reposlist
   end
 

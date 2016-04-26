@@ -72,7 +72,8 @@ class Sys
   end
 
   def login(token)
-    user=Octokit::Client.new(:access_token =>token)
+    user=Octokit::Client.new(:access_token =>token) #, per_page:100
+    user.auto_paginate=true #show all pages of any query
     if user==false
       puts "Oauth error"
     else
