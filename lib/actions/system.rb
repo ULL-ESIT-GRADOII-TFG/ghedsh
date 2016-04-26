@@ -72,13 +72,13 @@ class Sys
   end
 
   def login(token)
-    user=Octokit::Client.new(:access_token =>token) #per_page:100
-    user.auto_paginate=true #show all pages of any query
-    if user==false
+    begin
+      user=Octokit::Client.new(:access_token =>token) #per_page:100
+      user.auto_paginate=true #show all pages of any query
+    rescue
       puts "Oauth error"
-    else
-      return user
     end
+    return user
   end
 
   def set_loguin_data_sh(config,configure_path)

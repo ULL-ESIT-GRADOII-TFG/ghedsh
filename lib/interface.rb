@@ -95,11 +95,6 @@ class Interface
     end
   end
 
-
-  def get_data
-    puts @config
-  end
-
   def cdback()
     case
       when @deep == 2
@@ -129,7 +124,7 @@ class Interface
         self.add_history_str(1,@teamlist)
         @deep=2
       else
-        puts "No organization is available with this name"
+        puts "No organization is available with that name"
       end
     when @deep == 2
       aux=@teamlist
@@ -138,7 +133,7 @@ class Interface
         @config["TeamID"]=@teamlist[path]
         @deep=4
       else
-        puts "No team is available with this name"
+        puts "No team is available with that name"
       end
     end
   end
@@ -163,7 +158,7 @@ class Interface
         @deep=5
       end
     end
-    if @deep==1 || @deep==2 || @deep==4 then puts "No repository is available with this name" end
+    if @deep==1 || @deep==2 || @deep==4 then puts "No repository is available with that name" end
   end
 
   def orgs()
@@ -239,6 +234,7 @@ class Interface
     Readline.completion_append_character = ""
     Readline.completion_proc = comp
     HelpM.new.welcome()
+
     t=Teams.new
     r=Repositories.new
     s=Sys.new
@@ -278,6 +274,7 @@ class Interface
         when op == "col" then self.collaborators()
         when op == "forks" then self.show_forks()
       end
+
       if opcd[0]=="cd" and opcd[1]!=".."
         self.cd(opcd[1])
         #else
@@ -331,8 +328,9 @@ class Interface
       if opcd[0]=="clone_repo" and opcd.size==2
         r.clone_repo(@client,@config,opcd[1],@deep)
       end
-      if opcd[0]=="!"
-        s.execute_bash(opcd[1])
+      if op.match(/^!/)
+        op=op.split("!")
+        s.execute_bash(op[1])
       end
       if opcd[0]=="clone_repo" and opcd.size>2
           #r.clone_repo(@client,@config,opcd[1])
