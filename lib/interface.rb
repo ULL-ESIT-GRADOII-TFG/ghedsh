@@ -19,7 +19,8 @@ class Interface
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
-  attr_accessor :teamlist
+  attr_reader :teamlist
+  attr_reader :orgs_list
   LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team ','create_repository ','clone_repo '].sort
 
   def initialize
@@ -120,32 +121,49 @@ class Interface
   def cd(path)
     case
     when @deep==1
-      @config["Org"]=path
-
-      @temlist=Hash.new
-      @teamlist=Teams.new.read_teamlist(@client,@config)
-      self.add_history_str(1,@teamlist)
-      @deep=2
+      @orgs_list=Organizations.new.read_orgs(@client)
+      aux=@orgs_list
+      if aux.one?{|aux| aux==path}
+        @config["Org"]=path
+        @teamlist=Teams.new.read_teamlist(@client,@config)
+        self.add_history_str(1,@teamlist)
+        @deep=2
+      else
+        puts "No organization is available with this name"
+      end
     when @deep == 2
-      @config["Team"]=path
-      @config["TeamID"]=@teamlist[path]
-      @deep=4
+      aux=@teamlist
+      if aux[path]!=nil
+        @config["Team"]=path
+        @config["TeamID"]=@teamlist[path]
+        @deep=4
+      else
+        puts "No team is available with this name"
+      end
     end
   end
 
   #set the repo
   def set(path)
+    reposlist=Repositories.new()
     case
     when @deep==1
       @config["Repo"]=path
-      @deep=10
+      if reposlist.get_repos_list(@client,@config,@deep).one?{|aux| aux==path}
+        @deep=10
+      end
     when @deep==2
       @config["Repo"]=path
-      @deep=3
+      if reposlist.get_repos_list(@client,@config,@deep).one?{|aux| aux==path}
+        @deep=3
+      end
     when @deep==4
       @config["Repo"]=path
-      @deep=5
+      if reposlist.get_repos_list(@client,@config,@deep).one?{|aux| aux==path}
+        @deep=5
+      end
     end
+    if @deep==1 || @deep==2 || @deep==4 then puts "No repository is available with this name" end
   end
 
   def orgs()
