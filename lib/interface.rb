@@ -4,7 +4,6 @@ require 'json'
 require 'readline'
 require 'octokit'
 require 'optparse'
-
 require 'actions/help'
 require 'actions/orgs'
 require 'actions/repo'
@@ -12,6 +11,13 @@ require 'actions/system'
 require 'actions/teams'
 require 'actions/user'
 require 'version'
+
+USER=1
+ORGS=2
+USER_REPO=10
+ORGS_REPO=3
+TEAM=4
+TEAM_REPO=5
 
 class Interface
   attr_reader :option

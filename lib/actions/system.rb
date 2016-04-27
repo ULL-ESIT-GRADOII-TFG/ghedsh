@@ -12,21 +12,20 @@ class Sys
   def load_config(configure_path,argv_token)
     if File.exist?(configure_path)
       if argv_token==nil
-        token=File.read("#{configure_path}/ghedsh-token")
+        token=self.get_login_token(configure_path)
       else
         token=argv_token
       end
       json = File.read("#{configure_path}/ghedsh-cache.json")
       config=JSON.parse(json)
 
-      if token!=""
+      if token!=nil
         @client=self.login(token)
         config["User"]=@client.login
         userslist=self.load_users(configure_path)
 
-        if userslist["#{config["User"]}"]==nil
-          userslist["#{config["User"]}"]=token
-          self.save_users(configure_path,userslist)
+         if userslist["users"].detect {|f| f["#{config["User"]}"] }==nil
+          self.add_users(configure_path,"#{config["User"]}"=>token)
         end
         if argv_token!=nil
           self.save_token(configure_path,argv_token)
@@ -44,12 +43,13 @@ class Sys
   def load_config_user(configure_path, user)
     if File.exist?(configure_path)
       list=self.load_users(configure_path)
-      if list["#{user}"]!=nil
+      userFound=list["users"].detect {|f| f["#{user}"]}
+      if userFound!=nil
         json = File.read("#{configure_path}/ghedsh-cache.json")
         config=JSON.parse(json)
-        @client=self.login(list["#{user}"])
+        @client=self.login(userFound["#{user}"])
         config["User"]=@client.login
-        self.save_token(configure_path,list["#{user}"])
+        self.save_token(configure_path,userFound["#{user}"])
         return config
       else
         puts "User not found"
@@ -67,8 +67,24 @@ class Sys
     return users
   end
 
+  def add_users(path,data)
+    json=File.read("#{path}/ghedsh-users.json")
+    users=JSON.parse(json)
+    users["users"].push(data)
+    File.write("#{path}/ghedsh-users.json",users.to_json)
+  end
+
   def save_token(path,token)
-    File.write("#{path}/ghedsh-token",token)
+    json=File.read("#{path}/ghedsh-users.json")
+    login=JSON.parse(json)
+    login["login"]=token
+    File.write("#{path}/ghedsh-users.json",login.to_json)
+  end
+
+  def get_login_token(path)
+    json=File.read("#{path}/ghedsh-users.json")
+    us=JSON.parse(json)
+    return us["login"]
   end
 
   def login(token)
@@ -90,9 +106,8 @@ class Sys
     if us!=nil
       puts "Login succesful as #{us.login}\n"
       config["User"]=us.login
-      userhash["#{config["User"]}"]=token
-      self.save_users(configure_path,userhash)
-      File.write("#{configure_path}/ghedsh-token",token) #config["Token"]=token
+      self.add_users(configure_path,"#{config["User"]}"=>token)
+      self.save_token(configure_path,token)
       @client=us
       return config
     end
@@ -111,9 +126,8 @@ class Sys
 
   def create_config(configure_path)
     con={:User=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
-    us={}
+    us={:login=>nil, :users=>[]}
     FileUtils.mkdir_p(configure_path)
-    File.new("#{configure_path}/ghedsh-token","w")
     File.write("#{configure_path}/ghedsh-cache.json",con.to_json)
     File.write("#{configure_path}/ghedsh-users.json",us.to_json)
     puts "Confiration files created in #{configure_path}"
@@ -138,7 +152,6 @@ class Sys
 
   def search_rexp(list,exp)
     list= list.select{|o| o.match(/#{exp}/)}
-    #puts list
     return list
   end
 
