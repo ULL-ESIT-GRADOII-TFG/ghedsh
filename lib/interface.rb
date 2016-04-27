@@ -187,13 +187,13 @@ class Interface
     repo=Repositories.new()
     case
       when @deep == 1
-        list=repo.show_repos(@client,@config,1)
+        list=repo.show_repos(@client,@config,1,nil)
         self.add_history_str(2,list)
       when @deep ==2
-        list=repo.show_repos(@client,@config,2)
+        list=repo.show_repos(@client,@config,2,nil)
         self.add_history_str(2,list)
       when @deep==4
-        list=repo.show_repos(@client,@config,3)
+        list=repo.show_repos(@client,@config,3,nil)
         self.add_history_str(2,list)
     end
   end
@@ -295,11 +295,11 @@ class Interface
       if opcd[0]=="repos" and opcd.size>1
         case
           when @deep==1
-            r.show_repos_smart(@client,@config,opcd[1],1)
+            r.show_repos(@client,@config,1,opcd[1])
           when @deep==2
-            r.show_repos_smart(@client,@config,opcd[1],2)
+            r.show_repos(@client,@config,2,opcd[1])
           when @deep==3
-            r.show_repos_smart(@client,@config,opcd[1],3)
+            r.show_repos(@client,@config,3,opcd[1])
         end
       end
       if opcd[0]=="add_team_member"

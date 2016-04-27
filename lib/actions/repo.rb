@@ -24,11 +24,20 @@ class Repositories
     end
   end
 
-  def show_repos(client,config,scope)
+  def show_repos(client,config,scope,exp)
     print "\n"
     reposlist=[]
     options=Hash.new
     o=Organizations.new
+    regex=false
+
+    if exp!=nil
+      if exp.match(/^\//)
+        regex=true
+        sp=exp.split('/')
+        exp=sp[1]
+      end
+    end
 
     case
       when scope==1
@@ -43,11 +52,24 @@ class Repositories
         repo=client.team_repositories(config["TeamID"])
     end
     repo.each do |i|
-      puts i.name
-      reposlist.push(i.name)
+      if regex==false
+        puts i.name
+        reposlist.push(i.name)
+      else
+
+        if i.name.match(/#{exp}/)
+          puts i.name
+          reposlist.push(i.name)
+        end
+      end
     end
-    print "\n"
-    puts "Repositories found: #{reposlist.size}"
+    if reposlist.empty?
+      puts "No repository matches with that expression"
+    else
+      print "\n"
+      puts "Repositories found: #{reposlist.size}"
+    end
+
     return reposlist
   end
 
