@@ -85,26 +85,6 @@ class Repositories
   end
 
 
-  def show_repos_smart(client,config,exp,scope)
-    reposlist=[]
-    case
-      when scope==1
-        repo=client.repositories(config["User"])
-        #repo=client.all_repositories()
-      when scope==2
-        repo=client.organization_repositories(config["Org"])
-      when scope==3
-        repo=client.team_repositories(config["TeamID"])
-    end
-    repo.each do |i|
-      reposlist.push(i.name)
-    end
-
-    reposlist=Sys.new.search_rexp(reposlist,exp)
-    puts reposlist
-    return reposlist
-  end
-
   def show_forks(client,config,scope)
     print "\n"
     forklist=[]

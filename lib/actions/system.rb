@@ -182,7 +182,7 @@ class Sys
     begin
       parser.parse!
     rescue
-      puts "Argument error. Use ghedsh -v or ghedsh --help for more information about the usage of this program"
+      puts "Argument error. Use ghedsh -h or ghedsh --help for more information about the usage of this program"
       exit
     end
     return options

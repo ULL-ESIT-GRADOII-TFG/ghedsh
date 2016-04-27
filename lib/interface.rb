@@ -32,12 +32,18 @@ class Interface
   def initialize
     sysbh=Sys.new()
     options=sysbh.parse
-
-    if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
-      self.run(options[:path],options[:token],options[:user])
-    else
-      self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
+    begin
+      if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
+        self.run(options[:path],options[:token],options[:user])
+      else
+        self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
+      end
+    rescue SystemExit, Interrupt
+      raise
+    rescue Exception => e
+      puts "exit"
     end
+
   end
 
   def add_history(value)
@@ -246,6 +252,7 @@ class Interface
     s=Sys.new
     # orden de búsqueda: ~/.ghedsh.json ./ghedsh.json ENV["ghedsh"] --configpath path/to/file.json
 
+    #control de carga de parametros en el logueo de la aplicacion
     if user!=nil
       @config=s.load_config_user(config_path,user)
       @client=s.client
@@ -263,6 +270,7 @@ class Interface
     end
 
     while ex != 0
+
       op=Readline.readline(self.prompt,true)
       opcd=op.split
       case
