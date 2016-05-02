@@ -27,7 +27,7 @@ class Interface
   attr_accessor :memory
   attr_reader :teamlist
   attr_reader :orgs_list
-  LIST = ['repos', 'exit', 'orgs','help', 'members','teams', 'cd ', 'commits','forks', 'add_team_member ','create_team ','delete_team ','create_repository ','clone_repo '].sort
+  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone '].sort
 
   def initialize
     sysbh=Sys.new()
@@ -180,7 +180,7 @@ class Interface
     end
   end
 
-  def members()
+  def people()
     case
     when @deep==2
       self.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
@@ -279,7 +279,7 @@ class Interface
         when op == "help" then self.help()
         when op == "orgs" then self.orgs()
         when op == "cd .." then self.cdback()
-        when op == "members" then self.members()
+        when op == "people" then self.people()
         when op == "teams" #then self.teams()
       	  if @deep==2
       	    t.show_teams_bs(@client,@config)
@@ -313,40 +313,40 @@ class Interface
       if opcd[0]=="add_team_member"
         t.add_to_team(@client,@config,opcd[1])
       end
-      if opcd[0]=="create_team" and opcd.size==2
+      if opcd[0]=="new_team" and opcd.size==2
       	t.create_team(@client,@config,opcd[1])
       	@teamlist=t.read_teamlist(@client,@config)
       	self.add_history_str(1,@teamlist)
       end
-      if opcd[0]=="delete_team"
+      if opcd[0]=="rm_team"
         t.delete_team(@client,@teamlist[opcd[1]])
         self.quit_history(@teamlist[opcd[1]])
         @teamlist=t.read_teamlist(@client,@config)
         self.add_history_str(1,@teamlist)
       end
-      if opcd[0]=="create_team" and opcd.size>2
+      if opcd[0]=="new_team" and opcd.size>2
       	t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
       	@teamlist=t.read_teamlist(@client,@config)
       	self.add_history_str(1,@teamlist)
       end
-      if opcd[0]=="create_repository" and opcd.size==2
+      if opcd[0]=="new_repository" and opcd.size==2
         r.create_repository(@client,@config,opcd[1],@deep)
       end
-      if opcd[0]=="create_repository" and opcd.size>2
+      if opcd[0]=="new_assignment" and opcd.size>2
         case
         when @deep==2
           r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
         end
       end
 
-      if opcd[0]=="clone_repo" and opcd.size==2
+      if opcd[0]=="clone" and opcd.size==2
         r.clone_repo(@client,@config,opcd[1],@deep)
       end
       if op.match(/^!/)
         op=op.split("!")
         s.execute_bash(op[1])
       end
-      if opcd[0]=="clone_repo" and opcd.size>2
+      if opcd[0]=="clone" and opcd.size>2
           #r.clone_repo(@client,@config,opcd[1])
       end
     end

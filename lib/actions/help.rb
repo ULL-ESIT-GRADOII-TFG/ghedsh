@@ -5,8 +5,8 @@ class HelpM
     self.common_opt
     print "orgs => show your organizations\n"
     print "repos => list your repositories\n\n"
-    print "clone_repo => clone a repository or a list of repositories using a regular expresion\n"
-    print "create_repository => create a repository in your personal account\n"
+    print "clone => clone a repository or a list of repositories using a regular expresion\n"
+    print "new_repository => create a repository in your personal account\n"
     print "set => move you to a specific repository\n"
 
   end
@@ -14,13 +14,13 @@ class HelpM
   def org()
     self.common_opt
     print "repos => list the repositories of your organization\n"
-    print "clone_repo => clone a repository or a list of repositories using a regular expresion\n"
+    print "clone => clone a repository or a list of repositories using a regular expresion\n"
     print "set => move you to a specific repository\n"
-    print "members => members of a organization\n"
+    print "people => members of a organization\n"
     print "teams => teams of a organization\n"
-    print "create_repository => create a repository in your organization\n"
+    print "new_assignment => create a repository in your organization\n"
     print "delete_team => delete a team in you organization. Expected the name of the team\n"
-    print "create_team => create a team in the organization. Expected the name of the team, and/or members given one by one\n\n"
+    print "new_team => create a team in the organization. Expected the name of the team, and/or members given one by one\n\n"
   end
 
   def org_repo()
@@ -31,9 +31,9 @@ class HelpM
 
   def orgs_teams()
     self.common_opt
-    print "members => members of the team\n"
-    print "clone_repo => clone a repository or a list of repositories using a regular expresion\n"
-    print "create_repository => create a repository to this team\n"
+    print "people => members of the team\n"
+    print "clone => clone a repository or a list of repositories using a regular expresion\n"
+    print "new_repository => create a repository to this team\n"
     print "add_to_team => add a member in the team\n\n"
   end
 
