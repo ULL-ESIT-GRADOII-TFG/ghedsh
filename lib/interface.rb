@@ -32,18 +32,21 @@ class Interface
   def initialize
     sysbh=Sys.new()
     options=sysbh.parse
-    begin
-      if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
-        self.run(options[:path],options[:token],options[:user])
-      else
-        self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
-      end
-    rescue SystemExit, Interrupt
-      raise
-    rescue Exception => e
-      puts "exit"
-    end
 
+    trap("SIGINT") { throw :ctrl_c }
+    catch :ctrl_c do
+      begin
+        if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
+          self.run(options[:path],options[:token],options[:user])
+        else
+          self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
+        end
+      rescue SystemExit, Interrupt
+        raise
+      rescue Exception => e
+        puts "exit"
+      end
+    end
   end
 
   def add_history(value)

@@ -6,35 +6,6 @@ class HelpM
   attr_reader :user_repo
   attr_reader :common_opt
 
-  def initialize
-    self.man
-    #puts @common_opt
-  end
-
-  def man
-    # us=OptionParser.new
-    # org_rp=OptionParser.new
-    # org_tm=OptionParser.new
-    # us_rp=OptionParser.new
-    # comn=OptionParser.new
-    #
-    # comn.banner="List of commands."
-    # comn.on('exit','-e','exit form this program')
-    # comn.on('help','list of commands available')
-    # comn.on('cd', 'go to the path')
-    # comn.on('!','execute a bash command')
-    # puts comn
-    # @common_opt=comn
-
-    # opts.on('-t', '--token token', 'Provides a github access token by argument.')
-    # puts "\nList of commands.\n"
-    # print "exit => exit from this program\n"
-    # print "help => list of commands available\n"
-    # print "cd => go to the path\n"
-    # print "! => execute a bash command\n"
-
-  end
-
   def user()
     self.common_opt
     print "\torgs\t\t\tshow your organizations\n"
