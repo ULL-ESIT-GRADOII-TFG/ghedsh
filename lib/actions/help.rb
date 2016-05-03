@@ -1,54 +1,88 @@
 
 class HelpM
+  attr_reader :user
+  attr_reader :org_repo
+  attr_reader :org_teams
+  attr_reader :user_repo
+  attr_reader :common_opt
+
+  def initialize
+    self.man
+    #puts @common_opt
+  end
+
+  def man
+    # us=OptionParser.new
+    # org_rp=OptionParser.new
+    # org_tm=OptionParser.new
+    # us_rp=OptionParser.new
+    # comn=OptionParser.new
+    #
+    # comn.banner="List of commands."
+    # comn.on('exit','-e','exit form this program')
+    # comn.on('help','list of commands available')
+    # comn.on('cd', 'go to the path')
+    # comn.on('!','execute a bash command')
+    # puts comn
+    # @common_opt=comn
+
+    # opts.on('-t', '--token token', 'Provides a github access token by argument.')
+    # puts "\nList of commands.\n"
+    # print "exit => exit from this program\n"
+    # print "help => list of commands available\n"
+    # print "cd => go to the path\n"
+    # print "! => execute a bash command\n"
+
+  end
 
   def user()
     self.common_opt
-    print "orgs => show your organizations\n"
-    print "repos => list your repositories\n\n"
-    print "clone => clone a repository or a list of repositories using a regular expresion\n"
-    print "new_repository => create a repository in your personal account\n"
-    print "set => move you to a specific repository\n"
+    print "\torgs\t\t\tshow your organizations\n"
+    print "\trepos\t\t\tlist your repositories\n\n"
+    print "\tclone\t\t\tclone a repository or a list of repositories using a regular expresion\n"
+    print "\tnew_repository\t\tcreate a repository in your personal account\n"
+    print "\tset\t\t\tmove you to a specific repository\n"
 
   end
 
   def org()
     self.common_opt
-    print "repos => list the repositories of your organization\n"
-    print "clone => clone a repository or a list of repositories using a regular expresion\n"
-    print "set => move you to a specific repository\n"
-    print "people => members of a organization\n"
-    print "teams => teams of a organization\n"
-    print "new_assignment => create a repository in your organization\n"
-    print "delete_team => delete a team in you organization. Expected the name of the team\n"
-    print "new_team => create a team in the organization. Expected the name of the team, and/or members given one by one\n\n"
+    print "\trepos\t\t\tlist the repositories of your organization\n"
+    print "\tclone\t\t\tclone a repository or a list of repositories using a regular expresion\n"
+    print "\tset\t\t\tmove you to a specific repository\n"
+    print "\tpeople\t\t\tmembers of a organization\n"
+    print "\tteams\t\t\tteams of a organization\n"
+    print "\tnew_assignment\t\tcreate a repository in your organization\n"
+    print "\trm_team\t\t\tdelete a team in you organization. Expected the name of the team\n"
+    print "\tnew_team\t\t\tcreate a team in the organization. Expected the name of the team, and/or members given one by one\n\n"
   end
 
   def org_repo()
     self.common_opt
-    print "commits => show the list of commits from the repository\n"
-    print "col => show the list of collaborators from the repository\n\n"
+    print "\tcommits\t\t\tshow the list of commits from the repository\n"
+    print "\tcol\t\t\tshow the list of collaborators from the repository\n\n"
   end
 
   def orgs_teams()
     self.common_opt
-    print "people => members of the team\n"
-    print "clone => clone a repository or a list of repositories using a regular expresion\n"
-    print "new_repository => create a repository to this team\n"
-    print "add_to_team => add a member in the team\n\n"
+    print "\tpeople\t\t\tmembers of the team\n"
+    print "\tclone\t\t\tclone a repository or a list of repositories using a regular expresion\n"
+    print "\tnew_repository\t\tcreate a repository to this team\n"
+    print "\tadd_to_team\t\t\tadd a member in the team\n\n"
   end
 
   def user_repo()
     self.common_opt
-    print "commits => show the list of commits from the repository\n"
-    print "col => show the list of collaborators from the repository\n\n"
+    print "\tcommits\t\t\tshow the list of commits from the repository\n"
+    print "\tcol\t\t\tshow the list of collaborators from the repository\n\n"
   end
 
   def common_opt()
-    puts "\nList of commands.\n"
-    print "exit => exit from this program\n"
-    print "help => list of commands available\n"
-    print "cd => go to the path\n"
-    print "! => execute a bash command\n"
+    puts "\nList of commands\n"
+    print "\texit\t\t\texit from this program\n"
+    print "\thelp\t\t\tlist of commands available\n"
+    print "\tcd\t\t\tgo to the path\n"
+    print "\t!\t\t\texecute a bash command\n"
   end
 
   def welcome
@@ -56,17 +90,4 @@ class HelpM
     puts "_______________________\n\n"
   end
 
-  def bin
-    puts "\nList of commands\n\n"
-    puts "ghedsh"
-    puts "Run with default configuration. Configuration files are being set in #{ENV['HOME']}"
-    puts "ghedsh --token TOKEN"
-    puts "Provides a github access token by argument. Also works with ghedsh -t"
-    puts "ghedsh --user USERNAME"
-    puts "Change your user from your user's list. Also works with ghedsh -u"
-    puts "ghedsh --version"
-    puts "Show the current version of GHEDSH. Also works with ghedsh -v"
-    puts "ghedsh --help"
-    print "Show the executable options. Also works with ghedsh -h\n\n"
-  end
 end
