@@ -110,21 +110,30 @@ class Interface
     end
   end
 
-  def cdback()
-    case
-      when @deep == 2
-        @config["Org"]=nil
-        @deep=1
-      when @deep == 3
-        @config["Repo"]=nil
-        @deep=2
-      when @deep == 10
-        @config["Repo"]=nil
-        @deep=1
-      when @deep == 4
-        @config["Team"]=nil
-        @config["TeamID"]=nil
-        @deep=2
+  #Go back to any level
+  def cdback(returnall)
+    if returnall!=true
+      case
+        when @deep == 2
+          @config["Org"]=nil
+          @deep=1
+        when @deep == 3
+          @config["Repo"]=nil
+          @deep=2
+        when @deep == 10
+          @config["Repo"]=nil
+          @deep=1
+        when @deep == 4
+          @config["Team"]=nil
+          @config["TeamID"]=nil
+          @deep=2
+      end
+    else
+      @config["Org"]=nil
+      @config["Repo"]=nil
+      @config["Team"]=nil
+      @config["TeamID"]=nil
+      @deep=1
     end
   end
 
@@ -281,7 +290,7 @@ class Interface
           s.save_cache(config_path,@config)
         when op == "help" then self.help()
         when op == "orgs" then self.orgs()
-        when op == "cd .." then self.cdback()
+        when op == "cd .." then self.cdback(false)
         when op == "people" then self.people()
         when op == "teams" #then self.teams()
       	  if @deep==2
@@ -293,9 +302,11 @@ class Interface
       end
 
       if opcd[0]=="cd" and opcd[1]!=".."
-        self.cd(opcd[1])
-        #else
-        #  self.cdback()
+        if opcd[1]=="/"
+          self.cdback(true)
+        else
+          self.cd(opcd[1])
+        end
       end
       if opcd[0]=="set"
         self.set(opcd[1])

@@ -1,15 +1,21 @@
 require 'readline'
 require 'octokit'
 require 'json'
+require 'readline'
 require 'require_all'
 require_rel '.'
 
 
 class Repositories
 
+  attr_reader :reposlist
   #scope = 1 -> organization repos
   #scope = 2 -> user repos
   #scope = 3 -> team repos
+
+  def initialize
+    @reposlist=[]
+  end
 
   def show_commits(client,config,scope)
     print "\n"
@@ -24,9 +30,11 @@ class Repositories
     end
   end
 
+  #Show repositories and return a list of them
+  #exp = regular expression
   def show_repos(client,config,scope,exp)
     print "\n"
-    reposlist=[]
+    rlist=[]
     options=Hash.new
     o=Organizations.new
     regex=false
@@ -51,26 +59,40 @@ class Repositories
       when scope==3
         repo=client.team_repositories(config["TeamID"])
     end
+
+    counter=0
+    allpages=true
+
     repo.each do |i|
       if regex==false
-        puts i.name
-        reposlist.push(i.name)
-      else
+        if counter==100 && allpages==true
+          op=Readline.readline("\nThere are more results. Show next repositories (press any key) or Show all repositories (press a): ",true)
+          if op=="a"
+            allpages=false
+          end
+          counter=0
+        end
 
+        puts i.name
+        rlist.push(i.name)
+        counter=counter+1
+      else
         if i.name.match(/#{exp}/)
           puts i.name
-          reposlist.push(i.name)
+          rlist.push(i.name)
+          counter=counter+1
         end
       end
     end
-    if reposlist.empty?
+
+    if rlist.empty?
       puts "No repository matches with that expression"
     else
       print "\n"
-      puts "Repositories found: #{reposlist.size}"
+      puts "Repositories found: #{rlist.size}"
     end
 
-    return reposlist
+    return rlist
   end
 
   def show_user_orgs_repos(client,config,listorgs)
@@ -154,6 +176,7 @@ class Repositories
     end
   end
 
+  #Gete the repository list from a given scope
   def get_repos_list(client,config,scope)
     reposlist=[]
     case
@@ -170,6 +193,8 @@ class Repositories
     return reposlist
   end
 
+  #clone repositories
+  #exp = regular expression
   def clone_repo(client,config,exp,scope)
     web="https://github.com/"
     web2="git@github.com:"
