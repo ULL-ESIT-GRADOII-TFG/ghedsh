@@ -20,19 +20,19 @@ TEAM=4
 TEAM_REPO=5
 
 class Interface
-  attr_reader :option
+  attr_reader :option, :sysbh
   attr_accessor :config
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
   attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos
-  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone '].sort
+  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone '].sort
 
   def initialize
-    sysbh=Sys.new()
+    @sysbh=Sys.new()
     @repos_list=[]; @orgs_repos=[]
 
-    options=sysbh.parse
+    options=@sysbh.parse
 
     trap("SIGINT") { throw :ctrl_c }
     catch :ctrl_c do
@@ -46,51 +46,19 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-        #puts e
+        puts e
       end
     end
-  end
-
-  def add_history(value)
-    @memory.push(value)
-    self.write_memory
-  end
-
-  def quit_history(value)
-    @memory.pop(value)
-    self.write_memory
-  end
-
-  def add_history_str(mode,value)
-    if mode==1
-      value.each do |i|
-        @memory.push(i[0])
-        self.write_memory
-      end
-    end
-    if mode==2
-      value.each do |i|
-        @memory.push(i)
-        self.write_memory
-      end
-    end
-  end
-
-  def write_memory
-    history=(LIST+@memory).sort
-    comp = proc { |s| history.grep( /^#{Regexp.escape(s)}/ ) }
-    Readline.completion_append_character = ""
-    Readline.completion_proc = comp
   end
 
   def prompt()
     case
       when @deep == USER then return @config["User"]+"> "
-      when @deep == USER_REPO then return @config["User"]+">"+@config["Repo"]+"> "
-      when @deep == ORGS then return @config["User"]+">"+@config["Org"]+"> "
+      when @deep == USER_REPO then return @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+"> "
+      when @deep == ORGS then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
       when @deep == TEAM then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+"> "
-      when @deep == TEAM_REPO then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+">"+@config["Repo"]+"> "
-      when @deep == ORGS_REPO then return @config["User"]+">"+@config["Org"]+">"+@config["Repo"]+"> "
+      when @deep == TEAM_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+@config["Team"]+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
+      when @deep == ORGS_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
     end
   end
 
@@ -147,7 +115,8 @@ class Interface
       if aux.one?{|aux| aux==path}
         @config["Org"]=path
         @teamlist=Teams.new.read_teamlist(@client,@config)
-        self.add_history_str(1,@teamlist)
+        #self.add_history_str(1,@teamlist)
+        @sysbh.add_history_str(1,@teamlist)
         @deep=2
       else
         puts "\nNo organization is available with that name"
@@ -213,16 +182,19 @@ class Interface
   def orgs()
     case
     when @deep==USER
-      self.add_history_str(2,Organizations.new.show_orgs(@client,@config))
+      #self.add_history_str(2,Organizations.new.show_orgs(@client,@config))
+      @sysbh.add_history_str(2,Organizations.new.show_orgs(@client,@config))
     end
   end
 
   def people()
     case
     when @deep==ORGS
-      self.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
+      #self.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
+      @sysbh.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
     when @deep==TEAM
-      self.add_history_str(2,Teams.new.show_team_members_bs(@client,@config))
+      #self.add_history_str(2,Teams.new.show_team_members_bs(@client,@config))
+      @sysbh.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
     end
   end
 
@@ -232,7 +204,8 @@ class Interface
       when @deep == USER
         if @repos_list.empty?
           list=repo.show_repos(@client,@config,USER,nil)
-          self.add_history_str(2,list)
+          #self.add_history_str(2,list)
+          @sysbh.add_history_str(2,list)
           @repos_list=list
         else
           puts @repos_list
@@ -240,7 +213,8 @@ class Interface
       when @deep ==ORGS
         if @orgs_repos.empty?
           list=repo.show_repos(@client,@config,ORGS,nil)
-          self.add_history_str(2,list)
+          #self.add_history_str(2,list)
+          @sysbh.add_history_str(2,list)
           @orgs_repos=list
         else
           puts @orgs_repos
@@ -292,12 +266,8 @@ class Interface
   #Main program
   def run(config_path, argv_token,user)
     ex=1
-    @memory=[]
-    history=LIST+memory
-    comp = proc { |s| LIST.grep( /^#{Regexp.escape(s)}/ ) }
 
-    Readline.completion_append_character = ""
-    Readline.completion_proc = comp
+    @sysbh.write_initial_memory()
     HelpM.new.welcome()
 
     t=Teams.new
@@ -319,7 +289,8 @@ class Interface
 
     @deep=USER
     if @client!=nil
-      self.add_history_str(2,Organizations.new.read_orgs(@client))
+      #self.add_history_str(2,Organizations.new.read_orgs(@client))
+      @sysbh.add_history_str(2,Organizations.new.read_orgs(@client))
     end
 
     while ex != 0

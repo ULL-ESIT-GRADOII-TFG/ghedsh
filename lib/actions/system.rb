@@ -7,8 +7,56 @@ require 'actions/system'
 require 'version'
 
 class Sys
-  attr_accessor :client
+  attr_reader :client
+  attr_reader :memory
+  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone '].sort
 
+  def initialize()
+    @memory=[]
+  end
+
+  #                                 CACHE READLINE METHODS
+  def add_history(value)
+    @memory.push(value)
+    self.write_memory
+  end
+
+  def quit_history(value)
+    @memory.pop(value)
+    self.write_memory
+  end
+
+  def add_history_str(mode,value)
+    if mode==1
+      value.each do |i|
+        @memory.push(i[0])
+        self.write_memory
+      end
+    end
+    if mode==2
+      value.each do |i|
+        @memory.push(i)
+        self.write_memory
+      end
+    end
+  end
+  def write_memory
+    history=(LIST+@memory).sort
+    comp = proc { |s| history.grep( /^#{Regexp.escape(s)}/ ) }
+    Readline.completion_append_character = ""
+    Readline.completion_proc = comp
+  end
+
+  def write_initial_memory
+    history=LIST+memory
+    comp = proc { |s| LIST.grep( /^#{Regexp.escape(s)}/ ) }
+
+    Readline.completion_append_character = ""
+    Readline.completion_proc = comp
+  end
+  #                                    END CACHE READLINE METHODS
+
+  #Loading initial configure, if ghedsh path doesnt exist, call the create method
   def load_config(configure_path,argv_token)
     if File.exist?(configure_path)
       if argv_token==nil
@@ -40,6 +88,7 @@ class Sys
     end
   end
 
+  #loading configure with --user mode
   def load_config_user(configure_path, user)
     if File.exist?(configure_path)
       list=self.load_users(configure_path)
@@ -97,6 +146,7 @@ class Sys
     return user
   end
 
+  #initial program configure
   def set_loguin_data_sh(config,configure_path)
     puts "Insert you Access Token: "
     token = gets.chomp
@@ -124,6 +174,7 @@ class Sys
       return config
   end
 
+  #creates all ghedsh local stuff
   def create_config(configure_path)
     con={:User=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
     us={:login=>nil, :users=>[]}

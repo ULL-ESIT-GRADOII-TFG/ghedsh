@@ -43,16 +43,14 @@ class Repositories
       if exp.match(/^\//)
         regex=true
         sp=exp.split('/')
-        exp=sp[1]
+        exp=Regexp.new(sp[1],sp[2])
       end
     end
 
     case
       when scope==1
-        #options[:affiliation]="organization_member"
         repo=client.repositories(options) #config["User"]
         listorgs=o.read_orgs(client)
-        #self.show_user_orgs_repos(client,config,listorgs)
 
       when scope==2
         repo=client.organization_repositories(config["Org"])
@@ -77,7 +75,8 @@ class Repositories
         rlist.push(i.name)
         counter=counter+1
       else
-        if i.name.match(/#{exp}/)
+
+      if i.name.match(exp)
           puts i.name
           rlist.push(i.name)
           counter=counter+1
