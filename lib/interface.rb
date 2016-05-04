@@ -25,12 +25,13 @@ class Interface
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
-  attr_reader :teamlist
-  attr_reader :orgs_list
+  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos
   LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone '].sort
 
   def initialize
     sysbh=Sys.new()
+    @repos_list=[]; @orgs_repos=[]
+
     options=sysbh.parse
 
     trap("SIGINT") { throw :ctrl_c }
@@ -45,6 +46,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
+        #puts e
       end
     end
   end
@@ -74,7 +76,6 @@ class Interface
     end
   end
 
-
   def write_memory
     history=(LIST+@memory).sort
     comp = proc { |s| history.grep( /^#{Regexp.escape(s)}/ ) }
@@ -82,30 +83,29 @@ class Interface
     Readline.completion_proc = comp
   end
 
-
   def prompt()
     case
-      when @deep == 1 then return @config["User"]+"> "
-      when @deep == 10 then return @config["User"]+">"+@config["Repo"]+"> "
-      when @deep == 2 then return @config["User"]+">"+@config["Org"]+"> "
-      when @deep == 4 then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+"> "
-      when @deep == 5 then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+">"+@config["Repo"]+"> "
-      when @deep == 3 then return @config["User"]+">"+@config["Org"]+">"+@config["Repo"]+"> "
+      when @deep == USER then return @config["User"]+"> "
+      when @deep == USER_REPO then return @config["User"]+">"+@config["Repo"]+"> "
+      when @deep == ORGS then return @config["User"]+">"+@config["Org"]+"> "
+      when @deep == TEAM then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+"> "
+      when @deep == TEAM_REPO then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+">"+@config["Repo"]+"> "
+      when @deep == ORGS_REPO then return @config["User"]+">"+@config["Org"]+">"+@config["Repo"]+"> "
     end
   end
 
   def help()
     h=HelpM.new()
     case
-      when @deep == 1
+      when @deep == USER
         h.user()
-      when @deep == 2
+      when @deep == ORGS
         h.org()
-      when @deep == 3
+      when @deep == ORGS_REPO
         h.org_repo()
-      when @deep == 10
+      when @deep == USER_REPO
         h.user_repo()
-      when @deep == 4
+      when @deep == TEAM
         h.orgs_teams()
     end
   end
@@ -114,16 +114,16 @@ class Interface
   def cdback(returnall)
     if returnall!=true
       case
-        when @deep == 2
+        when @deep == ORGS
           @config["Org"]=nil
           @deep=1
-        when @deep == 3
+        when @deep == ORGS_REPO
           @config["Repo"]=nil
           @deep=2
-        when @deep == 10
+        when @deep == USER_REPO
           @config["Repo"]=nil
           @deep=1
-        when @deep == 4
+        when @deep == TEAM
           @config["Team"]=nil
           @config["TeamID"]=nil
           @deep=2
@@ -137,9 +137,11 @@ class Interface
     end
   end
 
+  #Go to the path, depends with the scope
+  #if you are in user scope, first searchs Orgs then Repos, etc.
   def cd(path)
     case
-    when @deep==1
+    when @deep==USER
       @orgs_list=Organizations.new.read_orgs(@client)
       aux=@orgs_list
       if aux.one?{|aux| aux==path}
@@ -148,55 +150,78 @@ class Interface
         self.add_history_str(1,@teamlist)
         @deep=2
       else
-        puts "No organization is available with that name"
+        puts "\nNo organization is available with that name"
+        self.set(path)
       end
-    when @deep == 2
+    when @deep == ORGS
       aux=@teamlist
       if aux[path]!=nil
         @config["Team"]=path
         @config["TeamID"]=@teamlist[path]
-        @deep=4
+        @deep=TEAM
       else
-        puts "No team is available with that name"
+        puts "\nNo team is available with that name"
+        self.set(path)
       end
+    when @deep == TEAM
+      self.set(path)
     end
   end
 
-  #set the repo
+  #set in the given path repository, first search in the list, then do the github query if list is empty
   def set(path)
     reposlist=Repositories.new()
+
     case
-    when @deep==1
+    when @deep==USER
       @config["Repo"]=path
-      if reposlist.get_repos_list(@client,@config,@deep).one?{|aux| aux==path}
-        @deep=10
+      if @repos_list.empty? == false
+        reposlist=@repos_list
+      else
+        reposlist=reposlist.get_repos_list(@client,@config,@deep)
       end
-    when @deep==2
-      @config["Repo"]=path
-      if reposlist.get_repos_list(@client,@config,@deep).one?{|aux| aux==path}
-        @deep=3
+      if reposlist.one?{|aux| aux==path}
+          @deep=USER_REPO
+          puts "Set in #{@config["User"]} repository: #{path}\n\n"
       end
-    when @deep==4
+    when @deep==ORGS
       @config["Repo"]=path
-      if reposlist.get_repos_list(@client,@config,@deep).one?{|aux| aux==path}
-        @deep=5
+      if @orgs_repos.empty? == false
+        reposlist=@orgs_repos
+      else
+        reposlist=reposlist.get_repos_list(@client,@config,@deep)
+      end
+      if reposlist.one?{|aux| aux==path}
+        @deep=ORGS_REPO
+        puts "Set in #{@config["Org"]} repository: #{path}\n\n"
+      end
+    when @deep==TEAM
+      @config["Repo"]=path
+      if @teams_repos.empty? == false
+        repostlist=@teams_repos
+      else
+        repostlist.get_repos_list(@client,@config,@deep)
+      end
+      if reposlist.one?{|aux| aux==path}
+        @deep=TEAM_REPO
+        puts "Set in #{@config["Team"]} repository: #{path}\n\n"
       end
     end
-    if @deep==1 || @deep==2 || @deep==4 then puts "No repository is available with that name" end
+    if @deep==USER || @deep==ORGS || @deep==TEAM then puts "No repository is available with that name\n\n" end
   end
 
   def orgs()
     case
-    when @deep==1
+    when @deep==USER
       self.add_history_str(2,Organizations.new.show_orgs(@client,@config))
     end
   end
 
   def people()
     case
-    when @deep==2
+    when @deep==ORGS
       self.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
-    when @deep==4
+    when @deep==TEAM
       self.add_history_str(2,Teams.new.show_team_members_bs(@client,@config))
     end
   end
@@ -204,15 +229,30 @@ class Interface
   def repos()
     repo=Repositories.new()
     case
-      when @deep == 1
-        list=repo.show_repos(@client,@config,1,nil)
-        self.add_history_str(2,list)
-      when @deep ==2
-        list=repo.show_repos(@client,@config,2,nil)
-        self.add_history_str(2,list)
-      when @deep==4
-        list=repo.show_repos(@client,@config,3,nil)
-        self.add_history_str(2,list)
+      when @deep == USER
+        if @repos_list.empty?
+          list=repo.show_repos(@client,@config,USER,nil)
+          self.add_history_str(2,list)
+          @repos_list=list
+        else
+          puts @repos_list
+        end
+      when @deep ==ORGS
+        if @orgs_repos.empty?
+          list=repo.show_repos(@client,@config,ORGS,nil)
+          self.add_history_str(2,list)
+          @orgs_repos=list
+        else
+          puts @orgs_repos
+        end
+      when @deep==TEAM
+        if @teams_repos.empty?
+          list=repo.show_repos(@client,@config,TEAM,nil)
+          self.add_history_str(2,list)
+          @teams_repos=list
+        else
+          puts @teams_repos
+        end
     end
   end
 
@@ -227,9 +267,9 @@ class Interface
   def commits()
     c=Repositories.new
     case
-    when @deep==3
+    when @deep==ORGS_REPO
       c.show_commits(@client,@config,1)
-    when @deep==10
+    when @deep==USER_REPO
       c.show_commits(@client,@config,2)
     end
     print "\n"
@@ -237,18 +277,19 @@ class Interface
 
   def show_forks()
     case
-    when @deep==3
+    when @deep==ORGS_REPO
       Repositories.new.show_forks(@client,@config,1)
     end
   end
 
   def collaborators()
     case
-    when @deep==3
+    when @deep==ORGS_REPO
       Repositories.show_collaborators(@client,@config,1)
     end
   end
 
+  #Main program
   def run(config_path, argv_token,user)
     ex=1
     @memory=[]
@@ -276,7 +317,7 @@ class Interface
       @client=s.client
     end
 
-    @deep=1
+    @deep=USER
     if @client!=nil
       self.add_history_str(2,Organizations.new.read_orgs(@client))
     end
@@ -293,7 +334,7 @@ class Interface
         when op == "cd .." then self.cdback(false)
         when op == "people" then self.people()
         when op == "teams" #then self.teams()
-      	  if @deep==2
+      	  if @deep==ORGS
       	    t.show_teams_bs(@client,@config)
       	  end
         when op == "commits" then self.commits()
@@ -305,7 +346,11 @@ class Interface
         if opcd[1]=="/"
           self.cdback(true)
         else
-          self.cd(opcd[1])
+          if opcd[1]=="repo" and opcd.size>2
+            self.set(opcd[2])
+          else
+            self.cd(opcd[1])
+          end
         end
       end
       if opcd[0]=="set"
@@ -315,14 +360,7 @@ class Interface
         self.repos()
       end
       if opcd[0]=="repos" and opcd.size>1
-        case
-          when @deep==1
-            r.show_repos(@client,@config,1,opcd[1])
-          when @deep==2
-            r.show_repos(@client,@config,2,opcd[1])
-          when @deep==3
-            r.show_repos(@client,@config,3,opcd[1])
-        end
+         r.show_repos(@client,@config,@deep,opcd[1])
       end
       if opcd[0]=="add_team_member"
         t.add_to_team(@client,@config,opcd[1])
@@ -348,7 +386,7 @@ class Interface
       end
       if opcd[0]=="new_assignment" and opcd.size>2
         case
-        when @deep==2
+        when @deep==ORGS
           r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
         end
       end
