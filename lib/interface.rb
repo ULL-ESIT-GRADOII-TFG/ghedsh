@@ -26,11 +26,10 @@ class Interface
   attr_accessor :deep
   attr_accessor :memory
   attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos
-  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone '].sort
 
   def initialize
     @sysbh=Sys.new()
-    @repos_list=[]; @orgs_repos=[]
+    @repos_list=[]; @orgs_repos=[]; @teams_repos=[]
 
     options=@sysbh.parse
 
@@ -46,7 +45,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-        puts e
+      #  puts e
       end
     end
   end
@@ -56,7 +55,7 @@ class Interface
       when @deep == USER then return @config["User"]+"> "
       when @deep == USER_REPO then return @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+"> "
       when @deep == ORGS then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
-      when @deep == TEAM then return @config["User"]+">"+@config["Org"]+">"+@config["Team"]+"> "
+      when @deep == TEAM then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+@config["Team"]+"> "
       when @deep == TEAM_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+@config["Team"]+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
       when @deep == ORGS_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
     end
@@ -85,6 +84,7 @@ class Interface
         when @deep == ORGS
           @config["Org"]=nil
           @deep=1
+          @orgs_repos=[]
         when @deep == ORGS_REPO
           @config["Repo"]=nil
           @deep=2
@@ -94,6 +94,7 @@ class Interface
         when @deep == TEAM
           @config["Team"]=nil
           @config["TeamID"]=nil
+          @teams_repos=[]
           @deep=2
       end
     else
@@ -102,6 +103,7 @@ class Interface
       @config["Team"]=nil
       @config["TeamID"]=nil
       @deep=1
+      @orgs_repos=[]; @teams_repos=[]
     end
   end
 
@@ -115,7 +117,6 @@ class Interface
       if aux.one?{|aux| aux==path}
         @config["Org"]=path
         @teamlist=Teams.new.read_teamlist(@client,@config)
-        #self.add_history_str(1,@teamlist)
         @sysbh.add_history_str(1,@teamlist)
         @deep=2
       else
@@ -169,7 +170,7 @@ class Interface
       if @teams_repos.empty? == false
         repostlist=@teams_repos
       else
-        repostlist.get_repos_list(@client,@config,@deep)
+        reposlist=reposlist.get_repos_list(@client,@config,@deep)
       end
       if reposlist.one?{|aux| aux==path}
         @deep=TEAM_REPO
@@ -182,7 +183,6 @@ class Interface
   def orgs()
     case
     when @deep==USER
-      #self.add_history_str(2,Organizations.new.show_orgs(@client,@config))
       @sysbh.add_history_str(2,Organizations.new.show_orgs(@client,@config))
     end
   end
@@ -190,11 +190,9 @@ class Interface
   def people()
     case
     when @deep==ORGS
-      #self.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
       @sysbh.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
     when @deep==TEAM
-      #self.add_history_str(2,Teams.new.show_team_members_bs(@client,@config))
-      @sysbh.add_history_str(2,Organizations.new.show_organization_members_bs(@client,@config))
+      @sysbh.add_history_str(2,Teams.new.show_team_members_bs(@client,@config))
     end
   end
 
@@ -204,28 +202,26 @@ class Interface
       when @deep == USER
         if @repos_list.empty?
           list=repo.show_repos(@client,@config,USER,nil)
-          #self.add_history_str(2,list)
           @sysbh.add_history_str(2,list)
           @repos_list=list
         else
-          puts @repos_list
+          @sysbh.showcachelist(@repos_list,nil)
         end
       when @deep ==ORGS
         if @orgs_repos.empty?
           list=repo.show_repos(@client,@config,ORGS,nil)
-          #self.add_history_str(2,list)
           @sysbh.add_history_str(2,list)
           @orgs_repos=list
         else
-          puts @orgs_repos
+          @sysbh.showcachelist(@orgs_repos,nil)
         end
       when @deep==TEAM
         if @teams_repos.empty?
           list=repo.show_repos(@client,@config,TEAM,nil)
-          self.add_history_str(2,list)
+          @sysbh.add_history_str(2,list)
           @teams_repos=list
         else
-          puts @teams_repos
+          @sysbh.showcachelist(@teams_repos,nil)
         end
     end
   end
@@ -289,7 +285,6 @@ class Interface
 
     @deep=USER
     if @client!=nil
-      #self.add_history_str(2,Organizations.new.read_orgs(@client))
       @sysbh.add_history_str(2,Organizations.new.read_orgs(@client))
     end
 
@@ -330,8 +325,30 @@ class Interface
       if opcd[0]=="repos" and opcd.size==1
         self.repos()
       end
-      if opcd[0]=="repos" and opcd.size>1
-         r.show_repos(@client,@config,@deep,opcd[1])
+      if opcd[0]=="repos" and opcd.size>1         ##Busca con expresion regular, si no esta en la cache realiza la consulta
+        case
+        when @deep==USER
+          if @repos_list.empty?
+            r.show_repos(@client,@config,@deep,opcd[1])
+            @repos_list=r.get_repos_list(@client,@config,@deep)
+          else
+            @sysbh.showcachelist(@repos_list,opcd[1])
+          end
+        when @deep==ORGS
+          if @orgs_repos.empty?
+            r.show_repos(@client,@config,@deep,opcd[1])
+            @orgs_repos=r.get_repos_list(@client,@config,@deep)
+          else
+            @sysbh.showcachelist(@orgs_repos,opcd[1])
+          end
+        when @deep==TEAM
+          if @teams_repos.empty?
+            r.show_repos(@client,@config,@deep,opcd[1])
+            @teams_repos=r.get_repos_list(@client,@config,@deep)
+          else
+            @sysbh.showcachelist(@teams_repos,opcd[1])
+          end
+        end
       end
       if opcd[0]=="add_team_member"
         t.add_to_team(@client,@config,opcd[1])
@@ -339,18 +356,18 @@ class Interface
       if opcd[0]=="new_team" and opcd.size==2
       	t.create_team(@client,@config,opcd[1])
       	@teamlist=t.read_teamlist(@client,@config)
-      	self.add_history_str(1,@teamlist)
+      	@sysbh.add_history_str(1,@teamlist)
       end
       if opcd[0]=="rm_team"
         t.delete_team(@client,@teamlist[opcd[1]])
         self.quit_history(@teamlist[opcd[1]])
         @teamlist=t.read_teamlist(@client,@config)
-        self.add_history_str(1,@teamlist)
+        @sysbh.add_history_str(1,@teamlist)
       end
       if opcd[0]=="new_team" and opcd.size>2
       	t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
       	@teamlist=t.read_teamlist(@client,@config)
-      	self.add_history_str(1,@teamlist)
+      	@sysbh.add_history_str(1,@teamlist)
       end
       if opcd[0]=="new_repository" and opcd.size==2
         r.create_repository(@client,@config,opcd[1],@deep)

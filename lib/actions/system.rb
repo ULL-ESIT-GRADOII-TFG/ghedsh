@@ -239,4 +239,51 @@ class Sys
     return options
   end
 
+  def showcachelist(list,exp)
+    print "\n"
+    rlist=[]
+    options=Hash.new
+    o=Organizations.new
+    regex=false
+
+    if exp!=nil
+      if exp.match(/^\//)
+        regex=true
+        sp=exp.split('/')
+        exp=Regexp.new(sp[1],sp[2])
+      end
+    end
+    counter=0
+    allpages=true
+
+    list.each do |i|
+      if regex==false
+        if counter==100 && allpages==true
+          op=Readline.readline("\nThere are more results. Show next repositories (press any key) or Show all repositories (press a): ",true)
+          if op=="a"
+            allpages=false
+          end
+          counter=0
+        end
+        puts i
+        rlist.push(i)
+        counter=counter+1
+      else
+
+      if i.match(exp)
+          puts i
+          rlist.push(i)
+          counter=counter+1
+        end
+      end
+    end
+
+    if rlist.empty?
+      puts "No repository matches with that expression"
+    else
+      print "\n"
+      puts "Repositories found: #{rlist.size}"
+    end
+  end
+
 end

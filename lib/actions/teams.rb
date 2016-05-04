@@ -69,6 +69,7 @@ class Teams
     end
     print "\n"
     return memberlist
+    print "\n"
   end
 
 end

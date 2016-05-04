@@ -54,7 +54,7 @@ class Repositories
 
       when scope==2
         repo=client.organization_repositories(config["Org"])
-      when scope==3
+      when scope==4
         repo=client.team_repositories(config["TeamID"])
     end
 
@@ -183,7 +183,7 @@ class Repositories
         repo=client.repositories
       when scope==2
         repo=client.organization_repositories(config["Org"])
-      when scope==3
+      when scope==4
         repo=client.team_repositories(config["TeamID"])
     end
     repo.each do |i|
