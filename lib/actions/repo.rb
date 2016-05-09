@@ -20,10 +20,11 @@ class Repositories
   def show_commits(client,config,scope)
     print "\n"
     case
-      when scope==1
+    when scope==10
+        puts config["Repo"]
+        mem=client.commits(config["Repo"],"master")
+      when scope==3
         mem=client.commits(config["Org"]+"/"+config["Repo"],"master")
-      when scope==2
-        mem=client.commits(config["User"]+"/"+config["Repo"],"master")
     end
     mem.each do |i|
       print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
@@ -70,17 +71,26 @@ class Repositories
           end
           counter=0
         end
-
-        puts i.name
-        rlist.push(i.name)
+        if scope ==1
+          puts i.full_name
+          rlist.push(i.full_name)
+        else
+          puts i.name
+          rlist.push(i.name)
+        end
         counter=counter+1
       else
 
-      if i.name.match(exp)
-          puts i.name
-          rlist.push(i.name)
-          counter=counter+1
-        end
+        if i.name.match(exp)
+          if scope ==1
+            puts i.full_name
+            rlist.push(i.full_name)
+          else
+            puts i.name
+            rlist.push(i.name)
+          end
+            counter=counter+1
+          end
       end
     end
 
@@ -187,7 +197,7 @@ class Repositories
         repo=client.team_repositories(config["TeamID"])
     end
     repo.each do |i|
-      reposlist.push(i.name)
+      reposlist.push(i.full_name)
     end
     return reposlist
   end

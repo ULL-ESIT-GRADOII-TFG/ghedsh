@@ -45,7 +45,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-      #  puts e
+        puts e
       end
     end
   end
@@ -236,12 +236,9 @@ class Interface
 
   def commits()
     c=Repositories.new
-    case
-    when @deep==ORGS_REPO
-      c.show_commits(@client,@config,1)
-    when @deep==USER_REPO
-      c.show_commits(@client,@config,2)
-    end
+    if @deep==ORGS_REPO || @deep==USER_REPO
+      c.show_commits(@client,@config,@deep)
+    end  
     print "\n"
   end
 
