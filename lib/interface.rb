@@ -238,7 +238,7 @@ class Interface
     c=Repositories.new
     if @deep==ORGS_REPO || @deep==USER_REPO
       c.show_commits(@client,@config,@deep)
-    end  
+    end
     print "\n"
   end
 
@@ -385,6 +385,13 @@ class Interface
       end
       if opcd[0]=="clone" and opcd.size>2
           #r.clone_repo(@client,@config,opcd[1])
+      end
+      if opcd[0]=="files"
+        if opcd.size==1
+          r.get_files(@client,@config,'',@deep)
+        else
+          r.get_files(@client,@config,opcd[1],@deep)
+        end
       end
     end
 

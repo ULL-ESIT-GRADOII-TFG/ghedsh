@@ -5,9 +5,7 @@ require 'readline'
 require 'require_all'
 require_rel '.'
 
-
 class Repositories
-
   attr_reader :reposlist
   #scope = 1 -> organization repos
   #scope = 2 -> user repos
@@ -20,10 +18,10 @@ class Repositories
   def show_commits(client,config,scope)
     print "\n"
     case
-    when scope==10
+    when scope==USER_REPO
         puts config["Repo"]
         mem=client.commits(config["Repo"],"master")
-      when scope==3
+      when scope==ORGS_REPO
         mem=client.commits(config["Org"]+"/"+config["Repo"],"master")
     end
     mem.each do |i|
@@ -49,13 +47,13 @@ class Repositories
     end
 
     case
-      when scope==1
+      when scope==USER
         repo=client.repositories(options) #config["User"]
         listorgs=o.read_orgs(client)
 
-      when scope==2
+      when scope==ORGS
         repo=client.organization_repositories(config["Org"])
-      when scope==4
+      when scope==TEAM
         repo=client.team_repositories(config["TeamID"])
     end
 
@@ -71,7 +69,7 @@ class Repositories
           end
           counter=0
         end
-        if scope ==1
+        if scope ==USER
           puts i.full_name
           rlist.push(i.full_name)
         else
@@ -82,7 +80,7 @@ class Repositories
       else
 
         if i.name.match(exp)
-          if scope ==1
+          if scope ==USER
             puts i.full_name
             rlist.push(i.full_name)
           else
@@ -120,7 +118,7 @@ class Repositories
     print "\n"
     forklist=[]
     case
-      when scope==1
+      when scope==USER
         mem=client.forks(config["Org"]+"/"+config["Repo"])
     end
     mem.each do |i|
@@ -135,7 +133,7 @@ class Repositories
     print "\n"
     collalist=[]
     case
-    when scope==1
+    when scope==USER
       mem=client.collaborators(config["Org"]+"/"+config["Repo"])
     end
     mem.each do |i|
@@ -154,14 +152,14 @@ class Repositories
   def create_repository(client,config,repo,scope)
     options=Hash.new
     case
-    when scope==2
+    when scope==ORGS
       puts "created repository in org"
       options[:organization]=config["Org"]
       client.create_repository(repo,options)
-    when scope==1
+    when scope==USER
       puts "created repository in user"
       client.create_repository(repo)
-    when scope==4
+    when scope==TEAM
       puts "created repository in org team"
       options[:team_id]=config["TeamID"]
       options[:organization]=config["Org"]
@@ -189,11 +187,11 @@ class Repositories
   def get_repos_list(client,config,scope)
     reposlist=[]
     case
-      when scope==1
+      when scope==USER
         repo=client.repositories
-      when scope==2
+      when scope==ORGS
         repo=client.organization_repositories(config["Org"])
-      when scope==4
+      when scope==TEAM
         repo=client.team_repositories(config["TeamID"])
     end
     repo.each do |i|
@@ -219,12 +217,12 @@ class Repositories
 
     if (list.empty?) == false
       case
-      when scope==1
+      when scope==USER
         list.each do |i|
           command = "git clone #{web}#{config["User"]}/#{i}.git"
           system(command)
         end
-      when scope==2
+      when scope==ORGS
         list.each do |i|
           command = "git clone #{web}#{config["Org"]}/#{i}.git"
           system(command)
@@ -233,5 +231,25 @@ class Repositories
     else
       puts "No repositories found it with the parameters given"
     end
+  end
+
+  def show_files(list)
+    print "\n"
+    list.each do |i|
+      puts i.name
+    end
+    print "\n"
+  end
+
+  def get_files(client,config,path,scope)
+    case
+    when scope==USER_REPO
+      list=client.content(config["Repo"],:path=>path)
+    when scope==ORGS_REPO
+      list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
+    when scope==TEAM_REPO
+    end
+
+    self.show_files(list)
   end
 end

@@ -14,8 +14,6 @@ Ir order to run this program, you need to make an **Access token** from Github w
 
 ##Running the program in your computer
 
-You can run this program downloading this repository directly, but you need to setting the configure file. Rename the file *configure_template.json* to *configure.json* in **./lib/configure/.**
-
 To start using the program, put "rake bash" or "rake" in your command line in the main folder of this program. You can invoke the binary file using the command *ghedsh*.
 
 ##Using the gem
@@ -38,6 +36,57 @@ Levels
     │   └── Organization Repositories
     └── User Repositories
 ```
+
+##Lista de comandos
+
+
+```sh
+cd <nombre>
+```
+
+Va a la ruta correspondiente con el nombre dado. La ruta puede ser un repositorio, una organizacion, o un equipo. Si el usuario se encuentra en la raiz, el comando primero buscara una organizacion con el nombre dado, y si no la encuentra buscara un repositorio, y si el usuario esta situado en una organizacion el programa buscara primero un equipo y despues un repositorio.
+
+Si queremos ir directamente a un repositorio es posible usar `` cd repo <nombre> ``
+
+
+```sh
+! <comando>
+```
+Ejecuta un comando en la terminal donde se este ejecutando el programa.
+
+```sh
+help
+```
+Muestra las opciones disponibles segun el ambito en el que la ayuda sea invocada.
+```sh
+exit
+```
+Con este comando el usuario sale de ghedsh.
+
+```sh
+orgs
+```
+Estando en el ambito del usuario, mostrara la lista de Organizaciones a las que pertenece el usuario.
+
+```sh
+repos
+```
+
+Muestra la lista de todos los repositorios disponibles del usuario segun el ambito. Si estamos en un Usuario, mostrara los repositorios de los que es dueño, de los que es colaborador, y los repositorios publicos de las organizaciones a las que pertenezca, asi como en los que participe. Si se ejecuta en el ambito de una Organizacion, mostrara todos los repositorios de una organizacion en concreto. Cuando ejecutamos el comando dentro de un Equipo, mostrara los repositorios que pertecen al mismo.
+
+Si queremos realizar una busqueda inteligente, el comando permite el uso de *expresiones regulares*. Para ese caso deberia ejecutarse ``repos /<RegEx>/``
+
+```sh
+clone <nombre>
+```
+Clona el repositorio en el path actual. Es posible clonar una lista de repositorios usando una expresion regular. ``clone /<RegEx>/``
+
+```sh
+people
+```
+Muestra los miembros de una organizacion si nos encontramos en ese ambito, o los miembros de un equipo.
+
+
 
 ##Aditional information
 [Github Education](https://education.github.com/)
