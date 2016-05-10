@@ -375,7 +375,6 @@ class Interface
           r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
         end
       end
-
       if opcd[0]=="clone" and opcd.size==2
         r.clone_repo(@client,@config,opcd[1],@deep)
       end
@@ -392,6 +391,9 @@ class Interface
         else
           r.get_files(@client,@config,opcd[1],@deep)
         end
+      end
+      if opcd[0]=="cat" and opcd.size>1
+        r.cat_file(@client,@config,opcd[1],@deep)
       end
     end
 

@@ -3,6 +3,7 @@ require 'octokit'
 require 'json'
 require 'readline'
 require 'require_all'
+require 'base64'
 require_rel '.'
 
 class Repositories
@@ -19,8 +20,11 @@ class Repositories
     print "\n"
     case
     when scope==USER_REPO
-        puts config["Repo"]
-        mem=client.commits(config["Repo"],"master")
+        if config["Repo"].split("/").size == 1
+          mem=client.commits(config["User"]+"/"+config["Repo"],"master")
+        else
+          mem=client.commits(config["Repo"],"master")
+        end
       when scope==ORGS_REPO
         mem=client.commits(config["Org"]+"/"+config["Repo"],"master")
     end
@@ -37,6 +41,7 @@ class Repositories
     options=Hash.new
     o=Organizations.new
     regex=false
+    force_exit=false
 
     if exp!=nil
       if exp.match(/^\//)
@@ -50,7 +55,6 @@ class Repositories
       when scope==USER
         repo=client.repositories(options) #config["User"]
         listorgs=o.read_orgs(client)
-
       when scope==ORGS
         repo=client.organization_repositories(config["Org"])
       when scope==TEAM
@@ -61,34 +65,43 @@ class Repositories
     allpages=true
 
     repo.each do |i|
-      if regex==false
-        if counter==100 && allpages==true
-          op=Readline.readline("\nThere are more results. Show next repositories (press any key) or Show all repositories (press a): ",true)
-          if op=="a"
-            allpages=false
+      if force_exit==false
+        if regex==false
+          if counter==100 && allpages==true
+            op=Readline.readline("\nThere are more results. Show next repositories (press any key), show all repositories (press a) or quit (q): ",true)
+            if op=="a"
+              allpages=false
+            end
+            if op=="q"
+              force_exit=true
+            end
+            counter=0
           end
-          counter=0
-        end
-        if scope ==USER
-          puts i.full_name
-          rlist.push(i.full_name)
-        else
-          puts i.name
-          rlist.push(i.name)
-        end
-        counter=counter+1
-      else
-
-        if i.name.match(exp)
           if scope ==USER
-            puts i.full_name
-            rlist.push(i.full_name)
+            if i[:owner][:login]==config["User"]
+              puts i.name
+              rlist.push(i.name)
+            else
+              puts i.full_name
+              rlist.push(i.full_name)
+            end
           else
             puts i.name
             rlist.push(i.name)
           end
-            counter=counter+1
-          end
+          counter=counter+1
+        else
+          if i.name.match(exp)
+            if scope ==USER
+              puts i.full_name
+              rlist.push(i.full_name)
+            else
+              puts i.name
+              rlist.push(i.name)
+            end
+              counter=counter+1
+            end
+        end
       end
     end
 
@@ -195,7 +208,11 @@ class Repositories
         repo=client.team_repositories(config["TeamID"])
     end
     repo.each do |i|
-      reposlist.push(i.full_name)
+      if scope!=USER
+        reposlist.push(i.name)
+      else
+        reposlist.push(i.full_name)
+      end
     end
     return reposlist
   end
@@ -241,15 +258,47 @@ class Repositories
     print "\n"
   end
 
-  def get_files(client,config,path,scope)
-    case
-    when scope==USER_REPO
-      list=client.content(config["Repo"],:path=>path)
-    when scope==ORGS_REPO
-      list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
-    when scope==TEAM_REPO
-    end
+  def cat_file(client,config,path,scope)
+    if path.match(/.\./)!=nil
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size > 1
+          data=Base64.decode64(client.content(config["Repo"],:path=>path).content)
+        else
+          data=Base64.decode64(client.content(config["User"]+"/"+config["Repo"],:path=>path).content)
+        end
 
-    self.show_files(list)
+      when scope==ORGS_REPO
+        data=Base64.decode64(client.content(config["Org"]+"/"+config["Repo"],:path=>path).content)
+      when scope==TEAM_REPO
+      end
+      puts data
+    else
+      puts "#{path} is not a file."
+    end
+  end
+
+  def get_files(client,config,path,scope)
+     #Base64.decode64(data['content'])
+    show=true
+    if path.match(/.\./)==nil
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size > 1
+          list=client.content(config["Repo"],:path=>path)
+        else
+          list=client.content(config["User"]+"/"+config["Repo"],:path=>path)
+        end
+
+      when scope==ORGS_REPO
+        list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
+      when scope==TEAM_REPO
+      end
+      if show!=false
+        self.show_files(list)
+      end
+    else
+      puts "#{path} is not a directory. If you want to open a file try to use cat <path>"
+    end
   end
 end
