@@ -239,6 +239,13 @@ class Sys
     return options
   end
 
+  def createTempFile(data)
+    tempfile="temp.txt"
+    path="#{ENV['HOME']}/.ghedsh/#{tempfile}"
+    File.write(path,data)
+    return path
+  end
+
   def showcachelist(list,exp)
     print "\n"
     rlist=[]

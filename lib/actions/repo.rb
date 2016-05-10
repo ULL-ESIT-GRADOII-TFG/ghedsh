@@ -271,8 +271,14 @@ class Repositories
       when scope==ORGS_REPO
         data=Base64.decode64(client.content(config["Org"]+"/"+config["Repo"],:path=>path).content)
       when scope==TEAM_REPO
+        data=Base64.decode64(client.content(config["Org"]+"/"+config["Repo"],:path=>path).content)
       end
+
+      # s=Sys.new()
+      # s.createTempFile(data)
+      # s.execute_bash("vi -R #{data}")
       puts data
+
     else
       puts "#{path} is not a file."
     end
@@ -293,6 +299,7 @@ class Repositories
       when scope==ORGS_REPO
         list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
       when scope==TEAM_REPO
+        list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
       end
       if show!=false
         self.show_files(list)

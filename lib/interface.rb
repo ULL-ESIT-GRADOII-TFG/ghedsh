@@ -55,8 +55,8 @@ class Interface
       when @deep == USER then return @config["User"]+"> "
       when @deep == USER_REPO then return @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+"> "
       when @deep == ORGS then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
-      when @deep == TEAM then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+@config["Team"]+"> "
-      when @deep == TEAM_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+@config["Team"]+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
+      when @deep == TEAM then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+"> "
+      when @deep == TEAM_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
       when @deep == ORGS_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
     end
   end
@@ -135,6 +135,7 @@ class Interface
       end
     when @deep == TEAM
       self.set(path)
+      #@teams_repos
     end
   end
 
@@ -168,7 +169,7 @@ class Interface
     when @deep==TEAM
       @config["Repo"]=path
       if @teams_repos.empty? == false
-        repostlist=@teams_repos
+        reposlist=@teams_repos
       else
         reposlist=reposlist.get_repos_list(@client,@config,@deep)
       end

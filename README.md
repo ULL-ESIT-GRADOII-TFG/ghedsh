@@ -77,6 +77,12 @@ Muestra la lista de todos los repositorios disponibles del usuario segun el ambi
 Si queremos realizar una busqueda inteligente, el comando permite el uso de *expresiones regulares*. Para ese caso deberia ejecutarse ``repos /<RegEx>/``
 
 ```sh
+teams
+```
+Muestra todos los equipos de una organizacion.
+
+
+```sh
 clone <nombre>
 ```
 Clona el repositorio en el path actual. Es posible clonar una lista de repositorios usando una expresion regular. ``clone /<RegEx>/``
@@ -85,6 +91,24 @@ Clona el repositorio en el path actual. Es posible clonar una lista de repositor
 people
 ```
 Muestra los miembros de una organizacion si nos encontramos en ese ambito, o los miembros de un equipo.
+
+```sh
+files <path>
+```
+Dentro de un repositorio, muestra los archivos y directorios que se encuentren en el path dado. Si se ejecuta sin opciones mostrara los archivos de la raiz del repositorio.
+
+```sh
+cat <file>
+```
+Muestra el contenido de un archivo.
+
+```sh
+commits
+```
+Muestra los commits del repositorio en el que se encuentre el usuario.
+
+
+
 
 
 
