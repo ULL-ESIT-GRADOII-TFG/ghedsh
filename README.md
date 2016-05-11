@@ -81,6 +81,10 @@ teams
 ```
 Muestra todos los equipos de una organizacion.
 
+```sh
+groups
+```
+Muestra los grupos de equipos de una organizacion.
 
 ```sh
 clone <nombre>

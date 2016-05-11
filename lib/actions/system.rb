@@ -174,6 +174,27 @@ class Sys
       return config
   end
 
+  def load_groups(path)
+    if (File.exist?(path))==true
+      if File.exist?("#{path}/groups.json")
+        json = File.read("#{path}/groups.json")
+      else
+        con={:orgs=>[]}
+        File.write("#{path}/groups.json",con.to_json)
+        json = File.read("#{path}/groups.json")
+      end
+    else
+      #path="/db/assignments.json"
+      #json = File.read(path)
+    end
+      config=JSON.parse(json)
+      return config
+  end
+
+  def save_groups(path,data)
+    File.write("#{path}/groups.json",data.to_json)
+  end
+
   #creates all ghedsh local stuff
   def create_config(configure_path)
     con={:User=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}

@@ -7,10 +7,6 @@ require_rel '.'
 class Teams
   attr_accessor :teamlist
 
-  def list_team_repos(repos)
-
-  end
-
   def add_to_team(client,config,path)
     client.add_team_member(config["TeamID"],path)
   end
@@ -70,6 +66,30 @@ class Teams
     print "\n"
     return memberlist
     print "\n"
+  end
+
+  def list_groups(client,config)
+    sys=Sys.new()
+    list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
+    groups=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    if groups!=nil
+      if groups["groups"].empty?
+        puts "No groups are available yet"
+      else
+        groups["groups"].each do |i|
+          puts i["name"]
+        end
+      end
+    else
+      puts "No groups are available yet"
+      list["orgs"].push({"name"=>config["Org"],"groups"=>[]})
+      sys.save_groups("#{ENV['HOME']}/.ghedsh",list)
+    end
+  end
+
+  def new_group(client,config,name,list)
+
+
   end
 
 end

@@ -29,7 +29,7 @@ class Interface
 
   def initialize
     @sysbh=Sys.new()
-    @repos_list=[]; @orgs_repos=[]; @teams_repos=[]
+    @repos_list=[]; @orgs_repos=[]; @teams_repos=[]; @orgs_list=[]; @teamlist=[]
 
     options=@sysbh.parse
 
@@ -110,32 +110,73 @@ class Interface
   #Go to the path, depends with the scope
   #if you are in user scope, first searchs Orgs then Repos, etc.
   def cd(path)
-    case
-    when @deep==USER
-      @orgs_list=Organizations.new.read_orgs(@client)
-      aux=@orgs_list
-      if aux.one?{|aux| aux==path}
-        @config["Org"]=path
-        @teamlist=Teams.new.read_teamlist(@client,@config)
-        @sysbh.add_history_str(1,@teamlist)
-        @deep=2
-      else
-        puts "\nNo organization is available with that name"
+    path_split=path.split("/")
+    if path_split.size==1                   ##cd con path simple
+      case
+      when @deep==USER
+        @orgs_list=Organizations.new.read_orgs(@client)
+        aux=@orgs_list
+        if aux.one?{|aux| aux==path}
+          @config["Org"]=path
+          @teamlist=Teams.new.read_teamlist(@client,@config)
+          @sysbh.add_history_str(1,@teamlist)
+          @deep=2
+        else
+          puts "\nNo organization is available with that name"
+          self.set(path)
+        end
+      when @deep == ORGS
+        aux=@teamlist
+        if aux[path]!=nil
+          @config["Team"]=path
+          @config["TeamID"]=@teamlist[path]
+          @deep=TEAM
+        else
+          puts "\nNo team is available with that name"
+          self.set(path)
+        end
+      when @deep == TEAM
         self.set(path)
       end
-    when @deep == ORGS
-      aux=@teamlist
-      if aux[path]!=nil
-        @config["Team"]=path
-        @config["TeamID"]=@teamlist[path]
-        @deep=TEAM
-      else
-        puts "\nNo team is available with that name"
-        self.set(path)
+    else                                  ##CD con path absoluto
+      case
+      when @deep==USER
+        if @orgs_list.empty?
+          @orgs_list=Organizations.new.read_orgs(@client)
+        end
+        aux=@orgs_list
+        if aux.one?{|aux| aux==path_split[0]}
+          @config["Org"]=path_split[0]
+          @deep=ORGS
+          if @teamlist.empty?
+            @teamlist=Teams.new.read_teamlist(@client,@config)
+          end
+          aux=@teamlist
+          if aux[path_split[1]]!=nil
+            @config["Team"]=path_split[1]
+            @config["TeamID"]=@teamlist[path_split[1]]
+            @deep=TEAM
+            if path_split.size>2
+              self.set(path_split[2])
+            end
+          else
+            puts "\nNo team is available with that name"
+            self.set(path_split[1])
+          end
+        else
+          puts "\nNo organization is available with that name"
+        end
+      when @deep==ORGS
+        if aux[path_split[0]]!=nil
+          @config["Team"]=path_split[0]
+          @config["TeamID"]=@teamlist[path_split[0]]
+          @deep=TEAM
+          self.set(path_split[1])
+        else
+          puts "\nNo team is available with that name"
+        end
       end
-    when @deep == TEAM
-      self.set(path)
-      #@teams_repos
+
     end
   end
 
@@ -197,30 +238,51 @@ class Interface
     end
   end
 
-  def repos()
+  def repos(all)
     repo=Repositories.new()
     case
       when @deep == USER
         if @repos_list.empty?
-          list=repo.show_repos(@client,@config,USER,nil)
-          @sysbh.add_history_str(2,list)
-          @repos_list=list
+          if all==false
+            list=repo.show_repos(@client,@config,USER,nil)
+            @sysbh.add_history_str(2,list)
+            @repos_list=list
+          else
+            list=repo.get_repos_list(@client,@config,USER)
+            @sysbh.add_history_str(2,list)
+            @repos_list=list
+            puts list
+          end
         else
           @sysbh.showcachelist(@repos_list,nil)
         end
       when @deep ==ORGS
         if @orgs_repos.empty?
-          list=repo.show_repos(@client,@config,ORGS,nil)
-          @sysbh.add_history_str(2,list)
-          @orgs_repos=list
+          if all==false
+            list=repo.show_repos(@client,@config,ORGS,nil)
+            @sysbh.add_history_str(2,list)
+            @orgs_repos=list
+          else
+            list=repo.show_repos(@client,@config,ORGS)
+            @sysbh.add_history_str(2,list)
+            @repos_list=list
+            puts list
+          end
         else
           @sysbh.showcachelist(@orgs_repos,nil)
         end
       when @deep==TEAM
         if @teams_repos.empty?
-          list=repo.show_repos(@client,@config,TEAM,nil)
-          @sysbh.add_history_str(2,list)
-          @teams_repos=list
+          if all==false
+            list=repo.show_repos(@client,@config,TEAM,nil)
+            @sysbh.add_history_str(2,list)
+            @teams_repos=list
+          else
+            list=repo.show_repos(@client,@config,TEAM)
+            @sysbh.add_history_str(2,list)
+            @repos_list=list
+            puts list
+          end
         else
           @sysbh.showcachelist(@teams_repos,nil)
         end
@@ -304,6 +366,10 @@ class Interface
         when op == "commits" then self.commits()
         when op == "col" then self.collaborators()
         when op == "forks" then self.show_forks()
+        when op == "groups"
+          if @deep==ORGS
+            t.list_groups(@client,@config)
+          end
       end
 
       if opcd[0]=="cd" and opcd[1]!=".."
@@ -321,30 +387,34 @@ class Interface
         self.set(opcd[1])
       end
       if opcd[0]=="repos" and opcd.size==1
-        self.repos()
+        self.repos(false)
       end
       if opcd[0]=="repos" and opcd.size>1         ##Busca con expresion regular, si no esta en la cache realiza la consulta
-        case
-        when @deep==USER
-          if @repos_list.empty?
-            r.show_repos(@client,@config,@deep,opcd[1])
-            @repos_list=r.get_repos_list(@client,@config,@deep)
-          else
-            @sysbh.showcachelist(@repos_list,opcd[1])
-          end
-        when @deep==ORGS
-          if @orgs_repos.empty?
-            r.show_repos(@client,@config,@deep,opcd[1])
-            @orgs_repos=r.get_repos_list(@client,@config,@deep)
-          else
-            @sysbh.showcachelist(@orgs_repos,opcd[1])
-          end
-        when @deep==TEAM
-          if @teams_repos.empty?
-            r.show_repos(@client,@config,@deep,opcd[1])
-            @teams_repos=r.get_repos_list(@client,@config,@deep)
-          else
-            @sysbh.showcachelist(@teams_repos,opcd[1])
+        if opcd[1]=="-all" || opcd[1]=="-a"
+          self.repos(true)
+        else
+          case
+          when @deep==USER
+            if @repos_list.empty?
+              r.show_repos(@client,@config,@deep,opcd[1])
+              @repos_list=r.get_repos_list(@client,@config,@deep)
+            else
+              @sysbh.showcachelist(@repos_list,opcd[1])
+            end
+          when @deep==ORGS
+            if @orgs_repos.empty?
+              r.show_repos(@client,@config,@deep,opcd[1])
+              @orgs_repos=r.get_repos_list(@client,@config,@deep)
+            else
+              @sysbh.showcachelist(@orgs_repos,opcd[1])
+            end
+          when @deep==TEAM
+            if @teams_repos.empty?
+              r.show_repos(@client,@config,@deep,opcd[1])
+              @teams_repos=r.get_repos_list(@client,@config,@deep)
+            else
+              @sysbh.showcachelist(@teams_repos,opcd[1])
+            end
           end
         end
       end
