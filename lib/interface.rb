@@ -74,6 +74,8 @@ class Interface
         h.user_repo()
       when @deep == TEAM
         h.orgs_teams()
+      when @deep == TEAM_REPO
+        h.team_repo()
     end
   end
 
@@ -96,6 +98,9 @@ class Interface
           @config["TeamID"]=nil
           @teams_repos=[]
           @deep=2
+        when @deep == TEAM_REPO
+          @config["Repo"]=nil
+          @deep=TEAM
       end
     else
       @config["Org"]=nil

@@ -51,6 +51,13 @@ class HelpM
     print "\tcat\t\t\tshow data from a file\n"
     print "\tcol\t\t\tshow the list of collaborators from the repository\n\n"
   end
+  def team_repo()
+    self.common_opt
+    print "\tcommits\t\t\tshow the list of commits from the repository\n"
+    print "\tfiles\t\t\tshow the files of the repository path given\n"
+    print "\tcat\t\t\tshow data from a file\n"
+    print "\tcol\t\t\tshow the list of collaborators from the repository\n\n"
+  end
 
   def common_opt()
     puts "\nList of commands\n"
