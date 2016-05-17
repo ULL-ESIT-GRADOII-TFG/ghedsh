@@ -103,7 +103,13 @@ Crea un equipo a al que le sera asignado uno o varios miembros de la organizacio
 ```sh
 add_to_team <miembro1> <miembro2> ...
 ```
+
 Dentro de un equipo en una organizacion, añadira nuevos miembros al equipo de trabajo.
+
+```sh
+new_group <nombre> <equipo1> <equipo2> ...
+```
+Dentro de una organizacion, crea grupos donde asignar equipos de trabajo.
 
 ```sh
 groups

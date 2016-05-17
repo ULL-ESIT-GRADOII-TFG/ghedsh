@@ -317,7 +317,7 @@ class Repositories
             list=client.content(config["Repo"],:path=>path)
             raise "No files found"
             show=false
-          rescue
+          rescue Exception
             puts "No files found"
           end
         else
@@ -326,7 +326,7 @@ class Repositories
             list=client.content(config["User"]+"/"+config["Repo"],:path=>path)
             raise "No files found"
             show=false
-          rescue
+          rescue Exception
             puts "No files found"
           end
 

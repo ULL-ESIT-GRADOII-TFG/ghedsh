@@ -453,6 +453,12 @@ class Interface
           r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
         end
       end
+      if opcd[0]=="new_group" and opcd.size>2
+        if @deep==ORGS
+          t.new_group(@client,@config,opcd[1],opcd[2..opcd.size-1])
+        end
+      end
+
       if opcd[0]=="clone"
         if opcd.size==2
           r.clone_repo(@client,@config,opcd[1],@deep)

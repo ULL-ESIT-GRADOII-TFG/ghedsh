@@ -7,6 +7,10 @@ require_rel '.'
 class Teams
   attr_accessor :teamlist
 
+  def initialize
+    @teamlist=Hash.new
+  end
+
   def add_to_team(client,config,path)
     client.add_team_member(config["TeamID"],path)
   end
@@ -77,7 +81,11 @@ class Teams
         puts "No groups are available yet"
       else
         groups["groups"].each do |i|
-          puts i["name"]
+          puts "\n"
+          puts i["name_group"]
+          i["teams"].each do |j|
+              puts "\t#{j}"
+          end
         end
       end
     else
@@ -87,9 +95,35 @@ class Teams
     end
   end
 
-  def new_group(client,config,name,list)
+  def new_group(client,config,name,listgroups)
+    sys=Sys.new()
+    list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
+    groups=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
 
+    if groups==nil
+      list["orgs"].push({"name"=>config["Org"],"groups"=>[]})
+      sys.save_groups("#{ENV['HOME']}/.ghedsh",list)
+    end
 
+    if @teamlist.empty?
+      self.read_teamlist(client,config)
+    end
+
+    listgroups.each do |item|
+      if @teamlist["#{item}"]==nil
+        listgroups.delete(item)
+        puts "#{item} is not a team available."
+      end
+    end
+
+    if listgroups.empty? == false
+      begin
+        list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["groups"].push({"name_group"=>name,"teams"=>listgroups})
+      rescue Exception => e
+        puts e
+      end
+      sys.save_groups("#{ENV['HOME']}/.ghedsh",list)
+    end
   end
 
 end
