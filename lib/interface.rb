@@ -45,7 +45,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-        puts e
+        #puts e
       end
     end
   end
@@ -231,6 +231,8 @@ class Interface
     case
     when @deep==USER
       @sysbh.add_history_str(2,Organizations.new.show_orgs(@client,@config))
+    when @deep==ORGS
+      Organizations.new.show_orgs(@client,@config)
     end
   end
 
@@ -451,8 +453,13 @@ class Interface
           r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
         end
       end
-      if opcd[0]=="clone" and opcd.size==2
-        r.clone_repo(@client,@config,opcd[1],@deep)
+      if opcd[0]=="clone"
+        if opcd.size==2
+          r.clone_repo(@client,@config,opcd[1],@deep)
+        end
+        if opcd.size==1 && (@deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO)
+          r.clone_repo(@client,@config,nil,@deep)
+        end
       end
       if op.match(/^!/)
         op=op.split("!")

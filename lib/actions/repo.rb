@@ -223,37 +223,58 @@ class Repositories
     web="https://github.com/"
     web2="git@github.com:"
 
-    if exp.match(/^\//)
-      exps=exp.split('/')
-      list=self.get_repos_list(client,config,scope)
-      list=Sys.new.search_rexp(list,exps[1])
-    else
-      list=[]
-      list.push(exp)
-    end
-
-    if (list.empty?) == false
+    if scope==USER_REPO || scope==TEAM_REPO || scope==ORGS_REPO
       case
-      when scope==USER
-        list.each do |i|
-          command = "git clone #{web}#{config["User"]}/#{i}.git"
-          system(command)
-        end
-      when scope==ORGS
-        list.each do |i|
-          command = "git clone #{web}#{config["Org"]}/#{i}.git"
-          system(command)
-        end
+        when scope==USER_REPO
+          if config["Repo"].split("/").size == 1
+            command = "git clone #{web2}#{config["User"]}/#{config["Repo"]}.git"
+          else
+            command = "git clone #{web2}#{config["Repo"]}.git"
+          end
+        when scope==TEAM_REPO
+          command = "git clone #{web2}#{config["Org"]}/#{config["Repo"]}.git"
+        when scope==ORGS_REPO
+          command = "git clone #{web2}#{config["Org"]}/#{config["Repo"]}.git"
       end
+        system(command)
     else
-      puts "No repositories found it with the parameters given"
+      if exp.match(/^\//)
+        exps=exp.split('/')
+        list=self.get_repos_list(client,config,scope)
+        list=Sys.new.search_rexp(list,exps[1])
+      else
+        list=[]
+        list.push(exp)
+      end
+
+      if (list.empty?) == false
+        case
+        when scope==USER
+          list.each do |i|
+            command = "git clone #{web2}#{config["User"]}/#{i}.git"
+            system(command)
+          end
+        when scope==ORGS
+          list.each do |i|
+            command = "git clone #{web2}#{config["Org"]}/#{i}.git"
+            system(command)
+          end
+        end
+      else
+        puts "No repositories found it with the parameters given"
+      end
     end
   end
 
   def show_files(list)
     print "\n"
+
     list.each do |i|
-      puts i.name
+      if i.name.match(/.\./)!=nil
+        puts i.name
+      else
+        puts "\e[33m#{i.name}\e[0m"
+      end
     end
     print "\n"
   end
@@ -291,9 +312,24 @@ class Repositories
       case
       when scope==USER_REPO
         if config["Repo"].split("/").size > 1
-          list=client.content(config["Repo"],:path=>path)
+          begin
+            puts "here"
+            list=client.content(config["Repo"],:path=>path)
+            raise "No files found"
+            show=false
+          rescue
+            puts "No files found"
+          end
         else
-          list=client.content(config["User"]+"/"+config["Repo"],:path=>path)
+          begin
+            puts "here"
+            list=client.content(config["User"]+"/"+config["Repo"],:path=>path)
+            raise "No files found"
+            show=false
+          rescue
+            puts "No files found"
+          end
+
         end
 
       when scope==ORGS_REPO
