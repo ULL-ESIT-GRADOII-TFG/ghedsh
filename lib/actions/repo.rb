@@ -33,6 +33,25 @@ class Repositories
     end
   end
 
+  def show_issues(client,config,scope)
+      print "\n"
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size == 1
+          mem=client.list_issues(config["User"]+"/"+config["Repo"],{:state=>"all"})
+        else
+          mem=client.list_issues(config["Repo"],{:state=>"all"})
+        end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+          mem=client.list_issues(config["Org"]+"/"+config["Repo"],{:state=>"all"})
+      end
+      mem.each do |i|
+        #print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
+        puts "##{i[:number]} state: #{i[:state]} -> #{i[:title]} "
+      end
+      puts "\n"
+  end
+
   #Show repositories and return a list of them
   #exp = regular expression
   def show_repos(client,config,scope,exp)
@@ -126,7 +145,6 @@ class Repositories
     end
   end
 
-
   def show_forks(client,config,scope)
     print "\n"
     forklist=[]
@@ -211,7 +229,11 @@ class Repositories
       if scope!=USER
         reposlist.push(i.name)
       else
-        reposlist.push(i.full_name)
+        if i[:owner][:login]==config["User"]
+          reposlist.push(i.name)
+        else
+          reposlist.push(i.full_name)
+        end
       end
     end
     return reposlist
@@ -284,22 +306,36 @@ class Repositories
       case
       when scope==USER_REPO
         if config["Repo"].split("/").size > 1
-          data=Base64.decode64(client.content(config["Repo"],:path=>path).content)
+          begin
+            data=Base64.decode64(client.content(config["Repo"],:path=>path).content)
+          rescue Exception, Interrupt
+            puts "File not found"
+          end
         else
-          data=Base64.decode64(client.content(config["User"]+"/"+config["Repo"],:path=>path).content)
+          begin
+            data=Base64.decode64(client.content(config["User"]+"/"+config["Repo"],:path=>path).content)
+          rescue Exception, Interrupt
+            puts "File not found"
+          end
         end
 
       when scope==ORGS_REPO
-        data=Base64.decode64(client.content(config["Org"]+"/"+config["Repo"],:path=>path).content)
+        begin
+          data=Base64.decode64(client.content(config["Org"]+"/"+config["Repo"],:path=>path).content)
+        rescue Exception, Interrupt
+          puts "File not found"
+        end
       when scope==TEAM_REPO
-        data=Base64.decode64(client.content(config["Org"]+"/"+config["Repo"],:path=>path).content)
+        begin
+          data=Base64.decode64(client.content(config["Org"]+"/"+config["Repo"],:path=>path).content)
+        rescue Exception, Interrupt
+          puts "File not found"
+        end
       end
-
       # s=Sys.new()
       # s.createTempFile(data)
       # s.execute_bash("vi -R #{data}")
       puts data
-
     else
       puts "#{path} is not a file."
     end
@@ -313,29 +349,34 @@ class Repositories
       when scope==USER_REPO
         if config["Repo"].split("/").size > 1
           begin
-            puts "here"
             list=client.content(config["Repo"],:path=>path)
-            raise "No files found"
-            show=false
-          rescue Exception
+          rescue Exception, Interrupt => e
             puts "No files found"
+            show=false
           end
         else
           begin
-            puts "here"
             list=client.content(config["User"]+"/"+config["Repo"],:path=>path)
-            raise "No files found"
-            show=false
-          rescue Exception
+          rescue Exception, Interrupt => e
             puts "No files found"
+            show=false
           end
-
         end
 
       when scope==ORGS_REPO
-        list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
+        begin
+          list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
+        rescue Exception, Interrupt => e
+          puts "No files found"
+          show=false
+        end
       when scope==TEAM_REPO
-        list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
+        begin
+          list=client.content(config["Org"]+"/"+config["Repo"],:path=>path)
+        rescue Exception, Interrupt => e
+          puts "No files found"
+          show=false
+        end
       end
       if show!=false
         self.show_files(list)

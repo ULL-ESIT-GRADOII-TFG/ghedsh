@@ -13,6 +13,11 @@ Following the philosophy of Github Education, you can use this application to ma
 
 Ir order to run this program, you need to make an **Access token** from Github with create and edit scope. When you run the program, it asks you the access token to identify yourself with no need to use your user and password.
 
+[Link to create a new personal access token](https://github.com/settings/tokens/new?description=ghedsh)
+
+You need to tick all options, unless admin:gpg_key scopes.  
+
+
 ##Running the program in your computer
 
 To start using the program, put "rake bash" or "rake" in your command line in the main folder of this program. You can invoke the binary file using the command *ghedsh*.
@@ -141,7 +146,10 @@ commits
 ```
 Muestra los commits del repositorio en el que se encuentre el usuario.
 
-
+```sh
+issues
+```
+Muestra los issues del repositorio en el que se encuentre el usuario.
 
 
 

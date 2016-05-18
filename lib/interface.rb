@@ -306,7 +306,7 @@ class Interface
 
   def commits()
     c=Repositories.new
-    if @deep==ORGS_REPO || @deep==USER_REPO
+    if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
       c.show_commits(@client,@config,@deep)
     end
     print "\n"
@@ -371,6 +371,10 @@ class Interface
       	    t.show_teams_bs(@client,@config)
       	  end
         when op == "commits" then self.commits()
+        when op == "issues"
+          if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+            r.show_issues(@client,@config,@deep)
+          end
         when op == "col" then self.collaborators()
         when op == "forks" then self.show_forks()
         when op == "groups"
