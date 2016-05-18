@@ -25,11 +25,12 @@ class Interface
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
-  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos
+  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos, :repo_path
 
   def initialize
     @sysbh=Sys.new()
     @repos_list=[]; @orgs_repos=[]; @teams_repos=[]; @orgs_list=[]; @teamlist=[]
+    @repo_path=''
 
     options=@sysbh.parse
 
@@ -53,11 +54,26 @@ class Interface
   def prompt()
     case
       when @deep == USER then return @config["User"]+"> "
-      when @deep == USER_REPO then return @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+"> "
+      when @deep == USER_REPO
+        if @repo_path!=""
+          @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+">"+"#{@repo_path}"+"> "
+        else
+          return @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+"> "
+        end
       when @deep == ORGS then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
       when @deep == TEAM then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+"> "
-      when @deep == TEAM_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
-      when @deep == ORGS_REPO then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
+      when @deep == TEAM_REPO
+        if @repo_path!=""
+          return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+">"+"#{@repo_path}"+"> "
+        else
+          return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
+        end
+      when @deep == ORGS_REPO then
+        if @repo_path!=""
+          return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+">"+"#{@repo_path}"+"> "
+        else
+          return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[31m#{@config["Repo"]}\e[0m"+"> "
+        end
     end
   end
 
@@ -88,19 +104,49 @@ class Interface
           @deep=1
           @orgs_repos=[]
         when @deep == ORGS_REPO
-          @config["Repo"]=nil
-          @deep=2
+          if @repo_path==""
+            @config["Repo"]=nil
+            @deep=2
+          else
+            aux=@repo_path.split("/")
+            aux.pop
+            if aux.empty?
+              @repo_path=""
+            else
+              @repo_path=aux.join("/")
+            end
+          end
         when @deep == USER_REPO
-          @config["Repo"]=nil
-          @deep=1
+          if @repo_path==""
+            @config["Repo"]=nil
+            @deep=1
+          else
+            aux=@repo_path.split("/")
+            aux.pop
+            if aux.empty?
+              @repo_path=""
+            else
+              @repo_path=aux.join("/")
+            end
+          end
         when @deep == TEAM
           @config["Team"]=nil
           @config["TeamID"]=nil
           @teams_repos=[]
           @deep=2
         when @deep == TEAM_REPO
-          @config["Repo"]=nil
-          @deep=TEAM
+          if @repo_path==""
+            @config["Repo"]=nil
+            @deep=TEAM
+          else
+            aux=@repo_path.split("/")
+            aux.pop
+            if aux.empty?
+              @repo_path=""
+            else
+              @repo_path=aux.join("/")
+            end
+          end
       end
     else
       @config["Org"]=nil
@@ -109,12 +155,17 @@ class Interface
       @config["TeamID"]=nil
       @deep=1
       @orgs_repos=[]; @teams_repos=[]
+      @repo_path=""
     end
   end
 
   #Go to the path, depends with the scope
   #if you are in user scope, first searchs Orgs then Repos, etc.
   def cd(path)
+    if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+      self.cdrepo(path)
+    end
+
     path_split=path.split("/")
     if path_split.size==1                   ##cd con path simple
       case
@@ -181,7 +232,6 @@ class Interface
           puts "\nNo team is available with that name"
         end
       end
-
     end
   end
 
@@ -225,6 +275,23 @@ class Interface
       end
     end
     if @deep==USER || @deep==ORGS || @deep==TEAM then puts "No repository is available with that name\n\n" end
+  end
+
+  def cdrepo(path)
+    r=Repositories.new()
+    list=[]
+
+    if @repo_path==""
+      newpath=path
+    else
+      newpath=@repo_path+"/"+path
+    end
+    list=r.get_files(@client,@config,newpath,false,@deep)
+    if list==nil
+      puts "Wrong path name"
+    else
+      @repo_path=newpath
+    end
   end
 
   def orgs()
@@ -381,6 +448,8 @@ class Interface
           if @deep==ORGS
             t.list_groups(@client,@config)
           end
+        when op == "version"
+          puts "GitHub Education Shell v#{Ghedsh::VERSION}"
       end
 
       if opcd[0]=="cd" and opcd[1]!=".."
@@ -480,9 +549,9 @@ class Interface
       end
       if opcd[0]=="files"
         if opcd.size==1
-          r.get_files(@client,@config,'',@deep)
+          r.get_files(@client,@config,@repo_path,true,@deep)
         else
-          r.get_files(@client,@config,opcd[1],@deep)
+          r.get_files(@client,@config,opcd[1],true,@deep)
         end
       end
       if opcd[0]=="cat" and opcd.size>1

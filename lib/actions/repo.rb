@@ -341,9 +341,8 @@ class Repositories
     end
   end
 
-  def get_files(client,config,path,scope)
-     #Base64.decode64(data['content'])
-    show=true
+  def get_files(client,config,path,show,scope)
+    #show=true
     if path.match(/.\./)==nil
       case
       when scope==USER_REPO
@@ -380,6 +379,8 @@ class Repositories
       end
       if show!=false
         self.show_files(list)
+      else
+        return list  
       end
     else
       puts "#{path} is not a directory. If you want to open a file try to use cat <path>"
