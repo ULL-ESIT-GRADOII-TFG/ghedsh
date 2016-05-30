@@ -9,25 +9,21 @@ This program give you an interaction with Github like you was using your command
 
 Following the philosophy of Github Education, you can use this application to managing your own organization as a classroom where you can make assignments to your students using repository strategies.    
 
-##First step: Oauth requirements.
+##Installing GHEDSH
+
+You can download the gem **ghdesh** from rubygem.
+
+``gem install ghdesh``
+
+To run the app you need to call the binary file "ghedsh" in your command line after install it.  
+
+###First step: Oauth requirements.
 
 Ir order to run this program, you need to make an **Access token** from Github with create and edit scope. When you run the program, it asks you the access token to identify yourself with no need to use your user and password.
 
 [Link to create a new personal access token](https://github.com/settings/tokens/new?description=ghedsh)
 
 You need to tick all options, unless admin:gpg_key scopes.  
-
-
-##Running the program in your computer
-
-To start using the program, put "rake bash" or "rake" in your command line in the main folder of this program. You can invoke the binary file using the command *ghedsh*.
-
-##Using the gem
-Instead of download the program from the repository, you can download the gem **ghdesh** from rubygem.
-
-``gem install ghdesh``
-
-To run the app you need to call the binary file "ghedsh" in your command line after install it.  
 
 ###ghedsh executable options
 
@@ -152,7 +148,7 @@ issues
 Muestra los issues del repositorio en el que se encuentre el usuario.
 
 
-
-
 ##Aditional information
+[GHEDSH extended info](https://alu0100505023.gitbooks.io/ghedsh/content/en/)
+
 [Github Education](https://education.github.com/)
