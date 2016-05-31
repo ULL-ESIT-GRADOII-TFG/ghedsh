@@ -49,9 +49,23 @@ class Repositories
         #print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
         puts "##{i[:number]} state: #{i[:state]} -> #{i[:title]} "
       end
+      return mem
       puts "\n"
   end
 
+  def get_issues(client,config,scope)
+    case
+    when scope==USER_REPO
+      if config["Repo"].split("/").size == 1
+        mem=client.list_issues(config["User"]+"/"+config["Repo"],{:state=>"all"})
+      else
+        mem=client.list_issues(config["Repo"],{:state=>"all"})
+      end
+    when scope==ORGS_REPO || scope==TEAM_REPO
+        mem=client.list_issues(config["Org"]+"/"+config["Repo"],{:state=>"all"})
+    end
+    return mem
+  end
   #Show repositories and return a list of them
   #exp = regular expression
   def show_repos(client,config,scope,exp)
@@ -380,7 +394,7 @@ class Repositories
       if show!=false
         self.show_files(list)
       else
-        return list  
+        return list
       end
     else
       puts "#{path} is not a directory. If you want to open a file try to use cat <path>"

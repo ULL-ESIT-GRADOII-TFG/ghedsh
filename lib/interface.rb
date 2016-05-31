@@ -25,7 +25,7 @@ class Interface
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
-  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos, :repo_path
+  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos, :repo_path, :issues_list
 
   def initialize
     @sysbh=Sys.new()
@@ -449,7 +449,7 @@ class Interface
         when op == "commits" then self.commits()
         when op == "issues"
           if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
-            r.show_issues(@client,@config,@deep)
+            @issues_list=r.show_issues(@client,@config,@deep)
           end
         when op == "col" then self.collaborators()
         when op == "forks" then self.show_forks()
@@ -461,8 +461,26 @@ class Interface
           puts "GitHub Education Shell v#{Ghedsh::VERSION}"
       end
 
+      if opcd[0]=="issue" and opcd.size>1
+        issfound=0
+        @issues_list=r.get_issues(@client,@config,@deep)
+        if @issues_list!=nil
+          @issues_list.each do |i|
+            if i[:number]==opcd[1].to_i
+              puts "##{i[:number]} state: #{i[:state]} -> #{i[:title]} \n"
+              puts "#{i[:body]}"
+              issfound=1
+            end
+          end
+        end
+        if issfound==0
+          puts "Issue not found"
+        end
+        puts "\n"
+      end
+
       if opcd[0]=="cd" and opcd[1]!=".."
-        if opcd[1]=="/"
+        if opcd[1]=="/" or opcd.size==1
           self.cdback(true)
         else
           if opcd[1]=="repo" and opcd.size>2
