@@ -4,6 +4,7 @@
 /lib/pruebas.rb
 /lib/db/assignments2.json
 .ghedsh
+script
 
 *.gem
 *.rbc

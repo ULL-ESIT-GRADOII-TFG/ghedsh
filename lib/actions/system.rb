@@ -174,6 +174,16 @@ class Sys
       return config
   end
 
+  def load_script(path)
+    if (File.exist?(path))==true
+      script = File.read("#{path}")
+      return script.split("\n")
+    else
+      puts "No script is found with that name"
+      return []
+    end
+  end
+
   def load_groups(path)
     if (File.exist?(path))==true
       if File.exist?("#{path}/groups.json")

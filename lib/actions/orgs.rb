@@ -31,9 +31,11 @@ class Organizations
   end
 
   def create_assig(client,config,data)
+
   end
 
   def add_team_to_assig(client,config,data)
+    
   end
   #------------End assig. stuff------------
 

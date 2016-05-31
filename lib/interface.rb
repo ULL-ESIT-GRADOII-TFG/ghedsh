@@ -396,6 +396,7 @@ class Interface
   #Main program
   def run(config_path, argv_token,user)
     ex=1
+    opscript=[]
 
     @sysbh.write_initial_memory()
     HelpM.new.welcome()
@@ -424,8 +425,15 @@ class Interface
 
     while ex != 0
 
-      op=Readline.readline(self.prompt,true)
-      opcd=op.split
+      if opscript.empty?
+        op=Readline.readline(self.prompt,true)
+        opcd=op.split
+      else
+        op=opscript[0]
+        opcd=op.split
+        opscript.delete(opscript[0])
+      end
+
       case
         when op == "exit" then ex=0
           s.save_cache(config_path,@config)
@@ -462,6 +470,9 @@ class Interface
             self.cd(opcd[1])
           end
         end
+      end
+      if opcd[0]=="do" and opcd.size>1
+        opscript=s.load_script(opcd[1])
       end
       if opcd[0]=="set"
         self.set(opcd[1])
