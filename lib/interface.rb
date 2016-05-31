@@ -221,6 +221,7 @@ class Interface
           end
         else
           puts "\nNo organization is available with that name"
+          self.set(path)
         end
       when @deep==ORGS
         if aux[path_split[0]]!=nil
