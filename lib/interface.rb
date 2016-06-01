@@ -17,6 +17,7 @@ ORGS=2
 USER_REPO=10
 ORGS_REPO=3
 TEAM=4
+ASSIG=6
 TEAM_REPO=5
 
 class Interface
@@ -46,7 +47,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-        #puts e
+        puts e
       end
     end
   end
@@ -61,6 +62,7 @@ class Interface
           return @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+"> "
         end
       when @deep == ORGS then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
+      when @deep == ASSIG then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
       when @deep == TEAM then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+"> "
       when @deep == TEAM_REPO
         if @repo_path!=""
@@ -295,6 +297,14 @@ class Interface
     end
   end
 
+  def cdassig(path)
+    o=Organizations.new()
+    list=o.get_assigs(@client,@config)
+    if list.one?{|aux| aux==path}
+    else
+    end  
+  end
+
   def orgs()
     case
     when @deep==USER
@@ -401,7 +411,7 @@ class Interface
 
     @sysbh.write_initial_memory()
     HelpM.new.welcome()
-
+    o=Organizations.new
     t=Teams.new
     r=Repositories.new
     s=Sys.new
@@ -459,6 +469,10 @@ class Interface
           end
         when op == "version"
           puts "GitHub Education Shell v#{Ghedsh::VERSION}"
+        when op == "assignments"
+          if @deep==ORGS
+            o.show_assignments(@cliente,@config)
+          end
       end
 
       if opcd[0]=="issue" and opcd.size>1
@@ -550,10 +564,11 @@ class Interface
       if opcd[0]=="new_repository" and opcd.size==2
         r.create_repository(@client,@config,opcd[1],@deep)
       end
-      if opcd[0]=="new_assignment" and opcd.size>2
+      if opcd[0]=="new_assignment" and opcd.size>1 #2
         case
         when @deep==ORGS
-          r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
+          #r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
+          o.create_assig(@client,@config,opcd[1])
         end
       end
       if opcd[0]=="new_group" and opcd.size>2

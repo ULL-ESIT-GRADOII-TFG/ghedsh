@@ -9,7 +9,8 @@ require 'version'
 class Sys
   attr_reader :client
   attr_reader :memory
-  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone ', 'issues', 'version'].sort
+  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone ', 'issues',
+    'version', 'cat ', 'groups', 'files', 'assignments'].sort
 
   def initialize()
     @memory=[]
@@ -165,13 +166,17 @@ class Sys
 
   def load_assig_db(path)
     if (File.exist?(path))==true
-      json = File.read("#{path}/db/assignments.json")
-    else
-      #path="/db/assignments.json"
-      #json = File.read(path)
+      if File.exist?("#{path}/assignments.json")
+        json = File.read("#{path}/assignments.json")
+      else
+        #{"Organization":[{"name":null,"assignments":[{"name":null,"teams":{"teamid":null}}]}]}
+        con={:orgs=>[]}
+        File.write("#{path}/assignments.json",con.to_json)
+        json = File.read("#{path}/assignments.json")
+      end
     end
-      config=JSON.parse(json)
-      return config
+    config=JSON.parse(json)
+    return config
   end
 
   def load_script(path)
@@ -203,6 +208,10 @@ class Sys
 
   def save_groups(path,data)
     File.write("#{path}/groups.json",data.to_json)
+  end
+
+  def save_assigs(path,data)
+    File.write("#{path}/assignments.json",data.to_json)
   end
 
   #creates all ghedsh local stuff

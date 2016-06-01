@@ -12,30 +12,86 @@ class Organizations
 
   def load_assig()
     @assiglist=Hash.new()
-    @assiglist=Sys.new.load_assig_db()
+    @assiglist=Sys.new.load_assig_db("#{ENV['HOME']}/.ghedsh")
     return @assiglist
   end
 
-  def show_assignements() #client,orgs
-    @assiglist["Organization"].each do |org|
-      puts org["name"]
+  def show_assignments(client, config) #client,orgs
+    list=self.load_assig()
 
-      org["assignements"].each do |assig|
-        puts assig["name"]
+    assig=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    if assig!=nil
+      if assig["assigs"].empty?
+        puts "No assignments are available yet"
+      else
+        assig["assigs"].each do |i|
+          puts "\n"
+          puts i["name_assig"]
+          # i["teams"].each do |j|
+          #     puts "\t#{j}"
+          # end
+        end
       end
-
+    else
+      puts "No assignments are available yet"
+      list["orgs"].push({"name"=>config["Org"],"assigs"=>[]})
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
     end
-  end
-  def get_assig()
-    return @assiglist
-  end
-
-  def create_assig(client,config,data)
 
   end
+
+  def create_assig(client,config,name)
+
+    puts "here"
+    list=self.load_assig()
+    assigs=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+
+    if assigs==nil
+      list["orgs"].push({"name"=>config["Org"],"assigs"=>[]})
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    end
+
+    begin
+      list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>[],"repo"=>nil})
+    rescue Exception => e
+      puts e
+    end
+    Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+
+  end
+
+
+  def get_assigs()
+    list=self.load_assig()
+    assiglist=[]
+    assig=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    if assig!=nil
+      if assig["assigs"].empty?
+        puts "No assignments are available yet"
+      else
+        assig["assigs"].each do |i|
+          assiglist.push(i["name_assig"])
+        end
+      end
+    else
+      list["orgs"].push({"name"=>config["Org"],"assigs"=>[]})
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    end
+    return assiglist
+  end
+
+
 
   def add_team_to_assig(client,config,data)
-    
+
+  end
+
+  def add_group_to_assig(client,config,data)
+
+  end
+
+  def add_repo_to_assig(client,config,data)
+
   end
   #------------End assig. stuff------------
 
