@@ -15,7 +15,7 @@ You can download the gem **ghdesh** from rubygem.
 
 ``gem install ghdesh``
 
-To run the app you need to call the binary file "ghedsh" in your command line after install it.  
+To run the app you need to call the binary file "ghedsh" in your command line after install it. Configuration files are being set in a hidden directory called *.ghedsh*, in your Home path.  
 
 ###First step: Oauth requirements.
 

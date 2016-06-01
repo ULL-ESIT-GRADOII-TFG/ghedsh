@@ -27,6 +27,9 @@ class Organizations
         assig["assigs"].each do |i|
           puts "\n"
           puts i["name_assig"]
+          puts "Repository: #{i["repo"]}"
+          puts "Groups: "
+          puts "Teams: "
           # i["teams"].each do |j|
           #     puts "\t#{j}"
           # end
@@ -41,8 +44,6 @@ class Organizations
   end
 
   def create_assig(client,config,name)
-
-    puts "here"
     list=self.load_assig()
     assigs=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
 
@@ -61,7 +62,7 @@ class Organizations
   end
 
 
-  def get_assigs()
+  def get_assigs(client,config)
     list=self.load_assig()
     assiglist=[]
     assig=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
@@ -91,6 +92,11 @@ class Organizations
   end
 
   def add_repo_to_assig(client,config,data)
+    options=Hash.new
+    options[:organization]=config["Org"]
+    options[:auto_init]=true
+
+    client.create_repository(data,options)
 
   end
   #------------End assig. stuff------------

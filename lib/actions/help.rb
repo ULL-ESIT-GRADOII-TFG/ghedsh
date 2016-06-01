@@ -64,6 +64,7 @@ class HelpM
 
   def common_opt()
     puts "\nList of commands\n"
+    print "\tdo\t\t\trun a script in ghedsh execute path\n"
     print "\texit\t\t\texit from this program\n"
     print "\thelp\t\t\tlist of commands available\n"
     print "\tcd\t\t\tgo to the path\n"

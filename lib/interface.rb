@@ -26,7 +26,7 @@ class Interface
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
-  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos, :repo_path, :issues_list
+  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos, :repo_path, :assig_path, :issues_list
 
   def initialize
     @sysbh=Sys.new()
@@ -62,7 +62,7 @@ class Interface
           return @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+"> "
         end
       when @deep == ORGS then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
-      when @deep == ASSIG then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
+      when @deep == ASSIG then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+">"+"\e[35m#{@assig_path}\e[0m"+"> "
       when @deep == TEAM then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+"> "
       when @deep == TEAM_REPO
         if @repo_path!=""
@@ -136,6 +136,9 @@ class Interface
           @config["TeamID"]=nil
           @teams_repos=[]
           @deep=2
+        when @deep == ASSIG
+          @deep=ORGS
+          @assig_path=""
         when @deep == TEAM_REPO
           if @repo_path==""
             @config["Repo"]=nil
@@ -157,7 +160,7 @@ class Interface
       @config["TeamID"]=nil
       @deep=1
       @orgs_repos=[]; @teams_repos=[]
-      @repo_path=""
+      @repo_path=""; @assig_path="";
     end
   end
 
@@ -191,7 +194,9 @@ class Interface
           @deep=TEAM
         else
           puts "\nNo team is available with that name"
-          self.set(path)
+          if cdassig(path)==false
+            self.set(path)
+          end
         end
       when @deep == TEAM
         self.set(path)
@@ -301,8 +306,14 @@ class Interface
     o=Organizations.new()
     list=o.get_assigs(@client,@config)
     if list.one?{|aux| aux==path}
+      @deep=ASSIG
+      @assig_path=path
+      puts "Set in #{@config["Org"]} assignment: #{path}\n\n"
+      return true
     else
-    end  
+      puts "No assignment is available with that name"
+      return false
+    end
   end
 
   def orgs()
