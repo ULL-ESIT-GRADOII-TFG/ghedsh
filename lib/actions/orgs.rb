@@ -29,11 +29,12 @@ class Organizations
           puts "\n"
           puts i["name_assig"]
           puts "Repository: #{i["repo"]}"
-          puts "Groups: "
-          puts "Teams: "
-          # i["teams"].each do |j|
-          #     puts "\t#{j}"
-          # end
+          print "Groups: "
+          i["groups"].each do |y|
+            print y
+            print " "
+          end
+          print "\n"
         end
       end
     else
@@ -70,22 +71,38 @@ class Organizations
     when op=="1" || op=="2"
       puts "Name of the repository: "
       reponame=gets.chomp
+      if client.repository?("#{config["Org"]}/#{reponame}")==false
+        puts "The repository #{reponame} doesn't exist"
+        reponame=nil
+      end
       if op=="2"
         Repositories.new().create_repository(client,config,reponame,ORGS)
       end
-
     when op=="3" then reponame=""
     end
 
+    groupslist=Teams.new().get_groupslist(config)
+    puts "Add groups to your assignment (Press enter to skip): "
+    op=gets.chomp
+    if op!=nil
+
+      groupsadd=op.split(" ")
+      groupsadd.each do |item|
+        if groupslist.detect{|aux| aux==item}==nil
+          groupsadd.delete(item)
+        end
+      end
+    else
+      groupsadd=[]
+    end
+
     begin
-      list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>[],"repo"=>reponame})
+      list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>groupsadd,"repo"=>reponame})
     rescue Exception => e
       puts e
     end
     Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
-
   end
-
 
   def get_assigs(client,config)
     list=self.load_assig()

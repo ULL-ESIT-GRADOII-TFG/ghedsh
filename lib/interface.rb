@@ -577,6 +577,11 @@ class Interface
         @teamlist=t.read_teamlist(@client,@config)
         @sysbh.add_history_str(1,@teamlist)
       end
+      if opcd[0]=="rm_group" and opcd.size==2
+        if @deep==ORGS
+          t.delete_group(@config,opcd[1])
+        end
+      end
       if opcd[0]=="new_team" and opcd.size>2
       	t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
       	@teamlist=t.read_teamlist(@client,@config)

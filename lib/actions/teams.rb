@@ -115,6 +115,17 @@ class Teams
     end
   end
 
+  def get_groupslist(config)
+    sys=Sys.new()
+    grouplist=[]
+    list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
+    groups=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    groups["groups"].each do |i|
+      grouplist.push(i["name_group"])
+    end
+    return grouplist 
+  end
+
   def new_group(client,config,name,listgroups)
     sys=Sys.new()
     list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
@@ -147,12 +158,33 @@ class Teams
   end
 
   def delete_group(config,name)
-    puts "Group #{name} will be deleted Are your sure?"
+    sys=Sys.new()
+    list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
+    groups=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+
+    if groups!=nil
+      if groups["groups"].empty?
+        puts "No groups are available yet"
+      else
+        del=groups["groups"].detect{|aux| aux["name_group"]==name}
+        if del==nil
+          puts "Group not found"
+        else
+          puts "Group #{name} will be deleted Are your sure? (Press y to confirm)"
+          op=gets.chomp
+          if op=="y"
+            list["orgs"].detect{|aux| aux["name"]==config["Org"]}["groups"].delete(groups["groups"].detect{|aux2| aux2["name_group"]==name})
+            sys.save_groups("#{ENV['HOME']}/.ghedsh",list)
+          end
+        end
+      end
+    end
+
   end
 
-  def add_to_group(config,list)
+  def add_to_group(config,name)
   end
 
-  def del_of_group(config,list)
+  def del_of_group(config,name)
   end
 end
