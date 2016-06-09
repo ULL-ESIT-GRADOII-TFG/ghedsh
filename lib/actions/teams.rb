@@ -72,6 +72,22 @@ class Teams
     print "\n"
   end
 
+  def get_team_members(client,config,team)
+    memberlist=[]
+    if @teamlist.empty?
+      self.read_teamlist(client,config)
+    end
+
+    if @teamlist["#{team}"]!=nil
+      mem=client.team_members(@teamlist["#{team}"])
+      mem.each do |i|
+        m=eval(i.inspect)
+        memberlist.push(m[:login])
+      end
+    end
+    return memberlist
+  end
+
   def list_groups(client,config)
     sys=Sys.new()
     list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
@@ -80,11 +96,15 @@ class Teams
       if groups["groups"].empty?
         puts "No groups are available yet"
       else
+        puts "\nGroup\tTeams\tMembers"
         groups["groups"].each do |i|
           puts "\n"
           puts i["name_group"]
           i["teams"].each do |j|
               puts "\t#{j}"
+              self.get_team_members(client,config,j).each do |k|
+                puts "\t\t#{k}"
+              end
           end
         end
       end
@@ -126,12 +146,13 @@ class Teams
     end
   end
 
-  def delete_group()
+  def delete_group(config,name)
+    puts "Group #{name} will be deleted Are your sure?"
   end
 
-  def add_to_group()
+  def add_to_group(config,list)
   end
 
-  def del_of_group()
+  def del_of_group(config,list)
   end
 end

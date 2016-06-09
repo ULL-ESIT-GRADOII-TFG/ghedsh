@@ -3,6 +3,7 @@ require 'octokit'
 require 'json'
 require 'require_all'
 require_rel '.'
+require 'readline'
 
 class Organizations
 
@@ -52,8 +53,32 @@ class Organizations
       Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
     end
 
+    ex=false
+    until ex==true
+      puts "Assignment: #{name}"
+      puts "1) Add a repository already created "
+      puts "2) Create a new empty repository"
+      puts "3) Don't assign a repository yet"
+      print "option => "
+      op=gets.chomp
+      if op=="3" or op=="1" or op=="2"
+        ex=true
+      end
+    end
+
+    case
+    when op=="1" || op=="2"
+      puts "Name of the repository: "
+      reponame=gets.chomp
+      if op=="2"
+        Repositories.new().create_repository(client,config,reponame,ORGS)
+      end
+
+    when op=="3" then reponame=""
+    end
+
     begin
-      list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>[],"repo"=>nil})
+      list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>[],"repo"=>reponame})
     rescue Exception => e
       puts e
     end

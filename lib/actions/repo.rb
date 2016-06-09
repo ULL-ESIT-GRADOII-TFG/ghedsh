@@ -228,16 +228,17 @@ class Repositories
 
   def create_repository(client,config,repo,scope)
     options=Hash.new
+    options[:auto_init]=true
     case
     when scope==ORGS
-      puts "created repository in org"
+      puts "created repository in #{config["Org"]}"
       options[:organization]=config["Org"]
       client.create_repository(repo,options)
     when scope==USER
       puts "created repository in user"
       client.create_repository(repo)
     when scope==TEAM
-      puts "created repository in org team"
+      puts "created repository in #{config["Org"]} team"
       options[:team_id]=config["TeamID"]
       options[:organization]=config["Org"]
       client.create_repository(config["Team"]+"/"+repo,options)
