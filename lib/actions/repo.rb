@@ -33,6 +33,38 @@ class Repositories
     end
   end
 
+  def open_issue(client,config,scope)
+    puts "Insert Issue tittle: "
+    tittle=gets.chomp
+    puts "Add a description: "
+    desc=gets.chomp
+
+    case
+    when scope==USER_REPO
+      if config["Repo"].split("/").size == 1
+        client.create_issue(config["User"]+"/"+config["Repo"],tittle,desc)
+      else
+        client.create_issue(config["Repo"],tittle,desc)
+      end
+    when scope==ORGS_REPO || scope==TEAM_REPO
+      client.create_issue(config["Org"]+"/"+config["Repo"],tittle,desc)
+    end
+
+  end
+
+  def close_issue(client,config,scope,id)
+    case
+    when scope==USER_REPO
+      if config["Repo"].split("/").size == 1
+        client.close_issue(config["User"]+"/"+config["Repo"],id)
+      else
+        client.close_issue(config["Repo"],id)
+      end
+    when scope==ORGS_REPO || scope==TEAM_REPO
+      client.close_issue(config["Org"]+"/"+config["Repo"],id)
+    end
+  end
+
   def show_issues(client,config,scope)
       print "\n"
       case

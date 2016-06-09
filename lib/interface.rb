@@ -561,6 +561,16 @@ class Interface
       	@teamlist=t.read_teamlist(@client,@config)
       	@sysbh.add_history_str(1,@teamlist)
       end
+      if opcd[0]=="new_issue" and opcd.size==1
+        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+          r.open_issue(@client,@config,@deep)
+        end
+      end
+      if opcd[0]=="close_issue" and opcd.size==2
+        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+          r.close_issue(@client,@config,@deep,opcd[1])
+        end
+      end
       if opcd[0]=="rm_team"
         t.delete_team(@client,@teamlist[opcd[1]])
         self.quit_history(@teamlist[opcd[1]])

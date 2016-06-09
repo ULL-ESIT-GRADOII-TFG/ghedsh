@@ -126,4 +126,12 @@ class Teams
     end
   end
 
+  def delete_group()
+  end
+
+  def add_to_group()
+  end
+
+  def del_of_group()
+  end
 end
