@@ -1,3 +1,3 @@
 module Ghedsh
-  VERSION='1.1.16'
+  VERSION='1.1.18'
 end

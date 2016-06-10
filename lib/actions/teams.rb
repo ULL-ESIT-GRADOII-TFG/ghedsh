@@ -123,7 +123,7 @@ class Teams
     groups["groups"].each do |i|
       grouplist.push(i["name_group"])
     end
-    return grouplist 
+    return grouplist
   end
 
   def new_group(client,config,name,listgroups)
@@ -186,5 +186,7 @@ class Teams
   end
 
   def del_of_group(config,name)
+    #list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
+    #list["orgs"].detect{|aux| aux["name"]==config["Org"]}["groups"].delete(groups["groups"].detect{|aux2| aux2["name_group"]==name})
   end
 end

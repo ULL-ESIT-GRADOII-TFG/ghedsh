@@ -102,6 +102,11 @@ new_team <nombre> <miembro1> <miembro2> ...
 Crea un equipo a al que le sera asignado uno o varios miembros de la organizacion.
 
 ```sh
+rm_team <nombre> <miembro1> <miembro2> ...
+```
+Borra un equipo de una organizacion.
+
+```sh
 add_to_team <miembro1> <miembro2> ...
 ```
 
@@ -113,9 +118,24 @@ new_group <nombre> <equipo1> <equipo2> ...
 Dentro de una organizacion, crea grupos donde asignar equipos de trabajo.
 
 ```sh
+rm_group <nombre> <equipo1> <equipo2> ...
+```
+Dentro de una organizacion, borra un grupo de trabajo.
+
+```sh
 groups
 ```
 Muestra los grupos de equipos de una organizacion.
+
+```sh
+assignments
+```
+Muestra las tareas o asignaciones hechas para una organizacion.
+
+```sh
+new_assignment <nombre>
+```
+Crea una assignacion para una organizacion. Espera por parametro el nombre. Tras ejecutar el comando pedira un repositorio ya existente, la creacion de uno nuevo o la no insercion de un repositorio. Ademas esperara una lista de grupos para asignar a la tarea.
 
 ```sh
 clone <nombre>
@@ -146,6 +166,20 @@ Muestra los commits del repositorio en el que se encuentre el usuario.
 issues
 ```
 Muestra los issues del repositorio en el que se encuentre el usuario.
+
+```sh
+new_issue <nombre>
+```
+Crea un nuevo issue estando situado en un repositorio especifico. El titulo sera dado por parametro, y la descripcion sera introducida tras ejecutar el comando.
+
+```sh
+close_issue <id>
+```
+Cierra un issue especifico dentro de un repositorio. Se debe especificar el issue mediante la id del mismo.
+
+
+
+
 
 
 ##Aditional information
