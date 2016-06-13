@@ -135,7 +135,12 @@ Muestra las tareas o asignaciones hechas para una organizacion.
 ```sh
 new_assignment <nombre>
 ```
-Crea una assignacion para una organizacion. Espera por parametro el nombre. Tras ejecutar el comando pedira un repositorio ya existente, la creacion de uno nuevo o la no insercion de un repositorio. Ademas esperara una lista de grupos para asignar a la tarea.
+Crea una asignacion para una organizacion. Espera por parametro el nombre. Tras ejecutar el comando pedira un repositorio ya existente, la creacion de uno nuevo o la no insercion de un repositorio. Ademas esperara una lista de grupos para asignar a la tarea.
+
+```sh
+make <nombre>
+```
+Situado dentro de una asignacion o tarea, se creara un repositorio para cada equipo que pertenezca al grupo o grupos asignados. 
 
 ```sh
 clone <nombre>
