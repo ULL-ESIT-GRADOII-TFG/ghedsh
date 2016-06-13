@@ -482,7 +482,11 @@ class Interface
           puts "GitHub Education Shell v#{Ghedsh::VERSION}"
         when op == "assignments"
           if @deep==ORGS
-            o.show_assignments(@cliente,@config)
+            o.show_assignments(@client,@config)
+          end
+        when op =="make"
+          if @deep==ASSIG
+            o.make_assig(@client,@config,@assig_path)
           end
       end
 

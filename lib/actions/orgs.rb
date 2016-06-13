@@ -123,7 +123,45 @@ class Organizations
     return assiglist
   end
 
+  def get_single_assig(config,wanted)
+    list=self.load_assig()
+    as=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    as=as["assigs"].detect{|aux| aux["name_assig"]==wanted}
+    puts as
+    return as
+  end
 
+  def make_assig(client,config,assig)
+    web="https://github.com/"
+    web2="git@github.com:"
+    repo=Repositories.new()
+    team=Teams.new()
+    teamlist=team.read_teamlist(client,config)
+    assig=self.get_single_assig(config,assig)
+
+    if assig["repo"]!=""
+
+      system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git")
+      system("cd ./#{assig["repo"]}")
+
+      assig["groups"].each do |i|
+        teamsforgroup=team.get_single_group(config,i)
+        teamsforgroup.each do |y|
+          config["TeamID"]=teamlist["#{y}"]
+          config["Team"]=y
+          repo.create_repository(client,config,"#{y}-#{assig["repo"]}",TEAM)
+          #system("git-C #{assig["repo"]} remote rm origin")
+        #  system("git -C #{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{y}-#{assig["repo"]}.git")
+          system("git -C #{assig["repo"]} remote set-url origin #{web2}#{config["Org"]}/#{y}-#{assig["repo"]}.git")
+          system("git -C #{assig["repo"]} push origin --all")
+        end
+      end
+    else
+      puts "No repository is given for this assignment"
+    end
+
+
+  end
 
   def add_team_to_assig(client,config,data)
 

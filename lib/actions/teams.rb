@@ -126,6 +126,14 @@ class Teams
     return grouplist
   end
 
+  def get_single_group(config,wanted)
+    sys=Sys.new()
+    list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
+    w=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    w=w["groups"].detect{|aux| aux["name_group"]==wanted}
+    return w["teams"]
+  end
+
   def new_group(client,config,name,listgroups)
     sys=Sys.new()
     list=sys.load_groups("#{ENV['HOME']}/.ghedsh")

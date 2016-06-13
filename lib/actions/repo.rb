@@ -241,7 +241,7 @@ class Repositories
       puts "created repository in #{config["Org"]} team"
       options[:team_id]=config["TeamID"]
       options[:organization]=config["Org"]
-      client.create_repository(config["Team"]+"/"+repo,options)
+      client.create_repository(repo,options)
     end
   end
 
