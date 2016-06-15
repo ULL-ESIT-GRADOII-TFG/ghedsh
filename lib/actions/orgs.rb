@@ -48,6 +48,7 @@ class Organizations
   def assignment_repository(client,config,name)
     ex=false
     until ex==true
+      puts "\n"
       puts "Assignment: #{name}"
       puts "1) Add a repository already created "
       puts "2) Create a new empty repository"
@@ -80,7 +81,7 @@ class Organizations
     team=Teams.new()
     groupslist=team.get_groupslist(config)
     groupsadd=[]
-
+    puts "\n"
     puts "Add groups to your assignment (Press enter to skip): "
     op=gets.chomp
     if op==""
@@ -158,8 +159,20 @@ class Organizations
     list=self.load_assig()
     as=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     as=as["assigs"].detect{|aux| aux["name_assig"]==wanted}
-    puts as
     return as
+  end
+
+  def show_assig_info(config,assig)
+    assig=self.get_single_assig(config,assig)
+    puts "\n"
+    puts assig["name_assig"]
+    puts "Repository: #{assig["repo"]}"
+    print "Groups: "
+    assig["groups"].each do |y|
+      print y
+      print " "
+    end
+    puts "\n\n"
   end
 
   def make_assig(client,config,assig)
@@ -202,17 +215,27 @@ class Organizations
 
   end
 
-  def add_group_to_assig(client,config,assig,data)
-    assig=self.get_single_assig(config,assig)
-    groupsadd=self.assignment_groups(client,config)
+  def add_group_to_assig(client,config,assig)
+    list=self.load_assig()
 
+    groups=self.assignment_groups(client,config)
+    if groups!=""
+      groups.each do |i|
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["groups"].push(i)
+      end
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    end
   end
 
+
   def add_repo_to_assig(client,config,assig)
+    list=self.load_assig()
 
-    assig=self.get_single_assig(config,assig)
     reponame=self.assignment_repository(client,config,assig["name_assig"])
-
+    if reponame!=""
+      list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo"]=reponame
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    end
   end
   #------------End assig. stuff------------
 

@@ -10,7 +10,7 @@ class Sys
   attr_reader :client
   attr_reader :memory
   LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone ', 'issues',
-    'version', 'cat ', 'groups', 'files', 'assignments','new_issue ', 'open_issue', 'new_','open_', 'close_issue', 'new_group ', 'rm_group', 'rm_', 'do ', 'make'].sort
+    'version', 'cat ', 'groups', 'files', 'assignments','new_issue ', 'open_issue', 'new_','open_', 'close_issue', 'new_group ', 'rm_group', 'rm_', 'do ', 'info','make','add_repo','add_group'].sort
 
   def initialize()
     @memory=[]

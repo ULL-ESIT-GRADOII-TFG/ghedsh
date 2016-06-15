@@ -47,7 +47,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-        #puts e
+        puts e
       end
     end
   end
@@ -183,7 +183,7 @@ class Interface
           @sysbh.add_history_str(1,@teamlist)
           @deep=2
         else
-          puts "\nNo organization is available with that name"
+          #puts "\nNo organization is available with that name"
           self.set(path)
         end
       when @deep == ORGS
@@ -193,7 +193,7 @@ class Interface
           @config["TeamID"]=@teamlist[path]
           @deep=TEAM
         else
-          puts "\nNo team is available with that name"
+          #puts "\nNo team is available with that name"
           if cdassig(path)==false
             self.set(path)
           end
@@ -223,11 +223,11 @@ class Interface
               self.set(path_split[2])
             end
           else
-            puts "\nNo team is available with that name"
+            #puts "\nNo team is available with that name"
             self.set(path_split[1])
           end
         else
-          puts "\nNo organization is available with that name"
+          #puts "\nNo organization is available with that name"
           self.set(path)
         end
       when @deep==ORGS
@@ -237,7 +237,7 @@ class Interface
           @deep=TEAM
           self.set(path_split[1])
         else
-          puts "\nNo team is available with that name"
+          #puts "\nNo team is available with that name"
         end
       end
     end
@@ -282,7 +282,12 @@ class Interface
         puts "Set in #{@config["Team"]} repository: #{path}\n\n"
       end
     end
-    if @deep==USER || @deep==ORGS || @deep==TEAM then puts "No repository is available with that name\n\n" end
+    #if @deep==USER || @deep==ORGS || @deep==TEAM then puts "No repository is available with that name\n\n" end
+    if @deep==USER || @deep==ORGS || @deep==TEAM
+      puts "\nNo organization is available with that name"
+      puts "\nNo team is available with that name"
+      puts "No repository is available with that name\n\n"
+    end
   end
 
   def cdrepo(path)
@@ -478,6 +483,12 @@ class Interface
           if @deep==ORGS
             t.list_groups(@client,@config)
           end
+        when op == "info"
+          if @deep=ASSIG then o.show_assig_info(@config,@assig_path) end
+        when op== "add_repo"
+          if @deep=ASSIG then o.add_repo_to_assig(@client,@config,@assig_path) end
+        when op== "add_group"
+            if @deep=ASSIG then o.add_group_to_assig(@client,@config,@assig_path) end
         when op == "version"
           puts "GitHub Education Shell v#{Ghedsh::VERSION}"
         when op == "assignments"
