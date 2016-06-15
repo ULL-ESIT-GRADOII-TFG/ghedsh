@@ -45,15 +45,7 @@ class Organizations
 
   end
 
-  def create_assig(client,config,name)
-    list=self.load_assig()
-    assigs=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
-
-    if assigs==nil
-      list["orgs"].push({"name"=>config["Org"],"assigs"=>[]})
-      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
-    end
-
+  def assignment_repository(client,config,name)
     ex=false
     until ex==true
       puts "Assignment: #{name}"
@@ -66,35 +58,74 @@ class Organizations
         ex=true
       end
     end
-
     case
     when op=="1" || op=="2"
       puts "Name of the repository: "
       reponame=gets.chomp
-      if client.repository?("#{config["Org"]}/#{reponame}")==false
-        puts "The repository #{reponame} doesn't exist"
-        reponame=nil
+      if op==1
+        if client.repository?("#{config["Org"]}/#{reponame}")==false
+          puts "The repository #{reponame} doesn't exist"
+          reponame=""
+        end
       end
       if op=="2"
         Repositories.new().create_repository(client,config,reponame,ORGS)
       end
     when op=="3" then reponame=""
     end
+    return reponame
+  end
 
-    groupslist=Teams.new().get_groupslist(config)
+  def assignment_groups(client,config)
+    team=Teams.new()
+    groupslist=team.get_groupslist(config)
+    groupsadd=[]
+
     puts "Add groups to your assignment (Press enter to skip): "
     op=gets.chomp
-    if op!=nil
+    if op==""
+      puts "Do you want to create a new group? (Press any key to preceed, or only enter to skip)"
+      an=gets.chomp
 
+      if an!=""
+        time=Time.new
+        puts "Put the name of the group (If you skip with enter, the group's name will be \"Group-#{time.ctime}\")"
+        name=gets.chomp
+        if name==""
+           name="Group-#{time.ctime}"
+           name=name.split(" ").join("-")
+        end
+        puts "Put a list of Teams"
+        list=gets.chomp
+        list=list.split(" ")
+        team.new_group(client,config,name,list)
+        groupsadd.push(name)
+      else
+        groupsadd=[]
+      end
+
+    else
       groupsadd=op.split(" ")
       groupsadd.each do |item|
         if groupslist.detect{|aux| aux==item}==nil
           groupsadd.delete(item)
         end
       end
-    else
-      groupsadd=[]
     end
+    return groupsadd
+  end
+
+  def create_assig(client,config,name)
+    list=self.load_assig()
+    assigs=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+
+    if assigs==nil
+      list["orgs"].push({"name"=>config["Org"],"assigs"=>[]})
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    end
+
+    reponame=self.assignment_repository(client,config,name)
+    groupsadd=self.assignment_groups(client,config)
 
     begin
       list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>groupsadd,"repo"=>reponame})
@@ -165,20 +196,22 @@ class Organizations
 
   end
 
-  def add_team_to_assig(client,config,data)
+  def add_team_to_assig(client,config,assig,data)
+    assig=self.get_single_assig(config,assig)
+
 
   end
 
-  def add_group_to_assig(client,config,data)
+  def add_group_to_assig(client,config,assig,data)
+    assig=self.get_single_assig(config,assig)
+    groupsadd=self.assignment_groups(client,config)
 
   end
 
-  def add_repo_to_assig(client,config,data)
-    options=Hash.new
-    options[:organization]=config["Org"]
-    options[:auto_init]=true
+  def add_repo_to_assig(client,config,assig)
 
-    client.create_repository(data,options)
+    assig=self.get_single_assig(config,assig)
+    reponame=self.assignment_repository(client,config,assig["name_assig"])
 
   end
   #------------End assig. stuff------------

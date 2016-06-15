@@ -47,7 +47,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-        puts e
+        #puts e
       end
     end
   end
@@ -567,12 +567,17 @@ class Interface
       end
       if opcd[0]=="new_issue" and opcd.size==1
         if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
-          r.open_issue(@client,@config,@deep)
+          r.create_issue(@client,@config,@deep)
         end
       end
       if opcd[0]=="close_issue" and opcd.size==2
         if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
           r.close_issue(@client,@config,@deep,opcd[1])
+        end
+      end
+      if opcd[0]=="open_issue" and opcd.size==2
+        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+          r.open_issue(@client,@config,@deep,opcd[1])
         end
       end
       if opcd[0]=="rm_team"

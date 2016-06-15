@@ -33,7 +33,7 @@ class Repositories
     end
   end
 
-  def open_issue(client,config,scope)
+  def create_issue(client,config,scope)
     puts "Insert Issue tittle: "
     tittle=gets.chomp
     puts "Add a description: "
@@ -62,6 +62,19 @@ class Repositories
       end
     when scope==ORGS_REPO || scope==TEAM_REPO
       client.close_issue(config["Org"]+"/"+config["Repo"],id)
+    end
+  end
+
+  def open_issue(client,config,scope,id)
+    case
+    when scope==USER_REPO
+      if config["Repo"].split("/").size == 1
+        client.reopen_issue(config["User"]+"/"+config["Repo"],id)
+      else
+        client.reopen_issue(config["Repo"],id)
+      end
+    when scope==ORGS_REPO || scope==TEAM_REPO
+      client.reopen_issue(config["Org"]+"/"+config["Repo"],id)
     end
   end
 
