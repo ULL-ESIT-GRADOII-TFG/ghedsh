@@ -239,9 +239,13 @@ class Repositories
     return mem
   end
 
-  def create_repository(client,config,repo,scope)
+  def create_repository(client,config,repo,empty,scope)
     options=Hash.new
-    options[:auto_init]=true
+
+    if empty==false
+      options[:auto_init]=true
+    end
+
     case
     when scope==ORGS
       puts "created repository in #{config["Org"]}"
@@ -269,7 +273,7 @@ class Repositories
       # puts repo
       # puts options
       # puts "\n"
-      client.create_repository(i+"/"+repo,options)
+      client.create_repository(i+"/"+repo,false,options)
       y=y+1
     end
   end

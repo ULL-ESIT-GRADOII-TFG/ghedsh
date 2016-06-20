@@ -608,7 +608,7 @@ class Interface
       	@sysbh.add_history_str(1,@teamlist)
       end
       if opcd[0]=="new_repository" and opcd.size==2
-        r.create_repository(@client,@config,opcd[1],@deep)
+        r.create_repository(@client,@config,opcd[1],false,@deep)
       end
       if opcd[0]=="new_assignment" and opcd.size>1 #2
         case

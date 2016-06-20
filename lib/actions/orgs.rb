@@ -185,23 +185,21 @@ class Organizations
 
     if assig["repo"]!=""
 
-      system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git")
-      system("git-C #{assig["repo"]} remote rename origin professor")
+      system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
 
       assig["groups"].each do |i|
         teamsforgroup=team.get_single_group(config,i)
         teamsforgroup.each do |y|
           config["TeamID"]=teamlist["#{y}"]
           config["Team"]=y
-          repo.create_repository(client,config,"#{y}-#{assig["name_assig"]}",TEAM)
-          #system("git-C #{assig["repo"]} remote rm origin")
-        #  system("git -C #{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
+          repo.create_repository(client,config,"#{y}-#{assig["name_assig"]}",true,TEAM)
+          system("git -C #{ENV['HOME']}/.ghedsh/#{assig["repo"]} remote rm origin")
+          system("git -C #{ENV['HOME']}/.ghedsh/#{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
 
-          #system("git -C #{assig["repo"]} remote set-url origin #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
-          system("git -C #{assig["repo"]} remote add #{y} #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
-          system("git -C #{assig["repo"]} push #{y} --all")
+          system("git -C #{ENV['HOME']}/.ghedsh/#{assig["repo"]} push origin --all")
         end
       end
+      system("rm -rf #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
     else
       puts "No repository is given for this assignment"
     end
