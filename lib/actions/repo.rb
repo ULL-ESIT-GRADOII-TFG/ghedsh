@@ -248,17 +248,38 @@ class Repositories
 
     case
     when scope==ORGS
-      puts "created repository in #{config["Org"]}"
+
       options[:organization]=config["Org"]
-      client.create_repository(repo,options)
+      if client.repository?("#{config["Org"]}/#{repo}")==false
+        client.create_repository(repo,options)
+        puts "created repository in #{config["Org"]}"
+        return true
+      else
+        puts "Already exists a repository with that name in #{config["Org"]}"
+        return false
+      end
     when scope==USER
-      puts "created repository in user"
-      client.create_repository(repo)
+      if client.repository?("#{config["User"]}/#{repo}")==false
+        client.create_repository(repo)
+        puts "created repository #{config["User"]}"
+        return true
+      else
+        puts "Already exists a repository with that name in #{config["User"]}"
+        return false
+      end
     when scope==TEAM
       puts "created repository in #{config["Org"]} team"
       options[:team_id]=config["TeamID"]
       options[:organization]=config["Org"]
-      client.create_repository(repo,options)
+
+      if client.repository?("#{config["Org"]}/#{repo}")==false
+        client.create_repository(repo,options)
+        puts "created repository in #{config["Org"]} for team #{config["Team"]}"
+        return true
+      else
+        puts "Already exists a repository with that name in #{config["Org"]}"
+        return false
+      end
     end
   end
 

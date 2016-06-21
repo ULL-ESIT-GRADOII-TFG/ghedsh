@@ -55,6 +55,7 @@ class Organizations
       puts "3) Don't assign a repository yet"
       print "option => "
       op=gets.chomp
+      puts "\n"
       if op=="3" or op=="1" or op=="2"
         ex=true
       end
@@ -70,7 +71,17 @@ class Organizations
         end
       end
       if op=="2"
-        Repositories.new().create_repository(client,config,reponame,ORGS)
+        ex2=false
+        until ex2==true
+          ex2=Repositories.new().create_repository(client,config,reponame,false,ORGS)
+          if ex2==false
+            puts "Name of the repository (To skip and add the repository later, press enter): "
+            reponame=gets.chomp
+            if reponame==""
+              ex2=true
+            end
+          end
+        end
       end
     when op=="3" then reponame=""
     end
