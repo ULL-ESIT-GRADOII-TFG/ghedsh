@@ -62,12 +62,35 @@ class Organizations
     end
     case
     when op=="1" || op=="2"
-      puts "Name of the repository: "
-      reponame=gets.chomp
-      if op==1
-        if client.repository?("#{config["Org"]}/#{reponame}")==false
-          puts "The repository #{reponame} doesn't exist"
-          reponame=""
+
+      if op=="1"
+        ex2=false
+        until ex2==true
+          exname=false
+          until exname==true
+            puts "Name of the repository -> Owner/Repository or Organization/Repository :"
+            reponame=gets.chomp
+            if reponame.split("/").size!=2 and reponame!=""
+              puts "Please introduce a valid format."
+            else
+              exname=true
+            end
+            if reponame==""
+              exname=true
+              ex2=true
+            end
+          end
+          if reponame!=""
+            if client.repository?("#{reponame}")==false
+              puts "The repository #{reponame} doesn't exist\n"
+              puts "\nName of the repository (To skip and add the repository later, only press enter): "
+              if reponame==""
+                ex2=true
+              end
+            else
+              ex2=true
+            end
+          end
         end
       end
       if op=="2"
@@ -92,8 +115,12 @@ class Organizations
     team=Teams.new()
     groupslist=team.get_groupslist(config)
     groupsadd=[]
+    teamlist=team.read_teamlist(client,config)
+
     puts "\n"
-    puts "Add groups to your assignment (Press enter to skip): "
+    puts "Groups currently available:\n\n"
+    puts groupslist
+    puts "\nAdd groups to your assignment (Press enter to skip): "
     op=gets.chomp
     if op==""
       puts "Do you want to create a new group? (Press any key to preceed, or only enter to skip)"
@@ -107,7 +134,12 @@ class Organizations
            name="Group-#{time.ctime}"
            name=name.split(" ").join("-")
         end
-        puts "Put a list of Teams"
+        puts "Teams currently available:\n\n"
+        teamlist.each do |aux|
+          print "#{aux[0]} "
+        end
+        puts "\n\nPut a list of Teams: "
+
         list=gets.chomp
         list=list.split(" ")
         team.new_group(client,config,name,list)
@@ -196,7 +228,8 @@ class Organizations
 
     if assig["repo"]!=""
 
-      system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
+      #system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
+      system("git clone #{web2}#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
 
       assig["groups"].each do |i|
         teamsforgroup=team.get_single_group(config,i)

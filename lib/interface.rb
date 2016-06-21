@@ -47,7 +47,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-        puts e
+        #puts e
       end
     end
   end
