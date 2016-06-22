@@ -239,6 +239,42 @@ class Repositories
     return mem
   end
 
+  def delete_repository(client,config,repo,scope)
+
+    if scope==ORGS
+      if client.repository?("#{config["Org"]}/#{repo}")==false
+        puts "It doesn't exist a repository with that name in #{config["Org"]}"
+      else
+        ex=false
+        until ex==true
+          puts "Repository #{repo} will be delete. Are you sure? (yes/no) (y/n)"
+          op=gets.chomp
+          if op=="yes" or op=="y"
+            client.delete_repository("#{config["Org"]}/#{repo}")
+            ex=true
+          end
+          if op=="no" or op=="n" then ex=true end
+        end
+      end
+    end
+    if scope==USER || scope==TEAM
+      if client.repository?("#{config["User"]}/#{repo}")==false
+        puts "It doesn't exist a repository with that name in #{config["User"]}"
+      else
+        ex=false
+        until ex==true
+          puts "Repository #{repo} will be delete. Are you sure? (yes/no) (y/n)"
+          op=gets.chomp
+          if op=="yes" or op=="y"
+            client.delete_repository("#{config["User"]}/#{repo}")
+            ex=true
+          end
+          if op=="no" or op=="n" then ex=true end
+        end
+      end
+    end
+  end
+
   def create_repository(client,config,repo,empty,scope)
     options=Hash.new
 

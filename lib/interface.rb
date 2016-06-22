@@ -47,7 +47,7 @@ class Interface
         raise
       rescue Exception => e
         puts "exit"
-        #puts e
+        puts e
       end
     end
   end
@@ -600,6 +600,11 @@ class Interface
       if opcd[0]=="rm_group" and opcd.size==2
         if @deep==ORGS
           t.delete_group(@config,opcd[1])
+        end
+      end
+      if opcd[0]=="rm_repository" and opcd.size==2
+        if @deep==ORGS || @deep==USER || @deep==TEAM
+          r.delete_repository(@client,@config,opcd[1],@deep)
         end
       end
       if opcd[0]=="new_team" and opcd.size>2

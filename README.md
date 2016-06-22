@@ -45,7 +45,8 @@ Logged in our app you start set in your personal profile. There you can list you
 Levels
 └── User
     ├── Organizations
-    │   ├── Teams
+    │   ├── Groups
+    │   ├── Teams
     │   │    └── Team Repositories
     │   ├── Assignments
     │   └── Organization Repositories
@@ -133,14 +134,14 @@ assignments
 Muestra las tareas o asignaciones hechas para una organizacion.
 
 ```sh
-new_assignment <nombre>
+new_repository <nombre>
 ```
-Crea una asignacion para una organizacion. Espera por parametro el nombre. Tras ejecutar el comando pedira un repositorio ya existente, la creacion de uno nuevo o la no insercion de un repositorio. Ademas esperara una lista de grupos para asignar a la tarea.
+Crea un repositorio para un usuario, para una organizacion, o para un equipo dentro de una organizacion. Espera el nombre del repositorio.
 
 ```sh
-make <nombre>
+rm_repository <nombre>
 ```
-Situado dentro de una asignacion o tarea, se creara un repositorio para cada equipo que pertenezca al grupo o grupos asignados. 
+Borra un repositorio de un usuario o de una organizacion. El comando espera el nombre del repositorio, ademas pedira confirmacion para el borrado del mismo si se ha comprobado su existencia.
 
 ```sh
 clone <nombre>
@@ -182,9 +183,37 @@ close_issue <id>
 ```
 Cierra un issue especifico dentro de un repositorio. Se debe especificar el issue mediante la id del mismo.
 
+###Comandos para las Tareas o asignaciones
 
+```sh
+new_assignment <nombre>
+```
+Crea una asignacion para una organizacion. Espera por parametro el nombre. Tras ejecutar el comando pedira un repositorio ya existente, la creacion de uno nuevo o la no insercion de un repositorio. Ademas esperara una lista de grupos para asignar a la tarea, ademas de la posible creacion de un grupo al que se le añadiran sus equipos. Todos los pasos pueden ser saltados, y tanto los grupos como el repositorio pueden ser añadidos posteriormente mediante **add_group** y **add_repo**.
 
+```sh
+cd <asignacion>
+```
+Dentro de una organizacion nos situara dentro de una asignacion para poder listar o editar los datos de la misma.
 
+```sh
+make <nombre>
+```
+Situado dentro de una asignacion o tarea, se creara un repositorio para cada equipo que pertenezca al grupo o grupos asignados. Se volcara el contenido del repositorio original a cada uno de los nuevos repositorios asignados a cada equipo.
+
+```sh
+info
+```
+Dentro de la asignacion, mostrara los datos de la misma. Se listaran los grupos y el repositorio asignado.
+
+```sh
+add_repo
+```
+Dentro de la asignacion, se activara el proceso de añadido del repositorio. Entre las opciones a elegir, estara la de añadir un repositorio ya creado, crear un nuevo repositorio o saltar el paso y no añadir el repositorio. Si ya habia un repositorio asignado anteriormente, este comando lo reemplazara.
+
+```sh
+add_group
+```
+Dentro de la asignacion, se activara el proceso de añadido de groups. Entre las opciones a elegir, estaran la de añadir directamente grupos ya creados o crear uno desde cero. Si se crea uno desde cero se pedira un nombre o se creara un nombre con la fecha actual, despues se añadiran los equipos que perteneceran al grupo. Si ya existian grupos en la asignacion, este comando añadira otro mas a la lista.
 
 
 ##Aditional information
