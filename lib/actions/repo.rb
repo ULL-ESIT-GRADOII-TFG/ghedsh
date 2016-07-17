@@ -184,7 +184,7 @@ class Repositories
     end
 
     if rlist.empty?
-      puts "No repository matches with that expression"
+      puts "\e[31m No repository matches with that expression\e[0m"
     else
       print "\n"
       puts "Repositories found: #{rlist.size}"
@@ -243,7 +243,7 @@ class Repositories
 
     if scope==ORGS
       if client.repository?("#{config["Org"]}/#{repo}")==false
-        puts "It doesn't exist a repository with that name in #{config["Org"]}"
+        puts "\e[31m It doesn't exist a repository with that name in #{config["Org"]}\e[0m"
       else
         ex=false
         until ex==true
@@ -259,7 +259,7 @@ class Repositories
     end
     if scope==USER || scope==TEAM
       if client.repository?("#{config["User"]}/#{repo}")==false
-        puts "It doesn't exist a repository with that name in #{config["User"]}"
+        puts "\e[31m It doesn't exist a repository with that name in #{config["User"]}\e[0m"
       else
         ex=false
         until ex==true
@@ -291,7 +291,7 @@ class Repositories
         puts "created repository in #{config["Org"]}"
         return true
       else
-        puts "Already exists a repository with that name in #{config["Org"]}"
+        puts "\e[31m Already exists a repository with that name in #{config["Org"]}\e[0m"
         return false
       end
     when scope==USER
@@ -300,7 +300,7 @@ class Repositories
         puts "created repository #{config["User"]}"
         return true
       else
-        puts "Already exists a repository with that name in #{config["User"]}"
+        puts "\e[31m Already exists a repository with that name in #{config["User"]}\e[0m"
         return false
       end
     when scope==TEAM
@@ -313,7 +313,7 @@ class Repositories
         puts "created repository in #{config["Org"]} for team #{config["Team"]}"
         return true
       else
-        puts "Already exists a repository with that name in #{config["Org"]}"
+        puts "\e[31m Already exists a repository with that name in #{config["Org"]}\e[0m"
         return false
       end
     end

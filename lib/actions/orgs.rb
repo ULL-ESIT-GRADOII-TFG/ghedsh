@@ -82,7 +82,7 @@ class Organizations
           end
           if reponame!=""
             if client.repository?("#{reponame}")==false
-              puts "The repository #{reponame} doesn't exist\n"
+              puts "\e[31m The repository #{reponame} doesn't exist\n \e[0m"
               puts "\nName of the repository (To skip and add the repository later, only press enter): "
               if reponame==""
                 ex2=true
@@ -136,9 +136,9 @@ class Organizations
         end
         puts "Teams currently available:\n\n"
         teamlist.each do |aux|
-          print "#{aux[0]} "
+          puts "#{aux[0]}"
         end
-        puts "\n\nPut a list of Teams: "
+        puts "\nPut a list of Teams: "
 
         list=gets.chomp
         list=list.split(" ")
@@ -185,7 +185,7 @@ class Organizations
     assig=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     if assig!=nil
       if assig["assigs"].empty?
-        puts "No assignments are available yet"
+        puts "\e[31m No assignments are available yet\e[0m"
       else
         assig["assigs"].each do |i|
           assiglist.push(i["name_assig"])
@@ -245,7 +245,7 @@ class Organizations
       end
       system("rm -rf #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
     else
-      puts "No repository is given for this assignment"
+      puts "\e[31m No repository is given for this assignment\e[0m"
     end
 
 
