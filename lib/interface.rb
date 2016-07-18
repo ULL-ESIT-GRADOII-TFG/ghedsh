@@ -364,9 +364,10 @@ class Interface
             @sysbh.add_history_str(2,list)
             @orgs_repos=list
           else
-            list=repo.show_repos(@client,@config,ORGS)
+            #list=repo.show_repos(@client,@config,ORGS)
+            list=repo.get_repos(@client,@config,ORGS)
             @sysbh.add_history_str(2,list)
-            @repos_list=list
+            @orgs_repos=list
             puts list
           end
         else
@@ -606,6 +607,9 @@ class Interface
       if opcd[0]=="rm_repository" and opcd.size==2
         if @deep==ORGS || @deep==USER || @deep==TEAM
           r.delete_repository(@client,@config,opcd[1],@deep)
+          if @deep==ORGS
+            @orgs_repos.delete(opcd[1])
+          end
         end
       end
       if opcd[0]=="new_team" and opcd.size>2
@@ -621,6 +625,7 @@ class Interface
         when @deep==ORGS
           #r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
           o.create_assig(@client,@config,opcd[1])
+          @sysbh.add_history(opcd[1])
         end
       end
       if opcd[0]=="new_group" and opcd.size>2

@@ -101,6 +101,7 @@ class Organizations
             ex2=true
           else
             ex2=Repositories.new().create_repository(client,config,reponame,false,ORGS)
+            reponame="#{config["Org"]}/#{reponame}"
           end
         end
       end
@@ -234,6 +235,7 @@ class Organizations
 
     if assig["repo"]!=""
       sys.create_temp("#{ENV['HOME']}/.ghedsh/temp")
+
       #system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
       system("git clone #{web2}#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]}")
 
