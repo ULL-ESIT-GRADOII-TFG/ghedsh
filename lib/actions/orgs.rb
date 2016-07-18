@@ -28,11 +28,10 @@ class Organizations
         assig["assigs"].each do |i|
           puts "\n"
           puts i["name_assig"]
-          puts "Repository: #{i["repo"]}"
-          print "Groups: "
+          puts "\tRepository: #{i["repo"]}"
+          puts "\tGroups: "
           i["groups"].each do |y|
-            print y
-            print " "
+            puts "\t\t#{y}"
           end
           print "\n"
         end
@@ -96,13 +95,12 @@ class Organizations
       if op=="2"
         ex2=false
         until ex2==true
-          ex2=Repositories.new().create_repository(client,config,reponame,false,ORGS)
-          if ex2==false
-            puts "Name of the repository (To skip and add the repository later, press enter): "
-            reponame=gets.chomp
-            if reponame==""
-              ex2=true
-            end
+          puts "Name of the repository (To skip and add the repository later, press enter): "
+          reponame=gets.chomp
+          if reponame==""
+            ex2=true
+          else
+            ex2=Repositories.new().create_repository(client,config,reponame,false,ORGS)
           end
         end
       end
@@ -210,15 +208,19 @@ class Organizations
 
   def show_assig_info(config,assig)
     assig=self.get_single_assig(config,assig)
+    team=Teams.new()
     puts "\n"
     puts assig["name_assig"]
-    puts "Repository: #{assig["repo"]}"
-    print "Groups: "
+    puts "\tRepository: #{assig["repo"]}"
+    puts "\tGroups: "
     assig["groups"].each do |y|
-      print y
-      print " "
+      puts "\t\t#{y}"
+      t=team.get_single_group(config,y)
+      t.each do |z|
+        puts "\t\t\t#{z}"
+      end
     end
-    puts "\n\n"
+    puts "\n"
   end
 
   def make_assig(client,config,assig)
