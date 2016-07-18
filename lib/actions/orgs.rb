@@ -119,7 +119,10 @@ class Organizations
 
     puts "\n"
     puts "Groups currently available:\n\n"
-    puts groupslist
+    groupslist.each do |aux|
+      puts "\t#{aux}"
+    end
+    #puts groupslist
     puts "\nAdd groups to your assignment (Press enter to skip): "
     op=gets.chomp
     if op==""
@@ -134,9 +137,9 @@ class Organizations
            name="Group-#{time.ctime}"
            name=name.split(" ").join("-")
         end
-        puts "Teams currently available:\n\n"
+        puts "\nTeams currently available:\n\n"
         teamlist.each do |aux|
-          puts "#{aux[0]}"
+          puts "\t#{aux[0]}"
         end
         puts "\nPut a list of Teams: "
 
@@ -223,13 +226,14 @@ class Organizations
     web2="git@github.com:"
     repo=Repositories.new()
     team=Teams.new()
+    sys=Sys.new()
     teamlist=team.read_teamlist(client,config)
     assig=self.get_single_assig(config,assig)
 
     if assig["repo"]!=""
-
+      sys.create_temp("#{ENV['HOME']}/.ghedsh/temp")
       #system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
-      system("git clone #{web2}#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
+      system("git clone #{web2}#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]}")
 
       assig["groups"].each do |i|
         teamsforgroup=team.get_single_group(config,i)
@@ -237,13 +241,13 @@ class Organizations
           config["TeamID"]=teamlist["#{y}"]
           config["Team"]=y
           repo.create_repository(client,config,"#{y}-#{assig["name_assig"]}",true,TEAM)
-          system("git -C #{ENV['HOME']}/.ghedsh/#{assig["repo"]} remote rm origin")
-          system("git -C #{ENV['HOME']}/.ghedsh/#{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
+          system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote rm origin")
+          system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
 
-          system("git -C #{ENV['HOME']}/.ghedsh/#{assig["repo"]} push origin --all")
+          system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} push origin --all")
         end
       end
-      system("rm -rf #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
+      #system("rm -rf #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]}")
     else
       puts "\e[31m No repository is given for this assignment\e[0m"
     end
@@ -253,8 +257,6 @@ class Organizations
 
   def add_team_to_assig(client,config,assig,data)
     assig=self.get_single_assig(config,assig)
-
-
   end
 
   def add_group_to_assig(client,config,assig)

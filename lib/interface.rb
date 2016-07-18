@@ -464,6 +464,7 @@ class Interface
       case
         when op == "exit" then ex=0
           s.save_cache(config_path,@config)
+          s.remove_temp("#{ENV['HOME']}/.ghedsh/temp")
         when op == "help" then self.help()
         when op == "orgs" then self.orgs()
         when op == "cd .." then self.cdback(false)

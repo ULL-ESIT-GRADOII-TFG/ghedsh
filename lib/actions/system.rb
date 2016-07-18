@@ -207,6 +207,18 @@ class Sys
       return config
   end
 
+  def create_temp(path)
+    if (File.exist?(path))==false
+      FileUtils.mkdir_p(path)
+    end
+  end
+
+  def remove_temp(path)
+    if (File.exist?(path))==true
+      system("rm -rf #{path}")
+    end
+  end
+
   def save_groups(path,data)
     File.write("#{path}/groups.json",data.to_json)
   end
