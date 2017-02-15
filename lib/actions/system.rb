@@ -74,7 +74,7 @@ class Sys
         config["User"]=@client.login
         userslist=self.load_users(configure_path)
 
-         if userslist["users"].detect {|f| f["#{config["User"]}"] }==nil
+        if userslist["users"].detect {|f| f["#{config["User"]}"] }==nil
           self.add_users(configure_path,"#{config["User"]}"=>token)
         end
         if argv_token!=nil
@@ -96,6 +96,7 @@ class Sys
       list=self.load_users(configure_path)
       userFound=list["users"].detect {|f| f["#{user}"]}
       if userFound!=nil
+        self.clear_cache(configure_path)
         json = File.read("#{configure_path}/ghedsh-cache.json")
         config=JSON.parse(json)
         @client=self.login(userFound["#{user}"])
@@ -117,6 +118,35 @@ class Sys
     users=JSON.parse(json)
     return users
   end
+
+  def return_deep(path)
+    json = File.read("#{path}/ghedsh-cache.json")
+    cache=JSON.parse(json)
+    deep=1
+    case
+      when cache["Team"]!=nil
+        if cache["Repo"]!=nil
+          deep=5
+        else
+          deep=4
+        end
+      when cache["Team"]==nil
+        if cache["Org"]!=nil
+          if cache["Repo"]!=nil
+            deep=3
+          else
+            deep=2
+          end
+        else
+          if cache["Repo"]!=nil
+           deep=10
+          else
+            deep=1
+          end
+        end
+    end
+    return deep
+   end
 
   def add_users(path,data)
     json=File.read("#{path}/ghedsh-users.json")
@@ -240,6 +270,11 @@ class Sys
 
   def save_cache(path,data)
     File.write("#{path}/ghedsh-cache.json",data.to_json)
+  end
+
+  def clear_cache(path)
+    con={:User=>nil,:Org=>nil,:Repo=>nil,:Team=>nil,:TeamID=>nil}
+    File.write("#{path}/ghedsh-cache.json",con.to_json)
   end
 
   def save_db(path,data)

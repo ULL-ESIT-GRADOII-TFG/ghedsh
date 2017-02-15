@@ -441,12 +441,14 @@ class Interface
       if @config==nil
         ex=0
       end
+      @deep=USER
     else
-      @config=s.load_config(config_path,argv_token)
+      @config=s.load_config(config_path,argv_token)  #retorna la configuracion ya guardada anteriormente
       @client=s.client
+      @deep=s.return_deep(config_path)
     end
 
-    @deep=USER
+    #@deep=USER
     if @client!=nil
       @sysbh.add_history_str(2,Organizations.new.read_orgs(@client))
     end
