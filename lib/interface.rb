@@ -506,21 +506,9 @@ class Interface
       end
 
       if opcd[0]=="issue" and opcd.size>1
-        issfound=0
-        @issues_list=r.get_issues(@client,@config,@deep)
-        if @issues_list!=nil
-          @issues_list.each do |i|
-            if i[:number]==opcd[1].to_i
-              puts "##{i[:number]} state: #{i[:state]} -> #{i[:title]} \n"
-              puts "#{i[:body]}"
-              issfound=1
-            end
-          end
+        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+          r.show_issue(@client,@config,@deep,opcd[1])
         end
-        if issfound==0
-          puts "Issue not found"
-        end
-        puts "\n"
       end
 
       if opcd[0]=="cd" and opcd[1]!=".."

@@ -125,7 +125,7 @@ class Organizations
     puts "\nAdd groups to your assignment (Press enter to skip): "
     op=gets.chomp
     if op==""
-      puts "Do you want to create a new group? (Press any key to preceed, or only enter to skip)"
+      puts "Do you want to create a new group? (Press any key to proceed, or only enter to skip)"
       an=gets.chomp
 
       if an!=""

@@ -78,26 +78,6 @@ class Repositories
     end
   end
 
-  def show_issues(client,config,scope)
-      print "\n"
-      case
-      when scope==USER_REPO
-        if config["Repo"].split("/").size == 1
-          mem=client.list_issues(config["User"]+"/"+config["Repo"],{:state=>"all"})
-        else
-          mem=client.list_issues(config["Repo"],{:state=>"all"})
-        end
-      when scope==ORGS_REPO || scope==TEAM_REPO
-          mem=client.list_issues(config["Org"]+"/"+config["Repo"],{:state=>"all"})
-      end
-      mem.each do |i|
-        #print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
-        puts "##{i[:number]} state: #{i[:state]} -> #{i[:title]} "
-      end
-      return mem
-      puts "\n"
-  end
-
   def get_issues(client,config,scope)
     case
     when scope==USER_REPO
@@ -111,6 +91,81 @@ class Repositories
     end
     return mem
   end
+
+  #show all issues from a repository
+  def show_issues(client,config,scope)
+      print "\n"
+      mem=self.get_issues(client,config,scope)
+      mem.each do |i|
+        #print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
+        puts "##{i[:number]} state: #{i[:state]} -> #{i[:title]} "
+      end
+      print "\n"
+      return mem
+  end
+
+  #show an specific issue from a repository
+  def show_issue(client,config,scope,id)
+    issfound=0
+    issues_list=self.get_issues(client,config,scope)
+    if issues_list!=nil
+      issues_list.each do |i|
+        if i[:number]==id.to_i
+          puts
+          puts "  --------------------------------------"
+          puts "  Author: #{i[:user][:login]}"
+          puts "  ##{i[:number]} state: #{i[:state]}"
+          puts "  Tittle: #{i[:title]}"
+          puts "  --------------------------------------"
+          puts "\n#{i[:body]}"
+          issfound=1
+          print "\nShow comments (Press any key to proceed, or only enter to skip) -> "
+          show=gets.chomp
+          puts
+          if show!=""
+            self.show_issues_cm(client,config,scope,i[:number])
+          end
+        end
+      end
+    end
+    if issfound==0
+      puts "Issue not found"
+    end
+    puts "\n"
+  end
+
+  #show issues comment
+  def show_issues_cm(client,config,scope,id)
+    case
+    when scope==USER_REPO
+      if config["Repo"].split("/").size == 1
+        mem=client.issue_comments(config["User"]+"/"+config["Repo"],id)
+      else
+        mem=client.issue_comments(config["Repo"],id)
+      end
+    when scope==ORGS_REPO || scope==TEAM_REPO
+        mem=client.issue_comments(config["Org"]+"/"+config["Repo"],id)
+    end
+    if mem!=nil
+      puts
+      puts " < COMMENTS (#{mem.size}) >"
+      mem.each do |i|
+        puts
+        puts " --------------------------------------"
+        puts " Author: #{i[:user][:login]} "
+        puts " Date: #{i[:created_at]}"
+        puts " --------------------------------------"
+        puts "\n#{i[:body]}"
+      end
+    else
+      puts "No comments have been added yet"
+    end
+  end
+
+  #add issue comment
+  def add_issue_cm
+  end
+
   #Show repositories and return a list of them
   #exp = regular expression
   def show_repos(client,config,scope,exp)
