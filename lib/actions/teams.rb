@@ -187,7 +187,9 @@ class Teams
         end
       end
     end
+  end
 
+  def change_group_repos_privacity()
   end
 
   def add_to_group(config,name)
