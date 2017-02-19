@@ -18,18 +18,26 @@ class Repositories
 
   def show_commits(client,config,scope)
     print "\n"
-    case
-    when scope==USER_REPO
-        if config["Repo"].split("/").size == 1
-          mem=client.commits(config["User"]+"/"+config["Repo"],"master")
-        else
-          mem=client.commits(config["Repo"],"master")
-        end
-      when scope==ORGS_REPO
-        mem=client.commits(config["Org"]+"/"+config["Repo"],"master")
+    empty=0
+    begin
+      case
+      when scope==USER_REPO
+          if config["Repo"].split("/").size == 1
+            mem=client.commits(config["User"]+"/"+config["Repo"],"master")
+          else
+            mem=client.commits(config["Repo"],"master")
+          end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+          mem=client.commits(config["Org"]+"/"+config["Repo"],"master")
+      end
+    rescue
+      puts "The Repository is empty"
+      empty=1
     end
-    mem.each do |i|
-      print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
+    if empty==0
+      mem.each do |i|
+        print i[:sha],"\n",i[:commit][:author][:name],"\n",i[:commit][:author][:date],"\n",i[:commit][:message],"\n\n"
+      end
     end
   end
 
@@ -263,27 +271,44 @@ class Repositories
     print "\n"
     forklist=[]
     case
-      when scope==USER
+    when scope==USER_REPO
+      if config["Repo"].split("/").size == 1
+        mem=client.forks(config["User"]+"/"+config["Repo"],"master")
+      else
+        mem=client.forks(config["Repo"],"master")
+      end
+    when scope==ORGS_REPO || scope==TEAM_REPO
         mem=client.forks(config["Org"]+"/"+config["Repo"])
     end
-    mem.each do |i|
-      puts i[:owner][:login]
-      forklist.push(i[:owner][:login])
+    if mem.size==0
+      puts "No forks found for this repository"
+    else
+      mem.each do |i|
+        puts i[:login]
+        forklist.push(i[:login])
+      end
+      print "\n"
+      return forklist
     end
-    print "\n"
-    return forklist
   end
 
   def show_collaborators(client,config,scope)
     print "\n"
     collalist=[]
     case
-    when scope==USER
+    when scope==USER_REPO
+      if config["Repo"].split("/").size == 1
+        mem=client.collaborators(config["User"]+"/"+config["Repo"],"master")
+      else
+        mem=client.collaborators(config["Repo"],"master")
+      end
+    when scope==ORGS_REPO || scope==TEAM_REPO
       mem=client.collaborators(config["Org"]+"/"+config["Repo"])
     end
+    print " Collaborators\n\n"
     mem.each do |i|
-      puts i[:author][:login]
-      collalist.push(i[:author][:login])
+      puts " #{i[:login]}"
+      collalist.push(i[:login])
     end
     print "\n"
     return collalist
@@ -374,17 +399,57 @@ class Repositories
     end
   end
 
+  def edit_repository(client, config, repo, scope, privacy)
+    options=Hash.new
+    options[:private]=privacy
+
+    case
+    when scope==ORGS
+      options[:organization]=config["Org"]
+      if client.repository?("#{config["Org"]}/#{repo}")==true
+        client.edit_repository(repo,options)
+        puts "Edited repository in #{config["Org"]}"
+        return true
+      else
+        puts "\e[31m Doesn't exists a repository with that name in #{config["Org"]}\e[0m"
+        return false
+      end
+    when scope==USER
+      if client.repository?("#{config["User"]}/#{repo}")==true
+        client.edit_repository(repo)
+        puts "Edited repository #{config["User"]}"
+        return true
+      else
+        puts "\e[31m Doesn't exists a repository with that name in #{config["User"]}\e[0m"
+        return false
+      end
+    when scope==TEAM
+      puts "Edited repository in #{config["Org"]} team"
+      options[:team_id]=config["TeamID"]
+      options[:organization]=config["Org"]
+
+      if client.repository?("#{config["Org"]}/#{repo}")==true
+        client.edit_repository(repo,options)
+        puts "Edited repository in #{config["Org"]} for team #{config["Team"]}"
+        return true
+      else
+        puts "\e[31m Doesn't exists a repository with that name in #{config["Org"]}\e[0m"
+        return false
+      end
+    end
+  end
+
+  def change_privacy(client,config,repo,list,list_id,privacy)
+    list.each do |i|
+    end
+  end
+
   def create_repository_by_teamlist(client,config,repo,list,list_id)
     options=Hash.new
     options[:organization]=config["Org"]
-    #puts list_id
     y=0
     list.each do |i|
       options[:team_id]=list_id[y]
-      # puts i, list_id[y]
-      # puts repo
-      # puts options
-      # puts "\n"
       client.create_repository(i+"/"+repo,false,options)
       y=y+1
     end

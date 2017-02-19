@@ -35,21 +35,21 @@ class Interface
 
     options=@sysbh.parse
 
-    # trap("SIGINT") { throw :ctrl_c }
-    # catch :ctrl_c do
-      # begin
+    trap("SIGINT") { throw :ctrl_c }
+    catch :ctrl_c do
+      begin
         if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
           self.run(options[:path],options[:token],options[:user])
         else
           self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
         end
-      # rescue SystemExit, Interrupt
-        # raise
-      # rescue Exception => e
-      #   puts "exit"
-      #   puts e
-      # end
-    # end
+      rescue SystemExit, Interrupt
+        raise
+      rescue Exception => e
+        puts "exit"
+        puts e
+      end
+    end
   end
 
   def prompt()
@@ -235,6 +235,10 @@ class Interface
           self.set(path)
         end
       when @deep==ORGS
+        if @teamlist==[]
+          @teamlist=Teams.new.read_teamlist(@client,@config)
+        end
+        aux=@teamlist
         if aux[path_split[0]]!=nil
           @config["Team"]=path_split[0]
           @config["TeamID"]=@teamlist[path_split[0]]
@@ -412,16 +416,16 @@ class Interface
   end
 
   def show_forks()
-    case
-    when @deep==ORGS_REPO
-      Repositories.new.show_forks(@client,@config,1)
+    c=Repositories.new
+    if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+      c.show_forks(@client,@config,@deep)
     end
   end
 
   def collaborators()
-    case
-    when @deep==ORGS_REPO
-      Repositories.show_collaborators(@client,@config,1)
+    c=Repositories.new
+    if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+      c.show_collaborators(@client,@config,@deep)
     end
   end
 
@@ -450,6 +454,7 @@ class Interface
       @config=s.load_config(config_path,argv_token)  #retorna la configuracion ya guardada anteriormente
       @client=s.client
       @deep=s.return_deep(config_path)
+      #if @deep==ORGS then @teamlist=t.get_teamlist end  #solucion a la carga de las ids de los equipos de trabajo
     end
 
     #@deep=USER
