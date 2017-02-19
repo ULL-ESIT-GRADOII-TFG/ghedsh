@@ -45,6 +45,7 @@ class HelpM
     self.common_opt
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
+    print "\tinfo\t\t\tShow information about the repository\n"
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     print "\tissues\t\t\tShow the list of issues from the repository\n"
     print "\tissue\t\t\tShow the issue and its comments\n"
@@ -52,6 +53,8 @@ class HelpM
     print "\tfiles\t\t\tShow the files of the repository path given\n"
     print "\tcat\t\t\tShow data from a file\n"
     print "\t\t\t\t->\tcat [file]\n\n"
+    print "\tprivate\t\t\tChange the privacy of a repository. Expected 'true' or 'false' as parameter.\n"
+    print "\t\t\t\t->\tprivate [true]\n\n"
     print "\tcol\t\t\tShow the list of collaborators from the repository\n\n"
   end
 
@@ -69,6 +72,7 @@ class HelpM
     self.common_opt
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
+    print "\tinfo\t\t\tShow information about the repository\n"
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     print "\tissues\t\t\tShow the list of issues from the repository\n"
     print "\tissue\t\t\tShow the issue and its comments\n"
@@ -76,12 +80,15 @@ class HelpM
     print "\tfiles\t\t\tShow the files of the repository path given\n"
     print "\tcat\t\t\tShow data from a file\n"
     print "\t\t\t\t->\tcat [file]\n\n"
+    print "\tprivate\t\t\tChange the privacy of a repository. Expected 'true' or 'false' as parameter.\n"
+    print "\t\t\t\t->\tprivate [true]\n\n"
     print "\tcol\t\t\tShow the list of collaborators from the repository\n\n"
   end
   def team_repo()
     self.common_opt
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
+    print "\tinfo\t\t\tShow information about the repository\n"
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     print "\tissues\t\t\tShow the list of issues from the repository\n"
     print "\tissue\t\t\tShow the issue and its comments\n"
@@ -89,6 +96,8 @@ class HelpM
     print "\tfiles\t\t\tShow the files of the repository path given\n"
     print "\tcat\t\t\tShow data from a file\n"
     print "\t\t\t\t->\tcat [file]\n\n"
+    print "\tprivate\t\t\tChange the privacy of a repository. Expected 'true' or 'false' as parameter.\n"
+    print "\t\t\t\t->\tprivate [true]\n\n"
     print "\tcol\t\t\tShow the list of collaborators from the repository\n\n"
   end
 

@@ -41,6 +41,35 @@ class Repositories
     end
   end
 
+  def info_repository(client,config,scope)
+    empty=0
+    begin
+      case
+      when scope==USER_REPO
+          if config["Repo"].split("/").size == 1
+            mem=client.repository(config["User"]+"/"+config["Repo"])
+          else
+            mem=client.repository(config["Repo"])
+          end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+          mem=client.repository(config["Org"]+"/"+config["Repo"])
+      end
+      rescue
+       puts "The Repository is empty"
+       empty=1
+    end
+    if empty==0
+      puts "\n Name: \t\t#{mem[:name]}"
+      puts " Full name: \t#{mem[:full_name]}"
+      puts " Description: \t#{mem[:description]}"
+      puts " Private: \t#{mem[:private]}"
+      puts "\n Created: \t#{mem[:created_at]}"
+      puts " Last update: \t#{mem[:updated_at]}"
+      puts " Url: \t\t#{mem[:html_url]}"
+      puts
+    end
+  end
+
   def create_issue(client,config,scope)
     puts "Insert Issue tittle: "
     tittle=gets.chomp
@@ -57,7 +86,6 @@ class Repositories
     when scope==ORGS_REPO || scope==TEAM_REPO
       client.create_issue(config["Org"]+"/"+config["Repo"],tittle,desc)
     end
-
   end
 
   def close_issue(client,config,scope,id)
@@ -281,7 +309,7 @@ class Repositories
         mem=client.forks(config["Org"]+"/"+config["Repo"])
     end
     if mem.size==0
-      puts "No forks found for this repository"
+      puts "No forks found in this repository"
     else
       mem.each do |i|
         puts i[:login]
@@ -320,7 +348,6 @@ class Repositories
   end
 
   def delete_repository(client,config,repo,scope)
-
     if scope==ORGS
       if client.repository?("#{config["Org"]}/#{repo}")==false
         puts "\e[31m It doesn't exist a repository with that name in #{config["Org"]}\e[0m"
@@ -357,14 +384,12 @@ class Repositories
 
   def create_repository(client,config,repo,empty,scope)
     options=Hash.new
-
     if empty==false
       options[:auto_init]=true
     end
 
     case
     when scope==ORGS
-
       options[:organization]=config["Org"]
       if client.repository?("#{config["Org"]}/#{repo}")==false
         client.create_repository(repo,options)
@@ -399,43 +424,27 @@ class Repositories
     end
   end
 
-  def edit_repository(client, config, repo, scope, privacy)
+  def edit_repository(client, config, scope, privacy)
     options=Hash.new
+    if privacy=="true"
+      privacy=true
+    else
+      privacy=false
+    end
     options[:private]=privacy
-
-    case
-    when scope==ORGS
-      options[:organization]=config["Org"]
-      if client.repository?("#{config["Org"]}/#{repo}")==true
-        client.edit_repository(repo,options)
-        puts "Edited repository in #{config["Org"]}"
-        return true
-      else
-        puts "\e[31m Doesn't exists a repository with that name in #{config["Org"]}\e[0m"
-        return false
+    begin
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size == 1
+          mem=client.edit_repository(config["User"]+"/"+config["Repo"],options)
+        else
+          mem=client.edit_repository(config["Repo"],options)
+        end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+          mem=client.edit_repository(config["Org"]+"/"+config["Repo"],options)
       end
-    when scope==USER
-      if client.repository?("#{config["User"]}/#{repo}")==true
-        client.edit_repository(repo)
-        puts "Edited repository #{config["User"]}"
-        return true
-      else
-        puts "\e[31m Doesn't exists a repository with that name in #{config["User"]}\e[0m"
-        return false
-      end
-    when scope==TEAM
-      puts "Edited repository in #{config["Org"]} team"
-      options[:team_id]=config["TeamID"]
-      options[:organization]=config["Org"]
-
-      if client.repository?("#{config["Org"]}/#{repo}")==true
-        client.edit_repository(repo,options)
-        puts "Edited repository in #{config["Org"]} for team #{config["Team"]}"
-        return true
-      else
-        puts "\e[31m Doesn't exists a repository with that name in #{config["Org"]}\e[0m"
-        return false
-      end
+    rescue
+      puts "Not allow to change privacy"
     end
   end
 

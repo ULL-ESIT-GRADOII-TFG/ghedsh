@@ -34,22 +34,22 @@ class Interface
     @repo_path=''
 
     options=@sysbh.parse
-
-    trap("SIGINT") { throw :ctrl_c }
-    catch :ctrl_c do
-      begin
+    #
+    # trap("SIGINT") { throw :ctrl_c }
+    # catch :ctrl_c do
+    #   begin
         if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
           self.run(options[:path],options[:token],options[:user])
         else
           self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
         end
-      rescue SystemExit, Interrupt
-        raise
-      rescue Exception => e
-        puts "exit"
-        puts e
-      end
-    end
+    #   rescue SystemExit, Interrupt
+    #     raise
+    #   rescue Exception => e
+    #     puts "exit"
+    #     puts e
+    #   end
+    # end
   end
 
   def prompt()
@@ -497,7 +497,8 @@ class Interface
             t.list_groups(@client,@config)
           end
         when op == "info"
-          if @deep=ASSIG then o.show_assig_info(@config,@assig_path) end
+          if @deep==ASSIG then o.show_assig_info(@config,@assig_path) end
+          if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.info_repository(@client,@config,@deep) end
         when op== "add_repo"
           if @deep=ASSIG then o.add_repo_to_assig(@client,@config,@assig_path) end
         when op== "add_group"
@@ -590,6 +591,11 @@ class Interface
       if opcd[0]=="open_issue" and opcd.size==2
         if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
           r.open_issue(@client,@config,@deep,opcd[1])
+        end
+      end
+      if opcd[0]=="private" and opcd.size==2
+        if opcd[1]=="true" || opcd[1]=="false"
+          r.edit_repository(@client,@config,@deep,opcd[1])
         end
       end
       if opcd[0]=="rm_team"
