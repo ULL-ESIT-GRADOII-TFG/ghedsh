@@ -11,7 +11,7 @@ class Sys
   attr_reader :memory
   LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone ', 'issues',
     'version', 'cat ', 'groups', 'files', 'assignments','new_issue ', 'open_issue', 'new_','open_', 'close_issue', 'new_group ', 'rm_group', 'rm_', 'do ', 'info','make','add_repo',
-    'add_group','rm_repository '].sort
+    'add_group','rm_repository ', 'add_people_info ', 'private ', 'people info '].sort
 
   def initialize()
     @memory=[]
@@ -210,6 +210,20 @@ class Sys
     return config
   end
 
+  def load_people_db(path)
+    if (File.exist?(path))==true
+      if File.exist?("#{path}/ghedsh-people.json")
+        json = File.read("#{path}/ghedsh-people.json")
+      else
+        con={:orgs=>[]}
+        File.write("#{path}/ghedsh-people.json",con.to_json)
+        json = File.read("#{path}/ghedsh-people.json")
+      end
+    end
+    config=JSON.parse(json)
+    return config
+  end
+
   def load_script(path)
     if (File.exist?(path))==true
       script = File.read("#{path}")
@@ -255,6 +269,10 @@ class Sys
 
   def save_assigs(path,data)
     File.write("#{path}/assignments.json",data.to_json)
+  end
+
+  def save_people(path,data)
+    File.write("#{path}/ghedsh-people.json",data.to_json)
   end
 
   #creates all ghedsh local stuff

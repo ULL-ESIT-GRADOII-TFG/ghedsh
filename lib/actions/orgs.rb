@@ -1,6 +1,7 @@
 require 'readline'
 require 'octokit'
 require 'json'
+require 'csv'
 require 'require_all'
 require_rel '.'
 require 'readline'
@@ -9,12 +10,19 @@ class Organizations
 
   attr_accessor :orgslist
   attr_accessor :assiglist
+  attr_accessor :peoplelist
 
 
   def load_assig()
     @assiglist=Hash.new()
     @assiglist=Sys.new.load_assig_db("#{ENV['HOME']}/.ghedsh")
     return @assiglist
+  end
+
+  def load_people()
+    @peoplelist=Hash.new()
+    @peoplelist=Sys.new.load_people_db("#{ENV['HOME']}/.ghedsh")
+    return @peoplelist
   end
 
   def show_assignments(client, config) #client,orgs
@@ -275,6 +283,111 @@ class Organizations
     end
   end
 
+  #Takes people info froma a csv file and gets into ghedsh people information
+  def add_people_info(client,config,file)
+    list=self.load_people()
+    inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    if inpeople==nil
+      list["orgs"].push({"name"=>config["Org"],"users"=>[]})
+      Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
+    end
+
+    if file.end_with?(".csv")==false
+      file=file+".csv"
+    end
+    if File.exist?(file)
+      puts "here in #{file}"
+      mem = CSV.read(file)
+      users=Hash.new;
+      users=[]
+      mem.each do |i|
+        aux=Hash.new
+        aux["github"]=i[0]
+        aux["id"]=i[1]
+        aux["name"]=i[2]
+        aux["surname"]=i[3]
+        aux["emails"]=i[4]
+        aux["orgs"]=i[5]
+        aux["urls"]=i[6]
+        users<< aux
+      end
+
+      users.each do |i|
+        here=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==i["github"]}
+        if here==nil
+          list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
+        else
+          puts "\nAlready exits \e[31m#{i["github"]}\e[0m in database"
+          if here.eql?(i)
+            puts "The information given is the same as in the database, changes are being discard."
+          else
+            puts "The information is different thant the original. Do you want to change it?"
+            puts "\n Github:\t#{here["github"]} -> #{i["github"]}"
+            puts " ID:\t\t#{here["id"]} -> #{i["id"]}"
+            puts " Name:\t\t#{here["name"]} -> #{i["name"]}"
+            puts " Surname:\t#{here["surname"]} -> #{i["surname"]}"
+            puts " Emails:\t#{here["emails"]} -> #{i["emails"]}"
+            puts " Organizations:\t#{here["orgs"]} -> #{i["orgs"]}"
+            puts " Urls:\t\t#{here["urls"]} -> #{i["urls"]}"
+            puts "\nPress any key to proceed, or only enter to skip: "
+            op=gets.chomp
+            if op!=""
+              index1=list["orgs"].index{|aux| aux["name"]==config["Org"]}
+              index2=list["orgs"][index1]["users"].index{|aux2| aux2["github"]==i["github"]}
+
+              list["orgs"][index1]["users"].pop(index2)
+              list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
+              puts "The information about \e[31m#{i["github"]}\e[0m has been changed"
+            else
+              puts "The new information about \e[31m#{i["github"]}\e[0m has been discarded"
+            end
+          end
+        end
+      end
+      Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
+    else
+      print "\n#{file} file not found.\n\n"
+    end
+  end
+
+  def show_people_info(client,config,user)
+    list=self.load_people()
+    inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    if inpeople==nil
+      list["orgs"].push({"name"=>config["Org"],"users"=>[]})
+      Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
+      puts "Extended information has not been added yet"
+    else
+      if user==nil
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].each do |i|
+          puts "\n#{i["github"]}"
+          puts "\n Github:\t #{i["github"]}"
+          puts " ID:\t\t #{i["id"]}"
+          puts " Name:\t\t #{i["name"]}"
+          puts " Surname:\t #{i["surname"]}"
+          puts " Emails:\t #{i["emails"]}"
+          puts " Organizations:\t #{i["orgs"]}"
+          puts " Urls:\t\t #{i["urls"]}"
+          puts
+        end
+      else
+        inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user}
+        if inuser==nil
+          puts "Not extended information has been added of that user."
+        else
+          puts "\n#{inuser["github"]}"
+          puts "\n Github:\t #{inuser["github"]}"
+          puts " ID:\t\t #{inuser["id"]}"
+          puts " Name:\t\t #{inuser["name"]}"
+          puts " Surname:\t #{inuser["surname"]}"
+          puts " Emails:\t #{inuser["emails"]}"
+          puts " Organizations:\t #{inuser["orgs"]}"
+          puts " Urls:\t\t #{inuser["urls"]}"
+          puts
+        end
+      end
+    end
+  end
 
   def add_repo_to_assig(client,config,assig)
     list=self.load_assig()
@@ -296,6 +409,7 @@ class Organizations
       orgslist.push(m[:login])
       puts m[:login]
     end
+    puts
     return orgslist
   end
 

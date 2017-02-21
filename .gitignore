@@ -6,6 +6,7 @@
 .ghedsh
 script
 
+*.csv
 *.gem
 *.rbc
 .bundle

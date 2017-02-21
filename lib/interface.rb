@@ -638,7 +638,14 @@ class Interface
           t.new_group(@client,@config,opcd[1],opcd[2..opcd.size-1])
         end
       end
-
+      if opcd[0]=="add_people_info" and opcd.size==2 and @deep==ORGS then o.add_people_info(@client,@config,opcd[1]) end
+      if opcd[0]=="people" and opcd[1]=="info"
+        if opcd.size==2
+          Organizations.new.show_people_info(@client,@config,nil)
+        else
+          Organizations.new.show_people_info(@client,@config,opcd[2])
+        end
+      end
       if opcd[0]=="clone"
         if opcd.size==2
           r.clone_repo(@client,@config,opcd[1],@deep)
