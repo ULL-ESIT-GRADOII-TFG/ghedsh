@@ -34,22 +34,22 @@ class Interface
     @repo_path=''
 
     options=@sysbh.parse
-    #
-    # trap("SIGINT") { throw :ctrl_c }
-    # catch :ctrl_c do
-    #   begin
+
+    trap("SIGINT") { throw :ctrl_c }
+    catch :ctrl_c do
+      begin
         if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
           self.run(options[:path],options[:token],options[:user])
         else
           self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
         end
-    #   rescue SystemExit, Interrupt
-    #     raise
-    #   rescue Exception => e
-    #     puts "exit"
-    #     puts e
-    #   end
-    # end
+      rescue SystemExit, Interrupt
+        raise
+      rescue Exception => e
+        puts "exit"
+        puts e
+      end
+    end
   end
 
   def prompt()
@@ -581,6 +581,11 @@ class Interface
       if opcd[0]=="new_issue" and opcd.size==1
         if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
           r.create_issue(@client,@config,@deep)
+        end
+      end
+      if opcd[0]=="add_issue_comment" and opcd.size==2
+        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
+          r.add_issue_cm(@client,@config,@deep,opcd[1])
         end
       end
       if opcd[0]=="close_issue" and opcd.size==2

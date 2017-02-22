@@ -89,28 +89,36 @@ class Repositories
   end
 
   def close_issue(client,config,scope,id)
-    case
-    when scope==USER_REPO
-      if config["Repo"].split("/").size == 1
-        client.close_issue(config["User"]+"/"+config["Repo"],id)
-      else
-        client.close_issue(config["Repo"],id)
+    begin
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size == 1
+          client.close_issue(config["User"]+"/"+config["Repo"],id)
+        else
+          client.close_issue(config["Repo"],id)
+        end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+        client.close_issue(config["Org"]+"/"+config["Repo"],id)
       end
-    when scope==ORGS_REPO || scope==TEAM_REPO
-      client.close_issue(config["Org"]+"/"+config["Repo"],id)
+    rescue
+      puts "Issue not found"
     end
   end
 
   def open_issue(client,config,scope,id)
-    case
-    when scope==USER_REPO
-      if config["Repo"].split("/").size == 1
-        client.reopen_issue(config["User"]+"/"+config["Repo"],id)
-      else
-        client.reopen_issue(config["Repo"],id)
+    begin
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size == 1
+          client.reopen_issue(config["User"]+"/"+config["Repo"],id)
+        else
+          client.reopen_issue(config["Repo"],id)
+        end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+        client.reopen_issue(config["Org"]+"/"+config["Repo"],id)
       end
-    when scope==ORGS_REPO || scope==TEAM_REPO
-      client.reopen_issue(config["Org"]+"/"+config["Repo"],id)
+    rescue
+      puts "Issue not found"
     end
   end
 
@@ -199,7 +207,25 @@ class Repositories
   end
 
   #add issue comment
-  def add_issue_cm
+  def add_issue_cm(client,config,scope,id)
+    puts "Add a description: "
+    desc=gets.chomp
+    puts desc
+    puts id
+    begin
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size == 1
+          client.add_comment(config["User"]+"/"+config["Repo"],id,desc)
+        else
+          client.add_comment(config["Repo"],id,desc)
+        end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+        client.add_comment(config["Org"]+"/"+config["Repo"],id,desc)
+      end
+    rescue
+      puts "Issue not found"
+    end
   end
 
   #Show repositories and return a list of them
