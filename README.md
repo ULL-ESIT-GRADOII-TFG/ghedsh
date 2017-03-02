@@ -175,7 +175,8 @@ Formato y campos de la informacion añadida:
 Ejemplo del contenido del archivo .csv. Cada linea representara los datos de un alumno, poniendo comillas se podra añadir varios valores en los campos de email, organizaciones y las urls.
 
 > studentbeta,alu1342,Pedro,Garcia Perez,"alu1342@ull.edu.es, pedrogarciaperez@gmail.com","classroom-testing, SYTW1617","http://campusvirtual.ull.es/aluXXX, http://pegarpe.github.io"
-> studentalpha1,alu321,Paco,Gutierrez Sepia,"alu321@ull.edu.es, pacogutierrez@gmail.com","classroom-testing, SYTW1617","http://campusvirtual.ull.es/aluXXX, http://pegarpe.github.io"
+
+> studentalpha1,alu321,Paco,Gutierrez,"alu321@ull.edu.es, pacogutierrez@gmail.com","classroom-testing, SYTW1617","http://campusvirtual.ull.es/aluXXX, http://st.github.io"
 
 
 ```sh
