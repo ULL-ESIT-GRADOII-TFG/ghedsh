@@ -154,6 +154,31 @@ people
 Muestra los miembros de una organizacion si nos encontramos en ese ambito, o los miembros de un equipo.
 
 ```sh
+people info
+```
+Muestra la informacion extendida de los miembros de la organizacion.
+
+```sh
+people info <usuario>
+```
+Muestra la informacion extendida de un miembro especifico de una organizacion.
+
+```sh
+add_people_info	<file>
+```
+Añade informacion extendida de los miembros de una organizacion mediante un archivo .csv.
+
+Formato y campos de la informacion añadida:
+
+> github, id, nombre, apellido, emails, organizaciones, urls
+
+Ejemplo del contenido del archivo .csv. Cada linea representara los datos de un alumno, poniendo comillas se podra añadir varios valores en los campos de email, organizaciones y las urls.
+
+> studentbeta,alu1342,Pedro,Garcia Perez,"alu1342@ull.edu.es, pedrogarciaperez@gmail.com","classroom-testing, SYTW1617","http://campusvirtual.ull.es/aluXXX, http://pegarpe.github.io"
+> studentalpha1,alu321,Paco,Gutierrez Sepia,"alu321@ull.edu.es, pacogutierrez@gmail.com","classroom-testing, SYTW1617","http://campusvirtual.ull.es/aluXXX, http://pegarpe.github.io"
+
+
+```sh
 files <path>
 ```
 Dentro de un repositorio, muestra los archivos y directorios que se encuentren en el path dado. Si se ejecuta sin opciones mostrara los archivos de la raiz del repositorio.
@@ -169,9 +194,29 @@ commits
 Muestra los commits del repositorio en el que se encuentre el usuario.
 
 ```sh
+private <true/false>
+```
+Modifica la privacidad de un repositorio estando situado dentro del mismo.
+
+```sh
+info
+```
+Dentro del repositorio, muestra informacion del mismo.
+
+```sh
 issues
 ```
 Muestra los issues del repositorio en el que se encuentre el usuario.
+
+```sh
+issue <id>
+```
+Muestra un issue especifico, y permite ver ademas sus comentarios.
+
+```sh
+add_issue_comment <id>
+```
+Añade un comentario a un issue especifico.
 
 ```sh
 new_issue <nombre>
