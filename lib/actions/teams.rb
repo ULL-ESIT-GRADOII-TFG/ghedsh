@@ -189,6 +189,15 @@ class Teams
     end
   end
 
+  def open_team_repos(config)
+    case
+    when RUBY_PLATFORM.downcase.include?("darwin")
+      system("open https://github.com/orgs/#{config["Org"]}/teams/#{config["Team"]}")
+    when RUBY_PLATFORM.downcase.include?("linux")
+      system("xdg-open https://github.com/orgs/#{config["Org"]}/teams/#{config["Team"]}")
+    end
+  end
+
   def change_group_repos_privacity()
   end
 

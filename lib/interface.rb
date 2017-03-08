@@ -191,7 +191,7 @@ class Interface
            @teamlist=Teams.new.read_teamlist(@client,@config)
          end
         aux=@teamlist
-        # puts "lul #{@teamlist}"
+
         if aux[path]!=nil
           @config["Team"]=path
           @config["TeamID"]=@teamlist[path]
@@ -440,6 +440,7 @@ class Interface
     t=Teams.new
     r=Repositories.new
     s=Sys.new
+    u=User.new
     # orden de búsqueda: ~/.ghedsh.json ./ghedsh.json ENV["ghedsh"] --configpath path/to/file.json
 
     #control de carga de parametros en el logueo de la aplicacion
@@ -513,6 +514,11 @@ class Interface
           if @deep==ASSIG
             o.make_assig(@client,@config,@assig_path)
           end
+        when op =="open"
+          if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.open_repository(@client,@config,@deep) end
+          if @deep==USER then u.open_user(@client) end
+          if @deep==ORGS then o.open_org(@client,@config) end
+          if @deep==TEAM then t.open_team_repos(@config) end
       end
 
       if opcd[0]=="issue" and opcd.size>1
@@ -580,12 +586,12 @@ class Interface
       end
       if opcd[0]=="new_issue" and opcd.size==1
         if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
-          r.create_issue(@client,@config,@deep)
+          r.create_issue(@client,@config,@deep,config_path)
         end
       end
       if opcd[0]=="add_issue_comment" and opcd.size==2
         if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
-          r.add_issue_cm(@client,@config,@deep,opcd[1])
+          r.add_issue_cm(@client,@config,@deep,opcd[1],config_path)
         end
       end
       if opcd[0]=="close_issue" and opcd.size==2

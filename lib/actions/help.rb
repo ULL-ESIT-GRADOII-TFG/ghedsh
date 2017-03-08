@@ -11,6 +11,7 @@ class HelpM
     puts " Users options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\torgs\t\t\tShow your organizations\n"
+    print "\topen\t\t\tOpen the user's url of github in your web browser.\n"
     print "\trepos\t\t\tList your repositories\n"
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tnew_repository\t\tCreate a repository in your personal account\n"
@@ -23,6 +24,7 @@ class HelpM
     puts " Organization options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\trepos\t\t\tList the repositories of your organization\n"
+    print "\topen\t\t\tOpen the organization's url of github in your web browser.\n"
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tset\t\t\tMove you to a specific repository\n"
     print "\tpeople\t\t\tShow the members of an organization\n"
@@ -53,6 +55,7 @@ class HelpM
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tinfo\t\t\tShow information about the repository\n"
+    print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     print "\tnew_issue\t\tCreates a new issue\n"
     print "\tissues\t\t\tShow the list of issues from the repository\n"
@@ -77,9 +80,10 @@ class HelpM
     puts " Organization team options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tpeople\t\t\tMembers of the team\n"
+    print "\topen\t\t\tOpen the team's url of github in your web browser.\n"
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tnew_repository\t\tCreate a repository to this team\n"
-    print "\tadd_to_team\t\t\tAdd a member in the team\n\n"
+    print "\tadd_to_team\t\tAdd a member in the team\n\n"
   end
 
   def user_repo()
@@ -87,6 +91,7 @@ class HelpM
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tinfo\t\t\tShow information about the repository\n"
+    print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     print "\tnew_issue\t\tCreates a new issue\n"
     print "\tissues\t\t\tShow the list of issues from the repository\n"
@@ -103,6 +108,7 @@ class HelpM
     print "\t\t\t\t->\tcat [file]\n\n"
     print "\tprivate\t\t\tChange the privacy of a repository. Expected 'true' or 'false' as parameter.\n"
     print "\t\t\t\t->\tprivate [true]\n\n"
+    print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
     print "\tcol\t\t\tShow the list of collaborators from the repository\n\n"
   end
   def team_repo()
@@ -110,6 +116,7 @@ class HelpM
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tinfo\t\t\tShow information about the repository\n"
+    print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     print "\tnew_issue\t\tCreates a new issue\n"
     print "\tissues\t\t\tShow the list of issues from the repository\n"

@@ -133,7 +133,7 @@ class Organizations
     puts "\nAdd groups to your assignment (Press enter to skip): "
     op=gets.chomp
     if op==""
-      puts "Do you want to create a new group? (Press any key to proceed, or only enter to skip)"
+      puts "Do you want to create a new group? (Press any key and enter to proceed, or only enter to skip)"
       an=gets.chomp
 
       if an!=""
@@ -296,8 +296,11 @@ class Organizations
       file=file+".csv"
     end
     if File.exist?(file)
-      puts "here in #{file}"
-      mem = CSV.read(file)
+      begin
+        mem = CSV.read(file,:quote_char => "|")
+      rescue
+        print "Invalid csv format."
+      end
       users=Hash.new;
       users=[]
       mem.each do |i|
@@ -329,7 +332,7 @@ class Organizations
             puts " Emails:\t#{here["emails"]} -> #{i["emails"]}"
             puts " Organizations:\t#{here["orgs"]} -> #{i["orgs"]}"
             puts " Urls:\t\t#{here["urls"]} -> #{i["urls"]}"
-            puts "\nPress any key to proceed, or only enter to skip: "
+            puts "\nPress any key and enter to proceed, or only enter to skip: "
             op=gets.chomp
             if op!=""
               index1=list["orgs"].index{|aux| aux["name"]==config["Org"]}
@@ -434,6 +437,16 @@ class Organizations
       orgslist.push(o[:login])
     end
     return orgslist
+  end
+
+  def open_org(client,config)
+    mem=client.organization(config["Org"])
+    case
+    when RUBY_PLATFORM.downcase.include?("darwin")
+      system("open #{mem[:html_url]}")
+    when RUBY_PLATFORM.downcase.include?("linux")
+      system("xdg-open #{mem[:html_url]}")
+    end
   end
 
 end

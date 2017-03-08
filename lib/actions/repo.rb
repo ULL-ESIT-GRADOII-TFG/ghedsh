@@ -70,22 +70,71 @@ class Repositories
     end
   end
 
-  def create_issue(client,config,scope)
-    puts "Insert Issue tittle: "
-    tittle=gets.chomp
-    puts "Add a description: "
-    desc=gets.chomp
-
+  def open_repository(client,config,scope)
     case
     when scope==USER_REPO
-      if config["Repo"].split("/").size == 1
-        client.create_issue(config["User"]+"/"+config["Repo"],tittle,desc)
-      else
-        client.create_issue(config["Repo"],tittle,desc)
-      end
+        if config["Repo"].split("/").size == 1
+          mem=client.repository(config["User"]+"/"+config["Repo"])
+        else
+          mem=client.repository(config["Repo"])
+        end
     when scope==ORGS_REPO || scope==TEAM_REPO
-      client.create_issue(config["Org"]+"/"+config["Repo"],tittle,desc)
+        mem=client.repository(config["Org"]+"/"+config["Repo"])
     end
+
+    case
+    when RUBY_PLATFORM.downcase.include?("darwin")
+      system("open #{mem[:html_url]}")
+    when RUBY_PLATFORM.downcase.include?("linux")
+      system("xdg-open #{mem[:html_url]}")
+    end
+
+  end
+
+  def create_issue(client,config,scope,path)
+    tittle=""
+    while tittle==""
+      puts "\nInsert Issue tittle: "
+      tittle=gets.chomp
+    end
+    puts "Write the description in you editor, press enter when you finish "
+
+    if ENV["EDITOR"]==nil
+      editor="vi"
+    else
+      editor=ENV["EDITOR"]
+    end
+
+    system("#{editor} #{path}/temp.txt &")
+    gets
+    begin
+      desc=File.read("#{path}/temp.txt")
+    rescue
+      puts "Empty description"
+    end
+    puts "This issue is gonna be created"
+    puts "\ntitle: #{tittle}"
+    puts "\n--------------------------------------"
+    puts desc
+    puts "--------------------------------------"
+    puts "\nTo proceed press enter, or to discard press any key and enter"
+    an=gets.chomp
+    if an==""
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size == 1
+          client.create_issue(config["User"]+"/"+config["Repo"],tittle,desc)
+        else
+          client.create_issue(config["Repo"],tittle,desc)
+        end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+        client.create_issue(config["Org"]+"/"+config["Repo"],tittle,desc)
+      end
+      puts "Issue correctly created"
+    else
+      puts "Issue not created"
+    end
+    Sys.new().remove_temp("#{path}/temp.txt")
   end
 
   def close_issue(client,config,scope,id)
@@ -163,7 +212,7 @@ class Repositories
           puts "  --------------------------------------"
           puts "\n#{i[:body]}"
           issfound=1
-          print "\nShow comments (Press any key to proceed, or only enter to skip) -> "
+          print "\nShow comments (Press any key and enter to proceed, or only enter to skip) -> "
           show=gets.chomp
           puts
           if show!=""
@@ -207,25 +256,49 @@ class Repositories
   end
 
   #add issue comment
-  def add_issue_cm(client,config,scope,id)
-    puts "Add a description: "
-    desc=gets.chomp
-    puts desc
-    puts id
-    begin
-      case
-      when scope==USER_REPO
-        if config["Repo"].split("/").size == 1
-          client.add_comment(config["User"]+"/"+config["Repo"],id,desc)
-        else
-          client.add_comment(config["Repo"],id,desc)
-        end
-      when scope==ORGS_REPO || scope==TEAM_REPO
-        client.add_comment(config["Org"]+"/"+config["Repo"],id,desc)
-      end
-    rescue
-      puts "Issue not found"
+  def add_issue_cm(client,config,scope,id,path)
+    puts "Write the description in you editor, press enter when you finish "
+
+    if ENV["EDITOR"]==nil
+      editor="vi"
+    else
+      editor=ENV["EDITOR"]
     end
+    system("#{editor} #{path}/temp.txt")
+    gets
+    begin
+      desc=File.read("#{path}/temp.txt")
+    rescue
+      puts "Empty description"
+    end
+
+    puts "This comment is gonna be created"
+    puts "\n--------------------------------------"
+    puts desc
+    puts "--------------------------------------"
+    puts "\nTo proceed press enter, or to discard press any key and enter"
+    an=gets.chomp
+
+    if an==""
+      begin
+        case
+        when scope==USER_REPO
+          if config["Repo"].split("/").size == 1
+            client.add_comment(config["User"]+"/"+config["Repo"],id,desc)
+          else
+            client.add_comment(config["Repo"],id,desc)
+          end
+        when scope==ORGS_REPO || scope==TEAM_REPO
+          client.add_comment(config["Org"]+"/"+config["Repo"],id,desc)
+        end
+        puts "Comment created"
+      rescue
+        puts "Issue not found"
+      end
+    else
+      puts "comment not created"
+    end
+    Sys.new().remove_temp("#{path}/temp.txt")
   end
 
   #Show repositories and return a list of them
