@@ -6,6 +6,8 @@ require 'require_all'
 require_rel '.'
 require 'readline'
 
+GITHUB_LIST=['githubid','idgithub','github_id','id_github']
+
 class Organizations
 
   attr_accessor :orgslist
@@ -286,6 +288,8 @@ class Organizations
   #Takes people info froma a csv file and gets into ghedsh people information
   def add_people_info(client,config,file)
     list=self.load_people()
+    csvoptions={:quote_char => "|",:headers=>true}
+
     inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     if inpeople==nil
       list["orgs"].push({"name"=>config["Org"],"users"=>[]})
@@ -297,21 +301,27 @@ class Organizations
     end
     if File.exist?(file)
       begin
-        mem = CSV.read(file,:quote_char => "|")
+        mem = CSV.read(file,csvoptions)
       rescue
         print "Invalid csv format."
       end
+      fields=mem.headers
       users=Hash.new;
       users=[]
+      puts fields
       mem.each do |i|
         aux=Hash.new
-        aux["github"]=i[0]
-        aux["id"]=i[1]
-        aux["name"]=i[2]
-        aux["surname"]=i[3]
-        aux["emails"]=i[4]
-        aux["orgs"]=i[5]
-        aux["urls"]=i[6]
+        fields.each do |j|
+          if i[j]!=nil
+            if GITHUB_LIST.include?(j.gsub("\"", "").downcase)
+              aux["github"]=i[j].gsub("\"", "").strip
+            else
+              aux[j.gsub("\"", "").downcase]=i[j].gsub("\"", "").strip
+            end
+          else
+            aux[j.gsub("\"", "").downcase]=i[j]
+          end
+        end
         users<< aux
       end
 
@@ -326,12 +336,11 @@ class Organizations
           else
             puts "The information is different thant the original. Do you want to change it?"
             puts "\n Github:\t#{here["github"]} -> #{i["github"]}"
-            puts " ID:\t\t#{here["id"]} -> #{i["id"]}"
-            puts " Name:\t\t#{here["name"]} -> #{i["name"]}"
-            puts " Surname:\t#{here["surname"]} -> #{i["surname"]}"
-            puts " Emails:\t#{here["emails"]} -> #{i["emails"]}"
-            puts " Organizations:\t#{here["orgs"]} -> #{i["orgs"]}"
-            puts " Urls:\t\t#{here["urls"]} -> #{i["urls"]}"
+
+            fields.each do |j|
+              puts " ID:\t\t#{here[j]} -> #{i[j]}"
+            end
+
             puts "\nPress any key and enter to proceed, or only enter to skip: "
             op=gets.chomp
             if op!=""
@@ -362,30 +371,23 @@ class Organizations
       puts "Extended information has not been added yet"
     else
       if user==nil
+        fields=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"][0].keys
         list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].each do |i|
           puts "\n#{i["github"]}"
-          puts "\n Github:\t #{i["github"]}"
-          puts " ID:\t\t #{i["id"]}"
-          puts " Name:\t\t #{i["name"]}"
-          puts " Surname:\t #{i["surname"]}"
-          puts " Emails:\t #{i["emails"]}"
-          puts " Organizations:\t #{i["orgs"]}"
-          puts " Urls:\t\t #{i["urls"]}"
-          puts
+          fields.each do |j|
+            puts "#{j.capitalize}:\t #{i[j]}"
+          end
         end
       else
         inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user}
         if inuser==nil
           puts "Not extended information has been added of that user."
         else
+          fields=inuser.keys
           puts "\n#{inuser["github"]}"
-          puts "\n Github:\t #{inuser["github"]}"
-          puts " ID:\t\t #{inuser["id"]}"
-          puts " Name:\t\t #{inuser["name"]}"
-          puts " Surname:\t #{inuser["surname"]}"
-          puts " Emails:\t #{inuser["emails"]}"
-          puts " Organizations:\t #{inuser["orgs"]}"
-          puts " Urls:\t\t #{inuser["urls"]}"
+          fields.each do |j|
+            puts "#{j.capitalize}:\t #{inuser[j]}"
+          end
           puts
         end
       end

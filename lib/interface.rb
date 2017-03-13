@@ -35,7 +35,7 @@ class Interface
 
     options=@sysbh.parse
 
-    trap("SIGINT") { throw :ctrl_c }
+    trap("SIGINT") { throw :ctrl_c}
     catch :ctrl_c do
       begin
         if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
@@ -466,8 +466,12 @@ class Interface
     while ex != 0
 
       if opscript.empty?
-        op=Readline.readline(self.prompt,true)
-        opcd=op.split
+        begin
+          op=Readline.readline(self.prompt,true).strip
+          opcd=op.split
+        rescue
+          op="exit";opcd="exit"
+        end
       else
         op=opscript[0]
         opcd=op.split
