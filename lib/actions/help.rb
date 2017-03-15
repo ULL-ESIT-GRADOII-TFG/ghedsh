@@ -25,6 +25,8 @@ class HelpM
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\trepos\t\t\tList the repositories of your organization\n"
     print "\topen\t\t\tOpen the organization's url of github in your web browser.\n"
+    print "\t\t\t\tIf you have added the aditional .csv information with, you can open an specific github profile.\n"
+    print "\t\t\t\t->\topen [user]\n\n"
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tset\t\t\tMove you to a specific repository\n"
     print "\tpeople\t\t\tShow the members of an organization\n"

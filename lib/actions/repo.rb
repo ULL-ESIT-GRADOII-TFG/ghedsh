@@ -92,10 +92,10 @@ class Repositories
   end
 
   def create_issue(client,config,scope,path)
-    tittle=""
-    while tittle==""
-      puts "\nInsert Issue tittle: "
-      tittle=gets.chomp
+    title=""
+    while title==""
+      puts "\nInsert Issue title: "
+      title=gets.chomp
     end
     puts "Write the description in you editor, press enter when you finish "
 
@@ -105,7 +105,7 @@ class Repositories
       editor=ENV["EDITOR"]
     end
 
-    system("#{editor} #{path}/temp.txt &")
+    system("#{editor} #{path}/temp.txt")
     gets
     begin
       desc=File.read("#{path}/temp.txt")
@@ -113,7 +113,7 @@ class Repositories
       puts "Empty description"
     end
     puts "This issue is gonna be created"
-    puts "\ntitle: #{tittle}"
+    puts "\ntitle: #{title}"
     puts "\n--------------------------------------"
     puts desc
     puts "--------------------------------------"
@@ -123,12 +123,12 @@ class Repositories
       case
       when scope==USER_REPO
         if config["Repo"].split("/").size == 1
-          client.create_issue(config["User"]+"/"+config["Repo"],tittle,desc)
+          client.create_issue(config["User"]+"/"+config["Repo"],title,desc)
         else
-          client.create_issue(config["Repo"],tittle,desc)
+          client.create_issue(config["Repo"],title,desc)
         end
       when scope==ORGS_REPO || scope==TEAM_REPO
-        client.create_issue(config["Org"]+"/"+config["Repo"],tittle,desc)
+        client.create_issue(config["Org"]+"/"+config["Repo"],title,desc)
       end
       puts "Issue correctly created"
     else
@@ -208,7 +208,7 @@ class Repositories
           puts "  --------------------------------------"
           puts "  Author: #{i[:user][:login]}"
           puts "  ##{i[:number]} state: #{i[:state]}"
-          puts "  Tittle: #{i[:title]}"
+          puts "  title: #{i[:title]}"
           puts "  --------------------------------------"
           puts "\n#{i[:body]}"
           issfound=1

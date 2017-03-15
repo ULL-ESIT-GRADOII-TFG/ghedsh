@@ -6,7 +6,7 @@ require 'require_all'
 require_rel '.'
 require 'readline'
 
-GITHUB_LIST=['githubid','idgithub','github_id','id_github']
+GITHUB_LIST=['githubid','idgithub','github_id','id_github','githubuser','github_user']
 
 class Organizations
 
@@ -448,6 +448,37 @@ class Organizations
       system("open #{mem[:html_url]}")
     when RUBY_PLATFORM.downcase.include?("linux")
       system("xdg-open #{mem[:html_url]}")
+    end
+  end
+
+  def open_user_url(client,config,user)
+    list=self.load_people()
+    inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    found=0
+    if inpeople==nil
+      list["orgs"].push({"name"=>config["Org"],"users"=>[]})
+      Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
+      puts "Extended information has not been added yet"
+    else
+      inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user}
+      if inuser==nil
+        puts "Not extended information has been added of that user."
+      else
+        inuser.each_value do |j|
+          if j.include?("github.com")
+            case
+            when RUBY_PLATFORM.downcase.include?("darwin")
+              system("open #{j}")
+            when RUBY_PLATFORM.downcase.include?("linux")
+              system("xdg-open #{j}")
+            end
+            found=1
+          end
+        end
+        if found==0
+          puts "No github web profile in the aditional information"
+        end
+      end
     end
   end
 

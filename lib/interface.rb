@@ -518,10 +518,16 @@ class Interface
           if @deep==ASSIG
             o.make_assig(@client,@config,@assig_path)
           end
-        when op =="open"
+        when op.include?("open")
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.open_repository(@client,@config,@deep) end
           if @deep==USER then u.open_user(@client) end
-          if @deep==ORGS then o.open_org(@client,@config) end
+          if @deep==ORGS
+            if opcd.size==1
+              o.open_org(@client,@config)
+            else
+              o.open_user_url(@client,@config,opcd[1])
+            end
+          end
           if @deep==TEAM then t.open_team_repos(@config) end
       end
 
