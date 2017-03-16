@@ -308,6 +308,7 @@ class Organizations
       fields=mem.headers
       users=Hash.new;
       users=[]
+      puts "\nFields found: "
       puts fields
       mem.each do |i|
         aux=Hash.new
@@ -338,7 +339,7 @@ class Organizations
             puts "\n Github:\t#{here["github"]} -> #{i["github"]}"
 
             fields.each do |j|
-              puts " ID:\t\t#{here[j]} -> #{i[j]}"
+              puts " #{j} :\t\t#{here[j.gsub("\"", "").downcase]} -> #{i[j.gsub("\"", "").downcase]}"
             end
 
             puts "\nPress any key and enter to proceed, or only enter to skip: "
@@ -365,6 +366,8 @@ class Organizations
   def show_people_info(client,config,user)
     list=self.load_people()
     inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    peopleinfolist=[]
+
     if inpeople==nil
       list["orgs"].push({"name"=>config["Org"],"users"=>[]})
       Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
@@ -373,18 +376,20 @@ class Organizations
       if user==nil
         fields=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"][0].keys
         list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].each do |i|
-          puts "\n#{i["github"]}"
+          puts "\n\e[31m#{i["github"]}\e[0m"
           fields.each do |j|
             puts "#{j.capitalize}:\t #{i[j]}"
           end
+          peopleinfolist<<i["github"]
         end
+        return peopleinfolist
       else
         inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user}
         if inuser==nil
           puts "Not extended information has been added of that user."
         else
           fields=inuser.keys
-          puts "\n#{inuser["github"]}"
+          puts "\n\e[31m#{inuser["github"]}\e[0m"
           fields.each do |j|
             puts "#{j.capitalize}:\t #{inuser[j]}"
           end

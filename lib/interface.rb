@@ -500,6 +500,12 @@ class Interface
         when op == "groups"
           if @deep==ORGS
             t.list_groups(@client,@config)
+            @sysbh.add_history_str(2,t.get_groupslist(@config))
+          end
+        when op.include?("group") && opcd[0]=="group"
+          if opcd.size==2
+            puts "Teams in group #{opcd[1]} :"
+            puts t.get_single_group(@config,opcd[1])
           end
         when op == "info"
           if @deep==ASSIG then o.show_assig_info(@config,@assig_path) end
@@ -518,7 +524,7 @@ class Interface
           if @deep==ASSIG
             o.make_assig(@client,@config,@assig_path)
           end
-        when op.include?("open")
+        when op.include?("open") && opcd[0]=="open"
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.open_repository(@client,@config,@deep) end
           if @deep==USER then u.open_user(@client) end
           if @deep==ORGS
@@ -599,7 +605,7 @@ class Interface
           r.create_issue(@client,@config,@deep,config_path)
         end
       end
-      if opcd[0]=="add_issue_comment" and opcd.size==2
+      if opcd[0]=="new_issue_comment" and opcd.size==2
         if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
           r.add_issue_cm(@client,@config,@deep,opcd[1],config_path)
         end
@@ -659,12 +665,12 @@ class Interface
           t.new_group(@client,@config,opcd[1],opcd[2..opcd.size-1])
         end
       end
-      if opcd[0]=="add_people_info" and opcd.size==2 and @deep==ORGS then o.add_people_info(@client,@config,opcd[1]) end
+      if opcd[0]=="new_people_info" and opcd.size==2 and @deep==ORGS then o.add_people_info(@client,@config,opcd[1]) end
       if opcd[0]=="people" and opcd[1]=="info"
         if opcd.size==2
-          Organizations.new.show_people_info(@client,@config,nil)
+          @sysbh.add_history_str(2,o.show_people_info(@client,@config,nil))
         else
-          Organizations.new.show_people_info(@client,@config,opcd[2])
+          o.show_people_info(@client,@config,opcd[2])
         end
       end
       if opcd[0]=="clone"

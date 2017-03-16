@@ -168,15 +168,15 @@ add_people_info	<file>
 ```
 Añade informacion extendida de los miembros de una organizacion mediante un archivo .csv.
 
-Formato y campos de la informacion añadida:
+Formato y campos de la informacion añadida: La primera linea del archivo .csv debera indicar el nombre de los campos que seran recogidos por el sistema.
 
-> github, id, nombre, apellido, emails, organizaciones, urls
+> "github", "id", "nombre", "apellido", "emails", "organizaciones", "urls"
 
-Ejemplo del contenido del archivo .csv. Cada linea representara los datos de un alumno, poniendo comillas se podra añadir varios valores en los campos de email, organizaciones y las urls.
+Ejemplo del contenido del archivo .csv. A partir de la primera linea de campos, cada nueva linea representara los datos de un alumno. Poniendo dobles comillas se podra añadir varios valores en un mismo campo.
 
-> studentbeta,alu1342,Pedro,Garcia Perez,"alu1342@ull.edu.es, pedrogarciaperez@gmail.com","classroom-testing, SYTW1617","http://campusvirtual.ull.es/aluXXX, http://pegarpe.github.io"
+> "studentbeta","alu1342","Pedro,Garcia Perez,""alu1342@ull.edu.es, pedrogarciaperez@gmail.com"",""classroom-testing, SYTW1617"",""http://campusvirtual.ull.es/aluXXX, http://pegarpe.github.io""
 
-> studentalpha1,alu321,Paco,Gutierrez,"alu321@ull.edu.es, pacogutierrez@gmail.com","classroom-testing, SYTW1617","http://campusvirtual.ull.es/aluXXX, http://st.github.io"
+> "studentalpha1","alu321","Paco","Gutierrez","alu321@ull.edu.es","classroom-testing",","http://st.github.com"
 
 
 ```sh

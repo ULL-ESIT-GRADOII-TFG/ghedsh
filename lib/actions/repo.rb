@@ -257,48 +257,70 @@ class Repositories
 
   #add issue comment
   def add_issue_cm(client,config,scope,id,path)
-    puts "Write the description in you editor, press enter when you finish "
+    if self.issue_exist?(client,config,scope,id)
+      puts "Write the description in you editor, press enter when you finish "
 
-    if ENV["EDITOR"]==nil
-      editor="vi"
-    else
-      editor=ENV["EDITOR"]
-    end
-    system("#{editor} #{path}/temp.txt")
-    gets
-    begin
-      desc=File.read("#{path}/temp.txt")
-    rescue
-      puts "Empty description"
-    end
-
-    puts "This comment is gonna be created"
-    puts "\n--------------------------------------"
-    puts desc
-    puts "--------------------------------------"
-    puts "\nTo proceed press enter, or to discard press any key and enter"
-    an=gets.chomp
-
-    if an==""
-      begin
-        case
-        when scope==USER_REPO
-          if config["Repo"].split("/").size == 1
-            client.add_comment(config["User"]+"/"+config["Repo"],id,desc)
-          else
-            client.add_comment(config["Repo"],id,desc)
-          end
-        when scope==ORGS_REPO || scope==TEAM_REPO
-          client.add_comment(config["Org"]+"/"+config["Repo"],id,desc)
-        end
-        puts "Comment created"
-      rescue
-        puts "Issue not found"
+      if ENV["EDITOR"]==nil
+        editor="vi"
+      else
+        editor=ENV["EDITOR"]
       end
+      system("#{editor} #{path}/temp.txt")
+      gets
+      begin
+        desc=File.read("#{path}/temp.txt")
+      rescue
+        puts "Empty description"
+      end
+
+      puts "This comment is gonna be created"
+      puts "\n--------------------------------------"
+      puts desc
+      puts "--------------------------------------"
+      puts "\nTo proceed press enter, or to discard press any key and enter"
+      an=gets.chomp
+
+      if an==""
+        begin
+          case
+          when scope==USER_REPO
+            if config["Repo"].split("/").size == 1
+              client.add_comment(config["User"]+"/"+config["Repo"],id,desc)
+            else
+              client.add_comment(config["Repo"],id,desc)
+            end
+          when scope==ORGS_REPO || scope==TEAM_REPO
+            client.add_comment(config["Org"]+"/"+config["Repo"],id,desc)
+          end
+          puts "Comment created"
+        rescue
+          puts "Issue not found"
+        end
+      else
+        puts "comment not created"
+      end
+      Sys.new().remove_temp("#{path}/temp.txt")
     else
-      puts "comment not created"
+      puts "Issue not found"
     end
-    Sys.new().remove_temp("#{path}/temp.txt")
+  end
+
+  def issue_exist?(client,config,scope,id)
+    begin
+      case
+      when scope==USER_REPO
+        if config["Repo"].split("/").size == 1
+          client.issue(config["User"]+"/"+config["Repo"],id)
+        else
+          client.issue(config["Repo"],id)
+        end
+      when scope==ORGS_REPO || scope==TEAM_REPO
+        client.issue(config["Org"]+"/"+config["Repo"],id)
+      end
+    rescue
+      return false
+    end
+      return true
   end
 
   #Show repositories and return a list of them
