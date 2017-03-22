@@ -289,6 +289,7 @@ class Organizations
   def add_people_info(client,config,file)
     list=self.load_people()
     csvoptions={:quote_char => "|",:headers=>true}
+    members=self.get_organization_members(client,config)  #members of the organization
 
     inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     if inpeople==nil
@@ -310,6 +311,7 @@ class Organizations
       users=[]
       puts "\nFields found: "
       puts fields
+      puts
       mem.each do |i|
         aux=Hash.new
         fields.each do |j|
@@ -327,34 +329,39 @@ class Organizations
       end
 
       users.each do |i|
-        here=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==i["github"]}
-        if here==nil
-          list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
-        else
-          puts "\nAlready exits \e[31m#{i["github"]}\e[0m in database"
-          if here.eql?(i)
-            puts "The information given is the same as in the database, changes are being discard."
+        if members.include?(i["github"])
+          here=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==i["github"]}
+          if here==nil
+            list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
+            puts "#{i["github"]} information correctly added"
           else
-            puts "The information is different thant the original. Do you want to change it?"
-            puts "\n Github:\t#{here["github"]} -> #{i["github"]}"
-
-            fields.each do |j|
-              puts " #{j} :\t\t#{here[j.gsub("\"", "").downcase]} -> #{i[j.gsub("\"", "").downcase]}"
-            end
-
-            puts "\nPress any key and enter to proceed, or only enter to skip: "
-            op=gets.chomp
-            if op!=""
-              index1=list["orgs"].index{|aux| aux["name"]==config["Org"]}
-              index2=list["orgs"][index1]["users"].index{|aux2| aux2["github"]==i["github"]}
-
-              list["orgs"][index1]["users"].pop(index2)
-              list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
-              puts "The information about \e[31m#{i["github"]}\e[0m has been changed"
+            puts "\nAlready exits \e[31m#{i["github"]}\e[0m in database"
+            if here.eql?(i)
+              puts "The information given is the same as in the database, changes are being discard."
             else
-              puts "The new information about \e[31m#{i["github"]}\e[0m has been discarded"
+              puts "The information is different thant the original. Do you want to change it?"
+              puts "\n Github:\t#{here["github"]} -> #{i["github"]}"
+
+              fields.each do |j|
+                puts " #{j} :\t\t#{here[j.gsub("\"", "").downcase]} -> #{i[j.gsub("\"", "").downcase]}"
+              end
+
+              puts "\nPress any key and enter to proceed, or only enter to skip: "
+              op=gets.chomp
+              if op!=""
+                index1=list["orgs"].index{|aux| aux["name"]==config["Org"]}
+                index2=list["orgs"][index1]["users"].index{|aux2| aux2["github"]==i["github"]}
+
+                list["orgs"][index1]["users"].pop(index2)
+                list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
+                puts "The information about \e[31m#{i["github"]}\e[0m has been changed"
+              else
+                puts "The new information about \e[31m#{i["github"]}\e[0m has been discarded"
+              end
             end
           end
+        else
+          puts "#{i["github"]} is not registered in this organiation"
         end
       end
       Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
@@ -363,8 +370,25 @@ class Organizations
     end
   end
 
+  def rm_people_info(client,config)
+    list=self.load_people()
+    inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+    if inpeople==nil
+      puts "Extended information has not been added yet"
+    else
+      if inpeople["users"].empty?
+        puts "Extended information has not been added yet"
+      else
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]=[]
+        Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
+        puts "The aditional information of #{config["Org"]} has been removed"
+      end
+    end
+  end
+
   def show_people_info(client,config,user)
     list=self.load_people()
+
     inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     peopleinfolist=[]
 
@@ -373,28 +397,36 @@ class Organizations
       Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
       puts "Extended information has not been added yet"
     else
-      if user==nil
-        fields=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"][0].keys
-        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].each do |i|
-          puts "\n\e[31m#{i["github"]}\e[0m"
-          fields.each do |j|
-            puts "#{j.capitalize}:\t #{i[j]}"
+      if inpeople["users"]!=[]
+        if user==nil
+          fields=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"][0].keys
+          list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].each do |i|
+            puts "\n\e[31m#{i["github"]}\e[0m"
+            fields.each do |j|
+              puts "#{j.capitalize}:\t #{i[j]}"
+            end
+            peopleinfolist<<i["github"]
           end
-          peopleinfolist<<i["github"]
-        end
-        return peopleinfolist
-      else
-        inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user}
-        if inuser==nil
-          puts "Not extended information has been added of that user."
+          return peopleinfolist
         else
-          fields=inuser.keys
-          puts "\n\e[31m#{inuser["github"]}\e[0m"
-          fields.each do |j|
-            puts "#{j.capitalize}:\t #{inuser[j]}"
+          if user.include?("@")
+            inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["mail"]==user}
+          else
+            inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user}
           end
-          puts
+          if inuser==nil
+            puts "Not extended information has been added of that user."
+          else
+            fields=inuser.keys
+            puts "\n\e[31m#{inuser["github"]}\e[0m"
+            fields.each do |j|
+              puts "#{j.capitalize}:\t #{inuser[j]}"
+            end
+            puts
+          end
         end
+      else
+        puts "Extended information has not been added yet"
       end
     end
   end
@@ -421,6 +453,17 @@ class Organizations
     end
     puts
     return orgslist
+  end
+
+  def get_organization_members(client,config)
+    mem=client.organization_members(config["Org"])
+    list=[]
+    if mem!=nil
+      mem.each do |i|
+        list<<i[:login]
+      end
+    end
+    return list
   end
 
   def show_orgs(client,config)

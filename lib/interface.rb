@@ -512,6 +512,10 @@ class Interface
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.info_repository(@client,@config,@deep) end
         when op== "add_repo"
           if @deep=ASSIG then o.add_repo_to_assig(@client,@config,@assig_path) end
+        when op.include?("rm")
+          if @deep==ORGS and opcd[1]=="people" and opcd[2]=="info"
+            o.rm_people_info(@client,@config)
+          end
         when op== "add_group"
             if @deep=ASSIG then o.add_group_to_assig(@client,@config,@assig_path) end
         when op == "version"
@@ -668,7 +672,8 @@ class Interface
       if opcd[0]=="new_people_info" and opcd.size==2 and @deep==ORGS then o.add_people_info(@client,@config,opcd[1]) end
       if opcd[0]=="people" and opcd[1]=="info"
         if opcd.size==2
-          @sysbh.add_history_str(2,o.show_people_info(@client,@config,nil))
+          info_strm=o.show_people_info(@client,@config,nil)
+          if info_strm!=nil then @sysbh.add_history_str(2,info_strm) end
         else
           o.show_people_info(@client,@config,opcd[2])
         end
