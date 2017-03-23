@@ -507,6 +507,8 @@ class Interface
             puts "Teams in group #{opcd[1]} :"
             puts t.get_single_group(@config,opcd[1])
           end
+        when op.include?("new") && opcd[0]=="new" && opcd[1]=="people" && opcd[2]=="info"
+          if @deep==ORGS  && opcd.size==4 then o.add_people_info(@client,@config,opcd[3]) end
         when op == "info"
           if @deep==ASSIG then o.show_assig_info(@config,@assig_path) end
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.info_repository(@client,@config,@deep) end

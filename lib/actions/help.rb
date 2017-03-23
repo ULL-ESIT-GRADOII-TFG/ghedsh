@@ -38,6 +38,7 @@ class HelpM
     print "\tteams\t\t\tTeams of a organization\n"
     print "\tnew_people_info\t\tGet extended information from a .csv file founded in the excecute path\n"
     print "\t\t\t\t->\tnew_people_info [name of the file]\n\n"
+    print "\trm people info\t\tDelete the extended information\n"
     print "\tassignments\t\tShow the list of assignments created\n"
     print "\tnew_assignment\t\tCreate an Assignment in your organization\n"
     print "\tgroups\t\t\tShow the list of groups with each team and user that it has\n"

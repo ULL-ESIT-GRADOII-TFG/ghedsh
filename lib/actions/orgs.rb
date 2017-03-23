@@ -7,6 +7,7 @@ require_rel '.'
 require 'readline'
 
 GITHUB_LIST=['githubid','idgithub','github_id','id_github','githubuser','github_user']
+MAIL_LIST=['email','mail','e-mail']
 
 class Organizations
 
@@ -316,13 +317,17 @@ class Organizations
         aux=Hash.new
         fields.each do |j|
           if i[j]!=nil
-            if GITHUB_LIST.include?(j.gsub("\"", "").downcase)
+            if GITHUB_LIST.include?(j.gsub("\"", "").downcase.strip)
               aux["github"]=i[j].gsub("\"", "").strip
             else
-              aux[j.gsub("\"", "").downcase]=i[j].gsub("\"", "").strip
+              if MAIL_LIST.include?(j.gsub("\"", "").downcase.strip)
+                aux["email"]=i[j].gsub("\"", "").strip
+              else
+                aux[j.gsub("\"", "").downcase.strip]=i[j].gsub("\"", "").strip
+              end
             end
           else
-            aux[j.gsub("\"", "").downcase]=i[j]
+            aux[j.gsub("\"", "").downcase.strip]=i[j]
           end
         end
         users<< aux
@@ -410,7 +415,7 @@ class Organizations
           return peopleinfolist
         else
           if user.include?("@")
-            inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["mail"]==user}
+            inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["email"]==user}
           else
             inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user}
           end
