@@ -10,8 +10,8 @@ class Sys
   attr_reader :client
   attr_reader :memory
   LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone ', 'issues',
-    'version', 'cat ', 'groups', 'files', 'assignments','new_issue ', 'open_issue', 'new_','open_', 'close_issue', 'new_group ', 'rm_group', 'rm_', 'do ', 'info','make','add_repo',
-    'add_group','rm_repository ', 'new_people_info ', 'private ', 'people info ', 'new_issue_comment ', "rm people info"].sort
+    'version', 'cat ', 'groups', 'files', 'assignments','new_issue ', 'open_issue', 'new_','open_', 'close_issue', 'new_group ', 'rm_group', 'rm_', 'do ', 'info','make','add repo',
+    'add group','rm_repository ', 'new_people_info ', 'new people info ', 'private ', 'people info ', 'new_issue_comment ', "rm people info"].sort
 
   def initialize()
     @memory=[]
@@ -399,4 +399,12 @@ class Sys
     end
   end
 
+  def open_url(url)
+    case
+    when RUBY_PLATFORM.downcase.include?("darwin")
+      system("open #{url}")
+    when RUBY_PLATFORM.downcase.include?("linux")
+      system("xdg-open #{url}")
+    end
+  end
 end

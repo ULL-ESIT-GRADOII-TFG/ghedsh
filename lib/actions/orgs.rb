@@ -289,7 +289,7 @@ class Organizations
   #Takes people info froma a csv file and gets into ghedsh people information
   def add_people_info(client,config,file)
     list=self.load_people()
-    csvoptions={:quote_char => "|",:headers=>true}
+    csvoptions={:quote_char => "|",:headers=>true,:skip_blanks=>true}
     members=self.get_organization_members(client,config)  #members of the organization
 
     inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
@@ -366,7 +366,7 @@ class Organizations
             end
           end
         else
-          puts "#{i["github"]} is not registered in this organiation"
+          puts "#{i["github"]} is not registered in this organization"
         end
       end
       Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
@@ -496,18 +496,14 @@ class Organizations
 
   def open_org(client,config)
     mem=client.organization(config["Org"])
-    case
-    when RUBY_PLATFORM.downcase.include?("darwin")
-      system("open #{mem[:html_url]}")
-    when RUBY_PLATFORM.downcase.include?("linux")
-      system("xdg-open #{mem[:html_url]}")
-    end
+    Sys.new.open_url(mem[:html_url])
   end
 
-  def open_user_url(client,config,user)
+  def open_user_url(client,config,user,field)
     list=self.load_people()
     inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     found=0
+
     if inpeople==nil
       list["orgs"].push({"name"=>config["Org"],"users"=>[]})
       Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
@@ -517,19 +513,31 @@ class Organizations
       if inuser==nil
         puts "Not extended information has been added of that user."
       else
-        inuser.each_value do |j|
-          if j.include?("github.com")
-            case
-            when RUBY_PLATFORM.downcase.include?("darwin")
-              system("open #{j}")
-            when RUBY_PLATFORM.downcase.include?("linux")
-              system("xdg-open #{j}")
+        if field==nil
+          inuser.each_value do |j|
+            if j.include?("github.com")
+              if j.include?("https://")==false || j.include?("http://")==false
+                Sys.new.open_url("http://"+j)
+              else
+                Sys.new.open_url(j)
+              end
+              found=1
             end
-            found=1
           end
-        end
-        if found==0
-          puts "No github web profile in the aditional information"
+          if found==0
+            puts "No github web profile in the aditional information"
+          end
+        else
+          if inuser.keys.include?(field.downcase)
+            if inuser[field.downcase].include?("https://")==false || inuser[field.downcase].include?("http://")==false
+              url="http://"+inuser["#{field.downcase}"]
+            else
+              url=inuser["#{field.downcase}"]
+            end
+            Sys.new.open_url(url)
+          else
+            puts "No field found with that name"
+          end
         end
       end
     end

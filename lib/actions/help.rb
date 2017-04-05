@@ -116,6 +116,17 @@ class HelpM
     print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
     print "\tcol\t\t\tShow the list of collaborators from the repository\n\n"
   end
+
+  def asssig()
+    self.common_opt
+    puts " Assignment options:"
+    print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
+    print "\tinfo\t\t\Show information about the assignment\n"
+    print "\tadd repo\t\tAdd or create the repository of the assignment\n"
+    print "\tadd group\t\tAdd a new group to the assignment\n"
+    print "\tmake\t\t\tCreate the repository assignment in Github for each team of every group\n\n"
+  end
+
   def team_repo()
     self.common_opt
     puts " Repository options:"

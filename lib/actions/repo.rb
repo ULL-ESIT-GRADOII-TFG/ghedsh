@@ -81,14 +81,7 @@ class Repositories
     when scope==ORGS_REPO || scope==TEAM_REPO
         mem=client.repository(config["Org"]+"/"+config["Repo"])
     end
-
-    case
-    when RUBY_PLATFORM.downcase.include?("darwin")
-      system("open #{mem[:html_url]}")
-    when RUBY_PLATFORM.downcase.include?("linux")
-      system("xdg-open #{mem[:html_url]}")
-    end
-
+    Sys.new.open_url(mem[:html_url])
   end
 
   def create_issue(client,config,scope,path)

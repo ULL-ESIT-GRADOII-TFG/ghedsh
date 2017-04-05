@@ -14,11 +14,6 @@ class User
 
   def open_user(client)
     mem=client.user(client.login)
-    case
-    when RUBY_PLATFORM.downcase.include?("darwin")
-      system("open #{mem[:html_url]}")
-    when RUBY_PLATFORM.downcase.include?("linux")
-      system("xdg-open #{mem[:html_url]}")
-    end
+    Sys.new.open_url(mem[:html_url])
   end
 end
