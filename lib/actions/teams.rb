@@ -29,16 +29,24 @@ class Teams
   end
 
   def create_team(client,config,name)
-    client.create_team(config["Org"],{:name=>name,:permission=>'push'})
+    begin
+      client.create_team(config["Org"],{:name=>name,:permission=>'push'})
+    rescue
+      puts "Already exists a team with that name"
+    end
   end
 
   def create_team_with_members(client,config,name,members)
     t=self.create_team(client,config,name)
-    config["TeamID"]=t[:id]
+    if t!=nil
+      config["TeamID"]=t[:id]
 
-      for i in 0..members.size
-        self.add_to_team(client,config,members[i])
-      end
+        for i in 0..members.size
+          if client.organization_member?(config["Org"],members[i])
+            self.add_to_team(client,config,members[i])
+          end
+        end
+    end
   end
 
   def add_to_team(client,config,path)

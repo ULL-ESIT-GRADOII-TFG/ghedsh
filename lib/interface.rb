@@ -509,6 +509,27 @@ class Interface
             puts "Teams in group #{opcd[1]} :"
             puts t.get_single_group(@config,opcd[1])
           end
+        when op.include?("new") && opcd[0]=="new" && opcd[1]=="team"
+          if opcd.size==3 and @deep==ORGS
+            t.create_team(@client,@config,opcd[2])
+            @teamlist=t.read_teamlist(@client,@config)
+            @sysbh.add_history_str(1,@teamlist)
+          end
+          if opcd.size>3 and @deep==ORGS
+            t.create_team_with_members(@client,@config,opcd[2],opcd[3..opcd.size])
+            @teamlist=t.read_teamlist(@client,@config)
+            @sysbh.add_history_str(1,@teamlist)
+          end
+        when op.include?("new") && op.include?("comment")==false && opcd[0]=="new" && opcd[1]=="issue"
+          if opcd.size==2 and (@deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO)
+            r.create_issue(@client,@config,@deep,config_path)
+          end
+
+        when op.include?("new") && (opcd[0]=="new" && opcd[1]=="issue" && opcd[2]=="comment")
+          if opcd.size==4 and (@deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO)
+            r.add_issue_cm(@client,@config,@deep,opcd[3],config_path)
+          end
+
         when op.include?("new") && opcd[0]=="new" && opcd[1]=="people" && opcd[2]=="info"
           if @deep==ORGS  && opcd.size==4 then o.add_people_info(@client,@config,opcd[3]) end
         when op == "info"
@@ -607,21 +628,7 @@ class Interface
       if opcd[0]=="add_team_member"
         t.add_to_team(@client,@config,opcd[1])
       end
-      if opcd[0]=="new_team" and opcd.size==2
-      	t.create_team(@client,@config,opcd[1])
-      	@teamlist=t.read_teamlist(@client,@config)
-      	@sysbh.add_history_str(1,@teamlist)
-      end
-      if opcd[0]=="new_issue" and opcd.size==1
-        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
-          r.create_issue(@client,@config,@deep,config_path)
-        end
-      end
-      if opcd[0]=="new_issue_comment" and opcd.size==2
-        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
-          r.add_issue_cm(@client,@config,@deep,opcd[1],config_path)
-        end
-      end
+      
       if opcd[0]=="close_issue" and opcd.size==2
         if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
           r.close_issue(@client,@config,@deep,opcd[1])
@@ -638,8 +645,9 @@ class Interface
         end
       end
       if opcd[0]=="rm_team"
+        @teamlist=t.read_teamlist(@client,@config)
         t.delete_team(@client,@teamlist[opcd[1]])
-        self.quit_history(@teamlist[opcd[1]])
+        @sysbh.quit_history(@teamlist[opcd[1]])
         @teamlist=t.read_teamlist(@client,@config)
         @sysbh.add_history_str(1,@teamlist)
       end
@@ -656,11 +664,7 @@ class Interface
           end
         end
       end
-      if opcd[0]=="new_team" and opcd.size>2
-      	t.create_team_with_members(@client,@config,opcd[1],opcd[2..opcd.size])
-      	@teamlist=t.read_teamlist(@client,@config)
-      	@sysbh.add_history_str(1,@teamlist)
-      end
+
       if opcd[0]=="new_repository" and opcd.size==2
         r.create_repository(@client,@config,opcd[1],false,@deep)
       end

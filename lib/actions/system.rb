@@ -9,9 +9,9 @@ require 'version'
 class Sys
   attr_reader :client
   attr_reader :memory
-  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new_team ','rm_team ','new_repository ','new_assignment ','clone ', 'issues',
-    'version', 'cat ', 'groups', 'files', 'assignments','new_issue ', 'open_issue', 'new_','open_', 'close_issue', 'new_group ', 'rm_group', 'rm_', 'do ', 'info','make','add repo',
-    'add group','rm_repository ', 'new_people_info ', 'new people info ', 'private ', 'people info ', 'new_issue_comment ', "rm people info"].sort
+  LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new team ','rm_team ','new_repository ','new_assignment ','clone ', 'issues',
+    'version', 'cat ', 'groups', 'files', 'assignments','new issue ', 'open_issue', 'new ','open_', 'close_issue', 'new_group ', 'rm_group', 'rm_', 'do ', 'info','make','add repo',
+    'add group','rm_repository ', 'new people info ', 'private ', 'people info ', 'new_issue_comment ', "rm people info"].sort
 
   def initialize()
     @memory=[]
