@@ -506,10 +506,15 @@ class Interface
           end
         when op.include?("group") && opcd[0]=="group"
           if opcd.size==2
-            puts "Teams in group #{opcd[1]} :"
-            puts t.get_single_group(@config,opcd[1])
+            teams=t.get_single_group(@config,opcd[1])
+            if teams!=nil
+              puts "Teams in group #{opcd[1]} :"
+              puts teams
+            else
+              puts "Group not found"
+            end
           end
-        when op.include?("new") && opcd[0]=="new" && opcd[1]=="team"
+        when op.include?("new") && opcd[0]=="new" && opcd[1]=="team"        #new's parse
           if opcd.size==3 and @deep==ORGS
             t.create_team(@client,@config,opcd[2])
             @teamlist=t.read_teamlist(@client,@config)
@@ -524,14 +529,53 @@ class Interface
           if opcd.size==2 and (@deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO)
             r.create_issue(@client,@config,@deep,config_path)
           end
-
         when op.include?("new") && (opcd[0]=="new" && opcd[1]=="issue" && opcd[2]=="comment")
           if opcd.size==4 and (@deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO)
             r.add_issue_cm(@client,@config,@deep,opcd[3],config_path)
           end
-
         when op.include?("new") && opcd[0]=="new" && opcd[1]=="people" && opcd[2]=="info"
           if @deep==ORGS  && opcd.size==4 then o.add_people_info(@client,@config,opcd[3]) end
+        when op.include?("new") && opcd[0]=="new" && opcd[1]=="repository"
+          if opcd.size==3
+            r.create_repository(@client,@config,opcd[2],false,@deep)
+          end
+        when op.include?("new assignment") && opcd[0]=="new" && opcd[1]="assignment"
+          if opcd.size==3 and @deep==ORGS
+              r.create_repository_by_teamlist(@client,@config,opcd[2],opcd[3,opcd.size],self.get_teamlist(opcd[3,opcd.size]))
+              o.create_assig(@client,@config,opcd[2])
+              @sysbh.add_history(opcd[2])
+          end
+        when op.include?("new group") && opcd[0]=="new" && opcd[1]="group"
+          if opcd.size>3 and @deep==ORGS
+             t.new_group(@client,@config,opcd[2],opcd[3..opcd.size-1])
+          end
+
+        when op.include?("rm team") && opcd[0]=="rm" && opcd[1]="team"            ##rm parse
+          if opcd.size==3
+            @teamlist=t.read_teamlist(@client,@config)
+            if @teamlist[opcd[2]]!=nil
+              t.delete_team(@client,@teamlist[opcd[2]])
+              @sysbh.quit_history(@teamlist[opcd[2]])
+              @teamlist=t.read_teamlist(@client,@config)
+              @sysbh.add_history_str(1,@teamlist)
+            else
+              puts "Team not found"
+            end
+          end
+
+        when op.include?("rm group") && opcd[0]=="rm" && opcd[1]="group"
+          if opcd.size==3 and @deep==ORGS
+            t.delete_group(@config,opcd[2])
+          end
+
+        when op.include?("rm repository") && opcd[0]=="rm" && opcd[1]="repository"
+          if @deep==ORGS || @deep==USER || @deep==TEAM
+            r.delete_repository(@client,@config,opcd[2],@deep)
+            if @deep==ORGS
+              @orgs_repos.delete(opcd[2])
+            end
+          end
+
         when op == "info"
           if @deep==ASSIG then o.show_assig_info(@config,@assig_path) end
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.info_repository(@client,@config,@deep) end
@@ -545,6 +589,22 @@ class Interface
             if @deep=ASSIG then o.add_group_to_assig(@client,@config,@assig_path) end
         when op == "version"
           puts "GitHub Education Shell v#{Ghedsh::VERSION}"
+
+        when op.include?("add team member") && opcd[0]=="add" && opcd[1]="team" && opcd[2]="member"
+          if opcd.size==4 and @deep==TEAM
+            t.add_to_team(@client,@config,opcd[3])
+          end
+
+        when op.include?("close issue") && opcd[0]=="close" && opcd[1]="issue"
+          if (@deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO) and opcd.size==3
+            r.close_issue(@client,@config,@deep,opcd[2])
+          end
+
+        when op.include?("open issue") && opcd[0]=="open" && opcd[1]="issue"
+          if (@deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO) and opcd.size==3
+            r.open_issue(@client,@config,@deep,opcd[2])
+          end
+
         when op == "assignments"
           if @deep==ORGS
             o.show_assignments(@client,@config)
@@ -625,63 +685,13 @@ class Interface
           end
         end
       end
-      if opcd[0]=="add_team_member"
-        t.add_to_team(@client,@config,opcd[1])
-      end
-      
-      if opcd[0]=="close_issue" and opcd.size==2
-        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
-          r.close_issue(@client,@config,@deep,opcd[1])
-        end
-      end
-      if opcd[0]=="open_issue" and opcd.size==2
-        if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
-          r.open_issue(@client,@config,@deep,opcd[1])
-        end
-      end
+
       if opcd[0]=="private" and opcd.size==2
         if opcd[1]=="true" || opcd[1]=="false"
           r.edit_repository(@client,@config,@deep,opcd[1])
         end
       end
-      if opcd[0]=="rm_team"
-        @teamlist=t.read_teamlist(@client,@config)
-        t.delete_team(@client,@teamlist[opcd[1]])
-        @sysbh.quit_history(@teamlist[opcd[1]])
-        @teamlist=t.read_teamlist(@client,@config)
-        @sysbh.add_history_str(1,@teamlist)
-      end
-      if opcd[0]=="rm_group" and opcd.size==2
-        if @deep==ORGS
-          t.delete_group(@config,opcd[1])
-        end
-      end
-      if opcd[0]=="rm_repository" and opcd.size==2
-        if @deep==ORGS || @deep==USER || @deep==TEAM
-          r.delete_repository(@client,@config,opcd[1],@deep)
-          if @deep==ORGS
-            @orgs_repos.delete(opcd[1])
-          end
-        end
-      end
 
-      if opcd[0]=="new_repository" and opcd.size==2
-        r.create_repository(@client,@config,opcd[1],false,@deep)
-      end
-      if opcd[0]=="new_assignment" and opcd.size>1 #2
-        case
-        when @deep==ORGS
-          #r.create_repository_by_teamlist(@client,@config,opcd[1],opcd[2,opcd.size],self.get_teamlist(opcd[2,opcd.size]))
-          o.create_assig(@client,@config,opcd[1])
-          @sysbh.add_history(opcd[1])
-        end
-      end
-      if opcd[0]=="new_group" and opcd.size>2
-        if @deep==ORGS
-          t.new_group(@client,@config,opcd[1],opcd[2..opcd.size-1])
-        end
-      end
-      if opcd[0]=="new_people_info" and opcd.size==2 and @deep==ORGS then o.add_people_info(@client,@config,opcd[1]) end
       if opcd[0]=="people" and opcd[1]=="info"
         if opcd.size==2
           info_strm=o.show_people_info(@client,@config,nil)

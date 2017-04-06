@@ -139,7 +139,11 @@ class Teams
     list=sys.load_groups("#{ENV['HOME']}/.ghedsh")
     w=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     w=w["groups"].detect{|aux| aux["name_group"]==wanted}
-    return w["teams"]
+    if w!=nil
+      return w["teams"]
+    else
+      return nil
+    end
   end
 
   def new_group(client,config,name,listgroups)
