@@ -516,8 +516,8 @@ class Organizations
         if field==nil
           inuser.each_value do |j|
             if j.include?("github.com")
-              if j.include?("https://")==false || j.include?("http://")==false
-                Sys.new.open_url("http://"+j)
+              if !j.include?("https://") && !j.include?("http://")
+                Sys.new.open_url("https://"+j)
               else
                 Sys.new.open_url(j)
               end
