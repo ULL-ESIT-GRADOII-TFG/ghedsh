@@ -435,7 +435,7 @@ class Interface
   def run(config_path, argv_token,user)
     ex=1
     opscript=[]
-
+    @sysbh.load_memory(config_path)
     @sysbh.write_initial_memory()
     HelpM.new.welcome()
     o=Organizations.new
@@ -482,6 +482,7 @@ class Interface
 
       case
         when op == "exit" then ex=0
+          @sysbh.save_memory(config_path)
           s.save_cache(config_path,@config)
           s.remove_temp("#{ENV['HOME']}/.ghedsh/temp")
         when op == "help" then self.help()
@@ -648,7 +649,7 @@ class Interface
         end
       end
       if opcd[0]=="do" and opcd.size>1
-        opscript=s.load_script(opcd[1])
+        # opscript=s.load_script(opcd[1])
       end
       if opcd[0]=="set"
         self.set(opcd[1])

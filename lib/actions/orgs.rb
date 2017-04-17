@@ -529,7 +529,7 @@ class Organizations
           end
         else
           if inuser.keys.include?(field.downcase)
-            if inuser[field.downcase].include?("https://")==false || inuser[field.downcase].include?("http://")==false
+            if !inuser[field.downcase].include?("https://") && !inuser[field.downcase].include?("http://")
               url="http://"+inuser["#{field.downcase}"]
             else
               url=inuser["#{field.downcase}"]

@@ -49,6 +49,29 @@ class Sys
     Readline.completion_proc = comp
   end
 
+  def load_memory(path)
+    if File.exist?("#{path}/ghedsh-history")
+      source=File.read("#{path}/ghedsh-history")
+      s=source.split("\n")
+      s.each do |i|
+        Readline::HISTORY.push(i)
+      end
+    else
+      File.write("#{path}/ghedsh-history","")
+    end
+
+  end
+
+  def save_memory(path)
+    mem= Readline::HISTORY.to_a
+    me=""
+    mem.each do |i|
+      me=me+i.to_s+"\n"
+    end
+    File.write("#{path}/ghedsh-history",me)
+  end
+
+
   def write_initial_memory
     history=LIST+memory
     comp = proc { |s| LIST.grep( /^#{Regexp.escape(s)}/ ) }
