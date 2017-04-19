@@ -133,7 +133,7 @@ class Organizations
     groupslist.each do |aux|
       puts "\t#{aux}"
     end
-    #puts groupslist
+
     puts "\nAdd groups to your assignment (Press enter to skip): "
     op=gets.chomp
     if op==""
@@ -215,15 +215,21 @@ class Organizations
       Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
     end
 
-    reponame=self.assignment_repository(client,config,name)
-    groupsadd=self.assignment_groups(client,config)
+    assig_exist=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux| aux["name_assig"]==name}
+    if assig_exist==nil
 
-    begin
-      list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>groupsadd,"repo"=>reponame})
-    rescue Exception => e
-      puts e
+      reponame=self.assignment_repository(client,config,name)
+      groupsadd=self.assignment_groups(client,config)
+
+      begin
+        list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>groupsadd,"repo"=>reponame})
+      rescue Exception => e
+        puts e
+      end
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    else
+      puts "Already exists an Assignment with that name"
     end
-    Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
   end
 
   def get_assigs(client,config)
