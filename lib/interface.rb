@@ -435,7 +435,6 @@ class Interface
   def run(config_path, argv_token,user)
     ex=1
     opscript=[]
-    @sysbh.load_memory(config_path)
     @sysbh.write_initial_memory()
     HelpM.new.welcome()
     o=Organizations.new
@@ -459,7 +458,7 @@ class Interface
       @deep=s.return_deep(config_path)
       #if @deep==ORGS then @teamlist=t.get_teamlist end  #solucion a la carga de las ids de los equipos de trabajo
     end
-
+    @sysbh.load_memory(config_path,@config)
     #@deep=USER
     if @client!=nil
       @sysbh.add_history_str(2,Organizations.new.read_orgs(@client))
@@ -482,14 +481,16 @@ class Interface
 
       case
         when op == "exit" then ex=0
-          @sysbh.save_memory(config_path)
+          @sysbh.save_memory(config_path,@config)
           s.save_cache(config_path,@config)
           s.remove_temp("#{ENV['HOME']}/.ghedsh/temp")
         when op == "help" then self.help()
         when op == "orgs" then self.orgs()
-        when op == "cd .." then self.cdback(false)
+        when op == "cd .."
+          if @deep==ORGS then t.clean_groupsteams() end ##cleans groups cache
+          self.cdback(false)
         when op == "people" then self.people()
-        when op == "teams" #then self.teams()
+        when op == "teams"
       	  if @deep==ORGS
       	    t.show_teams_bs(@client,@config)
       	  end
@@ -526,7 +527,7 @@ class Interface
             @teamlist=t.read_teamlist(@client,@config)
             @sysbh.add_history_str(1,@teamlist)
           end
-        when op.include?("new") && op.include?("comment")==false && opcd[0]=="new" && opcd[1]=="issue"
+        when op.include?("new") && !op.include?("comment") && opcd[0]=="new" && opcd[1]=="issue"
           if opcd.size==2 and (@deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO)
             r.create_issue(@client,@config,@deep,config_path)
           end

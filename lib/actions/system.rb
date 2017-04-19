@@ -49,26 +49,25 @@ class Sys
     Readline.completion_proc = comp
   end
 
-  def load_memory(path)
-    if File.exist?("#{path}/ghedsh-history")
-      source=File.read("#{path}/ghedsh-history")
+  def load_memory(path,config)
+    if File.exist?("#{path}/ghedsh-#{config["User"]}-history")
+      source=File.read("#{path}/ghedsh-#{config["User"]}-history")
       s=source.split("\n")
       s.each do |i|
         Readline::HISTORY.push(i)
       end
     else
-      File.write("#{path}/ghedsh-history","")
+      File.write("#{path}/ghedsh-#{config["User"]}-history","")
     end
-
   end
 
-  def save_memory(path)
+  def save_memory(path,config)
     mem= Readline::HISTORY.to_a
     me=""
     mem.each do |i|
       me=me+i.to_s+"\n"
     end
-    File.write("#{path}/ghedsh-history",me)
+    File.write("#{path}/ghedsh-#{config["User"]}-history",me)
   end
 
 
@@ -419,6 +418,17 @@ class Sys
     else
       print "\n"
       puts "Repositories found: #{rlist.size}"
+    end
+  end
+
+  def loadfile(path)
+    if File.exist?(path)
+      mem=File.read(path)
+      mem=mem.split("\n")
+      return mem
+    else
+      puts "File not found"
+      return nil
     end
   end
 

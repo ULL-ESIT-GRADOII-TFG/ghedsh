@@ -5,10 +5,11 @@ require 'require_all'
 require_rel '.'
 
 class Teams
-  attr_accessor :teamlist
+  attr_accessor :teamlist; :groupsteams
 
   def initialize
     @teamlist=Hash.new
+    @groupsteams=Hash.new
   end
 
   def add_to_team(client,config,path)
@@ -26,6 +27,10 @@ class Teams
 
   def get_teamlist()
     return @teamlist
+  end
+
+  def clean_groupsteams()   #metodo para limpiar la cache en cd ..
+    @groupsteams=Hash.new
   end
 
   def create_team(client,config,name)
@@ -110,8 +115,16 @@ class Teams
           puts i["name_group"]
           i["teams"].each do |j|
               puts "\t#{j}"
-              self.get_team_members(client,config,j).each do |k|
-                puts "\t\t#{k}"
+              if @groupsteams["#{j}"]==nil
+                @groupsteams["#{j}"]=Array.new
+                self.get_team_members(client,config,j).each do |k|
+                  puts "\t\t#{k}"
+                  @groupsteams["#{j}"].push(k)
+                end
+              else
+                @groupsteams["#{j}"].each do |k|
+                    puts "\t\t#{k}"
+                end
               end
           end
         end

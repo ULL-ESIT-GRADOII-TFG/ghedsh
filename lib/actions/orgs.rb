@@ -123,6 +123,7 @@ class Organizations
 
   def assignment_groups(client,config)
     team=Teams.new()
+    sys=Sys.new()
     groupslist=team.get_groupslist(config)
     groupsadd=[]
     teamlist=team.read_teamlist(client,config)
@@ -151,11 +152,44 @@ class Organizations
         teamlist.each do |aux|
           puts "\t#{aux[0]}"
         end
-        puts "\nPut a list of Teams: "
-
-        list=gets.chomp
-        list=list.split(" ")
-        team.new_group(client,config,name,list)
+        begin
+          puts "\n1)Put a list of Teams"
+          puts "2)Take all the Teams available"
+          puts "3)Take the teams from a file\n"
+          puts "4)Add the teams to the group later"
+          op2=gets.chomp
+        end while (op2!="1" && op2!="2" && op2!="3" && op2!="4")
+        refuse=false         #para no añadirlo cuando se niege en la repeticion de la busqueda de fichero
+        if op2=="1"
+          puts "\nPut a list of Teams (Separeted with space): "
+          list=gets.chomp
+          list=list.split(" ")
+        end
+        if op2=="2"
+          puts "All the teams have been taken"
+          list=teamlist.keys
+        end
+        if op2=="3"
+          begin
+            ex=2
+            puts "Put the name of the file: "
+            file=gets.chomp
+            list=sys.loadfile(file)
+            if list==nil
+              puts "The file doesn't exist or It's empty. Do you like to try again? (y/n):"
+              op3=gets.chomp
+              if op3 == "n" or op3 == "N"
+                ex=1
+                refuse=true
+              end
+            else
+              ex=1
+            end
+          end while ex!=1
+        end
+        if op!="4" and refuse==false
+          team.new_group(client,config,name,list)
+        end
         groupsadd.push(name)
       else
         groupsadd=[]
