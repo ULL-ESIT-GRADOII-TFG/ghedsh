@@ -50,6 +50,8 @@ class HelpM
     print "\t\t\t\t->\tgroup [name of the group]\n\n"
     print "\tnew group\t\tCreate a new group. Expected the name and teams given one by one\n"
     print "\t\t\t\t->\tnew group [name of the group] [team1] [team2] [team3] ... \n\n"
+    print "\t\t\t\tIf you want to import the teams from a file, use the parameter -f\n"
+    print "\t\t\t\t->\tnew group -f [name of the group] [file]\n\n"
     print "\trm group\t\tDelete a created group\n"
     print "\t\t\t\t->\trm group [name of the group]\n\n"
     print "\trm team\t\t\tDelete a team in you organization. Expected the name of the team\n"
@@ -127,7 +129,7 @@ class HelpM
     self.common_opt
     puts " Assignment options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
-    print "\tinfo\t\t\Show information about the assignment\n"
+    print "\tinfo\t\t\t\Show information about the assignment\n"
     print "\tadd repo\t\tAdd or create the repository of the assignment\n"
     print "\tadd group\t\tAdd a new group to the assignment\n"
     print "\tmake\t\t\tCreate the repository assignment in Github for each team of every group\n\n"

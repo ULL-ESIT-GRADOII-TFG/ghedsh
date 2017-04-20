@@ -159,6 +159,16 @@ class Teams
     end
   end
 
+  def new_group_file(client,config,name,file)
+    sys=Sys.new()
+    list=sys.loadfile(file)
+    if list!=nil
+      self.new_group(client,config,name,list)
+    else
+      puts "The file doesn't exist or It's empty."
+    end
+  end
+
   def new_group(client,config,name,listgroups)
     sys=Sys.new()
     list=sys.load_groups("#{ENV['HOME']}/.ghedsh")

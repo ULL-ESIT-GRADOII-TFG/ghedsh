@@ -548,7 +548,10 @@ class Interface
               @sysbh.add_history(opcd[2])
           end
         when op.include?("new group") && opcd[0]=="new" && opcd[1]="group"
-          if opcd.size>3 and @deep==ORGS
+          if opcd.size==5 and @deep==ORGS and opcd[2]=="-f"
+            t.new_group_file(@client,@config,opcd[3],opcd[4])
+          end
+          if opcd.size>3 and @deep==ORGS and !op.include?("-f")
              t.new_group(@client,@config,opcd[2],opcd[3..opcd.size-1])
           end
 
