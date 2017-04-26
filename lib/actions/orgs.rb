@@ -346,7 +346,7 @@ class Organizations
         end
       end
     end
-    if assig["people"]!=[]
+    if assig["people"]!=[] and assig["people"]!=nil
       puts "\tStudents: "
       assig["people"].each do |y|
         puts "\t\t#{y}"
@@ -385,7 +385,7 @@ class Organizations
           end
         end
       end
-      if assig["people"]!=[]
+      if assig["people"]!=[] and assig["people"]!=nil
         assig["people"].each do |i|
             repo.create_repository(client,config,"#{i}-#{assig["name_assig"]}",true,ORGS)
             system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote rm origin")
@@ -430,8 +430,12 @@ class Organizations
     end
   end
 
+  def open_assig(config,assig)
+    Sys.new.open_url("https://github.com/search?q=org%3A#{config["Org"]}+#{assig}")
+  end
+
   #Takes people info froma a csv file and gets into ghedsh people information
-  def add_people_info(client,config,file)
+  def add_people_info(client,config,file,relation)
     list=self.load_people()
     csvoptions={:quote_char => "|",:headers=>true,:skip_blanks=>true}
     members=self.get_organization_members(client,config)  #members of the organization
@@ -451,6 +455,7 @@ class Organizations
       rescue
         print "Invalid csv format."
       end
+
       fields=mem.headers
       users=Hash.new;
       users=[]
@@ -463,9 +468,11 @@ class Organizations
           if i[j]!=nil
             if GITHUB_LIST.include?(j.gsub("\"", "").downcase.strip)
               aux["github"]=i[j].gsub("\"", "").strip
+              j="github"
             else
               if MAIL_LIST.include?(j.gsub("\"", "").downcase.strip)
                 aux["email"]=i[j].gsub("\"", "").strip
+                j="email"
               else
                 aux[j.gsub("\"", "").downcase.strip]=i[j].gsub("\"", "").strip
               end
@@ -474,45 +481,43 @@ class Organizations
             aux[j.gsub("\"", "").downcase.strip]=i[j]
           end
         end
-        users<< aux
+        users.push(aux)
       end
+      ## Aqui empiezan las diferenciaa
+      if relation==true
 
-      users.each do |i|
-        if members.include?(i["github"])
-          here=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==i["github"]}
-          if here==nil
-            list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
-            puts "#{i["github"]} information correctly added"
-          else
-            puts "\nAlready exits \e[31m#{i["github"]}\e[0m in database"
-            if here.eql?(i)
-              puts "The information given is the same as in the database, changes are being discard."
-            else
-              puts "The information is different thant the original. Do you want to change it?"
-              puts "\n Github:\t#{here["github"]} -> #{i["github"]}"
-
-              fields.each do |j|
-                puts " #{j} :\t\t#{here[j.gsub("\"", "").downcase]} -> #{i[j.gsub("\"", "").downcase]}"
-              end
-
-              puts "\nPress any key and enter to proceed, or only enter to skip: "
-              op=gets.chomp
-              if op!=""
-                index1=list["orgs"].index{|aux| aux["name"]==config["Org"]}
-                index2=list["orgs"][index1]["users"].index{|aux2| aux2["github"]==i["github"]}
-
-                list["orgs"][index1]["users"].pop(index2)
+        # if users.keys.include?("github") and users.keys.include?("email") and users.keys.size==2
+        if fields.include?("github") and fields.include?("email") and fields.size==2
+          users.each do |i|
+            if members.include?(i["github"])
+              here=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==i["github"]} #miro si ya esta registrado
+              if here==nil
                 list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
-                puts "The information about \e[31m#{i["github"]}\e[0m has been changed"
-              else
-                puts "The new information about \e[31m#{i["github"]}\e[0m has been discarded"
+                puts "#{i["github"]} information correctly added"
+              else                                                                        #si ya esta registrado...
+                puts "#{i["github"]} is already registered in this organization"
               end
+            else
+              puts "#{i["github"]} is not registered in this organization"
             end
           end
         else
-          puts "#{i["github"]} is not registered in this organization"
+          puts "No relationship found between github users and emails."
+          return nil
+        end
+      else                                                                           #insercion normal, relacion ya hecha
+        users.each do |i|
+          here=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["email"]==i["email"]}
+          if here!=nil
+            i.each do |j|
+              list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["email"]==i["email"]}["#{j[0]}"]=j[1]
+            end
+          else
+            puts "No relation found of #{i["email"]} in #{config["Org"]}"
+          end
         end
       end
+      #tocho
       Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
     else
       print "\n#{file} file not found.\n\n"

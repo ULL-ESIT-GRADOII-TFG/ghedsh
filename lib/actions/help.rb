@@ -43,6 +43,8 @@ class HelpM
     print "\t\t\t\tTo find a specific member extended info, you can give the github id as parameter.\n"
     print "\t\t\t\t->\tpeople info [github id]\n\n"
     print "\tteams\t\t\tTeams of a organization\n"
+    print "\tnew relation\t\tSet a relation for the extendend information between Github ID and an email from a .csv file\n"
+    print "\t\t\t\t->\tnew relation [name of the file]\n\n"
     print "\tnew people info\t\tGet extended information from a .csv file founded in the excecute path\n"
     print "\t\t\t\t->\tnew people info [name of the file]\n\n"
     print "\trm people info\t\tDelete the extended information\n"
@@ -138,6 +140,7 @@ class HelpM
     print "\tchange repo\t\tChange a repository of the assignment\n"
     print "\t\t\t\t->\tchange repo [number of the repo]\n\n"
     print "\tadd group\t\tAdd a new group to the assignment\n"
+    print "\topen\t\t\topen the github assignment repositories disposition\n"
     print "\tadd students\t\tAdd new students to the assignment\n"
     print "\tmake\t\t\tCreate the repository assignment in Github for each team of every group\n\n"
   end

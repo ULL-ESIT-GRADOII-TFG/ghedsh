@@ -539,10 +539,14 @@ class Interface
             r.add_issue_cm(@client,@config,@deep,opcd[3],config_path)
           end
         when op.include?("new") && opcd[0]=="new" && opcd[1]=="people" && opcd[2]=="info"
-          if @deep==ORGS  && opcd.size==4 then o.add_people_info(@client,@config,opcd[3]) end
+          if @deep==ORGS  && opcd.size==4 then o.add_people_info(@client,@config,opcd[3],false) end
         when op.include?("new") && opcd[0]=="new" && opcd[1]=="repository"
           if opcd.size==3
             r.create_repository(@client,@config,opcd[2],false,@deep)
+          end
+        when op.include?("new relation") && opcd[0]=="new" && opcd[1]="relation"
+          if opcd.size==3 and @deep==ORGS
+            o.add_people_info(@client,@config,opcd[2],true)
           end
         when op.include?("new assignment") && opcd[0]=="new" && opcd[1]="assignment"
           if opcd.size==3 and @deep==ORGS
@@ -646,6 +650,7 @@ class Interface
             end
           end
           if @deep==TEAM then t.open_team_repos(@config) end
+          if @deep==ASSIG then o.open_assig(@config,@config["Assig"]) end
       end
 
       if opcd[0]=="issue" and opcd.size>1
