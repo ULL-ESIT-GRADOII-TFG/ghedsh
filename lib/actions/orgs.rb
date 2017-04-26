@@ -716,10 +716,10 @@ class Organizations
           end
         else
           if inuser.keys.include?(field.downcase)
-            if !inuser[field.downcase].include?("https://") && !inuser[field.downcase].include?("http://")
-              url="http://"+inuser["#{field.downcase}"]
-            else
+            if inuser[field.downcase].include?("https://") or inuser[field.downcase].include?("http://")
               url=inuser["#{field.downcase}"]
+            else
+              url="http://"+inuser["#{field.downcase}"]
             end
             Sys.new.open_url(url)
           else
