@@ -16,6 +16,8 @@ class HelpM
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tnew repository\t\tCreate a repository in your personal account\n"
     print "\t\t\t\t->\tnew repository [name of the repository]\n\n"
+    print "\trm repository\t\tDelete a repository in your personal account\n"
+    print "\t\t\t\t->\trm repository [name of the repository]\n\n"
     print "\tset\t\t\tMove you to a specific repository\n"
 
   end
@@ -27,6 +29,8 @@ class HelpM
     print "\trepos\t\t\tList the repositories of your organization\n"
     print "\tnew repository\t\tCreate a repository in a organization\n"
     print "\t\t\t\t->\tnew repository [name of the repository]\n\n"
+    print "\trm repository\t\tDelete a repository in a organization\n"
+    print "\t\t\t\t->\trm repository [name of the repository]\n\n"
     print "\topen\t\t\tOpen the organization's url of github in your web browser.\n"
     print "\t\t\t\tIf you have added the aditional .csv information with, you can open an specific github profile.\n"
     print "\t\t\t\t->\topen [user]\n\n"
@@ -131,7 +135,10 @@ class HelpM
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tinfo\t\t\t\Show information about the assignment\n"
     print "\tadd repo\t\tAdd or create the repository of the assignment\n"
+    print "\tchange repo\t\tChange a repository of the assignment\n"
+    print "\t\t\t\t->\tchange repo [number of the repo]\n\n"
     print "\tadd group\t\tAdd a new group to the assignment\n"
+    print "\tadd students\t\tAdd new students to the assignment\n"
     print "\tmake\t\t\tCreate the repository assignment in Github for each team of every group\n\n"
   end
 

@@ -11,7 +11,7 @@ class Sys
   attr_reader :memory
   LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new team ','rm team ','new repository ','new assignment ','clone ', 'issues',
     'version', 'cat ', 'groups', 'files', 'assignments','new issue ', 'open issue', 'new ','open ', 'close issue', 'new group ', 'rm group', 'rm ', 'do ', 'info','make','add repo',
-    'add group','rm repository ', 'new people info ', 'private ', 'people info ', 'new issue comment ', "rm people info"].sort
+    'add group','rm repository ', 'new people info ', 'private ', 'people info ', 'new issue comment ', "rm people info", "change repo"].sort
 
   def initialize()
     @memory=[]
@@ -141,6 +141,14 @@ class Sys
     return users
   end
 
+  # USER=1
+  # ORGS=2
+  # USER_REPO=10
+  # ORGS_REPO=3
+  # TEAM=4
+  # ASSIG=6
+  # TEAM_REPO=5
+
   def return_deep(path)
     json = File.read("#{path}/ghedsh-cache.json")
     cache=JSON.parse(json)
@@ -157,7 +165,11 @@ class Sys
           if cache["Repo"]!=nil
             deep=3
           else
-            deep=2
+            if cache["Assig"]!=nil
+              deep=6
+            else
+              deep=2
+            end
           end
         else
           if cache["Repo"]!=nil

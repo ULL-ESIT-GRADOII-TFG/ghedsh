@@ -26,7 +26,7 @@ class Interface
   attr_accessor :client
   attr_accessor :deep
   attr_accessor :memory
-  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos, :repo_path, :assig_path, :issues_list
+  attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos, :repo_path, :issues_list
 
   def initialize
     @sysbh=Sys.new()
@@ -62,7 +62,7 @@ class Interface
           return @config["User"]+">"+ "\e[31m#{@config["Repo"]}\e[0m"+"> "
         end
       when @deep == ORGS then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+"> "
-      when @deep == ASSIG then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+">"+"\e[35m#{@assig_path}\e[0m"+"> "
+      when @deep == ASSIG then return @config["User"]+">"+ "\e[34m#{@config["Org"]}\e[0m"+">"+"\e[35m#{@config["Assig"]}\e[0m"+"> "
       when @deep == TEAM then return @config["User"]+">"+"\e[34m#{@config["Org"]}\e[0m"+">"+"\e[32m#{@config["Team"]}\e[0m"+"> "
       when @deep == TEAM_REPO
         if @repo_path!=""
@@ -140,7 +140,7 @@ class Interface
           @deep=2
         when @deep == ASSIG
           @deep=ORGS
-          @assig_path=""
+          @config["Assig"]=nil
         when @deep == TEAM_REPO
           if @repo_path==""
             @config["Repo"]=nil
@@ -160,9 +160,10 @@ class Interface
       @config["Repo"]=nil
       @config["Team"]=nil
       @config["TeamID"]=nil
+      @config["Assig"]=nil
       @deep=1
       @orgs_repos=[]; @teams_repos=[]
-      @repo_path=""; @assig_path="";
+      @repo_path="";
     end
   end
 
@@ -270,24 +271,26 @@ class Interface
           puts "Set in #{@config["User"]} repository: #{path}\n\n"
       end
     when @deep==ORGS
-      @config["Repo"]=path
+
       if @orgs_repos.empty? == false
         reposlist=@orgs_repos
       else
         reposlist=reposlist.get_repos_list(@client,@config,@deep)
       end
       if reposlist.one?{|aux| aux==path}
+        @config["Repo"]=path
         @deep=ORGS_REPO
         puts "Set in #{@config["Org"]} repository: #{path}\n\n"
       end
     when @deep==TEAM
-      @config["Repo"]=path
+
       if @teams_repos.empty? == false
         reposlist=@teams_repos
       else
         reposlist=reposlist.get_repos_list(@client,@config,@deep)
       end
       if reposlist.one?{|aux| aux==path}
+        @config["Repo"]=path
         @deep=TEAM_REPO
         puts "Set in #{@config["Team"]} repository: #{path}\n\n"
       end
@@ -322,8 +325,8 @@ class Interface
     list=o.get_assigs(@client,@config)
     if list.one?{|aux| aux==path}
       @deep=ASSIG
-      @assig_path=path
       puts "Set in #{@config["Org"]} assignment: #{path}\n\n"
+      @config["Assig"]=path
       return true
     else
       puts "No assignment is available with that name"
@@ -582,16 +585,26 @@ class Interface
           end
 
         when op == "info"
-          if @deep==ASSIG then o.show_assig_info(@config,@assig_path) end
+          if @deep==ASSIG then o.show_assig_info(@config,@config["Assig"]) end
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.info_repository(@client,@config,@deep) end
         when op== "add repo"
-          if @deep=ASSIG then o.add_repo_to_assig(@client,@config,@assig_path) end
+          if @deep==ASSIG then o.add_repo_to_assig(@client,@config,@config["Assig"],nil) end
+        when op.include?("change repo") && opcd[0]=="change" && opcd[1]="repo"
+          if @deep==ASSIG
+            if opcd.size>2
+              o.add_repo_to_assig(@client,@config,@config["Assig"],opcd[2])
+            else
+              o.add_repo_to_assig(@client,@config,@config["Assig"],1)
+            end
+          end
+        when op=="add students" && @deep==ASSIG
+           o.add_people_to_assig(@client,@config,@config["Assig"])
         when op.include?("rm")
           if @deep==ORGS and opcd[1]=="people" and opcd[2]=="info"
             o.rm_people_info(@client,@config)
           end
         when op== "add group"
-            if @deep=ASSIG then o.add_group_to_assig(@client,@config,@assig_path) end
+            if @deep=ASSIG then o.add_group_to_assig(@client,@config,@config["Assig"]) end
         when op == "version"
           puts "GitHub Education Shell v#{Ghedsh::VERSION}"
 
@@ -616,7 +629,7 @@ class Interface
           end
         when op =="make"
           if @deep==ASSIG
-            o.make_assig(@client,@config,@assig_path)
+            o.make_assig(@client,@config,@config["Assig"])
           end
         when op.include?("open") && opcd[0]=="open"
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.open_repository(@client,@config,@deep) end

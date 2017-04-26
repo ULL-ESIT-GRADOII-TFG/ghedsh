@@ -433,6 +433,9 @@ class Repositories
       return forklist
     end
   end
+  def add_collaborator(client,repo,name)
+    client.add_collaborator(repo,name)
+  end
 
   def show_collaborators(client,config,scope)
     print "\n"

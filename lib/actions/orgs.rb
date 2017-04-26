@@ -157,6 +157,7 @@ class Organizations
           puts "2)Take all the Teams available"
           puts "3)Take the teams from a file\n"
           puts "4)Add the teams to the group later"
+          print "option => "
           op2=gets.chomp
         end while (op2!="1" && op2!="2" && op2!="3" && op2!="4")
         refuse=false         #para no añadirlo cuando se niege en la repeticion de la busqueda de fichero
@@ -206,6 +207,59 @@ class Organizations
     return groupsadd
   end
 
+  def assignment_people(client,config)
+    refuse=false
+    members=self.get_organization_members(client,config)
+    begin
+      puts "\n1)Put a list of students"
+      puts "2)Take all the list"
+      puts "3)Take the students from a file\n"
+      puts "4)Add the students later"
+      print "option => "
+      op2=gets.chomp
+    end while (op2!="1" && op2!="2" && op2!="3" && op2!="4")
+    if op2=="1"
+      puts members
+      puts "\nPut a list of students (Separeted with space): "
+      list=gets.chomp
+      list=list.split(" ")
+    end
+    if op2=="2"
+      puts "All the students have been taken"
+      list=members
+    end
+    if op2=="3"
+      begin
+        ex=2
+        puts "Put the name of the file: "
+        file=gets.chomp
+        list=sys.loadfile(file)
+        if list==nil
+          puts "The file doesn't exist or It's empty. Do you like to try again? (y/n):"
+          op3=gets.chomp
+          if op3 == "n" or op3 == "N"
+            ex=1
+            refuse=true
+          end
+        else
+          ex=1
+        end
+      end while ex!=1
+    end
+    if op2!=4 and refuse==false
+      if op2!=2
+        list.each do |i|
+          if !members.include?(i)
+            list.delete(i)
+          end
+        end
+      end
+      return list
+    else
+      return []
+    end
+  end
+
   def create_assig(client,config,name)
     list=self.load_assig()
     assigs=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
@@ -217,16 +271,31 @@ class Organizations
 
     assig_exist=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux| aux["name_assig"]==name}
     if assig_exist==nil
-
-      reponame=self.assignment_repository(client,config,name)
-      groupsadd=self.assignment_groups(client,config)
-
       begin
-        list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"groups"=>groupsadd,"repo"=>reponame})
-      rescue Exception => e
-        puts e
+        puts "\n1)Individual assignment"
+        puts "2)Group assignment"
+        puts "3)Discard assignment"
+        print "option => "
+        op=gets.chomp
+      end while op!="1" && op!="2" && op!="3"
+
+      if op!="3"
+        reponame=self.assignment_repository(client,config,name)
+        if op=="2"
+          groupsadd=self.assignment_groups(client,config)
+          peopleadd=[]
+        end
+        if op=="1"
+          peopleadd=self.assignment_people(client,config)
+          groupsadd=[]
+        end
+        begin
+          list["orgs"][list["orgs"].index{|aux| aux["name"]==config["Org"]}]["assigs"].push({"name_assig"=>name,"teams"=>[],"people"=>peopleadd,"groups"=>groupsadd,"repo"=>reponame})
+        rescue Exception => e
+          puts e
+        end
+        Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
       end
-      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
     else
       puts "Already exists an Assignment with that name"
     end
@@ -263,16 +332,27 @@ class Organizations
     team=Teams.new()
     puts "\n"
     puts assig["name_assig"]
-    puts "\tRepository: #{assig["repo"]}"
-    puts "\tGroups: "
-    assig["groups"].each do |y|
-      puts "\t\t#{y}"
-      t=team.get_single_group(config,y)
-      t.each do |z|
-        puts "\t\t\t#{z}"
+    assig.each{|key, value| if key.include?("repo") then  puts "Repository #{key.delete("repo")}: #{value}" end}
+
+    if assig["groups"]!=[]
+      puts "\tGroups: "
+      assig["groups"].each do |y|
+        puts "\t\t#{y}"
+        t=team.get_single_group(config,y)
+        if t!=nil
+          t.each do |z|
+            puts "\t\t\t#{z}"
+          end
+        end
       end
     end
-    puts "\n"
+    if assig["people"]!=[]
+      puts "\tStudents: "
+      assig["people"].each do |y|
+        puts "\t\t#{y}"
+      end
+      puts "\n"
+    end
   end
 
   def make_assig(client,config,assig)
@@ -289,29 +369,53 @@ class Organizations
 
       #system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
       system("git clone #{web2}#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]}")
+      if assig["groups"]!=[]
+        assig["groups"].each do |i|
+          teamsforgroup=team.get_single_group(config,i)
+          if teamsforgroup!=nil
+            teamsforgroup.each do |y|
+              config["TeamID"]=teamlist["#{y}"]
+              config["Team"]=y
+              repo.create_repository(client,config,"#{y}-#{assig["name_assig"]}",true,TEAM)
+              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote rm origin")
+              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
 
-      assig["groups"].each do |i|
-        teamsforgroup=team.get_single_group(config,i)
-        teamsforgroup.each do |y|
-          config["TeamID"]=teamlist["#{y}"]
-          config["Team"]=y
-          repo.create_repository(client,config,"#{y}-#{assig["name_assig"]}",true,TEAM)
-          system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote rm origin")
-          system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
-
-          system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} push origin --all")
+              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} push origin --all")
+            end
+          end
         end
       end
-      #system("rm -rf #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]}")
+      if assig["people"]!=[]
+        assig["people"].each do |i|
+            repo.create_repository(client,config,"#{i}-#{assig["name_assig"]}",true,ORGS)
+            system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote rm origin")
+            system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{i}-#{assig["name_assig"]}.git")
+            system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} push origin --all")
+            repo.add_collaborator(client,"#{config["Org"]}/#{i}-#{assig["name_assig"]}",i)
+        end
+      end
     else
       puts "\e[31m No repository is given for this assignment\e[0m"
     end
-
-
   end
 
   def add_team_to_assig(client,config,assig,data)
     assig=self.get_single_assig(config,assig)
+  end
+
+  def add_people_to_assig(client,config,assig)
+    list=self.load_assig()
+    people=self.assignment_people(client,config)
+    if people!=""
+      people.each do |i|
+        if !list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["people"].include?(i)
+          list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["people"].push(i)
+        else
+          puts "#{i} is already in this assignment."
+        end
+      end
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    end
   end
 
   def add_group_to_assig(client,config,assig)
@@ -476,16 +580,59 @@ class Organizations
     end
   end
 
-  def add_repo_to_assig(client,config,assig)
+  def add_repo_to_assig(client,config,assig,change)
     list=self.load_assig()
+    notexist=false
 
-    reponame=self.assignment_repository(client,config,assig["name_assig"])
-    if reponame!=""
-      list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo"]=reponame
-      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    if change!=nil      #change an specific repository
+      reponumber=change
+      fields=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}.keys
+      if reponumber=="1"
+        if !fields.include?("repo")
+          notexist=true
+        end
+      else
+        if !fields.include?("repo"+change)
+          notexist=true
+        end
+      end
+    else                #adding new repository
+      fields=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}.keys
+      reponumber=1
+      ex=0
+      while ex==0
+        if reponumber==1
+          if fields.include?("repo")
+            reponumber=reponumber+1
+          else
+            ex=1
+          end
+        else
+          if fields.include?("repo#{reponumber}")
+            reponumber=reponumber+1
+          else
+            ex=1
+          end
+        end
+      end
+    end
+
+    if notexist==true
+      puts "Doesn't exist that repository"
+    else
+      reponame=self.assignment_repository(client,config,assig["name_assig"])
+    end
+
+    if reponame!="" and notexist==false
+      if reponumber==1
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo"]=reponame
+        Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+      else
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo#{reponumber}"]=reponame
+        Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+      end
     end
   end
-  #------------End assig. stuff------------
 
   def show_organization_members_bs(client,config)
     orgslist=[]
