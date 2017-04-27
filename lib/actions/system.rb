@@ -11,7 +11,7 @@ class Sys
   attr_reader :memory
   LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new team ','rm team ','new repository ','new assignment ','clone ', 'issues',
     'version', 'cat ', 'groups', 'files', 'assignments','new issue ', 'open issue', 'new ','open ', 'close issue', 'new group ', 'rm group', 'rm ', 'do ', 'info','make','add repo',
-    'add group','rm repository ', 'new people info ', 'private ', 'people info ', 'new issue comment ', "rm people info", "change repo"].sort
+    'add group','rm repository ', 'new people info ', 'private ', 'people info ', 'new issue comment ', "rm people info", "change repo",'add students','new relation'].sort
 
   def initialize()
     @memory=[]

@@ -35,21 +35,21 @@ class Interface
 
     options=@sysbh.parse
 
-    trap("SIGINT") { throw :ctrl_c}
-    catch :ctrl_c do
-      begin
+    # trap("SIGINT") { throw :ctrl_c}
+    # catch :ctrl_c do
+    #   begin
         if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
           self.run(options[:path],options[:token],options[:user])
         else
           self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
         end
-      rescue SystemExit, Interrupt
-        raise
-      rescue Exception => e
-        puts "exit"
-        puts e
-      end
-    end
+    #   rescue SystemExit, Interrupt
+    #     raise
+    #   rescue Exception => e
+    #     puts "exit"
+    #     puts e
+    #   end
+    # end
   end
 
   def prompt()

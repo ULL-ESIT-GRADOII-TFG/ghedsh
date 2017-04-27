@@ -39,10 +39,19 @@ class Organizations
         assig["assigs"].each do |i|
           puts "\n"
           puts i["name_assig"]
-          puts "\tRepository: #{i["repo"]}"
-          puts "\tGroups: "
-          i["groups"].each do |y|
-            puts "\t\t#{y}"
+          i.each{|key, value| if key.include?("repo") then  puts "Repository #{key.delete("repo")}: #{value}" end}
+          if i["groups"]!=[] and i["groups"]!=nil
+            puts "\tGroups: "
+            i["groups"].each do |y|
+              puts "\t\t#{y}"
+            end
+          end
+          if i["people"]!=[] and i["people"]!=nil
+            puts "\tStudents: "
+            i["people"].each do |y|
+              puts "\t\t#{y}"
+            end
+            puts "\n"
           end
           print "\n"
         end
@@ -210,6 +219,7 @@ class Organizations
   def assignment_people(client,config)
     refuse=false
     members=self.get_organization_members(client,config)
+    sys=Sys.new()
     begin
       puts "\n1)Put a list of students"
       puts "2)Take all the list"
@@ -406,6 +416,10 @@ class Organizations
   def add_people_to_assig(client,config,assig)
     list=self.load_assig()
     people=self.assignment_people(client,config)
+    if list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["people"]==nil
+      list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["people"]=[]
+    end
+
     if people!=""
       people.each do |i|
         if !list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["people"].include?(i)
