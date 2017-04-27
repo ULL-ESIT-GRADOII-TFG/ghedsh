@@ -492,6 +492,10 @@ class Interface
         when op == "cd .."
           if @deep==ORGS then t.clean_groupsteams() end ##cleans groups cache
           self.cdback(false)
+        when op.include?("cd assig") && opcd[0]=="cd" && opcd[1]=="assig" && opcd.size==3
+          if @deep==ORGS
+            self.cdassig(opcd[2])
+          end
         when op == "people" then self.people()
         when op == "teams"
       	  if @deep==ORGS
