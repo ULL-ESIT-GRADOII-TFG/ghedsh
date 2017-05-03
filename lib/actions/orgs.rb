@@ -341,8 +341,11 @@ class Organizations
     team=Teams.new()
     puts "\n"
     puts assig["name_assig"]
+    assig=assig.sort.to_h
     assig.each{|key, value| if key.include?("repo") then  puts "Repository #{key.delete("repo")}: #{value}" end}
-
+    puts
+    assig.each{|key, value| if key.include?("sufix") then  puts "Sufix of Repository #{key.delete("sufix")} : #{value}" end}
+    print "\n"
     if assig["groups"]!=[]
       puts "\tGroups: "
       assig["groups"].each do |y|
@@ -367,40 +370,56 @@ class Organizations
   def make_assig(client,config,assig)
     web="https://github.com/"
     web2="git@github.com:"
-    repo=Repositories.new()
+    r=Repositories.new()
     team=Teams.new()
     sys=Sys.new()
     teamlist=team.read_teamlist(client,config)
     assig=self.get_single_assig(config,assig)
+    repolist=[]
+    point=1
+    assig.each{|key, value| if key.include?("repo") then  repolist.push(value) end}
 
-    if assig["repo"]!=""
-      sys.create_temp("#{ENV['HOME']}/.ghedsh/temp")
+    # if assig["repo"]!=""
+    if repolist!=[]
+      repolist.each do |repo|
+        sys.create_temp("#{ENV['HOME']}/.ghedsh/temp")
+        puts repo
+        if repolist.size>1
+          sufix="sufix#{point}"
+          sufix="-#{assig["#{sufix}"]}"
+          # puts sufix
+        else
+          sufix=""
+        end
+        point=point+1
+        system("git clone #{web2}#{repo}.git #{ENV['HOME']}/.ghedsh/temp/#{repo}")
+        if assig["groups"]!=[]
+          assig["groups"].each do |i|
 
-      #system("git clone #{web2}#{config["Org"]}/#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/#{assig["repo"]}")
-      system("git clone #{web2}#{assig["repo"]}.git #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]}")
-      if assig["groups"]!=[]
-        assig["groups"].each do |i|
-          teamsforgroup=team.get_single_group(config,i)
-          if teamsforgroup!=nil
-            teamsforgroup.each do |y|
-              config["TeamID"]=teamlist["#{y}"]
-              config["Team"]=y
-              repo.create_repository(client,config,"#{y}-#{assig["name_assig"]}",true,TEAM)
-              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote rm origin")
-              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{y}-#{assig["name_assig"]}.git")
+            teamsforgroup=team.get_single_group(config,i)
+            if teamsforgroup!=nil
+              teamsforgroup.each do |y|
+                config["TeamID"]=teamlist["#{y}"]
+                config["Team"]=y
+                puts y
+                puts sufix
+                r.create_repository(client,config,"#{assig["name_assig"]}#{sufix}-#{y}",true,TEAM)
+                system("git -C #{ENV['HOME']}/.ghedsh/temp/#{repo} remote rm origin")
+                system("git -C #{ENV['HOME']}/.ghedsh/temp/#{repo} remote add origin #{web2}#{config["Org"]}/#{assig["name_assig"]}#{sufix}-#{y}.git")
 
-              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} push origin --all")
+                system("git -C #{ENV['HOME']}/.ghedsh/temp/#{repo} push origin --all")
+              end
             end
           end
         end
-      end
-      if assig["people"]!=[] and assig["people"]!=nil
-        assig["people"].each do |i|
-            repo.create_repository(client,config,"#{i}-#{assig["name_assig"]}",true,ORGS)
-            system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote rm origin")
-            system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} remote add origin #{web2}#{config["Org"]}/#{i}-#{assig["name_assig"]}.git")
-            system("git -C #{ENV['HOME']}/.ghedsh/temp/#{assig["repo"]} push origin --all")
-            repo.add_collaborator(client,"#{config["Org"]}/#{i}-#{assig["name_assig"]}",i)
+        if assig["people"]!=[] and assig["people"]!=nil
+          assig["people"].each do |i|
+              r.create_repository(client,config,"#{assig["name_assig"]}#{sufix}-#{i}",true,ORGS)
+              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{repo} remote rm origin")
+              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{repo} remote add origin #{web2}#{config["Org"]}/#{assig["name_assig"]}#{sufix}-#{i}.git")
+              system("git -C #{ENV['HOME']}/.ghedsh/temp/#{repo} push origin --all")
+              r.add_collaborator(client,"#{config["Org"]}/#{assig["name_assig"]}#{sufix}-#{i}",i)
+           end
         end
       end
     else
@@ -641,7 +660,7 @@ class Organizations
           notexist=true
         end
       else
-        if !fields.include?("repo"+change)
+        if !fields.include?("repo"+change.to_s)
           notexist=true
         end
       end
@@ -670,24 +689,47 @@ class Organizations
       puts "Doesn't exist that repository"
     else
       reponame=self.assignment_repository(client,config,assig["name_assig"])
+      if reponumber.to_i>1
+        sufix="sufix#{reponumber}"
+        sufixname=self.assignment_repo_sufix(reponumber,1)
+      end
     end
 
     if reponame!="" and notexist==false
-      if reponumber==1
+      if reponumber.to_i==1
         list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo"]=reponame
         Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
       else
         list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo#{reponumber}"]=reponame
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["#{sufix}"]=sufixname
+        if sufix=="sufix2" and change==nil
+          sufixname=self.assignment_repo_sufix("1",2)
+          list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["sufix1"]=sufixname
+        end
         Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
       end
     end
   end
 
-  def assignment_repo_sufix(config,name)
-    assig=self.get_single_assig(config,name)
-    if assig!=nil
-
+  def assignment_repo_sufix(reponumber,order)
+    op=""
+    print "\n"
+    if order==1
+      while op=="" or op=="\n"
+        puts "Add the suffix of the repository \"#{reponumber}\", in order to differentiate it from the other repositories: "
+        op=gets.chomp
+      end
+    else
+      while op=="" or op=="\n"
+        puts "Add the suffix of the first repository, in order to differentiate it from the other repositories: "
+        op=gets.chomp
+      end
     end
+    return op
+  end
+
+  def change_repo_sufix()
+    self.assignment_repo_sufix()
   end
 
   def show_organization_members_bs(client,config)

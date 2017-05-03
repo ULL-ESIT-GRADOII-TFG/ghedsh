@@ -137,7 +137,7 @@ class Interface
           @config["Team"]=nil
           @config["TeamID"]=nil
           @teams_repos=[]
-          @deep=2
+          @deep=ORGS
         when @deep == ASSIG
           @deep=ORGS
           @config["Assig"]=nil
