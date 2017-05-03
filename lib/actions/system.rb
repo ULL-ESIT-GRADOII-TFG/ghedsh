@@ -346,6 +346,23 @@ class Sys
     return list
   end
 
+  def search_rexp_peoplehash(list,exp)
+    found=[]
+    yes=false
+    list.each do |i|
+      i.each do |j|
+        if j[1].match(/#{exp}/)
+          yes=true
+        end
+      end
+      if yes==true
+        found.push(i)
+        yes=false
+      end
+    end
+    return found
+  end
+
   def parse()
     options = {:user => nil, :token => nil, :path => nil}
 

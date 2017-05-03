@@ -61,7 +61,6 @@ class Organizations
       list["orgs"].push({"name"=>config["Org"],"assigs"=>[]})
       Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
     end
-
   end
 
   def assignment_repository(client,config,name)
@@ -554,6 +553,37 @@ class Organizations
     end
   end
 
+  def search_rexp_people_info(client,config,exp)
+    list=self.load_people()
+    if list!=nil
+      if list["users"]!=[]
+        list=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
+        if exp.match(/^\//)
+          sp=exp.split('/')
+          exp=Regexp.new(sp[1],sp[2])
+        end
+        list=Sys.new.search_rexp_peoplehash(list["users"],exp)
+
+        if list!=[]
+          fields=list[0].keys
+          list.each do |i|
+            puts "\n\e[31m#{i["github"]}\e[0m"
+            fields.each do |j|
+              puts "#{j.capitalize}:\t #{i[j]}"
+            end
+            puts
+          end
+        end
+      else
+        puts "Extended information has not been added yet"
+      end
+    else
+      list["orgs"].push({"name"=>config["Org"],"users"=>[]})
+      Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
+      puts "Extended information has not been added yet"
+    end
+  end
+
   def show_people_info(client,config,user)
     list=self.load_people()
 
@@ -650,6 +680,13 @@ class Organizations
         list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo#{reponumber}"]=reponame
         Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
       end
+    end
+  end
+
+  def assignment_repo_sufix(config,name)
+    assig=self.get_single_assig(config,name)
+    if assig!=nil
+
     end
   end
 

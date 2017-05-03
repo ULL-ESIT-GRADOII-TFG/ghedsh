@@ -724,7 +724,11 @@ class Interface
           info_strm=o.show_people_info(@client,@config,nil)
           if info_strm!=nil then @sysbh.add_history_str(2,info_strm) end
         else
-          o.show_people_info(@client,@config,opcd[2])
+          if opcd[2].include?("/")
+            o.search_rexp_people_info(@client,@config,opcd[2])
+          else
+            o.show_people_info(@client,@config,opcd[2])
+          end
         end
       end
       if opcd[0]=="clone"
