@@ -139,6 +139,8 @@ class HelpM
     print "\tadd repo\t\tAdd or create the repository of the assignment\n"
     print "\tchange repo\t\tChange a repository of the assignment\n"
     print "\t\t\t\t->\tchange repo [number of the repo]\n\n"
+    print "\tchange sufix\t\tChange a sufix from a repository of the assignment\n"
+    print "\t\t\t\t->\tchange sufix [number of the repo]\n\n"
     print "\tadd group\t\tAdd a new group to the assignment\n"
     print "\topen\t\t\topen the github assignment repositories disposition\n"
     print "\tadd students\t\tAdd new students to the assignment\n"

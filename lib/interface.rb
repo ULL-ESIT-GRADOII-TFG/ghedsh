@@ -597,13 +597,17 @@ class Interface
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.info_repository(@client,@config,@deep) end
         when op== "add repo"
           if @deep==ASSIG then o.add_repo_to_assig(@client,@config,@config["Assig"],nil) end
-        when op.include?("change repo") && opcd[0]=="change" && opcd[1]="repo"
+        when op.include?("change repo") && opcd[0]=="change" && opcd[1]=="repo"
           if @deep==ASSIG
             if opcd.size>2
               o.add_repo_to_assig(@client,@config,@config["Assig"],opcd[2])
             else
               o.add_repo_to_assig(@client,@config,@config["Assig"],1)
             end
+          end
+        when op.include?("change sufix") && opcd[0]=="change" && opcd[1]=="sufix"
+          if @deep==ASSIG
+            if opcd.size>2 then o.change_repo_sufix(@config,@config["Assig"],opcd[2]) end
           end
         when op=="add students" && @deep==ASSIG
            o.add_people_to_assig(@client,@config,@config["Assig"])

@@ -728,8 +728,22 @@ class Organizations
     return op
   end
 
-  def change_repo_sufix()
-    self.assignment_repo_sufix()
+  def change_repo_sufix(config,assig,reponumber)
+    list=self.load_assig()
+    if list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["sufix#{reponumber}"]!=nil
+      if reponumber==1
+        sufixname=self.assignment_repo_sufix(reponumber,2)
+        sufix="sufix1"
+      else
+        sufixname=self.assignment_repo_sufix(reponumber,1)
+        sufix="sufix#{reponumber}"
+      end
+
+      list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["#{sufix}"]=sufixname
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    else
+      puts "Doesn't exist a repository with that identifier"
+    end
   end
 
   def show_organization_members_bs(client,config)
