@@ -35,21 +35,21 @@ class Interface
 
     options=@sysbh.parse
 
-    # trap("SIGINT") { throw :ctrl_c}
-    # catch :ctrl_c do
-    #   begin
+    trap("SIGINT") { throw :ctrl_c}
+    catch :ctrl_c do
+      begin
         if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
           self.run(options[:path],options[:token],options[:user])
         else
           self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
         end
-    #   rescue SystemExit, Interrupt
-    #     raise
-    #   rescue Exception => e
-    #     puts "exit"
-    #     puts e
-    #   end
-    # end
+      rescue SystemExit, Interrupt
+        raise
+      rescue Exception => e
+        puts "exit"
+        puts e
+      end
+    end
   end
 
   def prompt()
@@ -583,7 +583,21 @@ class Interface
           if opcd.size==3 and @deep==ORGS
             t.delete_group(@config,opcd[2])
           end
-
+          if opcd.size==3 and @deep==ASSIG
+            if opcd[2]!="-all"
+              o.rm_assigment_group(@config,@config["Assig"],opcd[2],1)
+            else
+              o.rm_assigment_group(@config,@config["Assig"],opcd[2],2)
+            end
+          end
+        when op.include?("rm student") && opcd[0]=="rm" && opcd[1]="student"
+          if opcd.size==3 and @deep==ASSIG
+            if opcd[2]!="-all"
+              o.rm_assigment_student(@config,@config["Assig"],opcd[2],1)
+            else
+              o.rm_assigment_student(@config,@config["Assig"],opcd[2],2)
+            end
+          end
         when op.include?("rm repository") && opcd[0]=="rm" && opcd[1]="repository"
           if @deep==ORGS || @deep==USER || @deep==TEAM
             r.delete_repository(@client,@config,opcd[2],@deep)
@@ -591,7 +605,10 @@ class Interface
               @orgs_repos.delete(opcd[2])
             end
           end
-
+        when op.include?("rm repo")&& opcd[0]=="rm" && opcd[1]="repo"
+          if @deep==ASSIG and opcd.size==3
+            o.rm_assigment_repo(@config,@config["Assig"],opcd[2])
+          end
         when op == "info"
           if @deep==ASSIG then o.show_assig_info(@config,@config["Assig"]) end
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.info_repository(@client,@config,@deep) end

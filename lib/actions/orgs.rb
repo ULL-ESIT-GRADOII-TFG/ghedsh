@@ -69,17 +69,17 @@ class Organizations
       puts "\n"
       puts "Assignment: #{name}"
       puts "1) Add a repository already created "
-      puts "2) Create a new empty repository"
-      puts "3) Don't assign a repository yet"
+      # puts "2) Create a new empty repository"
+      puts "2) Don't assign a repository yet"
       print "option => "
       op=gets.chomp
       puts "\n"
-      if op=="3" or op=="1" or op=="2"
+      if op=="1" or op=="2"
         ex=true
       end
     end
     case
-    when op=="1" || op=="2"
+    when op=="1"
 
       if op=="1"
         ex2=false
@@ -111,20 +111,7 @@ class Organizations
           end
         end
       end
-      if op=="2"
-        ex2=false
-        until ex2==true
-          puts "Name of the repository (To skip and add the repository later, press enter): "
-          reponame=gets.chomp
-          if reponame==""
-            ex2=true
-          else
-            ex2=Repositories.new().create_repository(client,config,reponame,false,ORGS)
-            reponame="#{config["Org"]}/#{reponame}"
-          end
-        end
-      end
-    when op=="3" then reponame=""
+    when op=="2" then reponame=""
     end
     return reponame
   end
@@ -257,9 +244,11 @@ class Organizations
     end
     if op2!=4 and refuse==false
       if op2!=2
-        list.each do |i|
-          if !members.include?(i)
-            list.delete(i)
+        if list!=nil
+          list.each do |i|
+            if !members.include?(i)
+              list.delete(i)
+            end
           end
         end
       end
@@ -379,7 +368,6 @@ class Organizations
     point=1
     assig.each{|key, value| if key.include?("repo") then  repolist.push(value) end}
 
-    # if assig["repo"]!=""
     if repolist!=[]
       repolist.each do |repo|
         sys.create_temp("#{ENV['HOME']}/.ghedsh/temp")
@@ -387,7 +375,6 @@ class Organizations
         if repolist.size>1
           sufix="sufix#{point}"
           sufix="-#{assig["#{sufix}"]}"
-          # puts sufix
         else
           sufix=""
         end
@@ -708,6 +695,62 @@ class Organizations
         end
         Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
       end
+    end
+  end
+
+  def rm_assigment_repo(config,assig,reponumber)
+    list=self.load_assig()
+
+    if reponumber==1
+      if list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo"]!=nil
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}.delete("repo")
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}.delete("sufix1")
+        Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+      else
+        puts "Doesn't exist that repository"
+      end
+    else
+      if list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo#{reponumber}"]!=nil
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}.delete("repo#{reponumber}")
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}.delete("sufix#{reponumber}")
+        Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+      else
+        puts "Doesn't exist that repository"
+      end
+    end
+  end
+
+  def rm_assigment_student(config,assig,student,mode)
+    list=self.load_assig()
+    if mode==1
+      if list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["people"].include?(student)
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["people"].delete(student)
+        puts "Student #{student} correctly deleted from the assignment"
+        Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+      else
+        puts "Student not found"
+      end
+    else
+      list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["people"].clear()
+      puts "All the students has been deleted from the assignment"
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+    end
+  end
+
+  def rm_assigment_group(config,assig,group,mode)
+    list=self.load_assig()
+    if mode==1
+      if list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["groups"].include?(group)
+        list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["groups"].delete(group)
+        puts "Group #{group} correctly deleted from the assignment"
+        Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
+      else
+        puts "Group not found"
+      end
+    else
+      list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["groups"].clear()
+      puts "All the groups has been deleted from the assignment"
+      Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
     end
   end
 
