@@ -69,17 +69,17 @@ class Organizations
       puts "\n"
       puts "Assignment: #{name}"
       puts "1) Add a repository already created "
-      # puts "2) Create a new empty repository"
-      puts "2) Don't assign a repository yet"
+      puts "2) Create a new empty repository"
+      puts "3) Don't assign a repository yet"
       print "option => "
       op=gets.chomp
       puts "\n"
-      if op=="1" or op=="2"
+      if op=="1" or op=="2" or op=="3"
         ex=true
       end
     end
     case
-    when op=="1"
+    when op=="1" || op=="2"
 
       if op=="1"
         ex2=false
@@ -111,7 +111,25 @@ class Organizations
           end
         end
       end
-    when op=="2" then reponame=""
+      if op=="2"
+        ex2=false
+        until ex2==true
+          puts "Name of the repository (To skip and add the repository later, press enter): "
+          reponame=gets.chomp
+          if reponame==""
+             ex2=true
+          else
+            # ex2=Repositories.new().create_repository(client,config,reponame,false,ORGS)
+            if client.repository?("#{config["Org"]}/#{reponame}")
+              puts "\e[31m Already exists a repository with that name in #{config["Org"]}\e[0m"
+            else
+              reponame="#{config["Org"]}/#{reponame}"
+              ex2=true
+            end
+          end
+        end
+      end
+    when op=="3" then reponame=""
     end
     return reponame
   end
@@ -373,12 +391,21 @@ class Organizations
         sys.create_temp("#{ENV['HOME']}/.ghedsh/temp")
         puts repo
         if repolist.size>1
-          sufix="sufix#{point}"
-          sufix="-#{assig["#{sufix}"]}"
+          if point>1 || assig.has_key?("sufix1")
+            sufix="sufix#{point}"
+            sufix="-#{assig["#{sufix}"]}"
+          else
+            sufix=""
+          end
         else
           sufix=""
         end
         point=point+1
+        if !client.repository?(repo)
+          aux=repo.split("/")
+          aux=aux[1]
+          r.create_repository(client,config,aux,false,ORGS)
+        end
         system("git clone #{web2}#{repo}.git #{ENV['HOME']}/.ghedsh/temp/#{repo}")
         if assig["groups"]!=[]
           assig["groups"].each do |i|
@@ -689,10 +716,6 @@ class Organizations
       else
         list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["repo#{reponumber}"]=reponame
         list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["#{sufix}"]=sufixname
-        if sufix=="sufix2" and change==nil
-          sufixname=self.assignment_repo_sufix("1",2)
-          list["orgs"].detect{|aux| aux["name"]==config["Org"]}["assigs"].detect{|aux2| aux2["name_assig"]==assig}["sufix1"]=sufixname
-        end
         Sys.new.save_assigs("#{ENV['HOME']}/.ghedsh",list)
       end
     end
@@ -870,15 +893,26 @@ class Organizations
             puts "No github web profile in the aditional information"
           end
         else
-          if inuser.keys.include?(field.downcase)
-            if inuser[field.downcase].include?("https://") or inuser[field.downcase].include?("http://")
-              url=inuser["#{field.downcase}"]
-            else
-              url="http://"+inuser["#{field.downcase}"]
+          if field.downcase.start_with?("/") and field.downcase.end_with?("/")  ##regexp
+            field=field.delete("/")
+            inuser.each_value do |j|
+              if j.include?(field)
+                if j.include?("https://") || j.include?("http://")
+                  Sys.new.open_url(j)
+                end
+              end
             end
-            Sys.new.open_url(url)
           else
-            puts "No field found with that name"
+            if inuser.keys.include?(field.downcase)
+              if inuser[field.downcase].include?("https://") or inuser[field.downcase].include?("http://")
+                url=inuser["#{field.downcase}"]
+              else
+                url="http://"+inuser["#{field.downcase}"]
+              end
+              Sys.new.open_url(url)
+            else
+              puts "No field found with that name"
+            end
           end
         end
       end
