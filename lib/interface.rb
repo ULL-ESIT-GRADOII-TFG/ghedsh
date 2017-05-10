@@ -208,49 +208,6 @@ class Interface
       when @deep == TEAM
         self.set(path)
       end
-    else                                  ##CD con path absoluto
-      case
-      when @deep==USER
-        if @orgs_list.empty?
-          @orgs_list=Organizations.new.read_orgs(@client)
-        end
-        aux=@orgs_list
-        if aux.one?{|aux| aux==path_split[0]}
-          @config["Org"]=path_split[0]
-          @deep=ORGS
-          if @teamlist.empty?
-            @teamlist=Teams.new.read_teamlist(@client,@config)
-          end
-          aux=@teamlist
-          if aux[path_split[1]]!=nil
-            @config["Team"]=path_split[1]
-            @config["TeamID"]=@teamlist[path_split[1]]
-            @deep=TEAM
-            if path_split.size>2
-              self.set(path_split[2])
-            end
-          else
-            #puts "\nNo team is available with that name"
-            self.set(path_split[1])
-          end
-        else
-          #puts "\nNo organization is available with that name"
-          self.set(path)
-        end
-      when @deep==ORGS
-        if @teamlist==[]
-          @teamlist=Teams.new.read_teamlist(@client,@config)
-        end
-        aux=@teamlist
-        if aux[path_split[0]]!=nil
-          @config["Team"]=path_split[0]
-          @config["TeamID"]=@teamlist[path_split[0]]
-          @deep=TEAM
-          self.set(path_split[1])
-        else
-          #puts "\nNo team is available with that name"
-        end
-      end
     end
   end
 
@@ -479,7 +436,7 @@ class Interface
       else
         op=opscript[0]
         opcd=op.split
-        opscript.delete(opscript[0])
+        opscript.shift
       end
 
       case
@@ -691,12 +648,19 @@ class Interface
           if opcd[1]=="repo" and opcd.size>2
             self.set(opcd[2])
           else
-            self.cd(opcd[1])
+            if opcd[1].include?("/")
+              cdlist=opcd[1].split("/")
+              cdlist.each do |i|
+                opscript.push("cd #{i}")
+              end
+            else
+              self.cd(opcd[1])
+            end
           end
         end
       end
       if opcd[0]=="do" and opcd.size>1
-        # opscript=s.load_script(opcd[1])
+        opscript=s.load_script(opcd[1])
       end
       if opcd[0]=="set"
         self.set(opcd[1])
