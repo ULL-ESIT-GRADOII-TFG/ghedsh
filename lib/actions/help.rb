@@ -1,3 +1,5 @@
+require 'require_all'
+require_rel '.'
 
 class HelpM
   attr_reader :user
@@ -6,48 +8,125 @@ class HelpM
   attr_reader :user_repo
   attr_reader :common_opt
 
+  def context(name,scope)
+    name=name.join("_")
+    begin
+      self.send(:"#{name}",scope)
+    rescue
+      puts "There is no command with that name"
+    end
+  end
   def user()
     self.common_opt
     puts " Users options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\torgs\t\t\tShow your organizations\n"
-    print "\topen\t\t\tOpen the user's url of github in your web browser.\n"
-    print "\trepos\t\t\tList your repositories\n"
+    self.open(USER)
+    self.repos(USER)
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
-    print "\tnew repository\t\tCreate a repository in your personal account\n"
-    print "\t\t\t\t->\tnew repository [name of the repository]\n\n"
-    print "\trm repository\t\tDelete a repository in your personal account\n"
-    print "\t\t\t\t->\trm repository [name of the repository]\n\n"
+    self.new_repository(USER)
+    self.rm_repository(USER)
     print "\tset\t\t\tMove you to a specific repository\n"
 
+  end
+
+  def repos(scope)
+    case
+    when scope==USER
+      print "\trepos\t\t\tList your repositories\n"
+    when scope==ORGS
+      print "\trepos\t\t\tList the repositories of your organization\n"
+    when scope==TEAM
+      print "\trepos\t\t\tList the team's repositories\n"
+    end
+    print "\t\t\t\tYou can use a RegExp to improve the search using the \/ parameter \n"
+    print "\t\t\t\t->\trepos /[RegExp]/\n\n"
+  end
+
+  def new_repository(scope)
+    case
+    when scope==USER
+      print "\tnew repository\t\tCreate a repository in your personal account\n"
+    when scope==ORGS
+      print "\tnew repository\t\tCreate a repository in a organization\n"
+    when scope==TEAM
+      print "\tnew repository\t\tCreate a repository to this team\n"
+    end
+    print "\t\t\t\t->\tnew repository [name of the repository]\n\n"
+  end
+
+  def rm_repository(scope)
+    case
+    when scope==USER
+      print "\trm repository\t\tDelete a repository in your personal account\n"
+    when scope==ORGS
+      print "\trm repository\t\tDelete a repository in a organization\n"
+    when scope==TEAM
+      print "\trm repository\t\tDelete a repository of a team\n"
+    end
+    print "\t\t\t\t->\trm repository [name of the repository]\n\n"
+  end
+
+  def open(scope)
+    case
+    when scope==USER
+      print "\topen\t\t\tOpen the user's url of github in your web browser.\n"
+    when scope==ORGS
+      print "\topen\t\t\tOpen the organization's url of github in your web browser.\n"
+      print "\t\t\t\tIf you have added the aditional .csv information with, you can open an specific github profile.\n"
+      print "\t\t\t\t->\topen [user]\n\n"
+      print "\t\t\t\tYou can open an specific field if its contains an url.\n"
+      print "\t\t\t\t->\topen [user] [fieldname]\n\n"
+      print "\t\t\t\tIf you don't want to put the whole field, you can open the url contained with \"/\" parameter.\n"
+      print "\t\t\t\t->\topen [user] /[part of the url]/\n\n"
+    when scope==ORGS_REPO
+      print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
+    when scope==TEAM
+      print "\topen\t\t\tOpen the team's url of github in your web browser.\n"
+    when scope==TEAM_REPO
+      print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
+    when scope==ASSIG
+      print "\topen\t\t\topen the github assignment repositories disposition\n"
+    end
+  end
+
+  def people(scope)
+    case
+    when scope==ORGS
+      print "\t\t\t\t->\tpeople\n\n"
+      print "\t\t\t\tIf you add the parameter 'info', the extended information will be showed\n"
+      print "\t\t\t\t->\tpeople info\n\n"
+      print "\t\t\t\tTo find a specific member extended info, you can give the github id as parameter.\n"
+      print "\t\t\t\t->\tpeople info [github id]\n\n"
+      print "\t\t\t\tTo use a RegExp search in each field of the information, you can use the parameter /.\n"
+      print "\t\t\t\t->\tpeople info /[RegExp]/\n\n"
+    end
+  end
+  alias_method :people_info, :people
+
+  def cd(scope)
+    print "\tcd\t\t\tGo to the path. Could be an assignment, an organization, a team or a repository\n"
+    print "\t\t\t\t->\tcd [path]\n\n"
+    print "\t\t\t\tFor going to the user root path use cd without argument:\n"
+    print "\t\t\t\t->\tcd\n\n"
+    print "\t\t\t\tYou can go back to the previous level with the argument ".."\n"
+    print "\t\t\t\t->\tcd [..]\n\n"
+    print "\t\t\t\tDefault search look for repositories at the end of the queue.\n"
+    print "\t\t\t\tIf you want to look for an specific repository use: \n"
+    print "\t\t\t\t->\tcd repo [name] \n\n"
   end
 
   def org()
     self.common_opt
     puts " Organization options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
-    print "\trepos\t\t\tList the repositories of your organization\n"
-    print "\tnew repository\t\tCreate a repository in a organization\n"
-    print "\t\t\t\t->\tnew repository [name of the repository]\n\n"
-    print "\trm repository\t\tDelete a repository in a organization\n"
-    print "\t\t\t\t->\trm repository [name of the repository]\n\n"
-    print "\topen\t\t\tOpen the organization's url of github in your web browser.\n"
-    print "\t\t\t\tIf you have added the aditional .csv information with, you can open an specific github profile.\n"
-    print "\t\t\t\t->\topen [user]\n\n"
-    print "\t\t\t\tYou can open an specific field if its contains an url.\n"
-    print "\t\t\t\t->\topen [user] [fieldname]\n\n"
-    print "\t\t\t\tIf you don't want to put the whole field, you can open the url contained with \"/\" parameter.\n"
-    print "\t\t\t\t->\topen [user] /[part of the url]/\n\n"
+    self.repos(ORGS)
+    self.new_repository(ORGS)
+    self.rm_repository(ORGS)
+    self.open(ORGS)
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tset\t\t\tMove you to a specific repository\n"
-    print "\tpeople\t\t\tShow the members of an organization\n"
-    print "\t\t\t\t->\tpeople\n\n"
-    print "\t\t\t\tIf you add the parameter 'info', the extended information will be showed\n"
-    print "\t\t\t\t->\tpeople info\n\n"
-    print "\t\t\t\tTo find a specific member extended info, you can give the github id as parameter.\n"
-    print "\t\t\t\t->\tpeople info [github id]\n\n"
-    print "\t\t\t\tTo use a RegExp search in each field of the information, you can use the parameter /.\n"
-    print "\t\t\t\t->\tpeople info /[RegExp]/\n\n"
+    self.people(ORGS)
     print "\tteams\t\t\tTeams of a organization\n"
     print "\tnew relation\t\tSet a relation for the extendend information between Github ID and an email from a .csv file\n"
     print "\t\t\t\t->\tnew relation [name of the file]\n\n"
@@ -70,7 +149,6 @@ class HelpM
     print "\t\t\t\t->\trm team [name of the team]\n\n"
     print "\tnew team\t\tCreate a team in the organization. Expected the name of the team, and/or members given one by one\n"
     print "\t\t\t\t->\tnew team [name of the team] [member1] [member2] [member3] ... \n\n"
-
   end
 
   def org_repo()
@@ -78,7 +156,7 @@ class HelpM
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tinfo\t\t\tShow information about the repository\n"
-    print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
+    self.open(ORGS_REPO)
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     print "\tnew issue\t\tCreates a new issue\n"
     print "\tissues\t\t\tShow the list of issues from the repository\n"
@@ -103,10 +181,9 @@ class HelpM
     puts " Organization team options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tpeople\t\t\tMembers of the team\n"
-    print "\topen\t\t\tOpen the team's url of github in your web browser.\n"
+    self.open(TEAM)
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
-    print "\tnew repository\t\tCreate a repository to this team\n"
-    print "\t\t\t\t->\tnew repository [name]\n\n"
+
     print "\tadd team member\t\tAdd a member in the team\n\n"
     print "\t\t\t\t->\tadd team member [new member]\n\n"
   end
@@ -154,7 +231,7 @@ class HelpM
     print "\t\t\t\t->\trm group [name]\n\n"
     print "\t\t\t\tTo delete all the groups list, use the parameter -all.\n"
     print "\t\t\t\t->\trm group -all\n\n"
-    print "\topen\t\t\topen the github assignment repositories disposition\n"
+    self.open(ASSIG)
     print "\tadd students\t\tAdd new students to the assignment\n"
     print "\trm student\t\tDelete a student from the assignment list.\n"
     print "\t\t\t\t->\trm student [name]\n\n"
@@ -168,7 +245,7 @@ class HelpM
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tinfo\t\t\tShow information about the repository\n"
-    print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
+    self.open(TEAM_REPO)
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     print "\tnew issue\t\tCreates a new issue\n"
     print "\tissues\t\t\tShow the list of issues from the repository\n"
@@ -198,15 +275,7 @@ class HelpM
     print "\t\t\t\t->\tdo [filename]\n\n"
     print "\texit\t\t\tExit from this program\n"
     print "\thelp\t\t\tList of commands available\n"
-    print "\tcd\t\t\tGo to the path. Could be an assignment, an organization, a team or a repository\n"
-    print "\t\t\t\t->\tcd [path]\n\n"
-    print "\t\t\t\tFor going to the user root path use cd without argument:\n"
-    print "\t\t\t\t->\tcd\n\n"
-    print "\t\t\t\tYou can go back to the previous level with the argument ".."\n"
-    print "\t\t\t\t->\tcd [..]\n\n"
-    print "\t\t\t\tDefault search look for repositories at the end of the queue.\n"
-    print "\t\t\t\tIf you want to look for an specific repository use: \n"
-    print "\t\t\t\t->\tcd repo [name] \n\n"
+    self.cd(1)
     print "\t!\t\t\tExecute a bash command\n\n"
   end
 

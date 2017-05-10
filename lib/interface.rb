@@ -79,23 +79,27 @@ class Interface
     end
   end
 
-  def help()
+  def help(opcd)
     h=HelpM.new()
-    case
-      when @deep == USER
-        h.user()
-      when @deep == ORGS
-        h.org()
-      when @deep == ORGS_REPO
-        h.org_repo()
-      when @deep == USER_REPO
-        h.user_repo()
-      when @deep == TEAM
-        h.orgs_teams()
-      when @deep == TEAM_REPO
-        h.team_repo()
-      when @deep == ASSIG
-        h.asssig()
+    if opcd.size>1
+      h.context(opcd[1..opcd.size-1],@deep)
+    else
+      case
+        when @deep == USER
+          h.user()
+        when @deep == ORGS
+          h.org()
+        when @deep == ORGS_REPO
+          h.org_repo()
+        when @deep == USER_REPO
+          h.user_repo()
+        when @deep == TEAM
+          h.orgs_teams()
+        when @deep == TEAM_REPO
+          h.team_repo()
+        when @deep == ASSIG
+          h.asssig()
+      end
     end
   end
 
@@ -444,7 +448,7 @@ class Interface
           @sysbh.save_memory(config_path,@config)
           s.save_cache(config_path,@config)
           s.remove_temp("#{ENV['HOME']}/.ghedsh/temp")
-        when op == "help" then self.help()
+        when op.include?("help") && opcd[0]=="help" then self.help(opcd)
         when op == "orgs" then self.orgs()
         when op == "cd .."
           if @deep==ORGS then t.clean_groupsteams() end ##cleans groups cache
