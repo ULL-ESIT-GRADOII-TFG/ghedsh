@@ -16,19 +16,6 @@ class HelpM
       puts "There is no command with that name"
     end
   end
-  def user()
-    self.common_opt
-    puts " Users options:"
-    print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
-    print "\torgs\t\t\tShow your organizations\n"
-    self.open(USER)
-    self.repos(USER)
-    print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
-    self.new_repository(USER)
-    self.rm_repository(USER)
-    print "\tset\t\t\tMove you to a specific repository\n"
-
-  end
 
   def repos(scope)
     case
@@ -93,6 +80,7 @@ class HelpM
   def people(scope)
     case
     when scope==ORGS
+      print "\tpeople\t\t\tMembers of the organization\n"
       print "\t\t\t\t->\tpeople\n\n"
       print "\t\t\t\tIf you add the parameter 'info', the extended information will be showed\n"
       print "\t\t\t\t->\tpeople info\n\n"
@@ -100,6 +88,8 @@ class HelpM
       print "\t\t\t\t->\tpeople info [github id]\n\n"
       print "\t\t\t\tTo use a RegExp search in each field of the information, you can use the parameter /.\n"
       print "\t\t\t\t->\tpeople info /[RegExp]/\n\n"
+    when scope==TEAM
+      print "\tpeople\t\t\tMembers of the team\n"
     end
   end
   alias_method :people_info, :people
@@ -116,6 +106,103 @@ class HelpM
     print "\t\t\t\t->\tcd repo [name] \n\n"
   end
 
+  def groups(scope)
+    case
+    when scope==ORGS
+      print "\tgroups\t\t\tShow the list of groups with each team and user that it has\n"
+      print "\tgroup\t\t\tShow the information of an specific group\n"
+      print "\t\t\t\t->\tgroup [name of the group]\n\n"
+      print "\tnew group\t\tCreate a new group. Expected the name and teams given one by one\n"
+      print "\t\t\t\t->\tnew group [name of the group] [team1] [team2] [team3] ... \n\n"
+      print "\t\t\t\tIf you want to import the teams from a file, use the parameter -f\n"
+      print "\t\t\t\t->\tnew group -f [name of the group] [file]\n\n"
+      print "\trm group\t\tDelete a created group\n"
+      print "\t\t\t\t->\trm group [name of the group]\n\n"
+    end
+  end
+  alias_method :group,:groups
+  alias_method :new_group,:groups
+  alias_method :rm_group,:groups
+
+  def teams(scope)
+    case
+    when scope==ORGS
+      print "\tteams\t\t\tTeams of a organization\n"
+      print "\trm team\t\t\tDelete a team in you organization. Expected the name of the team\n"
+      print "\t\t\t\t->\trm team [name of the team]\n\n"
+      print "\tnew team\t\tCreate a team in the organization. Expected the name of the team, and/or members given one by one\n"
+      print "\t\t\t\t->\tnew team [name of the team] [member1] [member2] [member3] ... \n\n"
+    end
+  end
+  alias_method :rm_team, :teams
+  alias_method :new_team, :teams
+
+  def assignments(scope)
+    case
+    when scope==ORGS
+      print "\tassignments\t\tShow the list of assignments created\n"
+      print "\tnew assignment\t\tCreate an Assignment in your organization\n"
+      print "\t\t\t\t->\tnew assignment [name of the assignment]\n\n"
+    end
+  end
+  alias_method :new_assignment, :assignments
+
+  def issues(scope)
+    if scope==ORGS_REPO || scope==TEAM_REPO || scope==USER_REPO
+      print "\tnew issue\t\tCreates a new issue\n"
+      print "\tissues\t\t\tShow the list of issues from the repository\n"
+      print "\tissue\t\t\tShow the issue and its comments\n"
+      print "\t\t\t\t->\tissue [Id of the issue]\n\n"
+      print "\tnew issue comment\tAdd a comment in a specific issue\n"
+      print "\t\t\t\t->\tnew issue comment [Id of the issue]\n\n"
+      print "\topen issue\t\tOpen a closed issue\n"
+      print "\t\t\t\t->\topen issue [Id of the issue]\n\n"
+      print "\tclose issue\t\tClose an opened issue\n"
+      print "\t\t\t\t->\tclose issue [Id of the issue]\n\n"
+    end
+  end
+  alias_method :new_issue,:issues
+  alias_method :issue,:issues
+  alias_method :open_issue,:issues
+  alias_method :close_issue,:issues
+
+  def new_people_info(scope)
+    if scope==ORGS
+      print "\tnew relation\t\tSet a relation for the extendend information between Github ID and an email from a .csv file\n"
+      print "\t\t\t\t->\tnew relation [name of the file]\n\n"
+      print "\tnew people info\t\tGet extended information from a .csv file founded in the excecute path\n"
+      print "\t\t\t\t->\tnew people info [name of the file]\n\n"
+      print "\trm people info\t\tDelete the extended information\n"
+    end
+  end
+  alias_method :new_relation,:new_people_info
+  alias_method :rm_people_info,:new_people_info
+
+  def info(scope)
+
+    if scope==USER
+    end
+    if scope==USER_REPO || scope==ORGS_REPO || scope==TEAM_REPO
+      print "\tinfo\t\t\tShow information about the repository\n"
+    end
+    if scope==ASSIG
+      print "\tinfo\t\t\t\Show information about the assignment\n"
+    end
+  end
+
+  def user()
+    self.common_opt
+    puts " Users options:"
+    print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
+    print "\torgs\t\t\tShow your organizations\n"
+    self.open(USER)
+    self.repos(USER)
+    print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
+    self.new_repository(USER)
+    self.rm_repository(USER)
+    print "\tset\t\t\tMove you to a specific repository\n"
+  end
+
   def org()
     self.common_opt
     puts " Organization options:"
@@ -127,47 +214,20 @@ class HelpM
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tset\t\t\tMove you to a specific repository\n"
     self.people(ORGS)
-    print "\tteams\t\t\tTeams of a organization\n"
-    print "\tnew relation\t\tSet a relation for the extendend information between Github ID and an email from a .csv file\n"
-    print "\t\t\t\t->\tnew relation [name of the file]\n\n"
-    print "\tnew people info\t\tGet extended information from a .csv file founded in the excecute path\n"
-    print "\t\t\t\t->\tnew people info [name of the file]\n\n"
-    print "\trm people info\t\tDelete the extended information\n"
-    print "\tassignments\t\tShow the list of assignments created\n"
-    print "\tnew assignment\t\tCreate an Assignment in your organization\n"
-    print "\t\t\t\t->\tnew assignment [name of the assignment]\n\n"
-    print "\tgroups\t\t\tShow the list of groups with each team and user that it has\n"
-    print "\tgroup\t\t\tShow the information of an specific group\n"
-    print "\t\t\t\t->\tgroup [name of the group]\n\n"
-    print "\tnew group\t\tCreate a new group. Expected the name and teams given one by one\n"
-    print "\t\t\t\t->\tnew group [name of the group] [team1] [team2] [team3] ... \n\n"
-    print "\t\t\t\tIf you want to import the teams from a file, use the parameter -f\n"
-    print "\t\t\t\t->\tnew group -f [name of the group] [file]\n\n"
-    print "\trm group\t\tDelete a created group\n"
-    print "\t\t\t\t->\trm group [name of the group]\n\n"
-    print "\trm team\t\t\tDelete a team in you organization. Expected the name of the team\n"
-    print "\t\t\t\t->\trm team [name of the team]\n\n"
-    print "\tnew team\t\tCreate a team in the organization. Expected the name of the team, and/or members given one by one\n"
-    print "\t\t\t\t->\tnew team [name of the team] [member1] [member2] [member3] ... \n\n"
+    self.new_people_info(ORGS)
+    self.assignments(ORGS)
+    self.groups(ORGS)
+    self.teams(ORGS)
   end
 
   def org_repo()
     self.common_opt
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
-    print "\tinfo\t\t\tShow information about the repository\n"
+    self.info(ORGS_REPO)
     self.open(ORGS_REPO)
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
-    print "\tnew issue\t\tCreates a new issue\n"
-    print "\tissues\t\t\tShow the list of issues from the repository\n"
-    print "\tissue\t\t\tShow the issue and its comments\n"
-    print "\t\t\t\t->\tissue [Id of the issue]\n\n"
-    print "\tnew issue comment\tAdd a comment in a specific issue\n"
-    print "\t\t\t\t->\tnew issue comment [Id of the issue]\n\n"
-    print "\topen issue\t\tOpen a closed issue\n"
-    print "\t\t\t\t->\topen issue [Id of the issue]\n\n"
-    print "\tclose issue\t\tClose an opened issue\n"
-    print "\t\t\t\t->\tclose issue [Id of the issue]\n\n"
+    self.issues(ORGS_REPO)
     print "\tfiles\t\t\tShow the files of the repository path given\n"
     print "\tcat\t\t\tShow data from a file\n"
     print "\t\t\t\t->\tcat [file]\n\n"
@@ -180,10 +240,10 @@ class HelpM
     self.common_opt
     puts " Organization team options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
-    print "\tpeople\t\t\tMembers of the team\n"
+    self.repos(TEAM)
+    self.people(TEAM)
     self.open(TEAM)
     print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
-
     print "\tadd team member\t\tAdd a member in the team\n\n"
     print "\t\t\t\t->\tadd team member [new member]\n\n"
   end
@@ -192,19 +252,10 @@ class HelpM
     self.common_opt
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
-    print "\tinfo\t\t\tShow information about the repository\n"
-    print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
+    self.info(USER_REPO)
+    self.open(USER_REPO)
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
-    print "\tnew issue\t\tCreates a new issue\n"
-    print "\tissues\t\t\tShow the list of issues from the repository\n"
-    print "\tissue\t\t\tShow the issue and its comments\n"
-    print "\t\t\t\t->\tissue [Id of the issue]\n\n"
-    print "\tnew issue comment\tAdd a comment in a specific issue\n"
-    print "\t\t\t\->\tnew issue comment [Id of the issue]\n\n"
-    print "\topen issue\t\tOpen a closed issue\n"
-    print "\t\t\t\t->\topen issue [Id of the issue]\n\n"
-    print "\tclose issue\t\tClose an opened issue\n"
-    print "\t\t\t\t->\tclose issue [Id of the issue]\n\n"
+    self.issues(USER_REPO)
     print "\tfiles\t\t\tShow the files of the repository path given\n"
     print "\tcat\t\t\tShow data from a file\n"
     print "\t\t\t\t->\tcat [file]\n\n"
@@ -218,7 +269,7 @@ class HelpM
     self.common_opt
     puts " Assignment options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
-    print "\tinfo\t\t\t\Show information about the assignment\n"
+    self.info(ASSIG)
     print "\tadd repo\t\tAdd or create the repository of the assignment\n"
     print "\tchange repo\t\tChange a repository of the assignment\n"
     print "\t\t\t\t->\tchange repo [number of the repo]\n\n"
@@ -244,19 +295,10 @@ class HelpM
     self.common_opt
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
-    print "\tinfo\t\t\tShow information about the repository\n"
+    self.info(TEAM_REPO)
     self.open(TEAM_REPO)
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
-    print "\tnew issue\t\tCreates a new issue\n"
-    print "\tissues\t\t\tShow the list of issues from the repository\n"
-    print "\tissue\t\t\tShow the issue and its comments\n"
-    print "\tnew issue comment\tAdd a comment in a specific issue\n"
-    print "\t\t\t\t->\tnew issue comment [Id of the issue]\n\n"
-    print "\t\t\t\t->\tissue [Id of the issue]\n\n"
-    print "\topen issue\t\tOpen a closed issue\n"
-    print "\t\t\t\t->\topen issue [Id of the issue]\n\n"
-    print "\tclose issue\t\tClose an opened issue\n"
-    print "\t\t\t\t->\tclose issue [Id of the issue]\n\n"
+    self.issues(TEAM_REPO)
     print "\tfiles\t\t\tShow the files of the repository path given\n"
     print "\tcat\t\t\tShow data from a file\n"
     print "\t\t\t\t->\tcat [file]\n\n"

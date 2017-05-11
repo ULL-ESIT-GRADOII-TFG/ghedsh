@@ -351,8 +351,10 @@ class Sys
     yes=false
     list.each do |i|
       i.each do |j|
-        if j[1].match(/#{exp}/)
-          yes=true
+        if j[1]!=nil
+          if j[1].match(/#{exp}/)
+            yes=true
+          end
         end
       end
       if yes==true
