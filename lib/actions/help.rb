@@ -62,10 +62,14 @@ class HelpM
       print "\topen\t\t\tOpen the organization's url of github in your web browser.\n"
       print "\t\t\t\tIf you have added the aditional .csv information with, you can open an specific github profile.\n"
       print "\t\t\t\t->\topen [user]\n\n"
+      print "\t\t\t\tYou can use a RegExp to open several users.\n"
+      print "\t\t\t\t->\topen /RegExp/\n\n"
       print "\t\t\t\tYou can open an specific field if its contains an url.\n"
       print "\t\t\t\t->\topen [user] [fieldname]\n\n"
       print "\t\t\t\tIf you don't want to put the whole field, you can open the url contained with \"/\" parameter.\n"
       print "\t\t\t\t->\topen [user] /[part of the url]/\n\n"
+      print "\t\t\t\tYo can also use the RegExp in first parameter too, in order to open several websites.\n"
+      print "\t\t\t\t->\topen /RegExp/ /[part of the url]/\n\n"
     when scope==ORGS_REPO
       print "\topen\t\t\tOpen the repository's url of github in your web browser.\n"
     when scope==TEAM

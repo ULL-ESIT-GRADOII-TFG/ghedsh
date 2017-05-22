@@ -874,45 +874,65 @@ class Organizations
       Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
       puts "Extended information has not been added yet"
     else
-      inuser=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user}
+      if user.downcase.start_with?("/") and user.downcase.end_with?("/")
+        sp=user.split('/')
+        exp=Regexp.new(sp[1],sp[2])
+        inuser=Sys.new.search_rexp_peoplehash(list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"],exp)
+        user.slice!(0); user=user.chop
+      else
+        inuser=[]
+        inuser.push(list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==user})
+      end
       if inuser==nil
         puts "Not extended information has been added of that user."
       else
         if field==nil
-          inuser.each_value do |j|
-            if j.include?("github.com")
-              if !j.include?("https://") && !j.include?("http://")
-                Sys.new.open_url("https://"+j)
-              else
-                Sys.new.open_url(j)
+          inuser.each do |i|
+            i.each_value do |j|
+              if j.include?("github.com")
+                if !j.include?("https://") && !j.include?("http://")
+                  Sys.new.open_url("https://"+j)
+                else
+                  Sys.new.open_url(j)
+                end
+                found=1
               end
-              found=1
             end
           end
           if found==0
             puts "No github web profile in the aditional information"
           end
         else
-          if field.downcase.start_with?("/") and field.downcase.end_with?("/")  ##regexp
-            field=field.delete("/")
-            inuser.each_value do |j|
-              if j.include?(field)
-                if j.include?("https://") || j.include?("http://")
-                  Sys.new.open_url(j)
+          if inuser!=[]
+            if field.downcase.start_with?("/") and field.downcase.end_with?("/")  ##regexp
+              field=field.delete("/")
+              inuser.each do |i|
+                if i!=nil
+                  i.each_value do |j|
+                    if j.include?(field)
+                      if j.include?("https://") || j.include?("http://")
+                        Sys.new.open_url(j)
+                      end
+                    end
+                  end
+                end
+              end
+            else
+              inuser.each do |i|
+                if inuser.keys.include?(field.downcase)
+                  if inuser[field.downcase].include?("https://") or inuser[field.downcase].include?("http://")
+                    url=inuser["#{field.downcase}"]
+                  else
+                    url="http://"+inuser["#{field.downcase}"]
+                  end
+                  Sys.new.open_url(url)
+                else
+                  puts "No field found with that name"
                 end
               end
             end
           else
-            if inuser.keys.include?(field.downcase)
-              if inuser[field.downcase].include?("https://") or inuser[field.downcase].include?("http://")
-                url=inuser["#{field.downcase}"]
-              else
-                url="http://"+inuser["#{field.downcase}"]
-              end
-              Sys.new.open_url(url)
-            else
-              puts "No field found with that name"
-            end
+            puts "No field found with that name"
           end
         end
       end
