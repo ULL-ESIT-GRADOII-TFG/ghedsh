@@ -317,13 +317,15 @@ class Organizations
     end
   end
 
-  def get_assigs(client,config)
+  def get_assigs(client,config,show)
     list=self.load_assig()
     assiglist=[]
     assig=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     if assig!=nil
       if assig["assigs"].empty?
-        puts "\e[31m No assignments are available yet\e[0m"
+        if show==true
+          puts "\e[31m No assignments are available yet\e[0m"
+        end
       else
         assig["assigs"].each do |i|
           assiglist.push(i["name_assig"])

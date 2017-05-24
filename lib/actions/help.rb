@@ -17,6 +17,18 @@ class HelpM
     end
   end
 
+  def clone(scope)
+    case
+    when scope==USER || scope==ORGS
+      print "\tclone\t\t\tClone a repository.\n"
+      print "\t\t\t\t->\tclone [repository]\n\n"
+      print "\t\t\t\tYou can use a RegExp to clone several repositories with \/ parameter \n"
+      print "\t\t\t\t->\tclone /[RegExp]/\n\n"
+    when scope==USER_REPO || scope==TEAM_REPO || scope==ORGS_REPO
+      print "\tclone\t\t\tClone the current repository.\n"
+    end
+  end
+
   def repos(scope)
     case
     when scope==USER
@@ -26,6 +38,8 @@ class HelpM
     when scope==TEAM
       print "\trepos\t\t\tList the team's repositories\n"
     end
+    print "\t\t\t\tUse the parameter -a, to directly show all repositories\n"
+    print "\t\t\t\t->\trepos -a\n\n"
     print "\t\t\t\tYou can use a RegExp to improve the search using the \/ parameter \n"
     print "\t\t\t\t->\trepos /[RegExp]/\n\n"
   end
@@ -201,7 +215,7 @@ class HelpM
     print "\torgs\t\t\tShow your organizations\n"
     self.open(USER)
     self.repos(USER)
-    print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
+    self.clone(USER)
     self.new_repository(USER)
     self.rm_repository(USER)
     print "\tset\t\t\tMove you to a specific repository\n"
@@ -212,10 +226,10 @@ class HelpM
     puts " Organization options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     self.repos(ORGS)
+    self.clone(ORGS)
     self.new_repository(ORGS)
     self.rm_repository(ORGS)
     self.open(ORGS)
-    print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tset\t\t\tMove you to a specific repository\n"
     self.people(ORGS)
     self.new_people_info(ORGS)
@@ -229,6 +243,7 @@ class HelpM
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     self.info(ORGS_REPO)
+    self.clone(ORGS_REPO)
     self.open(ORGS_REPO)
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     self.issues(ORGS_REPO)
@@ -246,8 +261,8 @@ class HelpM
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     self.repos(TEAM)
     self.people(TEAM)
+    self.clone(TEAM)
     self.open(TEAM)
-    print "\tclone\t\t\tClone a repository or a list of repositories using a regular expresion\n"
     print "\tadd team member\t\tAdd a member in the team\n\n"
     print "\t\t\t\t->\tadd team member [new member]\n\n"
   end
@@ -257,6 +272,7 @@ class HelpM
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     self.info(USER_REPO)
+    self.clone(USER_REPO)
     self.open(USER_REPO)
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     self.issues(USER_REPO)
@@ -300,6 +316,7 @@ class HelpM
     puts " Repository options:"
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     self.info(TEAM_REPO)
+    self.clone(TEAM_REPO)
     self.open(TEAM_REPO)
     print "\tcommits\t\t\tShow the list of commits from the repository\n"
     self.issues(TEAM_REPO)

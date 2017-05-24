@@ -395,7 +395,11 @@ class Repositories
       puts "Repositories found: #{rlist.size}"
     end
 
-    return rlist
+    if force_exit==true
+      return self.get_repos_list(client,config,scope)
+    else
+      return rlist
+    end
   end
 
   def show_user_orgs_repos(client,config,listorgs)
@@ -640,7 +644,11 @@ class Repositories
         case
         when scope==USER
           list.each do |i|
-            command = "git clone #{web2}#{config["User"]}/#{i}.git"
+            if i.include?("/")
+              command = "git clone #{web2}#{i}.git"
+            else
+              command = "git clone #{web2}#{config["User"]}/#{i}.git"
+            end
             system(command)
           end
         when scope==ORGS

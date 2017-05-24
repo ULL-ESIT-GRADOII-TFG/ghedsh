@@ -35,21 +35,21 @@ class Interface
 
     options=@sysbh.parse
 
-    # trap("SIGINT") { throw :ctrl_c}
-    # catch :ctrl_c do
-    #   begin
+    trap("SIGINT") { throw :ctrl_c}
+    catch :ctrl_c do
+      begin
         if options[:user]==nil && options[:token]==nil &&  options[:path]!=nil
           self.run(options[:path],options[:token],options[:user])
         else
           self.run("#{ENV['HOME']}/.ghedsh",options[:token],options[:user])
         end
-    #   rescue SystemExit, Interrupt
-    #     raise
-    #   rescue Exception => e
-    #     puts "exit"
-    #     puts e
-    #   end
-    # end
+      rescue SystemExit, Interrupt
+        raise
+      rescue Exception => e
+        puts "exit"
+        puts e
+      end
+    end
   end
 
   def prompt()
@@ -177,16 +177,17 @@ class Interface
     if @deep==ORGS_REPO || @deep==USER_REPO || @deep==TEAM_REPO
       self.cdrepo(path)
     end
-
+    o=Organizations.new
     path_split=path.split("/")
     if path_split.size==1                   ##cd con path simple
       case
       when @deep==USER
-        @orgs_list=Organizations.new.read_orgs(@client)
+        @orgs_list=o.read_orgs(@client)
         aux=@orgs_list
         if aux.one?{|aux| aux==path}
           @config["Org"]=path
           @teamlist=Teams.new.read_teamlist(@client,@config)
+          @sysbh.add_history_str(2,o.get_assigs(@client,@config,false))
           @sysbh.add_history_str(1,@teamlist)
           @deep=2
         else
@@ -283,7 +284,7 @@ class Interface
 
   def cdassig(path)
     o=Organizations.new()
-    list=o.get_assigs(@client,@config)
+    list=o.get_assigs(@client,@config,true)
     if list.one?{|aux| aux==path}
       @deep=ASSIG
       puts "Set in #{@config["Org"]} assignment: #{path}\n\n"
@@ -339,7 +340,7 @@ class Interface
             @orgs_repos=list
           else
             #list=repo.show_repos(@client,@config,ORGS)
-            list=repo.get_repos(@client,@config,ORGS)
+            list=repo.get_repos_list(@client,@config,ORGS)
             @sysbh.add_history_str(2,list)
             @orgs_repos=list
             puts list
@@ -616,6 +617,7 @@ class Interface
         when op == "assignments"
           if @deep==ORGS
             o.show_assignments(@client,@config)
+            @sysbh.add_history_str(2,o.get_assigs(@client,@config,false))
           end
         when op =="make"
           if @deep==ASSIG
