@@ -95,6 +95,12 @@ class HelpM
     end
   end
 
+  def rm_clone_files(scope)
+    print "\trm clone files\t\tDelete the repositories cloned with GHEDSH.\n"
+    print "\t\t\t\tYou can use a RegExp to choose the repositories that you want to be deleted\n"
+    print "\t\t\t\t->\trm clone files /RegExp/\n\n"
+  end
+  alias_method :rm_clone,:rm_clone_files
   def people(scope)
     case
     when scope==ORGS
@@ -336,6 +342,7 @@ class HelpM
     print "\n\tCOMMAND\t\t\tDESCRIPTION\n\n"
     print "\tdo\t\t\tRun a script in ghedsh execute path\n"
     print "\t\t\t\t->\tdo [filename]\n\n"
+    self.rm_clone_files(1)
     print "\texit\t\t\tExit from this program\n"
     print "\thelp\t\t\tList of commands available\n"
     self.cd(1)

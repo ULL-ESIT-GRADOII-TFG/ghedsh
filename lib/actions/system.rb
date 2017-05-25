@@ -11,7 +11,7 @@ class Sys
   attr_reader :memory
   LIST = ['repos', 'exit', 'orgs','help', 'people','teams', 'cd ', 'cd repo ','commits','forks', 'add_team_member ','new team ','rm team ','new repository ','new assignment ','clone ', 'issues',
     'version', 'cat ', 'groups', 'files', 'assignments','new issue ', 'open issue', 'new ','open ', 'close issue', 'new group ', 'rm group', 'rm ', 'do ', 'info','make','add repo',
-    'add group','rm repository ', 'new people info ', 'private ', 'people info ', 'new issue comment ', "rm people info", "change repo",'add students','new relation'].sort
+    'add group','rm repository ', 'new people info ', 'private ', 'people info ', 'new issue comment ', "rm people info", "change repo",'add students','new relation','rm clone files'].sort
 
   def initialize()
     @memory=[]
@@ -283,6 +283,26 @@ class Sys
     end
       config=JSON.parse(json)
       return config
+  end
+
+  def refresh_clonefile(path,list)
+    if (File.exist?(path))==true
+      File.write("#{path}/ghedsh-clonedfiles",list)
+    end
+  end
+
+  def load_clonefile(path)
+    if (File.exist?(path))==true
+      if File.exist?("#{path}/ghedsh-clonedfiles")
+        files=File.read("#{path}/ghedsh-clonedfiles")
+        files=files.delete("["); files=files.delete("]")
+        files=files.split(",")
+        return files
+      else
+        File.write("#{path}/ghedsh-clonedfiles","")
+        return []
+      end
+    end
   end
 
   def create_temp(path)

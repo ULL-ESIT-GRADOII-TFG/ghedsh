@@ -8,12 +8,18 @@ require_rel '.'
 
 class Repositories
   attr_reader :reposlist
+  attr_reader :clonedrepos
   #scope = 1 -> organization repos
   #scope = 2 -> user repos
   #scope = 3 -> team repos
 
   def initialize
     @reposlist=[]
+    @clonedrepos=Sys.new.load_clonefile("#{ENV['HOME']}/.ghedsh")
+  end
+
+  def clonedpush()
+    Sys.new.refresh_clonefile("#{ENV['HOME']}/.ghedsh",@clonedrepos)
   end
 
   def show_commits(client,config,scope)
@@ -590,20 +596,22 @@ class Repositories
     reposlist=[]
     case
       when scope==USER
-        repo=client.repositories
+        repo=client.repositories()
       when scope==ORGS
         repo=client.organization_repositories(config["Org"])
       when scope==TEAM
         repo=client.team_repositories(config["TeamID"])
     end
-    repo.each do |i|
-      if scope!=USER
-        reposlist.push(i.name)
-      else
-        if i[:owner][:login]==config["User"]
+    if repo!=nil
+      repo.each do |i|
+        if scope!=USER
           reposlist.push(i.name)
         else
-          reposlist.push(i.full_name)
+          if i[:owner][:login]==config["User"]
+            reposlist.push(i.name)
+          else
+            reposlist.push(i.full_name)
+          end
         end
       end
     end
@@ -630,6 +638,12 @@ class Repositories
           command = "git clone #{web2}#{config["Org"]}/#{config["Repo"]}.git"
       end
         system(command)
+        if scope==USER_REPO
+          @clonedrepos.push("#{config["User"]}/#{config["Repo"]}")
+        else
+          @clonedrepos.push("#{config["Org"]}/#{config["Repo"]}")
+        end
+        self.clonedpush()
     else
       if exp.match(/^\//)
         exps=exp.split('/')
@@ -646,20 +660,64 @@ class Repositories
           list.each do |i|
             if i.include?("/")
               command = "git clone #{web2}#{i}.git"
+              @clonedrepos.push(i)
             else
               command = "git clone #{web2}#{config["User"]}/#{i}.git"
+              @clonedrepos.push("#{config["User"]}/#{i}")
             end
             system(command)
           end
         when scope==ORGS
           list.each do |i|
             command = "git clone #{web2}#{config["Org"]}/#{i}.git"
+            @clonedrepos.push("#{config["Org"]}/#{i}")
             system(command)
           end
         end
+        self.clonedpush()
       else
         puts "No repositories found it with the parameters given"
       end
+    end
+  end
+
+  def rm_clone(client,config,scope,all,exp)
+    files=@clonedrepos
+
+    if all==false
+      if exp.match(/^\//)
+        exps=exp.split('/')
+        list=self.get_repos_list(client,config,scope)
+        list=Sys.new.search_rexp(files,exps[1])
+      else
+        list=[]
+        list.push(exp)
+      end
+      files=list
+    end
+    if files!=[]
+      print "\n"
+      puts files
+      puts "Are gone to be removed (Y/N)"
+      op=gets.chomp
+      if op.downcase=="y" || op.downcase=="yes"
+        files.each do |i|
+          i=i.delete("\"")
+          if !File.exists?(i)
+            sp=i.split("/")
+            i=sp[1]
+          end
+          system("rm -rf #{i}")
+          if all==false
+            @clonedrepos.delete(i)
+          end
+        end
+        puts "Cloned files deleted"
+        if all==true then @clonedrepos.clear end
+        self.clonedpush()
+      end
+    else
+      puts "Not cloned files found"
     end
   end
 

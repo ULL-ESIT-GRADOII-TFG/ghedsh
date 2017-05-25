@@ -571,6 +571,12 @@ class Interface
           if @deep==ASSIG and opcd.size==3
             o.rm_assigment_repo(@config,@config["Assig"],opcd[2])
           end
+        when op.include?("rm clone files") && opcd[0]=="rm" && opcd[1]="clone" && opcd[2]="files"
+          if opcd.size>3
+            r.rm_clone(@client,@config,@scope,false,opcd[3])
+          else
+            r.rm_clone(@client,@config,@scope,true,nil)
+          end
         when op == "info"
           if @deep==ASSIG then o.show_assig_info(@config,@config["Assig"]) end
           if @deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO then r.info_repository(@client,@config,@deep) end
