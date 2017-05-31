@@ -6,7 +6,7 @@ require 'require_all'
 require_rel '.'
 require 'readline'
 
-GITHUB_LIST=['githubid','idgithub','github_id','id_github','githubuser','github_user']
+GITHUB_LIST=['githubid','github','idgithub','github_id','id_github','githubuser','github_user']
 MAIL_LIST=['email','mail','e-mail']
 
 class Organizations
@@ -487,6 +487,8 @@ class Organizations
     list=self.load_people()
     csvoptions={:quote_char => "|",:headers=>true,:skip_blanks=>true}
     members=self.get_organization_members(client,config)  #members of the organization
+    change=false
+    indexname=""
 
     inpeople=list["orgs"].detect{|aux| aux["name"]==config["Org"]}
     if inpeople==nil
@@ -515,29 +517,38 @@ class Organizations
         fields.each do |j|
           if i[j]!=nil
             if GITHUB_LIST.include?(j.gsub("\"", "").downcase.strip)
-              aux["github"]=i[j].gsub("\"", "").strip
+              data=i[j]
+              data=data.gsub("\"", "")
+              aux["github"]=data
               j="github"
             else
               if MAIL_LIST.include?(j.gsub("\"", "").downcase.strip)
                 aux["email"]=i[j].gsub("\"", "").strip
+                indexname=j
                 j="email"
+                change=true
               else
-                aux[j.gsub("\"", "").downcase.strip]=i[j].gsub("\"", "").strip
+                data=i[j].gsub("\"", "")
+                aux[j.gsub("\"", "").downcase.strip]=data.strip
               end
             end
           else
-            aux[j.gsub("\"", "").downcase.strip]=i[j]
+            data=i[j].gsub("\"", "")
+            aux[j.gsub("\"", "").downcase.strip]=data.strip
           end
         end
         users.push(aux)
       end
       ## Aqui empiezan las diferenciaa
       if relation==true
-
+        if change==true
+          fields[fields.index(indexname)]="email"
+        end
+        fields=users[0].keys
         # if users.keys.include?("github") and users.keys.include?("email") and users.keys.size==2
         if fields.include?("github") and fields.include?("email") and fields.size==2
           users.each do |i|
-            if members.include?(i["github"])
+            if members.include?(i["github"].delete("\""))
               here=list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"].detect{|aux2| aux2["github"]==i["github"]} #miro si ya esta registrado
               if here==nil
                 list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"]<<i
@@ -876,7 +887,7 @@ class Organizations
       Sys.new.save_people("#{ENV['HOME']}/.ghedsh",list)
       puts "Extended information has not been added yet"
     else
-      if user.downcase.start_with?("/") and user.downcase.end_with?("/")
+      if user.downcase.start_with?("/") and user.downcase.count("/")==2
         sp=user.split('/')
         exp=Regexp.new(sp[1],sp[2])
         inuser=Sys.new.search_rexp_peoplehash(list["orgs"].detect{|aux| aux["name"]==config["Org"]}["users"],exp)

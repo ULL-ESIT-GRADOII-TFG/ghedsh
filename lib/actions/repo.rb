@@ -453,19 +453,21 @@ class Repositories
     case
     when scope==USER_REPO
       if config["Repo"].split("/").size == 1
-        mem=client.collaborators(config["User"]+"/"+config["Repo"],"master")
+        mem=client.collaborators(config["User"]+"/"+config["Repo"])
       else
-        mem=client.collaborators(config["Repo"],"master")
+        mem=client.collaborators(config["Repo"])
       end
     when scope==ORGS_REPO || scope==TEAM_REPO
       mem=client.collaborators(config["Org"]+"/"+config["Repo"])
     end
     print " Collaborators\n\n"
-    mem.each do |i|
-      puts " #{i[:login]}"
-      collalist.push(i[:login])
+    if mem!=nil
+      mem.each do |i|
+        puts " #{i[:login]}"
+        collalist.push(i[:login])
+      end
+      print "\n"
     end
-    print "\n"
     return collalist
   end
 
