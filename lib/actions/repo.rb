@@ -601,6 +601,8 @@ class Repositories
         repo=client.repositories()
       when scope==ORGS
         repo=client.organization_repositories(config["Org"])
+      when scope==ASSIG
+        repo=client.organization_repositories(config["Org"])
       when scope==TEAM
         repo=client.team_repositories(config["TeamID"])
     end
@@ -675,6 +677,12 @@ class Repositories
             @clonedrepos.push("#{config["Org"]}/#{i}")
             system(command)
           end
+        when scope==ASSIG
+          list.each do |i|
+            command = "git clone #{web2}#{config["Org"]}/#{i}.git"
+            @clonedrepos.push("#{config["Org"]}/#{i}")
+            system(command)
+          end
         end
         self.clonedpush()
       else
@@ -700,7 +708,7 @@ class Repositories
     if files!=[]
       print "\n"
       puts files
-      puts "Are gone to be removed (Y/N)"
+      puts "Are gone to be removed (y/N)"
       op=gets.chomp
       if op.downcase=="y" || op.downcase=="yes"
         files.each do |i|

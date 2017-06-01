@@ -735,6 +735,10 @@ class Interface
         if opcd.size==1 && (@deep==USER_REPO || @deep==TEAM_REPO || @deep==ORGS_REPO)
           r.clone_repo(@client,@config,nil,@deep)
         end
+        if opcd.size==1 && deep==ASSIG
+          r.clone_repo(@client,@config,"/#{@config["Assig"]}/",@deep)
+          puts "/#{@config["Assig"]}/"
+        end
       end
       if op.match(/^!/)
         op=op.split("!")
