@@ -1,15 +1,15 @@
 ![](http://i125.photobucket.com/albums/p79/NooK1e_RG/ghedsh2_zpsdsdlzg1t.png)
-#GITHUB EDUCATION SHELL
+# GITHUB EDUCATION SHELL
 
 A command line program following the philosophy of GitHub Education.
 
-##How does it work?
+## How does it work?
 
 This program give you an interaction with Github like you was using your command line simulating a tree structure. Each level on the tree gives you several options of managing your Github account or your Organization.
 
 Following the philosophy of Github Education, you can use this application to managing your own organization as a classroom where you can make assignments to your students using repository strategies.    
 
-##Installing GHEDSH
+## Installing GHEDSH
 
 You can download the gem **ghdesh** from rubygem.
 
@@ -17,7 +17,7 @@ You can download the gem **ghdesh** from rubygem.
 
 To run the app you need to call the binary file "ghedsh" in your command line after install it. Configuration files are being set in a hidden directory called *.ghedsh*, in your Home path.  
 
-###First step: Oauth requirements.
+### First step: Oauth requirements.
 
 Ir order to run this program, you need to make an **Access token** from Github with create and edit scope. When you run the program, it asks you the access token to identify yourself with no need to use your user and password.
 
@@ -25,7 +25,7 @@ Ir order to run this program, you need to make an **Access token** from Github w
 
 You need to tick all options, unless admin:gpg_key scopes.  
 
-###ghedsh executable options
+### ghedsh executable options
 
 '-t' or '--token token'. Provides a github access token by argument.
 
@@ -38,7 +38,7 @@ You need to tick all options, unless admin:gpg_key scopes.
 This program creates a directory called *.ghedsh* in your home with all configuration files that it needs.
 
 
-##Basic usage
+## Basic usage
 Logged in our app you start set in your personal profile. There you can list your repositories, create repositories, see your organizations and other options that you can see using the command *help* in your command line. You can go inside of a specific organization with the command *cd* and start to managing itself. Its possible to create task for the members your organization, create teamworks and many options that you can see again with *help*. You can move and go back in the tree directory as it is possible in the github structure.
 
 ```
@@ -53,7 +53,7 @@ Levels
     └── User Repositories
 ```
 
-##Lista de comandos
+## Lista de comandos
 
 
 ```sh
@@ -98,28 +98,28 @@ teams
 Muestra todos los equipos de una organizacion.
 
 ```sh
-new_team <nombre> <miembro1> <miembro2> ...
+new team <nombre> <miembro1> <miembro2> ...
 ```
 Crea un equipo a al que le sera asignado uno o varios miembros de la organizacion.
 
 ```sh
-rm_team <nombre> <miembro1> <miembro2> ...
+rm team <nombre> <miembro1> <miembro2> ...
 ```
 Borra un equipo de una organizacion.
 
 ```sh
-add_to_team <miembro1> <miembro2> ...
+add to team <miembro1> <miembro2> ...
 ```
 
 Dentro de un equipo en una organizacion, añadira nuevos miembros al equipo de trabajo.
 
 ```sh
-new_group <nombre> <equipo1> <equipo2> ...
+new group <nombre> <equipo1> <equipo2> ...
 ```
 Dentro de una organizacion, crea grupos donde asignar equipos de trabajo.
 
 ```sh
-rm_group <nombre> <equipo1> <equipo2> ...
+rm group <nombre> <equipo1> <equipo2> ...
 ```
 Dentro de una organizacion, borra un grupo de trabajo.
 
@@ -134,12 +134,12 @@ assignments
 Muestra las tareas o asignaciones hechas para una organizacion.
 
 ```sh
-new_repository <nombre>
+new repository <nombre>
 ```
 Crea un repositorio para un usuario, para una organizacion, o para un equipo dentro de una organizacion. Espera el nombre del repositorio.
 
 ```sh
-rm_repository <nombre>
+rm repository <nombre>
 ```
 Borra un repositorio de un usuario o de una organizacion. El comando espera el nombre del repositorio, ademas pedira confirmacion para el borrado del mismo si se ha comprobado su existencia.
 
@@ -164,7 +164,7 @@ people info <usuario>
 Muestra la informacion extendida de un miembro especifico de una organizacion.
 
 ```sh
-add_people_info	<file>
+new people info	<file>
 ```
 Añade informacion extendida de los miembros de una organizacion mediante un archivo .csv.
 
@@ -215,24 +215,24 @@ issue <id>
 Muestra un issue especifico, y permite ver ademas sus comentarios.
 
 ```sh
-add_issue_comment <id>
+new issue comment <id>
 ```
 Añade un comentario a un issue especifico.
 
 ```sh
-new_issue <nombre>
+new issue <nombre>
 ```
 Crea un nuevo issue estando situado en un repositorio especifico. El titulo sera dado por parametro, y la descripcion sera introducida tras ejecutar el comando.
 
 ```sh
-close_issue <id>
+close issue <id>
 ```
 Cierra un issue especifico dentro de un repositorio. Se debe especificar el issue mediante la id del mismo.
 
 ###Comandos para las Tareas o asignaciones
 
 ```sh
-new_assignment <nombre>
+new assignment <nombre>
 ```
 Crea una asignacion para una organizacion. Espera por parametro el nombre. Tras ejecutar el comando pedira un repositorio ya existente, la creacion de uno nuevo o la no insercion de un repositorio. Ademas esperara una lista de grupos para asignar a la tarea, ademas de la posible creacion de un grupo al que se le añadiran sus equipos. Todos los pasos pueden ser saltados, y tanto los grupos como el repositorio pueden ser añadidos posteriormente mediante **add_group** y **add_repo**.
 
@@ -257,7 +257,7 @@ add_repo
 Dentro de la asignacion, se activara el proceso de añadido del repositorio. Entre las opciones a elegir, estara la de añadir un repositorio ya creado, crear un nuevo repositorio o saltar el paso y no añadir el repositorio. Si ya habia un repositorio asignado anteriormente, este comando lo reemplazara.
 
 ```sh
-add_group
+add group
 ```
 Dentro de la asignacion, se activara el proceso de añadido de groups. Entre las opciones a elegir, estaran la de añadir directamente grupos ya creados o crear uno desde cero. Si se crea uno desde cero se pedira un nombre o se creara un nombre con la fecha actual, despues se añadiran los equipos que perteneceran al grupo. Si ya existian grupos en la asignacion, este comando añadira otro mas a la lista.
 
