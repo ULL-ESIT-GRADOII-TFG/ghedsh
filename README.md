@@ -1,3 +1,4 @@
+![](http://i125.photobucket.com/albums/p79/NooK1e_RG/ghedsh2_zpsdsdlzg1t.png)
 # GITHUB EDUCATION SHELL
 
 A command line program following the philosophy of GitHub Education.
@@ -350,6 +351,7 @@ Dentro de la asignacion, se activara el proceso de añadido de groups. Entre las
 
 
 ##Aditional information
-[GHEDSH extended info](https://alu0100505023.gitbooks.io/ghedsh/content/en/)
 
-[Github Education](https://education.github.com/)
+* [GHEDSH extended info](https://alu0100505023.gitbooks.io/ghedsh/content/en/)
+
+* [Github Education](https://education.github.com/)
