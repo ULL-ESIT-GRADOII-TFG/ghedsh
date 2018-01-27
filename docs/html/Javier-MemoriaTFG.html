@@ -1,0 +1,2704 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice 4.1.5  (Unix)">
+	<META NAME="CREATED" CONTENT="20150306;9340741">
+	<META NAME="CHANGEDBY" CONTENT="Casiano ">
+	<META NAME="CHANGED" CONTENT="20180127;11075000">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 2cm }
+		@page:first { }
+		P { text-indent: 0.5cm; margin-bottom: 0.25cm; line-height: 90%; text-align: justify; page-break-before: auto }
+		P.western { font-family: "LM Roman 10"; font-size: 14pt; font-style: normal; font-weight: normal }
+		P.cjk { font-size: 10pt }
+		P.encabezado-resumen-western { margin-top: 5cm; margin-bottom: 0.5cm; font-family: "LM Roman 10"; font-size: 14pt; font-style: normal; font-weight: bold; text-align: center }
+		P.encabezado-resumen-cjk { margin-top: 5cm; margin-bottom: 0.5cm; font-size: 10pt; font-weight: bold; text-align: center }
+		P.encabezado-resumen-ctl { margin-top: 5cm; margin-bottom: 0.5cm; font-weight: bold; text-align: center }
+		P.cuerpo-resumen-western { font-family: "LM Roman 10"; font-size: 14pt; font-style: italic; font-weight: normal }
+		P.cuerpo-resumen-cjk { font-size: 10pt; font-style: italic }
+		P.cuerpo-resumen-ctl { font-style: italic }
+		H1 { margin-top: 3cm; margin-bottom: 0.7cm; line-height: 100%; text-align: left; page-break-before: always }
+		H1.western { font-family: "LM Roman 10"; font-size: 28pt; font-style: normal }
+		H1.cjk { font-family: "Droid Sans Fallback"; font-size: 13pt }
+		H1.ctl { font-family: "FreeSans"; font-size: 15pt; font-weight: demi-bold }
+		H2 { margin-top: 0.35cm; margin-bottom: 0.21cm; line-height: 100%; text-align: left; page-break-before: auto }
+		H2.western { font-family: "LM Roman 10"; font-size: 21pt; font-style: normal }
+		H2.cjk { font-family: "Droid Sans Fallback"; font-size: 12pt }
+		H2.ctl { font-family: "FreeSans"; font-size: 13pt; font-weight: demi-bold }
+		H3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; color: #000000; line-height: 100%; text-align: left; page-break-before: auto }
+		H3.western { font-family: "LM Roman 10"; font-style: normal }
+		H3.cjk { font-family: "Droid Sans Fallback" }
+		H3.ctl { font-family: "FreeSans"; font-weight: demi-bold }
+		PRE { margin-top: 0.1cm; line-height: 100%; text-align: left; page-break-before: auto }
+		PRE.western { font-family: "LM Mono 10"; font-size: 11pt; font-style: normal; font-weight: normal }
+		PRE.cjk { font-family: "Droid Sans Fallback"; font-size: 10pt }
+		PRE.ctl { font-family: "FreeSans"; font-size: 12pt }
+		A:link { so-language: zxx }
+		CODE.cjk { font-family: "NSimSun", monospace }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="es-ES" DIR="LTR">
+<DIV ID="Marco1" DIR="LTR" STYLE="position: absolute; top: 13cm; left: 0cm; width: 17cm; height: 3cm; border-top: 2.80pt solid #000000; border-bottom: 2.80pt solid #000000; border-left: none; border-right: none; padding: 0.15cm 0cm; background: #ffffff">
+	<P ALIGN=CENTER STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<FONT SIZE=7 STYLE="font-size: 32pt">GitHub Education Shell</FONT></P>
+	<P ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<BR><BR>
+	</P>
+	<P ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<FONT COLOR="#333333"><FONT FACE="LM Roman 10"><FONT SIZE=3><I><B>Una
+	Shell para el uso de GitHub en la Enseñanza</B></I></FONT></FONT></FONT><FONT COLOR="#333333"><FONT FACE="LM Roman 10"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="font-style: normal"><B>
+	</B></SPAN></FONT></FONT></FONT> 
+	</P>
+	<P ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	 <FONT SIZE=5><I><FONT SIZE=4 STYLE="font-size: 16pt">A Shell for
+	the use of GitHub in Education</FONT></I></FONT></P>
+	<P ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<BR><BR>
+	</P>
+	<P ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<BR><BR>
+	</P>
+	<P ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<FONT SIZE=4 STYLE="font-size: 16pt">Javier Clemente Rodríguez
+	Gómez</FONT></P>
+	<P ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<BR><BR>
+	</P>
+</DIV>
+<DIV ID="Marco3" DIR="LTR" STYLE="position: absolute; top: 0cm; left: 0cm; width: 17cm; height: 1cm; border: none; padding: 0cm; background: #ffffff">
+	<P ALIGN=CENTER STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<FONT SIZE=5>La Laguna, <SDFIELD TYPE=DATETIME SDNUM="3082;3082;D &quot;de&quot; MMMM &quot;de&quot; AAAA">27 de enero de 2018</SDFIELD></FONT></P>
+</DIV>
+<DIV ID="Marco2" DIR="LTR" STYLE="position: absolute; top: 13.33cm; left: 2cm; width: 17cm; height: 1cm; border: none; padding: 0cm; background: #ffffff">
+	<P ALIGN=CENTER STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<FONT SIZE=4>Grado en Ingeniería Informática</FONT></P>
+</DIV>
+<DIV ID="Marco6" DIR="LTR" STYLE="position: absolute; top: 12.33cm; left: 2cm; width: 17cm; height: 1cm; border: none; padding: 0cm; background: #ffffff">
+	<P ALIGN=CENTER STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<FONT SIZE=7 STYLE="font-size: 32pt">Trabajo de Fin de Grado</FONT></P>
+</DIV>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; font-style: normal; line-height: 100%">
+<IMG SRC="Javier-MemoriaTFG_html_5dd97486.jpg" NAME="Imagen1" ALIGN=LEFT WIDTH=203 HEIGHT=190 BORDER=0><IMG SRC="Javier-MemoriaTFG_html_540b04a4.jpg" NAME="Imagen9" ALIGN=LEFT WIDTH=269 HEIGHT=189 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; page-break-before: always">
+D. <B>Casiano Rodríguez León</B>, <FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">con
+N.I.F. 42.020.072-S profesor Catedrático de Universidad adscrito al
+Departamento de Ingeniería Informática y de Sistemas de la
+Universidad de La Laguna, como tutor</SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4>
+</FONT></FONT></FONT>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<B>C E R T I F I C A (N)</B></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Que la presente memoria
+titulada:</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+“<I>GHEDSH: Una Shell para el uso de Github en la enseñanza”</I></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">ha sido realizada bajo su
+dirección por D. <B>Javier Clemente Rodríguez Gómez</B>,</P>
+<P CLASS="western" STYLE="text-indent: 0cm">con N.I.F. 78633504T.</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Y para que así conste,
+en cumplimiento de la legislación vigente y a los efectos oportunos
+firman la presente en La Laguna a <SDFIELD TYPE=DATETIME SDNUM="3082;3082;D &quot;de&quot; MMMM &quot;de&quot; AAAA">27 de enero de 2018</SDFIELD></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%; page-break-before: always">
+<FONT SIZE=6 STYLE="font-size: 22pt">Agradecimientos</FONT></P>
+<P CLASS="western" ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<FONT SIZE=5>Casiano Rodríguez León</FONT></P>
+<P CLASS="western" ALIGN=RIGHT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; font-style: normal; font-weight: normal; line-height: 100%; page-break-before: always">
+<FONT FACE="LM Roman 10"><FONT SIZE=6 STYLE="font-size: 26pt">Licencia</FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_m12e13c76.png" NAME="Imagen6" ALIGN=LEFT WIDTH=235 HEIGHT=83 BORDER=0><BR CLEAR=LEFT><FONT FACE="LM Roman 10"><FONT SIZE=5>©
+Esta obra está bajo una licencia de Creative Commons Reconocimiento
+4.0 Internacional.</FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="encabezado-resumen-western" STYLE="text-indent: 0cm; page-break-before: always">
+Resumen</P>
+<P CLASS="cuerpo-resumen-western" STYLE="text-indent: 0cm">Este
+proyecto trata de la elaboración de un programa en Ruby que permita
+tanto el uso y manejo de datos de Github, como la asignación de
+tareas por medio de repositorios en el entorno educacional haciendo
+uso de una Shell. Para ello se seguirá la metodología de la
+plataforma GitHub Education sobre el manejo de las Organizaciones
+como una clase para profesor y sus alumnos.  
+</P>
+<P CLASS="cuerpo-resumen-western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="cuerpo-resumen-western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<B>Palabras clave:</B> GitHub, GitHub Education, repositorios,
+organizaciones, asignaciones, Shell, Ruby</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="encabezado-resumen-western" STYLE="text-indent: 0cm; page-break-before: always">
+Abstract</P>
+<P LANG="en-US" CLASS="cuerpo-resumen-western" STYLE="text-indent: 0cm">
+This project is about the elaboration of a program in Ruby that
+allows both the use and handling of Github data, as well as the
+assignment of tasks through repositories in the educational
+environment using a Shell. This will be followed by the methodology
+of the GitHub Education platform on the management of Organizations
+as a class for teachers and their students.</P>
+<P CLASS="cuerpo-resumen-western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<B>Keywords:</B> GitHub, GitHub Education, repositories,
+organizations, assignments, Shell, Ruby</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<DIV ID="Índice de contenido1" DIR="LTR">
+	<DIV ID="Índice de contenido1_Head" DIR="LTR">
+		<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 3cm; margin-bottom: 2cm; line-height: 100%; page-break-before: always; page-break-after: avoid">
+		<FONT SIZE=6 STYLE="font-size: 28pt"><B>Índice general</B></FONT></P>
+	</DIV>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__459_1991373971">Capítulo 1
+	Introducción	1</A></B></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__461_1991373971">1.1 ¿Que es GitHub
+	Education?	1</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__465_1991373971">1.2 Antecedentes y situación
+	actual	2</A></P>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__471_1991373971">Capítulo 2 Objetivos y
+	plan de trabajo	3</A></B></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__2475_63906294">2.1 Objetivos	3</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__2477_63906294">2.2  Plan de trabajo	4</A></P>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__475_1991373971">Capítulo 3 Desarrollo de
+	la aplicación	5</A></B></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__477_1991373971">3.1 Estudio sobre el
+	funcionamiento de la API de GitHub	5</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 1cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<A HREF="#__RefHeading__3403_63906294">3.1.1 Uso de la librería
+	Octokit	6</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__479_1991373971">3.2 GitHub Education Shell	7</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 1cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<A HREF="#__RefHeading__3405_63906294">3.2.1 Introducción y
+	metodología	7</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 1cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<A HREF="#__RefHeading__3407_63906294">3.2.2 Instalación 	9</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 1cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<A HREF="#__RefHeading__3515_63906294">3.2.3 Autentificación	11</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 1cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<A HREF="#__RefHeading__3517_63906294">3.2.4 Ejecutando el programa
+	por primera vez	13</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3431_63906294">3.3 Problemas encontrados y
+	soluciones	14</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 1cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<A HREF="#__RefHeading__3433_63906294">3.3.1 Consultas y datos
+	recibidos por la API	14</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 1cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<A HREF="#__RefHeading__3411_63906294">3.3.2 La usabilidad en la
+	navegación	14</A></P>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__2161_822559036">Capítulo 4 Tutorial	15</A></B></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3413_63906294">4.1 Navegación y uso
+	básico	15</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3415_63906294">4.2 Organizando la clase	18</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3417_63906294">4.3 Manejando asignaciones	23</A></P>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__483_1991373971">Capítulo 5 Manual	28</A></B></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3419_63906294">5.1 Comandos globales	28</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__2469_1644639458">5.2 Comandos a nivel de
+	Repositorio	29</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3423_63906294">5.3 Comandos a nivel de
+	Organización	30</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3425_63906294">5.4 Comandos a nivel de
+	Asignaciones	33</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3427_63906294">5.5 Comandos a nivel de
+	Equipo	34</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3429_63906294">5.6 Comandos a nivel de
+	Usuario	35</A></P>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__485_1991373971">Capítulo 6 Conclusiones
+	y líneas futuras	36</A></B></P>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__487_1991373971">Capítulo 7 Summary and
+	Conclusions	37</A></B></P>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__489_1991373971">Capítulo 8
+	Presupuesto	38</A></B></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3471_63906294">8.1 Coste total	38</A></P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0cm; line-height: 100%">
+	<A HREF="#__RefHeading__3473_63906294">8.2 Obtención de ingresos	38</A></P>
+	<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<B><A HREF="#__RefHeading__493_1991373971">Capítulo 9
+	Bibliografía	39</A></B></P>
+</DIV>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<DIV ID="Índice de ilustraciones1" DIR="LTR" STYLE="background: transparent">
+	<DIV ID="Índice de ilustraciones1_Head" DIR="LTR">
+		<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 3cm; margin-bottom: 2cm; line-height: 100%; page-break-before: always; page-break-after: avoid">
+		<FONT SIZE=6 STYLE="font-size: 28pt"><B>Índice de figuras</B></FONT></P>
+	</DIV>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	<BR><BR>
+	</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	ghed	1</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	ghclass	2</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	diagrama	7</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	oauth	11</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	oauth2	12</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	oauth3	12</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial	15</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial2	16</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial3	17</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial4	17</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial5	18</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial6	19</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial7	20</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial8	21</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial9	22</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial10	23</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial11	23</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial12	24</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial13	24</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial14	24</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial15	25</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial16	25</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial17	26</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial18	26</P>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	tutorial19	26</P>
+</DIV>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<DIV ID="Índice de tablas1" DIR="LTR">
+	<DIV ID="Índice de tablas2_Head" DIR="LTR">
+		<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 3cm; margin-bottom: 2cm; line-height: 100%; page-break-after: avoid">
+		<FONT SIZE=6 STYLE="font-size: 28pt"><B>Índice de tablas</B></FONT></P>
+	</DIV>
+	<P ALIGN=LEFT STYLE="margin-left: 0.5cm; text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+	Plan de trabajo	4</P>
+</DIV>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<H1 CLASS="western" STYLE="page-break-before: always"><A NAME="__RefHeading__459_1991373971"></A>
+Capítulo 1 Introducción</H1>
+<H2 CLASS="western"><A NAME="__RefHeading__461_1991373971"></A><A NAME="1.1.¿Que es GitHub Education_|outline"></A>
+1.1 ¿Que es GitHub Education?</H2>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><IMG SRC="Javier-MemoriaTFG_html_6fcef81.png" NAME="gráficos1" ALIGN=LEFT WIDTH=652 HEIGHT=62 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; line-height: 90%; page-break-before: auto">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>GitHub
+Education <A HREF="#9.Bibliografía|outline"><FONT SIZE=2 STYLE="font-size: 10pt">[1]</FONT></A>
+es una plataforma creada por GitHub para difundir el uso y manejo de
+repositorios en el entorno educacional. Además de proveer paquetes
+de herramientas de desarrollo externas de manera gratuita, también
+ofrecen una metodología de trabajo apoyada por aplicaciones web que
+hacen uso de su sistema. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Ellos
+proponen usar una organización de GitHub, una zona conjunta para la
+asignación de proyectos en grupo, enfocada como si de una clase con
+alumnos se tratase. La idea es que un profesor cree una organización
+y luego añada a la misma alumnos para que posteriormente vaya
+asignándole repositorios con diferentes tareas, para que pueda
+evaluarlas y hacer feedback mediante las herramientas que ofrece
+GitHub. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>A
+la hora llevar a cabo esta idea, GitHub posee los elementos que
+pueden ser representados como el profesor, el alumno, o las tareas a
+realizar, pero realmente no tienen un sistema de asignación
+específico para ello. Por lo que su concepto de Asignación (o
+Assignment) debe ser manejado por un sistema externo, que en este
+caso haga uso de su interfaz de programación de aplicaciones (GitHub
+API).</FONT></FONT></FONT></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; line-height: 90%; page-break-before: auto">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__465_1991373971"></A><A NAME="1.2.Antecedentes y situación actual|outline"></A><A NAME="1.2.Antecedentes y situación actual|outline"></A>
+1.2 Antecedentes y situación actual</H2>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%; page-break-before: auto">
+<FONT FACE="LM Roman 10">Actualmente existen dos aplicaciones web que
+manejan o intentan usar esta metodología planteada por GitHub
+Education.</FONT></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<FONT FACE="LM Roman 10">Teacher's Pet <A HREF="#9.Bibliografía|outline"><FONT SIZE=2 STYLE="font-size: 10pt">[2]</FONT></A>:</FONT></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<FONT FACE="LM Roman 10">Se trata de una aplicación de línea de
+comandos que ejecuta consultas hacia la API de GitHub. Ahora mismo
+esta en desuso, y además de no proporcionar un entorno amigable al
+usuario, todo lo referente al problema de las asignaciones no
+funciona correctamente.</FONT></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<IMG SRC="Javier-MemoriaTFG_html_m74222b55.png" NAME="ghclass" ALIGN=LEFT WIDTH=376 HEIGHT=88 BORDER=0><FONT FACE="LM Roman 10">GitHub
+Classroom <A HREF="#9.Bibliografía|outline"><FONT SIZE=2 STYLE="font-size: 10pt">[3]</FONT></A>:</FONT></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<FONT FACE="LM Roman 10">Es la aplicación que recomienda la
+plataforma GitHub, actualmente en uso. Se trata de una página web
+que conecta con el perfil de GitHub, donde se permite el manejo y
+creación de asignaciones para los alumnos registrados en una
+organización. Si bien soluciona parcialmente el problema de la
+automatización, ofrece muy pocas opciones al usuario, y se trata de
+un producto incompleto e inacabado.    </FONT>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<FONT FACE="LM Roman 10">Se ha visto que el desarrollo de ambas
+aplicaciones se encuentra estancado o directamente abandonado, por lo
+que se propondrá una alternativa en este trabajo de fin de grado. La
+idea será tomar lo mejor de ambas aplicaciones, la comodidad del
+concepto del uso de consultas para el usuario en una Shell, y la
+metodología de trabajo encontrada de Education, mejor reflejada en
+la aplicación Classroom. Además de buscar nuevas aplicaciones y
+utilidades que puedan mejorar la experiencia de uso al usuario.</FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<H1 CLASS="western"><A NAME="__RefHeading__471_1991373971"></A>Capítulo 2 Objetivos
+y plan de trabajo</H1>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En
+este capítulo se detallarán los periodos de trabajo y los objetivos
+presentes para este proyecto.</FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="Courier New, Courier New PSMT, sans-serif"><FONT SIZE=4>
+</FONT></FONT></FONT>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__2475_63906294"></A>2.1 Objetivos</H2>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT FACE="LM Roman 10">Los
+objetivos o actividades realizadas en este trabajo se definen a
+continuación:</FONT></P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-top: 0.1cm; margin-bottom: 0.1cm; line-height: 100%">
+<FONT FACE="LM Roman 10"><FONT SIZE=4><FONT COLOR="#000000"><B>A1</B></FONT><FONT COLOR="#000000"><B>.</B></FONT><FONT COLOR="#000000"><SPAN STYLE="font-weight: normal">
+Analizar la plataforma GitHub Education y su metodología.</SPAN></FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><B>A2.</B>
+Estudiar y analizar el funcionamiento de las aplicaciones ya 
+pertenecientes a GitHub Education: GitHub Classroom y Teacher's Pet.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><B>A3.</B>
+Estudiar sobre el enfoque de la aplicación a diseñar y las
+tecnologías requeridas. </FONT></FONT></FONT>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><FONT COLOR="#000000"><B>A4</B></FONT><FONT COLOR="#000000"><B>.</B></FONT><FONT COLOR="#000000"><SPAN STYLE="font-weight: normal">
+Estudiar cómo realizar la aplicación y que funcionalidades se van a
+incluir en ella.</SPAN></FONT></FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><B>A5.</B>
+Crear una aplicación básica que permita al usuario autentificarse y
+conectarse con su cuenta de GitHub, además de ejecutar consultas
+simples.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0.36cm; font-weight: normal; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><B>A6.</B>
+Ampliar el desarrollo de la aplicación para que pueda incluir la
+estructura y funcionalidades necesarias para la metodología que
+propone GitHub Education.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0.36cm; font-weight: normal; line-height: 100%">
+<BR><BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0.36cm; font-weight: normal; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><B>A7.</B>
+Implementar el sistema automatizado de creación de Asignaciones de
+tareas para los miembros de una clase.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0.36cm; font-weight: normal; line-height: 100%">
+<BR><BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0.36cm; font-weight: normal; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><B>A8.</B>
+Añadir la posibilidad de importar y el manejo de datos de alumnos
+para poder tener una información extendida de los miembros de una
+clase.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0.36cm; font-weight: normal; line-height: 100%">
+<BR><BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><B>A9.</B>
+Creación de una gema para mejorar la usabilidad de la aplicación.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><B>A10.</B>
+Mejorar la ayuda y crear un tutorial completo para facilitar al
+usuario manejar de manera correcta la aplicación.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm"><A NAME="__RefHeading__2477_63906294"></A>
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=5 STYLE="font-size: 21pt"><B>2.2
+ Plan de trabajo</B></FONT></FONT></FONT></H2>
+<OL START=2>
+	<OL START=2>
+		<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+		</P>
+		<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+		<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=5 STYLE="font-size: 21pt"><FONT SIZE=4><SPAN STYLE="font-weight: normal">A
+		continuación, se indican las fechas y el plan de trabajo seguido
+		en este proyecto.</SPAN></FONT><B><FONT FACE="Courier New, Courier New PSMT, sans-serif"><FONT SIZE=4>
+		</FONT></FONT></B></FONT></FONT></FONT>
+		</P>
+	</OL>
+</OL>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+<BR>
+</P>
+<TABLE WIDTH=664 BORDER=0 CELLPADDING=10 CELLSPACING=0>
+	<COL WIDTH=271>
+	<COL WIDTH=353>
+	<TR VALIGN=TOP>
+		<TD WIDTH=271 BGCOLOR="#006699">
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#ffffff"><FONT FACE="LN Roman 10"><FONT SIZE=4><B>Objetivo
+			</B></FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353 BGCOLOR="#006699">
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#ffffff"><FONT FACE="LN Roman 10"><FONT SIZE=4><B>Fecha
+			</B></FONT></FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=14>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A1
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>5-10
+			Febrero </FONT></FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=17>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A2
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>10-15
+			Febrero </FONT></FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=16>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A3
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>15-20
+			Febrero </FONT></FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=16>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A4
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>20-25
+			Febrero</FONT></FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=16>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A5
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>25
+			Febrero - 15 Marzo </FONT></FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=19>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A6
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>15
+			Marzo - 10 Abril </FONT></FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=16>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A7
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>10-30
+			Abril </FONT></FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=15>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A8
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>1-10
+			Mayo </FONT></FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=12>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A9
+			</FONT></FONT></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>10-30
+			Mayo</FONT></FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=271 HEIGHT=15>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>A10</FONT></FONT></FONT></P>
+		</TD>
+		<TD WIDTH=353>
+			<P ALIGN=CENTER STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LN Roman 10"><FONT SIZE=4>1-20
+			Junio</FONT></FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+<BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+<BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+<BR>
+</P>
+<H1 CLASS="western"><A NAME="__RefHeading__475_1991373971"></A>Capítulo 3 Desarrollo
+de la aplicación</H1>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4>En
+este capítulo se presentará el proceso de desarrollo de la
+aplicación, así como su modo de uso. </FONT></FONT></FONT>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__477_1991373971"></A><A NAME="3.1.Estudio sobre el funcionamiento de la API de GitHub|outline"></A>
+3.1 Estudio sobre el funcionamiento de la API de GitHub</H2>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Para poder poder hacer
+uso de los datos de GitHub, así como modificarlos y subirlos a su
+plataforma, se hará uso la interfaz de programación de aplicaciones
+web “GitHub API v3” <A HREF="#9.Bibliografía|outline"><FONT SIZE=2 STYLE="font-size: 10pt">[4]</FONT></A>.</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Actualmente existen para
+esta API varias librerías que permiten el intercambio de datos
+mediante peticiones HTTPS y envió de datos a través del formato de
+texto ligero JSON. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Por un lado se puede
+encontrar la librería oficial <SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">Octokit,
+que</SPAN></SPAN><B> </B><SPAN STYLE="font-weight: normal">tiene
+diferentes versiones para distintos lenguajes de programación.</SPAN></P>
+<P CLASS="western" STYLE="text-indent: 0cm">Lenguajes en los que esta
+disponible Octokit:</P>
+<UL>
+	<LI><P CLASS="western">Objetive-C</P>
+	<LI><P CLASS="western">Ruby</P>
+	<LI><P CLASS="western">.NET</P>
+</UL>
+<P CLASS="western" STYLE="text-indent: 0cm">Además de la oficial de
+GitHub, se pueden encontrar bastantes librerías no oficiales en
+diferentes lenguajes tales como: Ruby, Python, Go, Java, Haskell,
+Javascript, Julia, Pearl, Php o Ruby.</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Finalmente, se optó por
+utilizar la librería oficial Octokit <A HREF="#9.Bibliografía|outline"><FONT SIZE=2 STYLE="font-size: 10pt">[5]</FONT></A>,
+para el lenguaje de programación Ruby. Ya que ofrecía una mayor
+sensación de fiabilidad, estar mejor documentada y haber sido usada
+también en la herramienta <I>Teacher's Pet</I> diseñada por la
+propia plataforma GitHub. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<H3 CLASS="western"><A NAME="__RefHeading__3403_63906294"></A><A NAME="3.1.1.Uso de la librería Octokit|outline"></A>
+<FONT SIZE=5>3.1.1 Uso de la librería Octokit</FONT></H3>
+<OL START=3>
+	<OL>
+		<OL>
+			<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; font-weight: normal">
+			<FONT SIZE=4>A continuación se explicara el método de uso
+			necesario para el correcto funcionamiento de la librería en Ruby.</FONT></P>
+			<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; font-weight: normal">
+			<FONT SIZE=4>Para poder usar las funcionalidades que ofrece la
+			librería, es necesario hacer un “Login” con la plataforma
+			GitHub. Para ello hace uso de un objeto cliente que realice la
+			autentificación del usuario, y a partir de ahí poder aplicar las
+			funcionalidades permitidas según el tipo de “Login” aplicado.</FONT></P>
+			<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; font-weight: normal">
+			</P>
+			<PRE CLASS="western" STYLE="font-style: normal; font-weight: normal; text-align: left"><FONT COLOR="#24292e"><FONT FACE="SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">client <FONT COLOR="#a71d5d">=</FONT> <FONT COLOR="#0086b3">Octokit</FONT>::<FONT COLOR="#0086b3">Client</FONT>.<FONT COLOR="#a71d5d">new</FONT>(<FONT COLOR="#0086b3">:login</FONT> =&gt; <FONT COLOR="#183691">'user'</FONT>, <FONT COLOR="#0086b3">:password</FONT> =&gt; <FONT COLOR="#183691">'password'</FONT>)</FONT></FONT></FONT>
+<FONT COLOR="#24292e"><FONT FACE="SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">user <FONT COLOR="#a71d5d">=</FONT> client.user</FONT></FONT></FONT>
+<FONT COLOR="#24292e"><FONT FACE="SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">user.login</FONT></FONT></FONT>
+</PRE><P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; font-weight: normal">
+			<FONT SIZE=4>Sería un ejemplo de la creación del objeto cliente
+			del usuario y su posterior petición de acceso. En este caso se
+			puede observar que se le indica el nombre de usuario de GitHub y
+			la contraseña por parámetro, esto es debido a que la librería
+			ofrece diferentes opciones de autentificación. </FONT>
+			</P>
+			<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; font-weight: normal">
+			</P>
+			<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; font-weight: normal">
+			<FONT SIZE=4>- Autentificación básica: </FONT>
+			</P>
+			<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; font-weight: normal">
+			<FONT SIZE=4>Se aplica al no autenticar al usuario, permite el
+			acceso a la API pero las funcionalidades estarán limitadas.
+			Básicamente da lugar a poder ejercer un modo lectura de los datos
+			de GitHub, siempre que sea permitido.</FONT></P>
+		</OL>
+		<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm; font-weight: normal">
+		<FONT SIZE=4>- Autentificación compleja: </FONT>
+		</P>
+		<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm"><FONT SIZE=4><SPAN STYLE="font-weight: normal">Se
+		hace uso de ella al autenticar completamente al usuario. Existen
+		varias formas de aplicarla, como la opción de Usuario y Contraseña
+		que en este caso daría todos los permisos existentes, o la
+		autentificación por </SPAN></FONT><FONT COLOR="#222222"><FONT FACE="LM Roman 10"><FONT SIZE=4><I><SPAN STYLE="font-weight: normal">Open
+		Authorization</SPAN></I></FONT></FONT></FONT><FONT COLOR="#222222"><FONT FACE="LM Roman 10"><FONT SIZE=4><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">
+		(</SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#222222"><FONT FACE="LM Roman 10"><FONT SIZE=4><SPAN STYLE="font-style: normal"><B>Oauth</B></SPAN></FONT></FONT></FONT><FONT COLOR="#222222"><FONT FACE="LM Roman 10"><FONT SIZE=4><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">)</SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#222222"><FONT FACE="LM Roman 10"><FONT SIZE=3><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">
+		</SPAN></SPAN></FONT></FONT></FONT>limitando los permisos
+		aplicables a la aplicación.</P>
+	</OL>
+</OL>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm">A partir de
+aquí se podrán usar las diferentes opciones que ofrece la librería.
+Que básicamente realizara consultas y convertirá los datos
+recibidos en un tipo de objeto de una clase Ruby llamada <I>Sawyer</I>.
+Este objeto creado contendrá volcada toda la información, que a su
+vez tendrá que ser seleccionada para su uso por el propio
+programador que utilice la herramienta. 
+</P>
+<H2 CLASS="western" ALIGN=LEFT><A NAME="__RefHeading__479_1991373971"></A>
+3.2 GitHub Education Shell</H2>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En
+este capítulo se explicaran tanto la metodología del programa, como
+el proceso de instalación y autenficación. </FONT></FONT></FONT>
+</P>
+<H3 CLASS="western"><A NAME="__RefHeading__3405_63906294"></A><FONT SIZE=5>3.2.1 Introducción
+y metodología</FONT></H3>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 0cm">GHEDSH está
+diseñado para proveer diferentes funcionalidades dentro de los
+distintos ámbitos pertenecientes a la plataforma GitHub.</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 0cm">Tanto el
+entorno de usuario, como las organizaciones, repositorios, o equipos
+de trabajo, se verán reflejados en la aplicación. Y dado el caso se
+podrán añadir, modificar o eliminar datos si fuese necesario. 
+</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm"><IMG SRC="Javier-MemoriaTFG_html_m7e8de4f7.png" NAME="diagrama" ALIGN=LEFT WIDTH=857 HEIGHT=659 BORDER=0><BR CLEAR=LEFT>Dada
+la necesidad de poder moverse con soltura entre los diferentes
+marcos, se ha optado por simular el método de navegación en un
+árbol de directorios dentro de una Shell.</P>
+<P CLASS="western" ALIGN=LEFT STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 0cm">El esquema
+refleja los diferentes ámbitos reflejados en el programa y el orden
+de acceso de los mismos. El nivel de usuario está indicado como el
+directorio raíz y los diferentes niveles serán subniveles del
+mismo.</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 0cm">Además,
+los elementos marcados en blanco reflejan su existencia real en la
+plataforma GitHub. Por el contrario, los elementos marcados en rojos
+serán elementos o ámbitos creados específicamente para el
+programa.</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><B>Usuario</B>: 	El nivel
+de usuario actualmente logueado en la aplicación. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><B>Repositorios</B>:
+	Dependiendo desde donde accedamos podremos 				situarnos en un
+repositorio de un usuario, un 				repositorio de una organización, o
+un repositorio de 			un equipo de trabajo de una organización. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><B>Organización</B>:	El
+espacio de trabajo conjunto que provee GitHub. 			Será donde se
+trabajen las aplicaciones enfocadas a 			GitHub Education.</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><B>Equipos</B>:	Equipos
+de trabajo entre varios usuarios de GitHub 			registrados en una
+organización.		 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><B>Grupos de
+trabajo</B>:	Concepto nuevo creado para la aplicación, que
+				agrupa varios equipos de trabajo en uno o 					varios grupos.</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><B>Asignaciones</B>:	Ámbito
+creado para el uso de la metodología de 				GitHub Education.
+Abarcara la tarea creada, donde 			se guardara la relación de
+repositorios a los grupos 			de trabajo o a usuarios de forma
+individual. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><B>Información
+extendida</B>: 	Información extendida de los usuarios
+						pertenecientes a una organización. Será 					importada al
+programa y accesible desde 					la organización donde fuese añadida.
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">El programa permitirá
+moverse así, a varios niveles donde se podrán ejecutar los métodos
+pertenecientes al ámbito donde este situado el usuario. Por ejemplo:</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Usuario &gt;</P>
+<P CLASS="western" STYLE="text-indent: 0cm">El usuario podrá
+ejecutar comandos a nivel de usuario.</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Usuario &gt; Repositorio</P>
+<P CLASS="western" STYLE="text-indent: 0cm">El Usuario podrá
+ejecutar acciones a nivel del repositorio de usuario.</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Usuario &gt; Organización
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Se ejecutaran comandos a
+nivel de la organización.</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Esto sucederá con los
+diferentes niveles representados en el esquema. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<H3 CLASS="western"><A NAME="__RefHeading__3407_63906294"></A><FONT SIZE=5>3.2.2 Instalación
+</FONT>
+</H3>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT SIZE=4><B>Instalación
+de Ruby</B></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT SIZE=4>Para
+poder ejecutar el programa es necesario tener instalado Ruby, siendo
+necesario una versión igual a superior a la 1.9.3. </FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT SIZE=4>Para
+ello podemos ir a la terminal en sistemas como Debian o Ubuntu y
+aplicar el siguiente comando:</FONT></P>
+<PRE CLASS="western" STYLE="font-weight: normal"><FONT SIZE=4><CODE CLASS="western"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=3><I><SPAN STYLE="background: transparent">sudo apt-get install ruby-full</SPAN></I></FONT></FONT></FONT></CODE></FONT></PRE><P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT SIZE=4>En
+sistemas como CentOS o Fedora lo podremos hacer con:</FONT></P>
+<PRE CLASS="western" STYLE="font-weight: normal"><FONT SIZE=4><CODE CLASS="western"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=3><I><SPAN STYLE="background: transparent">sudo yum install ruby</SPAN></I></FONT></FONT></FONT></CODE></FONT></PRE><P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT SIZE=4>En
+OS -X se puede instalar mediante:</FONT></P>
+<PRE CLASS="western" STYLE="font-weight: normal"><FONT SIZE=4><CODE CLASS="western"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=3><I><SPAN STYLE="background: transparent">brew install ruby</SPAN></I></FONT></FONT></FONT></CODE></FONT></PRE><P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT SIZE=4>Además
+de ser posible la instalación mediante cualquier gestor de paquetes
+que provea el instalador de Ruby. </FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT SIZE=4><B>Instalación
+de GHEDSH</B></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT SIZE=4>La
+instalación del programa se realiza de manera sencilla, ya que se ha
+generado una Gema en RubyGem y solo es necesario instalarla en la
+terminal de tu sistema. </FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT SIZE=4>Con
+este comando podrá ser instalado el programa en la carpeta que el
+usuario prefiera, y donde deberá ser ejecutado a partir de ese
+momento.</FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>gem
+install ghedsh</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Al
+instalar el programa se creara una carpeta en el perfil de usuario
+llamada <B>.ghedsh</B>. En ella se guardaran los diferentes archivos
+necesarios para el guardado de datos, o la caché que se hará uso en
+la aplicación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Los
+diferentes archivos creados en el sistema serán:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><I>.ghedsh-users.json</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Contendrá
+los diferentes datos de los usuarios guardados en la aplicación. Se
+usara para el Loguin de varios usuarios en el programa.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><I>.ghedsh-people.json</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Guardara
+la información extendida de las clases / organizaciones, añadidas
+por el usuario.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><I>.ghedsh-clonedfiles</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Contendrá
+la información de los repositorios clonados.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><I>.ghedsh-cache.json</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal; text-decoration: none">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Archivo
+usado para la caché y el guardado del path del usuario.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal; text-decoration: none">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><I>groups.json</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Contendrá
+los grupos de equipos de trabajos guardados para cada clase /
+organización.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><I>assignments.json</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Contendrá
+la información de las asignaciones creadas en la aplicación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><I>ghedsh-”usuario”-history</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Archivo
+de guardado del historial de la línea de comandos de un usuario
+específico del programa.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<H3 CLASS="western"><A NAME="__RefHeading__3515_63906294"></A><FONT SIZE=5>3.2.3 Autentificación</FONT></H3>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para el
+acceso a GitHub mediante Octokit se ha optado por el método de OAuth
+2.0 y el uso de un Token portador.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para el
+funcionamiento correcto entre el programa y la API, necesitaremos
+crear un Token de acceso en GitHub que de los permisos necesarios
+para la ejecución correcta de GHEDSH.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para ello
+deberemos ir <A HREF="http://github.com/">https://github.com</A> y
+teniendo una cuenta ya creada, ir a la parte superior del menú y
+pinchar en la pestaña del usuario. Ahí buscaremos la opción
+Settings y entraremos en ella.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_2ac0b9ea.png" NAME="oauth" ALIGN=LEFT WIDTH=241 HEIGHT=355 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Después
+hace falta ir hasta la parte inferior donde se encuentran las
+opciones de desarrolladores, y pulsar la opción <I>Personal access
+token</I>. En esta pestaña pulsaremos a <I>Generate New Token.</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_m5054c95f.png" NAME="oauth2" ALIGN=LEFT WIDTH=305 HEIGHT=216 BORDER=0><BR CLEAR=LEFT><FONT COLOR="#000000">
+</FONT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Nos
+aparecerá un cuadro con multitud de casillas de verificación a
+rellenar, además de un cuadro de texto donde le pondremos nombre al
+Token. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Las
+opciones a rellenar serán las representadas en la siguiente imagen.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_54e22240.png" NAME="oauth3" ALIGN=LEFT WIDTH=564 HEIGHT=636 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Ya
+teniendo el Token creado podremos utilizarlo para autenticarnos en el
+programa. Una vez hecho no hará falta volver a preocuparnos del
+Token ya que se guardara en el perfil de usuario de la aplicación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<H3 CLASS="western"><A NAME="__RefHeading__3517_63906294"></A><FONT SIZE=5>3.2.4 Ejecutando
+el programa por primera vez</FONT></H3>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para
+ejecutar el programa debemos ir a la ruta donde se instaló el
+programa y ejecutar el siguiente comando:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>ghedsh</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para ver
+todas las opciones de ejecución de la aplicación usaríamos:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>ghedsh
+-h</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Al
+ejecutarse por primera vez, la aplicación pedirá el Token
+previamente creado. Tras introducirlo se procederá al proceso de
+logueo y GHEDSH ya estará listo para su uso.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Es
+posible directamente ejecutar el programa pasando por parámetro el
+Token.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>ghedsh
+-t TOKEN</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Esto es
+debido a que se aceptan varios usuarios, y al añadir un nuevo Token
+mediante esta opción, estaríamos directamente creando un nuevo
+usuario y guardándolo en el perfil de usuario.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para
+poder cambiar de usuario deberíamos usar el método de ejecución:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>ghedsh
+-u USUARIO</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Que
+cambiaría el usuario si este existiese y se hubiese logueado
+correcta y anteriormente en la aplicación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__3431_63906294"></A>3.3 Problemas
+encontrados y soluciones</H2>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<H3 CLASS="western"><A NAME="__RefHeading__3433_63906294"></A><FONT SIZE=5>3.3.1 Consultas
+y datos recibidos por la API</FONT></H3>
+<OL START=3>
+	<OL>
+		<OL>
+			<OL>
+				<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"></P>
+			</OL>
+		</OL>
+	</OL>
+</OL>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>La
+ejecución de las consultas a veces mostraba cierta inconsistencia a
+la hora de devolver los resultados, sobretodo cuando no se
+encontraban datos que retornar. Por lo que era posible que en
+consultas similares se enviaran datos “vacíos”, o la API
+retornara fallo y por consecuencia parase la ejecución del programa.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Esto hizo
+que tuviese que hacer uso del manejo excepciones en cada consulta que
+no retornase datos, a base de probar y decidir que consulta
+necesitaba especial atención. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<H3 CLASS="western"><A NAME="__RefHeading__3411_63906294"></A><FONT SIZE=5>3.3.2 La
+usabilidad en la navegación</FONT></H3>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Las
+primeras versiones si bien siendo funcionales, demostraban que el
+manejo de la aplicación no era del todo cómodo para el usuario. Al
+tener a veces tantos datos que manejar, y tantas utilidades que usar
+en diferentes ámbitos, hacia que de primeras no fuese tan accesible
+al usuario la navegación y uso de GHEDSH.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para
+mejorar esta situación se tomaron varias medidas. Se añadieron
+opciones de autocompletar de tanto los comandos como los datos
+volcados desde la API, se creó un historial no solo para la sesión
+actual sino también funcional cuando se volviese a ejecutar el
+programa, el guardado de la posición del último nivel al regresar a
+la aplicación, la creación de varios perfiles de usuario poder usar
+el programa en varias cuentas, etc.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Todas
+estas medidas han hecho más natural y cómoda la navegación,
+mejorando la usabilidad y eliminando el problema encontrado.</FONT></FONT></FONT></P>
+<H1 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__2161_822559036"></A>
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=6><B>Capítulo 4 Tutorial</B></FONT></FONT></FONT></H1>
+<H2 CLASS="western"><A NAME="__RefHeading__3413_63906294"></A>4.1 Navegación
+y uso básico</H2>
+<OL START=4>
+	<OL>
+		<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"></P>
+	</OL>
+</OL>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Tras
+ejecutar el programa por primera vez, no encontraremos en el nivel de
+usuario. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Lo
+primero que haremos es buscar nuestros repositorios, para eso
+usaremos el comando:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>repos</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Al
+ejecutarlo se listaran todos los repositorios pertenecientes al
+usuario, los que él sea colaborador, o los pertenecientes a una
+organización en la que pertenezca. Si el usuario tiene mucha
+actividad en la plataforma la lista de repositorios podría ser
+bastante extensa, por lo que existe una opción de búsqueda por
+expresión regular para agilizar el trabajo.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_m5acf6c84.png" NAME="tutorial" ALIGN=LEFT WIDTH=361 HEIGHT=430 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>repos
+/RegExp/</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=5 STYLE="font-size: 21pt"><FONT SIZE=4><SPAN STYLE="font-weight: normal">En
+este caso he buscado repositorios que contengan </SPAN></FONT><FONT SIZE=4><I><SPAN STYLE="font-weight: normal">prct.
+</SPAN></I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>El
+siguiente paso será acceder a un repositorio. Para ello usaremos el
+comando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>cd</I></FONT></FONT>.
+La sintaxis será similar a la que suele emplear en una terminal.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>cd
+[ruta]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Siendo
+posible ampliar la búsqueda a varios ámbitos usando.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>cd
+[ruta1]/[ruta2]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Volver
+atrás hacia un directorio padre:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>cd
+..</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>O mezclar
+ambos tipos de parámetros para realizar una operación más
+compleja.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>cd
+../../[ruta1]/[ruta2] </I></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><IMG SRC="Javier-MemoriaTFG_html_m1d757858.png" NAME="tutorial2" ALIGN=LEFT WIDTH=495 HEIGHT=127 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Usando el
+comando nos situaremos en un repositorio cualquiera, en este caso
+<I>pract05.</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Los
+comandos y funcionamiento de los mismos varían según el ámbito de
+trabajo, por lo que el uso del comando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>help</I></FONT></FONT>
+facilitara mucho la labor al usuario.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Usando
+tan solo el comando mostrara los diferentes comandos disponibles solo
+en ese nivel. Además de los comandos principales que están
+disponibles en toda la aplicación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Es
+posible dar por parámetro a la opción nombres de comandos para que
+muestre específicamente la ayuda sobre ello.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>Help
+[comando]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><IMG SRC="Javier-MemoriaTFG_html_5d54ba5c.png" NAME="tutorial3" ALIGN=LEFT WIDTH=882 HEIGHT=379 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En este
+caso se ha buscado la ayuda contextual de las issues en un
+repositorio. Mostrando tanto los comandos de creación de issues,
+enseñar un issue, crear comentarios en issues y reabrir o cerrar un
+issue específico.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Vamos a
+dejar este repositorio y volver al directorio raíz del usuario.  
+Ahí listaremos las Organizaciones donde estemos afiliados mediante
+el comando.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>Orgs</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Seleccionaremos
+una y entraremos a ella mediante cd. A veces el nombre de las
+organizaciones o repositorios son bastante complejos, por lo que al
+listar las mismas se crea una opción de autocompletar en la línea
+de comandos que activaremos con la tecla tabulador del teclado. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_m215eda88.png" NAME="tutorial4" ALIGN=LEFT WIDTH=476 HEIGHT=259 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En el
+caso de este tutorial se entrara en una organización especialmente
+para creada para ello. Si ejecutamos de nuevo <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>help</I></FONT></FONT>
+podremos ver que las opciones han cambiado si lo comparamos con
+cualquier otro nivel de trabajo. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Si
+quisiésemos ir a otra organización sin tener que ir paso por paso.
+Podríamos hacer uso de la mezcla de parámetros comentada
+anteriormente. En este caso ejecutando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>cd
+../TEC-INFO-GROUP</I></FONT></FONT> nos llevaría a esa localización.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__3415_63906294"></A>4.2 Organizando
+la clase</H2>
+<OL START=4>
+	<OL START=2>
+		<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"></P>
+	</OL>
+</OL>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Siguiendo
+la metodología de GitHub Classroom, a partir de ahora trataremos a
+nuestra organización como una clase.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Y lo
+primero será buscar nuestros alumnos. Para ello usaremos el
+siguiente comando:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>people</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_5dc3f4c6.png" NAME="tutorial5" ALIGN=LEFT WIDTH=476 HEIGHT=191 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Como
+vemos, se mostraran los identificadores de GitHub de cada alumno, lo
+cual a veces es un problema para reconocerlos sobretodo si la clase
+tiene muchos alumnos.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para
+resolver este problema se ha implementado un sistema de información
+extendida. Básicamente importaremos datos de los alumnos y los
+guardaremos en el sistema, en cada clase donde estén asignados. Para
+ello usaremos un sistema de carga de archivos en formato
+<I>comma-separated-values</I> o csv.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>El primer
+paso será obtener los emails de los alumnos, que serán relacionados
+con sus identificadores de GitHub. Si trabajamos con programas de
+docencia online como Moodle, podríamos crear una tarea para que el
+alumno los publique y así poder exportarlos al archivos csv
+posteriormente.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">“<FONT FACE="LM Roman 10"><FONT SIZE=4>mail”,”github”</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">“<FONT FACE="LM Roman 10"><FONT SIZE=4><A HREF="mailto:studentbeta@gmail.com">studentbeta@gmail.com</A>”,”studentbeta”</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">“<FONT FACE="LM Roman 10"><FONT SIZE=4><A HREF="mailto:studentalpha1@hotmail.com">studentalpha1@hotmail.com</A>”,”studentalpha1”</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">“<FONT FACE="LM Roman 10"><FONT SIZE=4><A HREF="mailto:alu0100505023@ull.edu.es">alu0100505023@ull.edu.es</A>”,”alu0100505023”</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Este
+podría ser el ejemplo del contenido de ese archivo csv. Primero
+colocaríamos los nombres de los campos en la primera línea, y en
+las siguientes lineas iríamos poniendo la información de cada
+alumno.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para la
+carga de esta relación entre GitHub y la información de los
+alumnos, usaremos el comando <I>new relation.</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>New
+relation [archivo.csv]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Hay que
+tener en cuenta que si el alumno no está registrado en la
+organización, se descartara directamente toda la información que se
+vaya a registrar de él.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_m3419e641.png" NAME="tutorial6" ALIGN=LEFT WIDTH=679 HEIGHT=531 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Tras la
+inserción de datos podremos mostrar todos los datos agregados con el
+comando <FONT COLOR="#004586"><I>people info</I></FONT>.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Si
+queremos buscar los datos de un alumno en cuestión podremos usar la
+Id de GitHub como parámetro o una expresión regular</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>people
+info [Id de github]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>people
+info /RegExp/</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_m3903d5b9.png" NAME="tutorial7" ALIGN=LEFT WIDTH=655 HEIGHT=257 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Este tipo
+de búsqueda podrá ampliarse a los diferentes campos que existan en
+la información adicional, no solamente al identificador de usuario.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Este
+punto de la nueva relación se trata de un punto intermedio, ya que
+para completar la información posteriormente se utilizara la
+utilidad <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+people info</I></FONT></FONT>.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>new
+people info [archivo csv]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En el
+nuevo archivo csv colocaremos toda la información que queramos del
+alumno. Teniendo en cuenta que en las cabeceras deberá haber alguno
+de los dos campos que relacionen la información anteriormente
+guardada. Debe estar o el campo <I><B>email</B></I> o el
+<I><B>identificador de GitHub</B></I>.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Ejemplo
+de información extendida más completa.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: -0.7cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%; page-break-before: auto">
+<FONT COLOR="#000000">“<FONT FACE="LM Roman 10"><FONT SIZE=4>email”,”nombre”,”apellido”,”github-url”
+</FONT></FONT></FONT>
+</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: -0.7cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>&quot;<A HREF="mailto:studentbeta@gmail.com">studentbeta@gmail.com</A>”,&quot;Martin&quot;,&quot;Rodriguez
+Escudero&quot;,&quot;https://github.com/studentbeta&quot; </FONT></FONT></FONT>
+</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: -0.7cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<FONT COLOR="#000000">“<FONT FACE="LM Roman 10"><FONT SIZE=4>studentalpha1@hotmail.com”,&quot;Vicente&quot;,&quot;Garcia
+Martin&quot;,&quot;https://github.com/studentalpha1&quot; </FONT></FONT></FONT>
+</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: -0.7cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<FONT COLOR="#000000">“<FONT FACE="LM Roman 10"><FONT SIZE=4>alu0100505023@ull.edu.es”,&quot;Javier&quot;,&quot;Rodriguez
+Gomez&quot;,&quot;<A HREF="https://github.com/alu0100505023">https://github.com/alu0100505023</A>&quot;</FONT></FONT></FONT></P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: -0.7cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<BR><BR>
+</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: 0.03cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%; page-break-before: auto">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Esta
+información sería añadida a la ya posteriormente recopilada.</FONT></FONT></FONT></P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: 0.03cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Este
+método está diseñado pensando en las dificultades que puede tener
+un profesor de primeras para que todos los alumnos den sus datos o
+los den de manera correcta. Se podría plantear una pequeña tarea a
+la clase para que se den los datos necesarios para la relación, y
+más adelante durante el curso ampliar con los datos completos.</FONT></FONT></FONT></P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: 0.03cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Sin
+embargo, si se desea poner toda la información directamente desde la
+primera vez, también es posible realizarlo mediante el comando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+people info</I></FONT></FONT>, mientras en los datos se encuentren
+los campos de email y github.</FONT></FONT></FONT></P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: 0.03cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Después
+de haber subido la nueva información, podremos ejecutar consultas
+como la búsqueda por nombre.</FONT></FONT></FONT></P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: -0.7cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<BR><BR>
+</P>
+<IMG SRC="Javier-MemoriaTFG_html_3ad2bd84.png" NAME="tutorial8" ALIGN=LEFT WIDTH=657 HEIGHT=377 BORDER=0>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: -0.7cm; text-indent: 0cm; font-style: normal; font-weight: normal; line-height: 90%">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En este
+caso hemos buscado un alumno cuyo alguno de sus campos case con
+“martin”. Revolviéndonos los datos añadidos del nuevo csv.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Como
+podemos ver en la información hemos guardado la página web de
+GitHub de los alumnos. Esto hará que usando el comando open podamos
+abrir en un navegador la pagina que deseamos ver.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>Open
+[ID de GitHub]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Abrir la
+web del perfil GitHub del alumno, si se encuentra información
+añadida.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>Open
+/RegExp/ </I></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Abriría
+varios perfiles de GitbHub en el navegador por defecto. Por lo que
+aplicando el ejemplo anterior.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>Open
+/Martin/</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Mostraría
+las webs de los alumnos que casen con esa expresión.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_11bfcba9.png" NAME="tutorial9" ALIGN=LEFT WIDTH=986 HEIGHT=142 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Es
+posible abrir diferentes tipos de páginas, no solo perfiles de
+GitHub. Si por ejemplo queremos guardar el perfil de la plataforma
+Moodle del alumno, podríamos abrir las direcciones tal que:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4>open
+[ID de GitHub] /Parte de la URL/</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4>open
+/RegExp/ /Parte de la URL/</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Por lo
+que ejecutando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace">open
+/Rodriguez/i /moodle/</FONT></FONT> se abrirán las webs de la
+plataforma <I>Moodle</I>, de los alumnos que casen con <I>Rodriguez</I>,
+si estuviesen guardados esos datos.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__3417_63906294"></A>4.3 Manejando
+asignaciones</H2>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Lo
+primero que debemos saber es que las tareas se podrán diferenciar
+entre asignaciones individuales o asignaciones grupales.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>¿Qué es
+un grupo? Un grupo de trabajo es una nueva categoría donde se
+encontraran uno o varios equipos de trabajo. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Podemos
+crear manualmente el grupo mediante el comando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+group</I></FONT></FONT>, o hacerlo mediante la creación de una tarea
+como se mostrara en el tutorial.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_58cc6bb.png" NAME="tutorial10" ALIGN=LEFT WIDTH=490 HEIGHT=318 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Mediante
+el comando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>groups</I></FONT></FONT>
+podremos ver la lista de los grupos creados, donde se indicara el
+nombre del grupo, la lista de equipos y los estudiantes que estén en
+ellos.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para
+crear la asignación usaremos el comando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+assignment</I></FONT></FONT>, que iniciara un asistente para la
+creación paso por paso de la tarea.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>new
+assignment [nombre de la asignación]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_6da4f927.png" NAME="tutorial11" ALIGN=LEFT WIDTH=438 HEIGHT=257 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En este
+caso se ha optado por una tarea grupal, y como vemos lo primero que
+hace es pedirte un repositorio. Podemos asignarle un repositorio ya
+creado, crear un nuevo repositorio en blanco junto con un archivo
+<I>README.MD</I>, o no asignar nada por ahora.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_m433a6bdc.png" NAME="tutorial12" ALIGN=LEFT WIDTH=853 HEIGHT=237 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>El
+formato necesario será usuario y el nombre del repositorio, u
+organización y el nombre de repositorio. En este caso usaremos el
+repositorio <I>prct05</I> de la cuenta personal del usuario. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Tras
+añadirlo, como hemos seleccionado una opción grupal, nos preguntara
+que grupos queremos añadir y aparecerá una lista de grupos ya
+creados para seleccionar el que queramos. En este caso queremos hacer
+un nuevo grupo, por lo que nos saltaremos este paso.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_79b3e642.png" NAME="tutorial13" ALIGN=LEFT WIDTH=908 HEIGHT=30 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Al crear
+el nuevo grupo, añadiremos el nombre o podremos dejar que el
+programa cree el grupo con un nombre que indique la fecha y hora de
+creación. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>De nuevo
+aparecerá una lista, esta vez siendo la lista de equipos para
+decidir cuál será el paso a tomar ahora.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_2042bf42.png" NAME="tutorial14" ALIGN=LEFT WIDTH=519 HEIGHT=200 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Podremos
+tanto escribir los equipos que deseamos, elegir todos los equipos
+disponibles, cargar desde un archivo (Con formato línea a línea)
+los equipos, o añadir posteriormente el o los equipos.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En este
+ejemplo se han añadido los equipos <I>teamA</I> y <I>teamC</I>, y
+con este último paso se ha creado correctamente la estructura de la
+asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Este
+asistente no creara aun la asignación de tareas, para ello debemos
+ir hacia la propia asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>cd
+[nombre de la asignación]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Si se
+producirse redundancia entre nombres en la organización, podremos
+usar el parámetro “assig” para ir directamente a la tarea.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>cd
+assig [nombre de la asignación]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_318e1ee3.png" NAME="tutorial15" ALIGN=LEFT WIDTH=664 HEIGHT=251 BORDER=0><BR CLEAR=LEFT><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Si
+no recordamos el nombre de la tarea, solo tendremos que ejecutar el
+comando assignments para que se muestre la lista de asignaciones.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Con
+comando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>info</I></FONT></FONT>
+veremos toda la información de la asignación en la que estemos
+situados. Dentro de este ámbito podremos añadir o modificar los
+alumnos, grupos o repositorios que necesitemos.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>En este
+caso Añadiremos un nuevo repositorio, en este caso en blanco, ya que
+queremos que nuestros alumnos empiecen a trabajar de cero.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Para ello
+usaremos el comando <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>add
+repo</I></FONT></FONT>.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Tras
+ejecutarlo veremos de nuevo el mismo menú de repositorio del
+asistente, donde elegiremos la opción que creamos conveniente.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_34e8621.png" NAME="tutorial16" ALIGN=LEFT WIDTH=876 HEIGHT=56 BORDER=0><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Esta vez
+veremos un paso adicional, la petición para añadirle un sufijo al
+repositorio. Esto será necesario cuando existan varios repositorios,
+ya que a la hora de crear la tarea a cada grupo o alumno el programa
+tomara como nombre el nombre de la asignación y el nombre del grupo
+o alumno. Esto hará necesario un identificador para la creación de
+nuevos repositorios. Los sufijos podrán ser modificados
+posteriormente mediante <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>change
+sufix</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_4a371cad.png" NAME="tutorial17" ALIGN=LEFT WIDTH=601 HEIGHT=131 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Por
+defecto el primer repositorio no tendrá un sufijo, pero si queremos
+podremos asignarle uno si lo viésemos conveniente.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>El último
+paso será la creación de la tarea, para ello usaremos el comando
+<I>make</I> que creara toda la asignación de repositorios.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>Make</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Se
+ejecutara por parámetros y empezara el proceso de creación y
+coronación de repositorios para el alumnado. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_4503f30.png" NAME="tutorial18" ALIGN=LEFT WIDTH=616 HEIGHT=189 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Si
+volvemos a la organización podremos comprobar que se han creado
+correctamente los repositorios.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>A partir
+de aquí se podrían usar diferentes utilidades del programa para
+facilitar el análisis y la corrección de tareas. Tales como la
+creación de Issues, la muestra de commits de un repositorio, etc.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Vamos por
+ejemplo a clonar los repositorios en nuestro sistema, para ello
+podremos o seguir en la organización y usar una expresión regular
+con el comando clone </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>clone
+/RegExp/</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>O volver
+a la tarea como haremos, y ejecutar clone sin parámetros para que
+descargue automáticamente los repositorios.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Javier-MemoriaTFG_html_m7ac24d25.png" NAME="tutorial19" ALIGN=LEFT WIDTH=899 HEIGHT=50 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Mediante
+el comando ! Podremos comprobar mediante un comando de bash, que
+efectivamente se han clonado los repositorios en el directorio de
+ejecución del programa.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>![comando
+de bash]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Cuando
+acabemos de trabajar con los repositorios, podemos borrar el
+contenido local mediante <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+clone files</I></FONT></FONT>. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>rm
+clone files</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Borraría
+todos los ficheros guardados en la lista de clonado de la aplicación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>rm
+clone files /RegExp/</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Borraría
+los repositorios indicados por el usuario.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<H1 CLASS="western"><A NAME="__RefHeading__483_1991373971"></A>Capítulo 5 Manual</H1>
+<H2 CLASS="western"><A NAME="__RefHeading__3419_63906294"></A>5.1 Comandos
+globales</H2>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>!		Ejecuta
+un comando bash en GHEDSH</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>cd		Te
+lleva al path indicado por parámetro.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>cd
+[path]</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Para
+volver al directorio raíz lo ejecutamos sin 				parámetro.	 </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>cd</I></FONT></FONT><FONT COLOR="#004586"><I>
+</I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Para
+volver al nivel anterior usaremos el parámetro “..”</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>cd
+[..] </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Por
+defecto buscara un Repositorio al final de la cola 			de prioridades,
+si quieres buscar un repositorio con 			mayor prioridad usaremos:</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>cd
+repo [nombre] </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>		</I></FONT></FONT>Para
+buscar por defecto una asignación usaremos el 			parámetro “assig”.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>		cd
+assig [nombre] </I></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>do		Ejecuta
+un script con comando GHEDSH desde un 			fichero. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>do
+[Fichero script]</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>exit		Salir
+del programa. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>help		Lista
+de comandos disponibles.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm clone
+files		Borra los repositorios clonados con GHEDSH.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>				Puedes
+usar una expresión regular para borrar 				los repositorios que tú
+prefieras.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>				<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+clone files /RegExp/</I></FONT></FONT> </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>		</I></FONT></FONT></FONT></P>
+<H2 CLASS="western"><A NAME="__RefHeading__2469_1644639458"></A>5.2 Comandos
+a nivel de Repositorio</H2>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>cat		Muestra
+los datos de un fichero. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>cat
+[fichero]</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>clone
+	Clona el actual repositorio. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>close
+issue	Abre un issue abierto.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><FONT COLOR="#004586"><I>			</I></FONT><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>close
+issue [Id del issue]</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>col		Muestra
+la lista de colaboradores de un repositorio.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>commits
+		Muestra la lista de commits del repositorio. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>Info			
+Muestra información sobre el repositorio. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>issue
+	Muestra el issue y sus comentarios. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>issue
+[Id del issue]</I></FONT></FONT> </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>issues
+	Muestra la lista de issues del repositorio. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>files		Muestra
+los ficheros del repositorio dado</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new
+issue		Crea un nuevo issue.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new issue
+comment		Añade un comentario a un issue.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>					<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+issue comment [Id del issue]</I></FONT></FONT><FONT COLOR="#004586"><I>
+</I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>open		Abre
+la web del repositorio de GitHub en el navegador por 		defecto. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>open
+issue	Abre un issue cerrado.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>			<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>open
+issue [Id del issue] </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>private	Cambia
+la privacidad de un repositorio. Espera 				“true” o “false”
+como parámetro.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>private
+[true]</I></FONT></FONT> </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__3423_63906294"></A>5.3 Comandos
+a nivel de Organización</H2>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>assignments		Muestra
+la lista de asignaciones.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>clone	Clona
+un repositorio.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		clone
+[repositorio] </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Puedes
+usar una expresión regular para clonar varios 			repositorios usando
+el parámetro “/”. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>clone
+/[RegExp]/</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>group	Muestra
+la información de un grupo específico. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><FONT COLOR="#004586"><I>		</I></FONT><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>group
+[nombre del grupo]</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>groups	Muestra
+la lista de grupos y los equipos que pertenecen a 		ellos.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new
+assignment	Crea una nueva asignación en tu organización.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>				<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+assignment [nombre de la asignacion</I></FONT></FONT><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace">]</FONT></FONT><FONT COLOR="#004586">
+</FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new
+group	Crear un nuevo grupo. Espera por parámetro el 				nombre y los
+grupos dados uno a uno.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>			<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+group [nombre del grupo] [team1] [team2] 				[team3] ...</I></FONT></FONT><FONT COLOR="#004586"><I>
+</I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>			Si
+quieres importar los equipos desde un archivo, 				usa el parámetro
+“-f”. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>			<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+group -f [name of the group] [file]</I></FONT></FONT> </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new
+people info	Recoge la información extendida desde un 					archivo a
+.csv encontrado en el path de 						ejecución. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>				<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+people info [nombre del fichero]</I></FONT></FONT> </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new
+relation	Crea una relación para la información extendida 				entre
+la ID de GitHub y un email desde un archivo 			.csv. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>			new
+relation [nombre del fichero]</I></FONT></FONT><FONT COLOR="#004586"><I>
+</I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new
+repository		Crea un nuevo repositorio en la organización.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><FONT COLOR="#004586"><I>				</I></FONT><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>new
+repository [nombre del repositorio] </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new
+team		Crea un nuevo equipo en la organización. Espera el 			nombre
+del equipo, y/o miembros dados uno por 				uno.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>			new
+team [nombre del equipo] [member1] [member2] 			[member3] ... </I></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>open		Abre
+la URL de la organización de GitHub en tu navegador 		por defecto.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Si se
+ha añadido información adicional, se puede abrir la 		web del
+perfil de GitHub de un usuario pasándolo por 			parámetro.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>open
+[ID de GitHub]</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Se
+puede usar una expresión regular para abrir varios 			usuarios. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>open
+/RegExp/ </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Puedes
+abrir un campo específico si este contiene una 			URL. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>open
+[user] [Nombre del campo]</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Si no
+se desea poner el campo, se puede hacer una 			búsqueda en los
+campos con parte de la URL que se 			quiera abrir.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>open
+[user] /[parte de la URL]/</I></FONT></FONT><FONT COLOR="#004586"><I>
+</I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Cambien
+se puede usar una expresión regular para abrir 		varios usuarios a
+la vez con ese tipo de búsqueda. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>open
+/RegExp/ /[part of the URL]/</I></FONT></FONT><FONT COLOR="#004586"><I>
+</I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>people	Muestra
+los miembros de la organización. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>people</I></FONT></FONT>
+</FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Si
+añades el parámetro “info”, se mostrara la información
+		extendida.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>people
+info</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Para
+encontrar a alguien específico en la información 			extendida,
+puedes dar la ID de GitHub por parámetro. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>people
+info [github id]</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Puedes
+usar una expresión regular que buscaría por cada 		campo, usando el
+parámetro “/”. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>people
+info /[RegExp]/</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>repos	Lista
+los repositorios de la organización.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Usa el
+parámetro “-a” para mostrar directamente la lista 		completa sin
+interrupciones. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>repos
+-a </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Puedes
+usar una expresión regular para mejorar la 			búsqueda usando el
+parámetro “/”</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>repos
+/[RegExp]/</I></FONT></FONT><FONT COLOR="#004586"><I> </I></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm
+group		Borra un grupo</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>			<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+group [name of the group]</I></FONT></FONT> </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm people
+info		Borra la información extendida de una clase. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm
+repository		Borra un repositorio en la organización.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>				<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+repository [nombre del repositorio]</I></FONT></FONT><FONT FACE="Consolas, Liberation Mono, Courier, monospace">
+</FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm
+team		Borra un equipo en la organización. Espera el 				nombre del
+equipo.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><FONT FACE="Consolas, Liberation Mono, Courier, monospace">			</FONT><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+team [nombre del equipo] </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>teams		Muestra
+los equipos de la organización. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__3425_63906294"></A>5.4 Comandos
+a nivel de Asignaciones</H2>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>add group
+  	 Añade un nuevo grupo a la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>add repo 
+ 	 Añade o crea un repositorio para la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>add
+students   	 Añade nuevos estudiantes a la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>change
+repo   	 Cambia un repositorio de la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			
+<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>change
+repo [Numero del repositorio]</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>change
+sufix   	 Cambia el sufijo de un repositorio.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			
+<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>change
+sufix [numero del repositorio]</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586">
+</FONT><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>info  
+	Muestra la información de la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>make  
+	Crea el o los repositorios de la asignación en GitHUb 			para cada
+equipo de cada grupo o estudiante, 				dependiendo de las
+características de la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>open  
+	Abre la página en GitHub con la disposición de 				repositorios de
+la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm group 
+ 	 Borra un grupo de la lista de la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			 <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+group [name]</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			Para
+borrar todos los grupos de la lista, usaremos el 			parámetro
+“-all”.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+group -all</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm repo  
+		 Borra un repositorio de la lista de la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			<FONT COLOR="#004586"><I>
+</I></FONT><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+repo [id]</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"> </FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm
+student   	 Borra un estudiante de la lista de la asignación.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			 <FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+student [name]</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			Para
+borrar toda la lista de estudiantes usaremos el 			parámetro “-all”.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+student -all</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<H2 CLASS="western"><A NAME="__RefHeading__3427_63906294"></A>5.5 Comandos
+a nivel de Equipo</H2>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>add team
+member   	 Añade un miembro a aun equipo.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>			
+		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>add
+team member [nuevo miembro]</I></FONT></FONT></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>people  
+	Muestra los miembros del equipo.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>open  
+	Abre la URL del equipo en GitHub.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>repos  
+	Muestra los repositorios del equipo.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>		Usa
+el parámetro “-a” para mostrar directamente la 			lista
+	completa sin interrupciones. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>repos
+-a </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Puedes
+usar una expresión regular para mejorar la 			búsqueda usando el
+parámetro “/”</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>		repos
+/[RegExp]/</I></FONT></FONT></FONT></P>
+<H2 CLASS="western"><A NAME="__RefHeading__3429_63906294"></A>5.6 Comandos
+a nivel de Usuario</H2>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>clone	Clona
+un repositorio.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		clone
+[repositorio] </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Puedes
+usar una expresión regular para clonar varios 			repositorios usando
+el parámetro “/”. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>		clone
+/[RegExp]/ </I></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>new
+repository   	Crea un repositorio en tu cuenta personal.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586">
+  <FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>				new
+repository [nombre del repositorio]</I></FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>open  
+	Abre el perfil del usuario en la web de GitHub.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>orgs  
+	Muestra las organizaciones del usuario.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>repos  
+	Muestra tus repositorios.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>		Usa
+el parámetro “-a” para mostrar directamente la 			lista
+	completa sin interrupciones. </FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>repos
+-a </I></FONT></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>		Puedes
+usar una expresión regular para mejorar la 			búsqueda usando el
+parámetro “/”</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><FONT SIZE=4><I>		repos
+/[RegExp]/ </I></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"> </FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4>rm
+repository   	Borra un repositorio del usuario.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-style: normal; font-weight: normal">
+<FONT COLOR="#000000">   <FONT FACE="LM Roman 10"><FONT SIZE=4>				<FONT COLOR="#004586"><FONT FACE="Consolas, Liberation Mono, Courier, monospace"><I>rm
+repository [nombre del repositorio]</I></FONT></FONT></FONT></FONT></FONT></P>
+<H1 CLASS="western"><A NAME="__RefHeading__485_1991373971"></A>Capítulo 6 Conclusiones
+y líneas futuras</H1>
+<P CLASS="western" STYLE="text-indent: 0cm">Si bien existen
+aplicaciones proporcionadas por GitHub, creo que mi trabajo ha creado
+una buena alternativa dando más funcionalidades para el usuario y
+buscando un nuevo enfoque de uso. Además, el hecho de haber
+trabajado aprendiendo las necesidades reales de un profesor hace que
+en cuestiones de utilidad, este por delante de las aplicaciones
+oficiales. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">La creación de este
+proyecto me ha ayudado a tener más experiencia con el uso y el
+manejo de las API, además de mejorar mis conocimientos de Ruby.
+También me ha dado la oportunidad de desarrollar un programa
+pensando en su instalación en otro sistema, algo de lo que carecía
+de experiencia y ha supuesto una valiosa experiencia.</P>
+<P CLASS="western" STYLE="text-indent: 0cm">En mi plan de trabajo de
+futuro sobre la aplicación, pretendo añadir nuevas utilidades, y
+además pensar en el uso del programa no solo desde el enfoque del
+profesor, sino la posibilidad de uso del alumno. También espero la
+posibilidad de poder actualizar datos entre este proyecto y las demás
+herramientas oficiales, algo que en la actualidad no es posible. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">He de agradecer a mi
+tutor Casiano Rodríguez León, por ofrecerme la oportunidad de crear
+este proyecto, además de por toda su ayuda dada. El crear algo desde
+una necesidad y el pensar y buscar soluciones a un problema, ha sido
+una de las razones por las que siempre he querido ser informático.
+Por lo que personalmente  haber realizado este proyecto me ha
+resultado muy satisfactorio, y creo que ha sido la mejor manera de
+terminar mi carrera y reafirmarme sobre mis futuros proyectos
+profesionales. 
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">Gracias a todos por leer
+esta memoria, espero que les haya gustado mi trabajo.</P>
+<H1 CLASS="western"><A NAME="__RefHeading__487_1991373971"></A>Capítulo 7 Summary
+and Conclusions</H1>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN LANG="en-US"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">While
+aplications given for GitHub do exist, I belive my work has created a
+good alternative, providing more functionalities and a new
+perspective of usage</SPAN></SPAN></SPAN></FONT></FONT></FONT><FONT FACE="LM Roman 10"><FONT SIZE=4><SPAN LANG="en-US">.
+</SPAN></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">In</SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><SPAN LANG="en-US"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">
+addition, to be able to work and learn simultaneously about the real
+necessities of a teacher, adds more value to this project in
+comparison to the official applications in matters of utility.</SPAN></SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><SPAN LANG="en-US">
+</SPAN></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT FACE="LM Roman 10"><FONT SIZE=4><FONT COLOR="#000000"><SPAN LANG="en-US"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">The
+creation of this project has helped me to earn more experience with
+the usage of the API system, and has also improven my knowledge of
+Ruby.</SPAN></SPAN></SPAN></FONT><FONT COLOR="#000000"><SPAN LANG="en-US"><SPAN STYLE="font-weight: normal">
+</SPAN></SPAN></FONT><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><SPAN LANG="en-US"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">It
+has also given me the opportunity to develop a program bearing its
+installation in another system in mind, and that was a valuable
+experience. </SPAN></SPAN></SPAN></FONT></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN LANG="en-US"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">Regarding
+my future work about this application, I pretend to add new utilities
+and revise the program usage not only from a teacher's but also from
+a pupil's point of view.</SPAN></SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN LANG="en-US"><SPAN STYLE="font-weight: normal">
+</SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN LANG="en-US"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">I
+hope that it will be possible to update data between this project and
+the official applications, which cannot yet be done</SPAN></SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN LANG="en-US">.</SPAN></FONT></FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="text-indent: 0cm"><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">I
+want to express my gratitude towards my tutor, Casiano Rodríguez
+León, for giving me the oportunity to create this project, and for
+all his help. </SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">To
+be able to create something out of a necessity, and to think and look
+for solutions to concrete problems, has been one of the main reasons
+I have always wanted to become a computer engineer. Therefore,
+working on this project has been very satisfactory for me, and I
+strongly believe that it was the best way to finish my career while
+reafirming myself about my future profesional projects. </SPAN></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4>
+</FONT></FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="text-indent: 0cm; font-weight: normal">
+<FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4><SPAN STYLE="font-style: normal">Thank
+you for reading this memory. I hope that you enjoyed my work.</SPAN> </FONT></FONT></FONT>
+</P>
+<H1 CLASS="western"><A NAME="__RefHeading__489_1991373971"></A>Capítulo 8 Presupuesto</H1>
+<H2 CLASS="western"><A NAME="__RefHeading__3471_63906294"></A>8.1 Coste
+total</H2>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+<FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4>Se han
+empleado unos seis meses de trabajo para desarrollar todo el
+proyecto. Aplicando la media de sueldo en España para un
+desarrollador, implicarían un gasto de 1600 euros al mes.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%; text-decoration: none">
+<FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4>Esto
+haría unos 9600 euros en gastos de desarrollo y mano de obra. Todo
+ello sin pensar en el futuro mantenimiento de la aplicación.</FONT></FONT></FONT></P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%; text-decoration: none">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="text-decoration: none"><A NAME="__RefHeading__3473_63906294"></A>
+<FONT COLOR="#000000"><FONT SIZE=5>8.2 Obtención de ingresos</FONT></FONT></H2>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%; text-decoration: none">
+<BR>
+</P>
+<P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0cm; line-height: 100%; text-decoration: none">
+<FONT COLOR="#000000"><FONT FACE="LM ROMAN 10"><FONT SIZE=4>Una
+manera de obtener mayores ingresos con la aplicación podría ser el
+ofrecer a los usuarios que quisiesen una versión con más
+utilidades, o el desarrollo de nuevos métodos de manera especifica
+para algún usuario o entidad de enseñanza que pueda ofrecer
+interés. Al ser una aplicación de software libre, una versión
+“premium” sería publicitada por un precio más bien simbólico,
+mientras que el desarrollo más específico y personalizado tendría
+que verse sujeto a un análisis según los requisitos del interesado.</FONT></FONT></FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<H1 CLASS="western"><A NAME="__RefHeading__493_1991373971"></A><A NAME="9.Bibliografía|outline"></A><A NAME="9.Bibliografía|outline"></A><A NAME="9.Bibliografía|outline"></A><A NAME="9.Bibliografía|outline"></A><A NAME="9.Bibliografía|outline"></A>
+Capítulo 9 Bibliografía</H1>
+<P CLASS="western" STYLE="text-indent: 0cm">[<A HREF="#1.1.¿Que es GitHub Education_|outline">1</A>]
+GitHub Education <A HREF="https://education.github.com/">https://education.github.com/</A></P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">[<A HREF="#1.2.Antecedentes y situación actual|outline">2</A>]
+Repositorio Teacher's Pet</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><A HREF="https://github.com/education/teachers_pet">https://github.com/education/teachers_pet</A></P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT SIZE=4><SPAN STYLE="font-weight: normal">[</SPAN></FONT><A HREF="#1.2.Antecedentes y situación actual|outline"><FONT SIZE=4><SPAN STYLE="font-weight: normal">3</SPAN></FONT></A><FONT SIZE=4><SPAN STYLE="font-weight: normal">]
+GitHub Classroom: </SPAN></FONT><A HREF="https://classroom.github.com/"><FONT SIZE=4><SPAN STYLE="font-weight: normal">https://classroom.github.com/</SPAN></FONT></A></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT SIZE=4><SPAN STYLE="font-weight: normal">[</SPAN></FONT><A HREF="#3.1.Estudio sobre el funcionamiento de la API de GitHub|outline"><FONT SIZE=4><SPAN STYLE="font-weight: normal">4</SPAN></FONT></A><FONT SIZE=4><SPAN STYLE="font-weight: normal">]
+GitHub Developer web </SPAN></FONT><A HREF="https://developer.github.com/v3/"><FONT SIZE=4><SPAN STYLE="font-weight: normal">https://developer.github.com/v3/</SPAN></FONT></A></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><FONT SIZE=4>[<A HREF="#3.1.1.Uso de la librería Octokit|outline">5</A>]
+Octokit Api</FONT></P>
+<P CLASS="western" STYLE="text-indent: 0cm"><A HREF="https://www.rubydoc.info/github/pengwynn/octokit/Octokit"><FONT SIZE=4><SPAN STYLE="font-weight: normal">https://www.rubydoc.info/github/pengwynn/octokit/Octokit</SPAN></FONT></A><FONT SIZE=4><SPAN STYLE="font-weight: normal">
+</SPAN></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT SIZE=4><SPAN STYLE="font-weight: normal">[6]
+Documentación Ruby </SPAN></FONT><A HREF="https://ruby-doc.org/core-1.9.3/"><FONT SIZE=4><SPAN STYLE="font-weight: normal">https://ruby-doc.org/core-1.9.3/</SPAN></FONT></A></P>
+<P CLASS="western" STYLE="text-indent: 0cm; font-weight: normal"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><FONT SIZE=4><SPAN STYLE="font-weight: normal">[7]
+Stackoverflow 	</SPAN></FONT><A HREF="http://stackoverflow.com/">http://stackoverflow.com/</A><FONT COLOR="#000000"><FONT FACE="LM Roman 10"><FONT SIZE=4><SPAN STYLE="font-weight: normal">
+</SPAN></FONT></FONT></FONT>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><BR><BR>
+</P>
+<P CLASS="western" STYLE="text-indent: 0cm">[8] Repositorio GHEDSH</P>
+<P CLASS="western" STYLE="text-indent: 0cm"><A HREF="https://github.com/ULL-ESIT-GRADOII-TFG/ghedsh">https://github.com/ULL-ESIT-GRADOII-TFG/ghedsh</A></P>
+<P CLASS="western" STYLE="text-indent: 0cm"><A NAME="__RefHeading__3453_63906294"></A>
+<BR><BR>
+</P>
+<OL START=9>
+	<OL START=2>
+		<P CLASS="western" STYLE="text-indent: 0cm">[9] Pagina GHEDSH en
+		RubyGems</P>
+	</OL>
+</OL>
+<P CLASS="western" STYLE="text-indent: 0cm"><A HREF="https://rubygems.org/gems/ghedsh/versions/1.0.0">https://rubygems.org/gems/ghedsh/versions/1.0.0</A></P>
+</BODY>
+</HTML>
