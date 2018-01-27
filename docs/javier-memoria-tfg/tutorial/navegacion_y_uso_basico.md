@@ -1,7 +1,5 @@
 ## Navegación y uso básico {#navegaci-n-y-uso-b-sico}
 
-1.  
-
 Tras ejecutar el programa por primera vez, no encontraremos en el nivel de usuario.
 
 Lo primero que haremos es buscar nuestros repositorios, para eso usaremos el comando:
