@@ -1,4 +1,3 @@
-![](http://i125.photobucket.com/albums/p79/NooK1e_RG/ghedsh2_zpsdsdlzg1t.png)
 # GITHUB EDUCATION SHELL
 
 A command line program following the philosophy of GitHub Education.
@@ -353,4 +352,5 @@ Dentro de la asignacion, se activara el proceso de añadido de groups. Entre las
 ## Aditional information
 
 * [Github Education](https://education.github.com/)
-* [Memoria de Trabajo Fin de Grado de Javier Clemente](https://riull.ull.es/xmlui/handle/915/5117?show=full)
+* [Memoria de Trabajo Fin de Grado de Javier Clemente](https://github.com/ULL-ESIT-GRADOII-TFG/ghedsh/blob/master/docs/Javier-clemente-MemoriaTFG-ghedsh.pdf) (en GitHub)
+* [Memoria de Trabajo Fin de Grado de Javier Clemente](https://riull.ull.es/xmlui/handle/915/5117?show=full) (en https://riull.ull.es)
