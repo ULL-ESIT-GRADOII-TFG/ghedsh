@@ -2,8 +2,6 @@
 
 ### Consultas y datos recibidos por la API {#consultas-y-datos-recibidos-por-la-api}
 
-1.  1.  1.  
-
 La ejecución de las consultas a veces mostraba cierta inconsistencia a la hora de devolver los resultados, sobretodo cuando no se encontraban datos que retornar. Por lo que era posible que en consultas similares se enviaran datos “vacíos”, o la API retornara fallo y por consecuencia parase la ejecución del programa.
 
 Esto hizo que tuviese que hacer uso del manejo excepciones en cada consulta que no retornase datos, a base de probar y decidir que consulta necesitaba especial atención.
