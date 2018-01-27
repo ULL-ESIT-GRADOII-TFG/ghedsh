@@ -163,6 +163,47 @@ people info <usuario>
 ```
 Muestra la informacion extendida de un miembro especifico de una organizacion.
 
+```
+user>organization> new relation file.csv
+```
+Esta orden provee un mecanismo para ampliar posteriormente 
+la información sobre la gente/estudiantes (`people`) en la organización.
+Establece una `relación` entre el nombre de usuario GitHub y un campo que servirá para la identificación
+del usuario en la institución educativa.
+
+En este ejemplo se establece el enlace entre la clave primaria de github (el nombre de usuario github)
+y el email del alumno/profesor en la universidad:
+
+```
+crguezl>ULL-ESIT-GRADOII-TFG> new relation tfg-people.csv
+```
+El fichero `tfg-people.csv` contiene lo siguiente:
+```
+~/ghedsh(master)]$ cat tfg-people.csv 
+"github","mail"
+"alu0100505023","Clemente.ull.edu.es"
+"alu0100769579","Raul.ull.edu.es"
+"alu0100816167","Carlos.ull.edu.es"
+"berkanrhdz","Berkan.ull.edu.es"
+"Cicko","Rudolf.ull.edu.es"
+"crguezl","Casiano.ull.edu.es"
+"EleDiaz","Eleazar.ull.edu.es"
+"jjlabrador","JJ.ull.edu.es"
+"Losnen","Samuel.ull.edu.es"
+"sokartema","Jazer.ull.edu.es"
+```
+Ahora podemos consultar de nuevo la información sobre los miembros:
+```
+crguezl>ULL-ESIT-GRADOII-TFG> people info /alu/
+
+alu0100505023
+Github:	 alu0100505023
+Email:	 Clemente.ull.edu.es
+
+...
+```
+
+
 ```sh
 new people info	<file>
 ```
@@ -182,35 +223,49 @@ Ejemplo del contenido del archivo .csv. A partir de la primera linea de campos, 
 
 > "studentalpha1","alu321","Paco","Gutierrez","alu321@ull.edu.es","classroom-testing",","http://st.github.com"
 
-```
-user>organization> new relation file.csv
-```
-Esta orden provee un mecanismo para ampliar posteriormente 
-la información sobre la gente/estudiantes (`people`) en la organización.
-Establece una `relación` entre el nombre de usuario GitHub y un campo que servirá para la identificación
-del usuario en la institución educativa.
-
-En este ejemplo se establece el enlace entre la clave primaria de github (el nombre de usuario github)
-y el email del alumno/profesor en la universidad:
+Ejemplo:
 
 ```
-crguezl>ULL-ESIT-GRADOII-TFG> new relation tfg-people.csv
+crguezl>ULL-ESIT-GRADOII-TFG> new people info tfg-people-2
+
+Fields found: 
+"github"
+"mail"
+"nota"
 ```
-El fichero `tfg-people.csv` contiene lo siguiente:
+El fichero `tfg-people-2.csv` contiene:
 ```
-~/ghedsh(master)]$ cat tfg-people.csv 
-"github","mail"
-"xlu4144545423","glenente.ull.edu.es"
-"xlu4144769579","Rxul.ull.edu.es"
-"xlu4144816167","dxrlos.ull.edu.es"
-"berkxnrhdz","ferkxn.ull.edu.es"
-"Cicko","Rudolf.ull.edu.es"
-"crguezl","cxsixno.ull.edu.es"
-"EleDixz","flexzxr.ull.edu.es"
-"jjlxbrxdor","jj.ull.edu.es"
-"Lusnen","Sxmudl.ull.edu.es"
-"sokxrtemx","Jxzer.ull.edu.es"
+[~/TFGsrc/clementeTFG/ghedsh(master)]$ cat tfg-people-2.csv 
+"github","mail","nota"
+"alu0100505023","Clemente.ull.edu.es",4
+"alu0100769579","Raul.ull.edu.es",6
+"alu0100816167","Carlos.ull.edu.es",7
+"berkanrhdz","Berkan.ull.edu.es",9
+"Cicko","Rudolf.ull.edu.es",8
+"crguezl","Casiano.ull.edu.es",5
+"EleDiaz","Eleazar.ull.edu.es",6
+"jjlabrador","JJ.ull.edu.es",9
+"Losnen","Samuel.ull.edu.es",8
+"sokartema","Jazer.ull.edu.es",9
 ```
+Ahora podemos consultar la información añadida:
+```
+crguezl>ULL-ESIT-GRADOII-TFG> people info /alu.*6/
+
+alu0100769579
+Github:	 alu0100769579
+Email:	 Raul.ull.edu.es
+Nota:	 6
+
+
+alu0100816167
+Github:	 alu0100816167
+Email:	 Carlos.ull.edu.es
+Nota:	 7
+```
+
+
+
 
 ```sh
 files <path>
