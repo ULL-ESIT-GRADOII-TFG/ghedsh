@@ -1,10 +1,6 @@
 ## Estudio sobre el funcionamiento de la API de GitHub {#estudio-sobre-el-funcionamiento-de-la-api-de-github}
 
-Para poder poder hacer uso de los datos de GitHub, así como modificarlos y subirlos a su plataforma, se hará uso la interfaz de programación de aplicaciones web “GitHub API v3”
-
-[4]
-
-.
+Para poder poder hacer uso de los datos de GitHub, así como modificarlos y subirlos a su plataforma, se hará uso la interfaz de programación de aplicaciones web “GitHub API v3” [4].
 
 Actualmente existen para esta API varias librerías que permiten el intercambio de datos mediante peticiones HTTPS y envió de datos a través del formato de texto ligero JSON.
 
@@ -20,10 +16,7 @@ Lenguajes en los que esta disponible Octokit:
 
 Además de la oficial de GitHub, se pueden encontrar bastantes librerías no oficiales en diferentes lenguajes tales como: Ruby, Python, Go, Java, Haskell, Javascript, Julia, Pearl, Php o Ruby.
 
-Finalmente, se optó por utilizar la librería oficial Octokit
-
-[5]
-
+Finalmente, se optó por utilizar la librería oficial Octokit [5] 
 , para el lenguaje de programación Ruby. Ya que ofrecía una mayor sensación de fiabilidad, estar mejor documentada y haber sido usada también en la herramienta _Teacher&#039;s Pet_ diseñada por la propia plataforma GitHub.
 
 ### Uso de la librería Octokit {#uso-de-la-librer-a-octokit}
