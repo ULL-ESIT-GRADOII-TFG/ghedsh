@@ -350,7 +350,7 @@ add group
 Dentro de la asignacion, se activara el proceso de añadido de groups. Entre las opciones a elegir, estaran la de añadir directamente grupos ya creados o crear uno desde cero. Si se crea uno desde cero se pedira un nombre o se creara un nombre con la fecha actual, despues se añadiran los equipos que perteneceran al grupo. Si ya existian grupos en la asignacion, este comando añadira otro mas a la lista.
 
 
-##Aditional information
+## Aditional information
 
 * [GHEDSH extended info](https://alu0100505023.gitbooks.io/ghedsh/content/en/)
 
