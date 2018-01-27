@@ -352,6 +352,5 @@ Dentro de la asignacion, se activara el proceso de añadido de groups. Entre las
 
 ## Aditional information
 
-* [GHEDSH extended info](https://alu0100505023.gitbooks.io/ghedsh/content/en/)
-
 * [Github Education](https://education.github.com/)
+* [Memoria de Trabajo Fin de Grado de Javier Clemente](https://riull.ull.es/xmlui/handle/915/5117?show=full)
