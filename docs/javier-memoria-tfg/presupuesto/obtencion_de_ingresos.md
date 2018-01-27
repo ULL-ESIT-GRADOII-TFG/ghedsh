@@ -1,0 +1,3 @@
+## Obtención de ingresos {#obtenci-n-de-ingresos}
+
+Una manera de obtener mayores ingresos con la aplicación podría ser el ofrecer a los usuarios que quisiesen una versión con más utilidades, o el desarrollo de nuevos métodos de manera especifica para algún usuario o entidad de enseñanza que pueda ofrecer interés. Al ser una aplicación de software libre, una versión “premium” sería publicitada por un precio más bien simbólico, mientras que el desarrollo más específico y personalizado tendría que verse sujeto a un análisis según los requisitos del interesado.

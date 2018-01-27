@@ -1,0 +1,665 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Manejando asignaciones · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../manual/" />
+    
+    
+    <link rel="prev" href="organizando_la_clase.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    ghedsh memoria de TFG de Javier Clemente
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../introduccion/">
+            
+                <a href="../introduccion/">
+            
+                    
+                    Introducción
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../introduccion/que_es_github_education.html">
+            
+                <a href="../introduccion/que_es_github_education.html">
+            
+                    
+                    ¿Que es GitHub Education?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../introduccion/antecedentes_y_situacion_actual.html">
+            
+                <a href="../introduccion/antecedentes_y_situacion_actual.html">
+            
+                    
+                    Antecedentes y situación actual
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../objetivos_y_plan_de_trabajo/">
+            
+                <a href="../objetivos_y_plan_de_trabajo/">
+            
+                    
+                    Objetivos y plan de trabajo
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../objetivos_y_plan_de_trabajo/objetivos.html">
+            
+                <a href="../objetivos_y_plan_de_trabajo/objetivos.html">
+            
+                    
+                    Objetivos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../objetivos_y_plan_de_trabajo/22_plan_de_trabajo.html">
+            
+                <a href="../objetivos_y_plan_de_trabajo/22_plan_de_trabajo.html">
+            
+                    
+                    2.2 Plan de trabajo
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../desarrollo_de_la_aplicacion/">
+            
+                <a href="../desarrollo_de_la_aplicacion/">
+            
+                    
+                    Desarrollo de la aplicación
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../desarrollo_de_la_aplicacion/estudio_sobre_el_funcionamiento_de_la_api_de_githu.html">
+            
+                <a href="../desarrollo_de_la_aplicacion/estudio_sobre_el_funcionamiento_de_la_api_de_githu.html">
+            
+                    
+                    Estudio sobre el funcionamiento de la API de GitHub
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../desarrollo_de_la_aplicacion/github_education_shell.html">
+            
+                <a href="../desarrollo_de_la_aplicacion/github_education_shell.html">
+            
+                    
+                    GitHub Education Shell
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../desarrollo_de_la_aplicacion/problemas_encontrados_y_soluciones.html">
+            
+                <a href="../desarrollo_de_la_aplicacion/problemas_encontrados_y_soluciones.html">
+            
+                    
+                    Problemas encontrados y soluciones
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Tutorial
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="navegacion_y_uso_basico.html">
+            
+                <a href="navegacion_y_uso_basico.html">
+            
+                    
+                    Navegación y uso básico
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="organizando_la_clase.html">
+            
+                <a href="organizando_la_clase.html">
+            
+                    
+                    Organizando la clase
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.5.3" data-path="manejando_asignaciones.html">
+            
+                <a href="manejando_asignaciones.html">
+            
+                    
+                    Manejando asignaciones
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../manual/">
+            
+                <a href="../manual/">
+            
+                    
+                    Manual
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../manual/comandos_globales.html">
+            
+                <a href="../manual/comandos_globales.html">
+            
+                    
+                    Comandos globales
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../manual/comandos_a_nivel_de_repositorio.html">
+            
+                <a href="../manual/comandos_a_nivel_de_repositorio.html">
+            
+                    
+                    Comandos a nivel de Repositorio
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="../manual/comandos_a_nivel_de_organizacion.html">
+            
+                <a href="../manual/comandos_a_nivel_de_organizacion.html">
+            
+                    
+                    Comandos a nivel de Organización
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="../manual/comandos_a_nivel_de_asignaciones.html">
+            
+                <a href="../manual/comandos_a_nivel_de_asignaciones.html">
+            
+                    
+                    Comandos a nivel de Asignaciones
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="../manual/comandos_a_nivel_de_equipo.html">
+            
+                <a href="../manual/comandos_a_nivel_de_equipo.html">
+            
+                    
+                    Comandos a nivel de Equipo
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="../manual/comandos_a_nivel_de_usuario.html">
+            
+                <a href="../manual/comandos_a_nivel_de_usuario.html">
+            
+                    
+                    Comandos a nivel de Usuario
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../conclusiones_y_lineas_futuras.html">
+            
+                <a href="../conclusiones_y_lineas_futuras.html">
+            
+                    
+                    Conclusiones y líneas futuras
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../summary_and_conclusions.html">
+            
+                <a href="../summary_and_conclusions.html">
+            
+                    
+                    Summary and Conclusions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../presupuesto/">
+            
+                <a href="../presupuesto/">
+            
+                    
+                    Presupuesto
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../presupuesto/coste_total.html">
+            
+                <a href="../presupuesto/coste_total.html">
+            
+                    
+                    Coste total
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../presupuesto/obtencion_de_ingresos.html">
+            
+                <a href="../presupuesto/obtencion_de_ingresos.html">
+            
+                    
+                    Obtención de ingresos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../bibliografia.html">
+            
+                <a href="../bibliografia.html">
+            
+                    
+                    Bibliografía
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Manejando asignaciones</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="manejando-asignaciones">Manejando asignaciones </h2>
+<p>Lo primero que debemos saber es que las tareas se podr&#xE1;n diferenciar entre asignaciones individuales o asignaciones grupales.</p>
+<p>&#xBF;Qu&#xE9; es un grupo? Un grupo de trabajo es una nueva categor&#xED;a donde se encontraran uno o varios equipos de trabajo.</p>
+<p>Podemos crear manualmente el grupo mediante el comando <em>new group</em>, o hacerlo mediante la creaci&#xF3;n de una tarea como se mostrara en el tutorial.</p>
+<p><img src="../assets/tutorial10.png" alt=""></p>
+<p>Mediante el comando <em>groups</em> podremos ver la lista de los grupos creados, donde se indicara el nombre del grupo, la lista de equipos y los estudiantes que est&#xE9;n en ellos.</p>
+<p>Para crear la asignaci&#xF3;n usaremos el comando <em>new assignment</em>, que iniciara un asistente para la creaci&#xF3;n paso por paso de la tarea.</p>
+<p>new assignment [nombre de la asignaci&#xF3;n]</p>
+<p><img src="../assets/tutorial11.png" alt=""></p>
+<p>En este caso se ha optado por una tarea grupal, y como vemos lo primero que hace es pedirte un repositorio. Podemos asignarle un repositorio ya creado, crear un nuevo repositorio en blanco junto con un archivo <em>README.MD</em>, o no asignar nada por ahora.</p>
+<p><img src="../assets/tutorial12.png" alt=""></p>
+<p>El formato necesario ser&#xE1; usuario y el nombre del repositorio, u organizaci&#xF3;n y el nombre de repositorio. En este caso usaremos el repositorio <em>prct05</em> de la cuenta personal del usuario.</p>
+<p>Tras a&#xF1;adirlo, como hemos seleccionado una opci&#xF3;n grupal, nos preguntara que grupos queremos a&#xF1;adir y aparecer&#xE1; una lista de grupos ya creados para seleccionar el que queramos. En este caso queremos hacer un nuevo grupo, por lo que nos saltaremos este paso.</p>
+<p><img src="../assets/tutorial13.png" alt=""></p>
+<p>Al crear el nuevo grupo, a&#xF1;adiremos el nombre o podremos dejar que el programa cree el grupo con un nombre que indique la fecha y hora de creaci&#xF3;n.</p>
+<p>De nuevo aparecer&#xE1; una lista, esta vez siendo la lista de equipos para decidir cu&#xE1;l ser&#xE1; el paso a tomar ahora.</p>
+<p><img src="../assets/tutorial14.png" alt=""></p>
+<p>Podremos tanto escribir los equipos que deseamos, elegir todos los equipos disponibles, cargar desde un archivo (Con formato l&#xED;nea a l&#xED;nea) los equipos, o a&#xF1;adir posteriormente el o los equipos.</p>
+<p>En este ejemplo se han a&#xF1;adido los equipos <em>teamA</em> y <em>teamC</em>, y con este &#xFA;ltimo paso se ha creado correctamente la estructura de la asignaci&#xF3;n.</p>
+<p>Este asistente no creara aun la asignaci&#xF3;n de tareas, para ello debemos ir hacia la propia asignaci&#xF3;n.</p>
+<p>cd [nombre de la asignaci&#xF3;n]</p>
+<p>Si se producirse redundancia entre nombres en la organizaci&#xF3;n, podremos usar el par&#xE1;metro &#x201C;assig&#x201D; para ir directamente a la tarea.</p>
+<p>cd assig [nombre de la asignaci&#xF3;n]</p>
+<p><img src="../assets/tutorial15.png" alt="">Si no recordamos el nombre de la tarea, solo tendremos que ejecutar el comando assignments para que se muestre la lista de asignaciones.</p>
+<p>Con comando <em>info</em> veremos toda la informaci&#xF3;n de la asignaci&#xF3;n en la que estemos situados. Dentro de este &#xE1;mbito podremos a&#xF1;adir o modificar los alumnos, grupos o repositorios que necesitemos.</p>
+<p>En este caso A&#xF1;adiremos un nuevo repositorio, en este caso en blanco, ya que queremos que nuestros alumnos empiecen a trabajar de cero.</p>
+<p>Para ello usaremos el comando <em>add repo</em>.</p>
+<p>Tras ejecutarlo veremos de nuevo el mismo men&#xFA; de repositorio del asistente, donde elegiremos la opci&#xF3;n que creamos conveniente.</p>
+<p><img src="../assets/tutorial16.png" alt=""></p>
+<p>Esta vez veremos un paso adicional, la petici&#xF3;n para a&#xF1;adirle un sufijo al repositorio. Esto ser&#xE1; necesario cuando existan varios repositorios, ya que a la hora de crear la tarea a cada grupo o alumno el programa tomara como nombre el nombre de la asignaci&#xF3;n y el nombre del grupo o alumno. Esto har&#xE1; necesario un identificador para la creaci&#xF3;n de nuevos repositorios. Los sufijos podr&#xE1;n ser modificados posteriormente mediante <em>change sufix</em></p>
+<p><img src="../assets/tutorial17.png" alt=""></p>
+<p>Por defecto el primer repositorio no tendr&#xE1; un sufijo, pero si queremos podremos asignarle uno si lo vi&#xE9;semos conveniente.</p>
+<p>El &#xFA;ltimo paso ser&#xE1; la creaci&#xF3;n de la tarea, para ello usaremos el comando <em>make</em> que creara toda la asignaci&#xF3;n de repositorios.</p>
+<p>Make</p>
+<p>Se ejecutara por par&#xE1;metros y empezara el proceso de creaci&#xF3;n y coronaci&#xF3;n de repositorios para el alumnado.</p>
+<p><img src="../assets/tutorial18.png" alt=""></p>
+<p>Si volvemos a la organizaci&#xF3;n podremos comprobar que se han creado correctamente los repositorios.</p>
+<p>A partir de aqu&#xED; se podr&#xED;an usar diferentes utilidades del programa para facilitar el an&#xE1;lisis y la correcci&#xF3;n de tareas. Tales como la creaci&#xF3;n de Issues, la muestra de commits de un repositorio, etc.</p>
+<p>Vamos por ejemplo a clonar los repositorios en nuestro sistema, para ello podremos o seguir en la organizaci&#xF3;n y usar una expresi&#xF3;n regular con el comando clone</p>
+<p>clone /RegExp/</p>
+<p>O volver a la tarea como haremos, y ejecutar clone sin par&#xE1;metros para que descargue autom&#xE1;ticamente los repositorios.</p>
+<p><img src="../assets/tutorial19.png" alt=""></p>
+<p>Mediante el comando ! Podremos comprobar mediante un comando de bash, que efectivamente se han clonado los repositorios en el directorio de ejecuci&#xF3;n del programa.</p>
+<p>![comando de bash]</p>
+<p>Cuando acabemos de trabajar con los repositorios, podemos borrar el contenido local mediante <em>rm clone files</em>.</p>
+<p>rm clone files</p>
+<p>Borrar&#xED;a todos los ficheros guardados en la lista de clonado de la aplicaci&#xF3;n.</p>
+<p>rm clone files /RegExp/</p>
+<p>Borrar&#xED;a los repositorios indicados por el usuario.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="organizando_la_clase.html" class="navigation navigation-prev " aria-label="Previous page: Organizando la clase">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../manual/" class="navigation navigation-next " aria-label="Next page: Manual">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Manejando asignaciones","level":"1.5.3","depth":2,"next":{"title":"Manual","level":"1.6","depth":1,"path":"manual/README.md","ref":"manual/README.md","articles":[{"title":"Comandos globales","level":"1.6.1","depth":2,"path":"manual/comandos_globales.md","ref":"manual/comandos_globales.md","articles":[]},{"title":"Comandos a nivel de Repositorio","level":"1.6.2","depth":2,"path":"manual/comandos_a_nivel_de_repositorio.md","ref":"manual/comandos_a_nivel_de_repositorio.md","articles":[]},{"title":"Comandos a nivel de Organización","level":"1.6.3","depth":2,"path":"manual/comandos_a_nivel_de_organizacion.md","ref":"manual/comandos_a_nivel_de_organizacion.md","articles":[]},{"title":"Comandos a nivel de Asignaciones","level":"1.6.4","depth":2,"path":"manual/comandos_a_nivel_de_asignaciones.md","ref":"manual/comandos_a_nivel_de_asignaciones.md","articles":[]},{"title":"Comandos a nivel de Equipo","level":"1.6.5","depth":2,"path":"manual/comandos_a_nivel_de_equipo.md","ref":"manual/comandos_a_nivel_de_equipo.md","articles":[]},{"title":"Comandos a nivel de Usuario","level":"1.6.6","depth":2,"path":"manual/comandos_a_nivel_de_usuario.md","ref":"manual/comandos_a_nivel_de_usuario.md","articles":[]}]},"previous":{"title":"Organizando la clase","level":"1.5.2","depth":2,"path":"tutorial/organizando_la_clase.md","ref":"tutorial/organizando_la_clase.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tutorial/manejando_asignaciones.md","mtime":"2018-01-27T13:09:51.757Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-01-27T13:10:55.032Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
