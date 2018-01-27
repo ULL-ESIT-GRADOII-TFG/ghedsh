@@ -178,6 +178,35 @@ Ejemplo del contenido del archivo .csv. A partir de la primera linea de campos, 
 
 > "studentalpha1","alu321","Paco","Gutierrez","alu321@ull.edu.es","classroom-testing",","http://st.github.com"
 
+```
+user>organization> new relation file.csv
+```
+Esta orden provee un mecanismo para ampliar posteriormente 
+la información sobre la gente/estudiantes (`people`) en la organización.
+Establece una `relación` entre el nombre de usuario GitHub y un campo que servirá para la identificación
+del usuario en la institución educativa.
+
+En este ejemplo se establece el enlace entre la clave primaria de github (el nombre de usuario github)
+y el email del alumno/profesor en la universidad:
+
+```
+crguezl>ULL-ESIT-GRADOII-TFG> new relation tfg-people.csv
+```
+El fichero `tfg-people.csv` contiene lo siguiente:
+```
+~/ghedsh(master)]$ cat tfg-people.csv 
+"github","mail"
+"xlu4144545423","glenente.ull.edu.es"
+"xlu4144769579","Rxul.ull.edu.es"
+"xlu4144816167","dxrlos.ull.edu.es"
+"berkxnrhdz","ferkxn.ull.edu.es"
+"Cicko","Rudolf.ull.edu.es"
+"crguezl","cxsixno.ull.edu.es"
+"EleDixz","flexzxr.ull.edu.es"
+"jjlxbrxdor","jj.ull.edu.es"
+"Lusnen","Sxmudl.ull.edu.es"
+"sokxrtemx","Jxzer.ull.edu.es"
+```
 
 ```sh
 files <path>
