@@ -1,7 +1,5 @@
 ## Organizando la clase {#organizando-la-clase}
 
-1.  
-
 Siguiendo la metodología de GitHub Classroom, a partir de ahora trataremos a nuestra organización como una clase.
 
 Y lo primero será buscar nuestros alumnos. Para ello usaremos el siguiente comando:
@@ -16,13 +14,13 @@ Para resolver este problema se ha implementado un sistema de información extend
 
 El primer paso será obtener los emails de los alumnos, que serán relacionados con sus identificadores de GitHub. Si trabajamos con programas de docencia online como Moodle, podríamos crear una tarea para que el alumno los publique y así poder exportarlos al archivos csv posteriormente.
 
-“mail”,”github”
+                “mail”,”github”
 
-“studentbeta@gmail.com”,”studentbeta”
+                “studentbeta@gmail.com”,”studentbeta”
 
-“studentalpha1@hotmail.com”,”studentalpha1”
+                “studentalpha1@hotmail.com”,”studentalpha1”
 
-“alu0100505023@ull.edu.es”,”alu0100505023”
+                “alu0100505023@ull.edu.es”,”alu0100505023”
 
 Este podría ser el ejemplo del contenido de ese archivo csv. Primero colocaríamos los nombres de los campos en la primera línea, y en las siguientes lineas iríamos poniendo la información de cada alumno.
 
@@ -38,9 +36,9 @@ Tras la inserción de datos podremos mostrar todos los datos agregados con el co
 
 Si queremos buscar los datos de un alumno en cuestión podremos usar la Id de GitHub como parámetro o una expresión regular
 
-people info [Id de github]
+                          people info [Id de github]
 
-people info /RegExp/
+                          people info /RegExp/
 
 ![](../assets/tutorial7.png)
 
@@ -48,19 +46,19 @@ Este tipo de búsqueda podrá ampliarse a los diferentes campos que existan en l
 
 Este punto de la nueva relación se trata de un punto intermedio, ya que para completar la información posteriormente se utilizara la utilidad _new people info_.
 
-new people info [archivo csv]
+                          new people info [archivo csv]
 
 En el nuevo archivo csv colocaremos toda la información que queramos del alumno. Teniendo en cuenta que en las cabeceras deberá haber alguno de los dos campos que relacionen la información anteriormente guardada. Debe estar o el campo **_email_** o el **_identificador de GitHub_**.
 
 Ejemplo de información extendida más completa.
 
-“email”,”nombre”,”apellido”,”github-url”
+                            “email”,”nombre”,”apellido”,”github-url”
 
-&quot;studentbeta@gmail.com”,&quot;Martin&quot;,&quot;Rodriguez Escudero&quot;,&quot;https://github.com/studentbeta&quot;
+                  &quot;studentbeta@gmail.com”,&quot;Martin&quot;,&quot;Rodriguez Escudero&quot;,&quot;https://github.com/studentbeta&quot;
 
-“studentalpha1@hotmail.com”,&quot;Vicente&quot;,&quot;Garcia Martin&quot;,&quot;https://github.com/studentalpha1&quot;
+                  “studentalpha1@hotmail.com”,&quot;Vicente&quot;,&quot;Garcia Martin&quot;,&quot;https://github.com/studentalpha1&quot;
 
-“alu0100505023@ull.edu.es”,&quot;Javier&quot;,&quot;Rodriguez Gomez&quot;,&quot;[https://github.com/alu0100505023](https://github.com/alu0100505023)&quot;
+                  “alu0100505023@ull.edu.es”,&quot;Javier&quot;,&quot;Rodriguez Gomez&quot;,&quot;[https://github.com/alu0100505023](https://github.com/alu0100505023)&quot;
 
 Esta información sería añadida a la ya posteriormente recopilada.
 
@@ -76,15 +74,15 @@ En este caso hemos buscado un alumno cuyo alguno de sus campos case con “marti
 
 Como podemos ver en la información hemos guardado la página web de GitHub de los alumnos. Esto hará que usando el comando open podamos abrir en un navegador la pagina que deseamos ver.
 
-Open [ID de GitHub]
+                              Open [ID de GitHub]
 
 Abrir la web del perfil GitHub del alumno, si se encuentra información añadida.
 
-Open /RegExp/
+                              Open /RegExp/
 
 Abriría varios perfiles de GitbHub en el navegador por defecto. Por lo que aplicando el ejemplo anterior.
 
-Open /Martin/
+                                    Open /Martin/
 
 Mostraría las webs de los alumnos que casen con esa expresión.
 
@@ -92,8 +90,8 @@ Mostraría las webs de los alumnos que casen con esa expresión.
 
 Es posible abrir diferentes tipos de páginas, no solo perfiles de GitHub. Si por ejemplo queremos guardar el perfil de la plataforma Moodle del alumno, podríamos abrir las direcciones tal que:
 
-open [ID de GitHub] /Parte de la URL/
+                  open [ID de GitHub] /Parte de la URL/
 
-open /RegExp/ /Parte de la URL/
+                  open /RegExp/ /Parte de la URL/
 
 Por lo que ejecutando open /Rodriguez/i /moodle/ se abrirán las webs de la plataforma _Moodle_, de los alumnos que casen con _Rodriguez_, si estuviesen guardados esos datos.

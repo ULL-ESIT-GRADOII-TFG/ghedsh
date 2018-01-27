@@ -535,9 +535,6 @@
                                 <section class="normal markdown-section">
                                 
                                 <h2 id="organizando-la-clase">Organizando la clase </h2>
-<ol>
-<li></li>
-</ol>
 <p>Siguiendo la metodolog&#xED;a de GitHub Classroom, a partir de ahora trataremos a nuestra organizaci&#xF3;n como una clase.</p>
 <p>Y lo primero ser&#xE1; buscar nuestros alumnos. Para ello usaremos el siguiente comando:</p>
 <p>people</p>
@@ -545,47 +542,55 @@
 <p>Como vemos, se mostraran los identificadores de GitHub de cada alumno, lo cual a veces es un problema para reconocerlos sobretodo si la clase tiene muchos alumnos.</p>
 <p>Para resolver este problema se ha implementado un sistema de informaci&#xF3;n extendida. B&#xE1;sicamente importaremos datos de los alumnos y los guardaremos en el sistema, en cada clase donde est&#xE9;n asignados. Para ello usaremos un sistema de carga de archivos en formato <em>comma-separated-values</em> o csv.</p>
 <p>El primer paso ser&#xE1; obtener los emails de los alumnos, que ser&#xE1;n relacionados con sus identificadores de GitHub. Si trabajamos con programas de docencia online como Moodle, podr&#xED;amos crear una tarea para que el alumno los publique y as&#xED; poder exportarlos al archivos csv posteriormente.</p>
-<p>&#x201C;mail&#x201D;,&#x201D;github&#x201D;</p>
-<p>&#x201C;studentbeta@gmail.com&#x201D;,&#x201D;studentbeta&#x201D;</p>
-<p>&#x201C;studentalpha1@hotmail.com&#x201D;,&#x201D;studentalpha1&#x201D;</p>
-<p>&#x201C;alu0100505023@ull.edu.es&#x201D;,&#x201D;alu0100505023&#x201D;</p>
-<p>Este podr&#xED;a ser el ejemplo del contenido de ese archivo csv. Primero colocar&#xED;amos los nombres de los campos en la primera l&#xED;nea, y en las siguientes lineas ir&#xED;amos poniendo la informaci&#xF3;n de cada alumno.</p>
+<pre><code>            &#x201C;mail&#x201D;,&#x201D;github&#x201D;
+
+            &#x201C;studentbeta@gmail.com&#x201D;,&#x201D;studentbeta&#x201D;
+
+            &#x201C;studentalpha1@hotmail.com&#x201D;,&#x201D;studentalpha1&#x201D;
+
+            &#x201C;alu0100505023@ull.edu.es&#x201D;,&#x201D;alu0100505023&#x201D;
+</code></pre><p>Este podr&#xED;a ser el ejemplo del contenido de ese archivo csv. Primero colocar&#xED;amos los nombres de los campos en la primera l&#xED;nea, y en las siguientes lineas ir&#xED;amos poniendo la informaci&#xF3;n de cada alumno.</p>
 <p>Para la carga de esta relaci&#xF3;n entre GitHub y la informaci&#xF3;n de los alumnos, usaremos el comando <em>new relation.</em></p>
 <p>New relation [archivo.csv]</p>
 <p>Hay que tener en cuenta que si el alumno no est&#xE1; registrado en la organizaci&#xF3;n, se descartara directamente toda la informaci&#xF3;n que se vaya a registrar de &#xE9;l.</p>
 <p><img src="../assets/tutorial6.png" alt=""></p>
 <p>Tras la inserci&#xF3;n de datos podremos mostrar todos los datos agregados con el comando <em>people info</em>.</p>
 <p>Si queremos buscar los datos de un alumno en cuesti&#xF3;n podremos usar la Id de GitHub como par&#xE1;metro o una expresi&#xF3;n regular</p>
-<p>people info [Id de github]</p>
-<p>people info /RegExp/</p>
-<p><img src="../assets/tutorial7.png" alt=""></p>
+<pre><code>                      people info [Id de github]
+
+                      people info /RegExp/
+</code></pre><p><img src="../assets/tutorial7.png" alt=""></p>
 <p>Este tipo de b&#xFA;squeda podr&#xE1; ampliarse a los diferentes campos que existan en la informaci&#xF3;n adicional, no solamente al identificador de usuario.</p>
 <p>Este punto de la nueva relaci&#xF3;n se trata de un punto intermedio, ya que para completar la informaci&#xF3;n posteriormente se utilizara la utilidad <em>new people info</em>.</p>
-<p>new people info [archivo csv]</p>
-<p>En el nuevo archivo csv colocaremos toda la informaci&#xF3;n que queramos del alumno. Teniendo en cuenta que en las cabeceras deber&#xE1; haber alguno de los dos campos que relacionen la informaci&#xF3;n anteriormente guardada. Debe estar o el campo <strong><em>email</em></strong> o el <strong><em>identificador de GitHub</em></strong>.</p>
+<pre><code>                      new people info [archivo csv]
+</code></pre><p>En el nuevo archivo csv colocaremos toda la informaci&#xF3;n que queramos del alumno. Teniendo en cuenta que en las cabeceras deber&#xE1; haber alguno de los dos campos que relacionen la informaci&#xF3;n anteriormente guardada. Debe estar o el campo <strong><em>email</em></strong> o el <strong><em>identificador de GitHub</em></strong>.</p>
 <p>Ejemplo de informaci&#xF3;n extendida m&#xE1;s completa.</p>
-<p>&#x201C;email&#x201D;,&#x201D;nombre&#x201D;,&#x201D;apellido&#x201D;,&#x201D;github-url&#x201D;</p>
-<p>&quot;studentbeta@gmail.com&#x201D;,&quot;Martin&quot;,&quot;Rodriguez Escudero&quot;,&quot;<a href="https://github.com/studentbeta&amp;quot" target="_blank">https://github.com/studentbeta&amp;quot</a>;</p>
-<p>&#x201C;studentalpha1@hotmail.com&#x201D;,&quot;Vicente&quot;,&quot;Garcia Martin&quot;,&quot;<a href="https://github.com/studentalpha1&amp;quot" target="_blank">https://github.com/studentalpha1&amp;quot</a>;</p>
-<p>&#x201C;alu0100505023@ull.edu.es&#x201D;,&quot;Javier&quot;,&quot;Rodriguez Gomez&quot;,&quot;<a href="https://github.com/alu0100505023" target="_blank">https://github.com/alu0100505023</a>&quot;</p>
-<p>Esta informaci&#xF3;n ser&#xED;a a&#xF1;adida a la ya posteriormente recopilada.</p>
+<pre><code>                        &#x201C;email&#x201D;,&#x201D;nombre&#x201D;,&#x201D;apellido&#x201D;,&#x201D;github-url&#x201D;
+
+              &amp;quot;studentbeta@gmail.com&#x201D;,&amp;quot;Martin&amp;quot;,&amp;quot;Rodriguez Escudero&amp;quot;,&amp;quot;https://github.com/studentbeta&amp;quot;
+
+              &#x201C;studentalpha1@hotmail.com&#x201D;,&amp;quot;Vicente&amp;quot;,&amp;quot;Garcia Martin&amp;quot;,&amp;quot;https://github.com/studentalpha1&amp;quot;
+
+              &#x201C;alu0100505023@ull.edu.es&#x201D;,&amp;quot;Javier&amp;quot;,&amp;quot;Rodriguez Gomez&amp;quot;,&amp;quot;[https://github.com/alu0100505023](https://github.com/alu0100505023)&amp;quot;
+</code></pre><p>Esta informaci&#xF3;n ser&#xED;a a&#xF1;adida a la ya posteriormente recopilada.</p>
 <p>Este m&#xE9;todo est&#xE1; dise&#xF1;ado pensando en las dificultades que puede tener un profesor de primeras para que todos los alumnos den sus datos o los den de manera correcta. Se podr&#xED;a plantear una peque&#xF1;a tarea a la clase para que se den los datos necesarios para la relaci&#xF3;n, y m&#xE1;s adelante durante el curso ampliar con los datos completos.</p>
 <p>Sin embargo, si se desea poner toda la informaci&#xF3;n directamente desde la primera vez, tambi&#xE9;n es posible realizarlo mediante el comando <em>new people info</em>, mientras en los datos se encuentren los campos de email y github.</p>
 <p>Despu&#xE9;s de haber subido la nueva informaci&#xF3;n, podremos ejecutar consultas como la b&#xFA;squeda por nombre.</p>
 <p><img src="../assets/tutorial8.png" alt=""></p>
 <p>En este caso hemos buscado un alumno cuyo alguno de sus campos case con &#x201C;martin&#x201D;. Revolvi&#xE9;ndonos los datos a&#xF1;adidos del nuevo csv.</p>
 <p>Como podemos ver en la informaci&#xF3;n hemos guardado la p&#xE1;gina web de GitHub de los alumnos. Esto har&#xE1; que usando el comando open podamos abrir en un navegador la pagina que deseamos ver.</p>
-<p>Open [ID de GitHub]</p>
-<p>Abrir la web del perfil GitHub del alumno, si se encuentra informaci&#xF3;n a&#xF1;adida.</p>
-<p>Open /RegExp/</p>
-<p>Abrir&#xED;a varios perfiles de GitbHub en el navegador por defecto. Por lo que aplicando el ejemplo anterior.</p>
-<p>Open /Martin/</p>
-<p>Mostrar&#xED;a las webs de los alumnos que casen con esa expresi&#xF3;n.</p>
+<pre><code>                          Open [ID de GitHub]
+</code></pre><p>Abrir la web del perfil GitHub del alumno, si se encuentra informaci&#xF3;n a&#xF1;adida.</p>
+<pre><code>                          Open /RegExp/
+</code></pre><p>Abrir&#xED;a varios perfiles de GitbHub en el navegador por defecto. Por lo que aplicando el ejemplo anterior.</p>
+<pre><code>                                Open /Martin/
+</code></pre><p>Mostrar&#xED;a las webs de los alumnos que casen con esa expresi&#xF3;n.</p>
 <p><img src="../assets/tutorial9.png" alt=""></p>
 <p>Es posible abrir diferentes tipos de p&#xE1;ginas, no solo perfiles de GitHub. Si por ejemplo queremos guardar el perfil de la plataforma Moodle del alumno, podr&#xED;amos abrir las direcciones tal que:</p>
-<p>open [ID de GitHub] /Parte de la URL/</p>
-<p>open /RegExp/ /Parte de la URL/</p>
-<p>Por lo que ejecutando open /Rodriguez/i /moodle/ se abrir&#xE1;n las webs de la plataforma <em>Moodle</em>, de los alumnos que casen con <em>Rodriguez</em>, si estuviesen guardados esos datos.</p>
+<pre><code>              open [ID de GitHub] /Parte de la URL/
+
+              open /RegExp/ /Parte de la URL/
+</code></pre><p>Por lo que ejecutando open /Rodriguez/i /moodle/ se abrir&#xE1;n las webs de la plataforma <em>Moodle</em>, de los alumnos que casen con <em>Rodriguez</em>, si estuviesen guardados esos datos.</p>
 
                                 
                                 </section>
@@ -629,7 +634,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Organizando la clase","level":"1.5.2","depth":2,"next":{"title":"Manejando asignaciones","level":"1.5.3","depth":2,"path":"tutorial/manejando_asignaciones.md","ref":"tutorial/manejando_asignaciones.md","articles":[]},"previous":{"title":"Navegación y uso básico","level":"1.5.1","depth":2,"path":"tutorial/navegacion_y_uso_basico.md","ref":"tutorial/navegacion_y_uso_basico.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tutorial/organizando_la_clase.md","mtime":"2018-01-27T13:09:51.761Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-01-27T14:29:42.727Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Organizando la clase","level":"1.5.2","depth":2,"next":{"title":"Manejando asignaciones","level":"1.5.3","depth":2,"path":"tutorial/manejando_asignaciones.md","ref":"tutorial/manejando_asignaciones.md","articles":[]},"previous":{"title":"Navegación y uso básico","level":"1.5.1","depth":2,"path":"tutorial/navegacion_y_uso_basico.md","ref":"tutorial/navegacion_y_uso_basico.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tutorial/organizando_la_clase.md","mtime":"2018-01-27T14:33:06.886Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-01-27T14:33:11.965Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
