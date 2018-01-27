@@ -5,7 +5,7 @@
 /lib/db/assignments2.json
 .ghedsh
 script
-
+tags
 *.csv
 *.gem
 *.rbc
