@@ -1,4 +1,21 @@
 #!/usr/bin/env ruby -Ilib
 require 'interface'
+require 'commands'
 
-Interface.new
+
+
+#Interface.new
+
+console = Interface.new
+shell_commands = Commands.new
+
+console.add_command('orgs', shell_commands.method(:orgs))
+
+console.start
+
+#shell_commands = Commands.new
+
+
+##console.add_command('orgs', shell_commands.method(:orgs))
+
+#console.run
