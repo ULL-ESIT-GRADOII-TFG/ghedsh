@@ -10,6 +10,7 @@ console = Interface.new
 shell_commands = Commands.new
 
 console.add_command('orgs', shell_commands.method(:orgs))
+console.add_command('clear', shell_commands.method(:clear))
 
 console.start
 

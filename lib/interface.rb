@@ -26,7 +26,6 @@ class Interface
   attr_accessor :config, :commands
   attr_accessor :client
   attr_accessor :deep
-  attr_accessor :memory
   attr_reader :orgs_list,:repos_list, :teamlist, :orgs_repos, :teams_repos, :repo_path, :issues_list
 
   def initialize
@@ -36,9 +35,42 @@ class Interface
     @commands = {}
     #@shell_commands = Commands.new(self)
   end
+
+  def parse
+    options = { user: nil, token: nil, path: nil }
+
+    parser = OptionParser.new do |opts|
+      opts.banner = "Usage: ghedsh [options]\nWith no options it runs with default configuration. Configuration files are being set in #{ENV['HOME']}/.ghedsh\n"
+      opts.on('-t', '--token token', 'Provides a github access token by argument.') do |token|
+        options[:token] = token
+      end
+      opts.on('-c', '--configpath path', 'Give your own path for GHEDSH configuration files') do |path|
+        options[:configpath] = path
+      end
+      opts.on('-u', '--user user', 'Change your user from your users list') do |user|
+        options[:user] = user
+      end
+      opts.on('-v', '--version', 'Show the current version of GHEDSH') do
+        puts "GitHub Education Shell v#{Ghedsh::VERSION}"
+        exit
+      end
+      opts.on('-h', '--help', 'Displays Help') do
+        puts opts
+        exit
+      end
+    end
+
+    begin
+      parser.parse!
+    rescue StandardError
+      puts 'Argument error. Use ghedsh -h or ghedsh --help for more information about the usage of this program'
+      exit
+    end
+    options
+  end
   
   def start
-    options=@sysbh.parse
+    options = parse()
 
     trap("SIGINT") {puts; throw :ctrl_c}
   
@@ -412,7 +444,6 @@ class Interface
   #Main program
   def run(config_path, argv_token,user)
     puts "los comandos: #{@commands}"
-    puts "user: #{user}"
     ex=1
     opscript=[]
     @sysbh.write_initial_memory()
@@ -454,12 +485,12 @@ class Interface
           opcd.shift
           param = opcd
           puts "command: #{command}"
-          puts "params: #{param}"
+          puts "params: #{param.class}"
           if not command.to_s.empty?
             if not @commands.key?(command)
               puts "no exite ese comando"
             else
-              @commands[command].call(0)
+              @commands[command].call(0) #params
             end
           end
           
