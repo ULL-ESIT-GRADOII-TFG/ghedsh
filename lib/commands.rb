@@ -28,18 +28,16 @@ class Commands
   def initialize
     @repos_list=[]; @orgs_repos=[]; @teams_repos=[]; @orgs_list=[]; @teamlist=[]
   end
-public
+
   def load_enviroment(console_enviroment)
     @enviroment = console_enviroment
   end
 
   def help(opcd)
     begin
-      puts "ENTRO EN LA AYUDA"
-      puts opcd.class
     h = HelpM.new
-    if opcd.size != 0
-      h.context(opcd[1..opcd.size - 1], @enviroment.deep)
+    if opcd.size >= 1
+      h.context(opcd[0..opcd.size - 1], @enviroment.deep)
     else
       if @enviroment.deep == USER
         h.user

@@ -7,13 +7,8 @@ require 'version'
 require 'parameters'
 
 class Interface
-  # attr_accessor :commands
 
   def initialize
-    # @repos_list = []; @orgs_repos = []; @teams_repos = []; @orgs_list = []; @teamlist = []
-    # @repo_path = ''
-    # @commands = {}
-    # @shell_commands = Commands.new(self)
   end
 
   def parse

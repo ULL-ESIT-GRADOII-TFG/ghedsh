@@ -9,6 +9,7 @@ class HelpM
   attr_reader :common_opt
 
   def context(name,scope)
+    puts "EL NOMBRE: #{name}"
     name=name.join("_")
     begin
       self.send(:"#{name}",scope)
