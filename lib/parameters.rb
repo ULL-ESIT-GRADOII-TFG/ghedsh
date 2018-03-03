@@ -7,14 +7,6 @@ require 'actions/user'
 require 'version'
 require 'commands'
 
-# USER = 1
-# ORGS = 2
-# USER_REPO = 10
-# ORGS_REPO = 3
-# TEAM = 4
-# ASSIG = 6
-# TEAM_REPO = 5
-
 class ShellContext
   attr_accessor :deep
   attr_accessor :config
