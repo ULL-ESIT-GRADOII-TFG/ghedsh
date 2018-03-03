@@ -1,22 +1,5 @@
 #!/usr/bin/env ruby -Ilib
 require 'interface'
-require 'commands'
-
-
-
-#Interface.new
 
 console = Interface.new
-shell_commands = Commands.new
-
-console.add_command('orgs', shell_commands.method(:orgs))
-console.add_command('clear', shell_commands.method(:clear))
-
 console.start
-
-#shell_commands = Commands.new
-
-
-##console.add_command('orgs', shell_commands.method(:orgs))
-
-#console.run
