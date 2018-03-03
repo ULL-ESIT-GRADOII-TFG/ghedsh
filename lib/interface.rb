@@ -6,14 +6,13 @@ require 'optparse'
 require 'version'
 require 'parameters'
 
-
 class Interface
-  #attr_accessor :commands
+  # attr_accessor :commands
 
   def initialize
-    #@repos_list = []; @orgs_repos = []; @teams_repos = []; @orgs_list = []; @teamlist = []
-    #@repo_path = ''
-    #@commands = {}
+    # @repos_list = []; @orgs_repos = []; @teams_repos = []; @orgs_list = []; @teamlist = []
+    # @repo_path = ''
+    # @commands = {}
     # @shell_commands = Commands.new(self)
   end
 
@@ -73,13 +72,11 @@ class Interface
 
   # Main program
   def run(config_path, argv_token, user)
-    ex = 1
     opscript = []
     shell_enviroment = ShellContext.new(user, config_path, argv_token)
     puts "los comandos: #{shell_enviroment.commands}"
     HelpM.new.welcome
-
-    while ex != 0
+    loop do
       if opscript.empty?
         begin
           op = Readline.readline(shell_enviroment.prompt, true).strip
@@ -90,17 +87,17 @@ class Interface
           opcd.shift
           command_params = opcd
           puts "command: #{command}"
-          
+          # puts "params: #{command_params}"
           unless command.to_s.empty?
             if !shell_enviroment.commands.key?(command)
               puts 'no exite ese comando'
             else
-              shell_enviroment.commands[command].call(command_params)
+              result = shell_enviroment.commands[command].call(command_params)
             end
           end
         rescue StandardError
-          #puts
-          #throw :ctrl_c
+          # puts
+          # throw :ctrl_c
           op = 'exit'; opcd = 'exit'
         end
       else
@@ -108,7 +105,7 @@ class Interface
         opcd = op.split
         opscript.shift
       end
-
+      break if result == 0
     end
   end
 end
