@@ -4,7 +4,7 @@ require 'readline'
 require 'octokit'
 require 'optparse'
 require 'version'
-require 'parameters'
+require 'context'
 
 class Interface
 

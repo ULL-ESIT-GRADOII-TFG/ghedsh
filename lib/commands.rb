@@ -1,18 +1,7 @@
-require 'actions/help'
-require 'actions/orgs'
-require 'actions/repo'
-require 'actions/system'
-require 'actions/teams'
-require 'actions/user'
 require 'version'
+require 'common'
 
-USER = 1
-ORGS = 2
-USER_REPO = 10
-ORGS_REPO = 3
-TEAM = 4
-ASSIG = 6
-TEAM_REPO = 5
+
 
 class Commands
 
@@ -84,7 +73,7 @@ class Commands
         elsif @enviroment.deep == USER_REPO
           if @enviroment.repo_path == ''
             @enviroment.config['Repo'] = nil
-            @enviroment.deepp = 1
+            @enviroment.deep = 1
           else
             aux = @enviroment.repo_path.split('/')
             aux.pop
@@ -263,7 +252,8 @@ class Commands
     end
   end
 
-  def repos(all)
+  def repos(params)
+    puts "parametros del comando repos #{params}"
     repo = Repositories.new
     if @enviroment.deep == USER
       if @repos_list.empty?

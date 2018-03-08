@@ -6,6 +6,7 @@ require 'optparse'
 require 'json'
 require 'actions/system'
 require 'version'
+require_relative './user.rb'
 
 class Sys
   attr_reader :client
@@ -150,7 +151,7 @@ class Sys
   def return_deep(path)
     json = File.read("#{path}/ghedsh-cache.json")
     cache = JSON.parse(json)
-    deep = 1
+    deep = User
     if !cache['Team'].nil?
       deep = if !cache['Repo'].nil?
                5
@@ -172,7 +173,7 @@ class Sys
                if !cache['Repo'].nil?
                  10
                else
-                 1
+                 User
                       end
              end
     end

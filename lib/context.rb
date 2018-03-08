@@ -1,9 +1,4 @@
-require 'actions/help'
-require 'actions/orgs'
-require 'actions/repo'
-require 'actions/system'
-require 'actions/teams'
-require 'actions/user'
+require 'common'
 require 'version'
 require 'commands'
 
@@ -54,6 +49,7 @@ class ShellContext
   end
 
   def prompt
+    puts "deep = #{@deep} USER = #{USER}"
     if @deep == USER then @config['User'] + '> '
     elsif @deep == USER_REPO
       if @repo_path != ''
