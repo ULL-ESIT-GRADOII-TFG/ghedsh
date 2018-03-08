@@ -85,7 +85,7 @@ class Interface
           # puts "params: #{command_params}"
           unless command.to_s.empty?
             if !shell_enviroment.commands.key?(command)
-              puts 'no exite ese comando'
+              puts "#{command}: command not found"
             else
               result = shell_enviroment.commands[command].call(command_params)
             end
