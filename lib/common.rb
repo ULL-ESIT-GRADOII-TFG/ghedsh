@@ -10,5 +10,5 @@ ORGS = Organizations
 USER_REPO = 10
 ORGS_REPO = 3
 TEAM = Teams
-ASSIG = 6
+ASSIG = Assignment
 TEAM_REPO = 5

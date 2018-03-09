@@ -10,7 +10,6 @@ MAIL_LIST = ['email', 'mail', 'e-mail'].freeze
 
 class Organizations
   attr_accessor :orgslist
-  attr_accessor :assiglist
   attr_accessor :peoplelist
 
   def load_people
