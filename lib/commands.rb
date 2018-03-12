@@ -17,7 +17,7 @@ class Commands
   def initialize
     @repos_list=[]; @orgs_repos=[]; @teams_repos=[]; @orgs_list=[]; @teamlist=[]
     add_command('clear', self.method(:clear))
-    add_command('repos', slef.method(:repos))
+    add_command('repos', self.method(:repos))
     add_command('help', self.method(:help))
     add_command('exit', self.method(:exit))
     add_command('new_repo', self.method(:new_repo))
