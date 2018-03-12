@@ -12,3 +12,4 @@ ORGS_REPO = 3
 TEAM = Teams
 ASSIG = Assignment
 TEAM_REPO = 5
+COMMANDS = {}

@@ -90,7 +90,8 @@ class Interface
               result = shell_enviroment.commands[command].call(command_params)
             end
           end
-        rescue StandardError
+        rescue => e 
+          puts e
           # puts
           # throw :ctrl_c
           op = 'exit'; opcd = 'exit'

@@ -16,6 +16,16 @@ class Commands
 
   def initialize
     @repos_list=[]; @orgs_repos=[]; @teams_repos=[]; @orgs_list=[]; @teamlist=[]
+    add_command('clear', self.method(:clear))
+    add_command('repos', slef.method(:repos))
+    add_command('help', self.method(:help))
+    add_command('exit', self.method(:exit))
+    add_command('new_repo', self.method(:new_repo))
+    add_command('display_commits', self.method(:display_commits))
+  end
+
+  def add_command(command_name, command)
+    COMMANDS[command_name] = command
   end
 
   def load_enviroment(console_enviroment)
@@ -346,6 +356,24 @@ class Commands
     @enviroment.sysbh.remove_temp("#{ENV['HOME']}/.ghedsh/temp")
     
     return 0
+  end
+
+  def new_repo(params)
+    #puts "HOLA"
+    #puts params
+    #options = Hash[*params.flatten]
+    #puts "opciones: #{options}"
+    #puts a
+    
+    #opts = {}
+    #opts[:has_issues] = ""
+    #opts[:has_wiki] = ""
+    #opts[:private] = "true"
+    #@enviroment.client.create_repository('prueba', opts)
+  end
+
+  def display_commits(params)
+    @enviroment.deep.new.show_commits(@enviroment, params)
   end
 
   def clear(params)

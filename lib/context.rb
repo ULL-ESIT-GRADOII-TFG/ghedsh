@@ -38,15 +38,12 @@ class ShellContext
     # let commands class access context variables
     share_context = Commands.new
     share_context.load_enviroment(self)
-    add_command('clear', share_context.method(:clear))
-    add_command('repos', share_context.method(:repos))
-    add_command('help', share_context.method(:help))
-    add_command('exit', share_context.method(:exit))
+    @commands = COMMANDS
   end
 
-  def add_command(command_name, command)
-    @commands[command_name] = command
-  end
+  #def add_command(command_name, command)
+    #@commands[command_name] = command
+  #end
 
   def prompt
     puts "deep = #{@deep} USER = #{USER}"
