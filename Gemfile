@@ -4,3 +4,4 @@ gemspec
 
 gem 'tty-prompt'
 gem 'tty-spinner'
+gem 'rainbow'
