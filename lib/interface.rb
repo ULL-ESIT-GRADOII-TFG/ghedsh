@@ -7,9 +7,7 @@ require 'version'
 require 'context'
 
 class Interface
-
-  def initialize
-  end
+  def initialize; end
 
   def parse
     options = { user: nil, token: nil, path: nil }
@@ -90,7 +88,7 @@ class Interface
               result = shell_enviroment.commands[command].call(command_params)
             end
           end
-        rescue => e 
+        rescue StandardError => e
           puts e
           # puts
           # throw :ctrl_c
