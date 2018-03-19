@@ -1,10 +1,12 @@
 require 'version'
+require 'core'
 require 'common'
 
 
 
 class Commands
 
+  include Core
   attr_accessor :enviroment
 
   attr_reader :orgs_list
@@ -21,7 +23,8 @@ class Commands
     add_command('help', self.method(:help))
     add_command('exit', self.method(:exit))
     add_command('new_repo', self.method(:new_repo))
-    add_command('display_commits', self.method(:display_commits))
+    add_command('show_commits', self.method(:display_commits))
+    add_command('orgs', self.method(:orgs))
   end
 
   def add_command(command_name, command)
@@ -246,12 +249,16 @@ class Commands
     end
   end
 
-  def orgs
-    if @enviroment.deep == USER
-      @sysbh.add_history_str(2, Organizations.new.show_orgs(@enviroment.client, @enviroment.config))
-    elsif @enviroment.deep == ORGS
-      Organizations.new.show_orgs(@enviroment.client, @enviroment.config)
-    end
+  #def orgs
+    #if @enviroment.deep == USER
+      #@sysbh.add_history_str(2, Organizations.new.show_orgs(@enviroment.client, @enviroment.config))
+    #elsif @enviroment.deep == ORGS
+      #Organizations.new.show_orgs(@enviroment.client, @enviroment.config)
+    #end
+  #end
+
+  def orgs(params)
+    @enviroment.deep.new.show_organizations(@enviroment.client, @enviroment.config)
   end
 
   def people
@@ -373,7 +380,12 @@ class Commands
   end
 
   def display_commits(params)
-    @enviroment.deep.new.show_commits(@enviroment, params)
+    if @enviroment.deep.method_defined? :show_commits
+      @enviroment.deep.new.show_commits(@enviroment, params)
+    else
+      puts "Command not available in context \"#{@enviroment.deep.name}\""
+    end
+    puts
   end
 
   def clear(params)

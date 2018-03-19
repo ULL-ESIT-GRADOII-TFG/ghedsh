@@ -40,13 +40,11 @@ class ShellContext
     share_context.load_enviroment(self)
     @commands = COMMANDS
   end
-
-  #def add_command(command_name, command)
-    #@commands[command_name] = command
-  #end
-
+  
   def prompt
-    puts "deep = #{@deep} USER = #{USER}"
+    #puts "deep = #{@deep} USER = #{USER}"
+    @deep.shell_prompt(@config, @repo_path)
+=begin
     if @deep == USER then @config['User'] + '> '
     elsif @deep == USER_REPO
       if @repo_path != ''
@@ -70,5 +68,6 @@ class ShellContext
         @config['User'] + '>' + "\e[34m#{@config['Org']}\e[0m" + '>' + "\e[31m#{@config['Repo']}\e[0m" + '> '
       end
       end
+=end
   end
 end

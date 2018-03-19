@@ -4,6 +4,7 @@ require 'actions/repo'
 require 'actions/system'
 require 'actions/teams'
 require 'actions/user'
+require 'rainbow'
 
 USER = User
 ORGS = Organizations

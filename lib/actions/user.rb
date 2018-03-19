@@ -12,20 +12,38 @@ class User
     puts m[:email]
   end
 
+  def self.shell_prompt(config, repo_path)
+    Rainbow(config['User'] + '> ').aqua
+    
+    #config['User'] + '> '
+      #if repo_path != ''
+        #config['User'] + '>' + "\e[31m#{config['Repo']}\e[0m" + '>' + repo_path.to_s + '> '
+      #else
+        #config['User'] + '>' + "\e[31m#{config['Repo']}\e[0m" + '> '
+      #end
+  end
+
   def open_user(client)
     mem=client.user(client.login)
     Sys.new.open_url(mem[:html_url])
   end
 
+  def show_organizations(client, config)
+    puts
+    organizations = client.list_organizations
+    organizations.each do |i|
+      puts i[:login]
+    end
+  end
+
   def show_commits(enviroment, params)
     options = {}
     repo = enviroment.config["Repo"] || params[0]
-    unless params.empty?
+   
+    if params.empty?
       options[:sha] = params[1]
-      puts "me asigno en parametros: #{options[:sha]}"
     else
       options[:sha] = "master"
-      puts "me asigno en default: #{options[:sha]}"
     end
     mem=enviroment.client.commits("#{enviroment.config["User"]}/pagina-irene",options)
     mem.each  do |i|
