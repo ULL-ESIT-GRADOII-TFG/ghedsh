@@ -32,7 +32,7 @@ class ShellContext
     end
     @sysbh.load_memory(config_path, @config)
     unless @client.nil?
-      @sysbh.add_history_str(2, Organizations.new.read_orgs(@client))
+      @sysbh.add_history_str(2, Organization.new.read_orgs(@client))
     end
 
     # let commands class access context variables
@@ -42,32 +42,6 @@ class ShellContext
   end
   
   def prompt
-    #puts "deep = #{@deep} USER = #{USER}"
     @deep.shell_prompt(@config, @repo_path)
-=begin
-    if @deep == USER then @config['User'] + '> '
-    elsif @deep == USER_REPO
-      if @repo_path != ''
-        @config['User'] + '>' + "\e[31m#{@config['Repo']}\e[0m" + '>' + @repo_path.to_s + '> '
-      else
-        @config['User'] + '>' + "\e[31m#{@config['Repo']}\e[0m" + '> '
-      end
-    elsif @deep == ORGS then @config['User'] + '>' + "\e[34m#{@config['Org']}\e[0m" + '> '
-    elsif @deep == ASSIG then @config['User'] + '>' + "\e[34m#{@config['Org']}\e[0m" + '>' + "\e[35m#{@config['Assig']}\e[0m" + '> '
-    elsif @deep == TEAM then @config['User'] + '>' + "\e[34m#{@config['Org']}\e[0m" + '>' + "\e[32m#{@config['Team']}\e[0m" + '> '
-    elsif @deep == TEAM_REPO
-      if @repo_path != ''
-        @config['User'] + '>' + "\e[34m#{@config['Org']}\e[0m" + '>' + "\e[32m#{@config['Team']}\e[0m" + '>' + "\e[31m#{@config['Repo']}\e[0m" + '>' + @repo_path.to_s + '> '
-      else
-        @config['User'] + '>' + "\e[34m#{@config['Org']}\e[0m" + '>' + "\e[32m#{@config['Team']}\e[0m" + '>' + "\e[31m#{@config['Repo']}\e[0m" + '> '
-      end
-    elsif @deep == ORGS_REPO
-      if @repo_path != ''
-        @config['User'] + '>' + "\e[34m#{@config['Org']}\e[0m" + '>' + "\e[31m#{@config['Repo']}\e[0m" + '>' + @repo_path.to_s + '> '
-      else
-        @config['User'] + '>' + "\e[34m#{@config['Org']}\e[0m" + '>' + "\e[31m#{@config['Repo']}\e[0m" + '> '
-      end
-      end
-=end
   end
 end
