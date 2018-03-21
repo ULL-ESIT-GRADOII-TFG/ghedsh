@@ -70,7 +70,6 @@ class Interface
     puts "los comandos: #{shell_enviroment.commands}"
     HelpM.new.welcome
     loop do
-      if opscript.empty?
         begin
           op = Readline.readline(shell_enviroment.prompt, true).strip
           # puts "op: #{op}"
@@ -92,13 +91,7 @@ class Interface
           puts e
           # puts
           # throw :ctrl_c
-          op = 'exit'; opcd = 'exit'
         end
-      else
-        op = opscript[0]
-        opcd = op.split
-        opscript.shift
-      end
       break if result == 0
     end
   end
