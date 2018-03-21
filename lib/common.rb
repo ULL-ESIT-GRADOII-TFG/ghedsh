@@ -7,10 +7,10 @@ require 'actions/user'
 require 'rainbow'
 
 USER = User
-ORGS = Organizations
+ORG = Organization
 USER_REPO = 10
 ORGS_REPO = 3
-TEAM = Teams
+TEAM = Team
 ASSIG = Assignment
 TEAM_REPO = 5
 COMMANDS = {}
