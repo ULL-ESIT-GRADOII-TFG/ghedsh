@@ -1,13 +1,9 @@
 require 'version'
-require 'core'
 require 'common'
 
-
-
 class Commands
-
-  include Core
   attr_accessor :enviroment
+  attr_reader :previous_config
 
   attr_reader :orgs_list
   attr_reader :repos_list
@@ -17,14 +13,16 @@ class Commands
   attr_reader :issues_list
 
   def initialize
-    @repos_list=[]; @orgs_repos=[]; @teams_repos=[]; @orgs_list=[]; @teamlist=[]
-    add_command('clear', self.method(:clear))
-    add_command('repos', self.method(:repos))
-    add_command('help', self.method(:help))
-    add_command('exit', self.method(:exit))
-    add_command('new_repo', self.method(:new_repo))
-    add_command('show_commits', self.method(:display_commits))
-    add_command('orgs', self.method(:orgs))
+    @repos_list = []; @orgs_repos = []; @teams_repos = []; @orgs_list = []; @teamlist = []
+    add_command('clear', method(:clear))
+    add_command('repos', method(:repos))
+    add_command('help', method(:help))
+    add_command('exit', method(:exit))
+    add_command('new_repo', method(:new_repo))
+    add_command('commits', method(:display_commits))
+    add_command('orgs', method(:orgs))
+    add_command('orgsn', method(:orgsn))
+    add_command('cd', method(:change_context))
   end
 
   def add_command(command_name, command)
@@ -36,14 +34,13 @@ class Commands
   end
 
   def help(opcd)
-    begin
     h = HelpM.new
     if opcd.size >= 1
       h.context(opcd[0..opcd.size - 1], @enviroment.deep)
     else
       if @enviroment.deep == USER
         h.user
-      elsif @enviroment.deep == ORGS
+      elsif @enviroment.deep == ORG
         h.org
       elsif @enviroment.deep == ORGS_REPO
         h.org_repo
@@ -57,80 +54,78 @@ class Commands
         h.asssig
       end
     end
-    rescue => exception
-      puts exception
-    end
-    
+  rescue StandardError => exception
+    puts exception
   end
 
-    # Go back to any level
-    def cdback(returnall)
-      if returnall != true
-        if @enviroment.deep == ORGS
-          @enviroment.config['Org'] = nil
-          @enviroment.deep = 1
-          @orgs_repos = []
-        elsif @enviroment.deep == ORGS_REPO
-          if @enviroment.repo_path == ''
-            @enviroment.config['Repo'] = nil
-            @enviroment.deep = 2
-          else
-            aux = @enviroment.repo_path.split('/')
-            aux.pop
-            @enviroment.repo_path = if aux.empty?
-                           ''
-                         else
-                           aux.join('/')
-                         end
-          end
-        elsif @enviroment.deep == USER_REPO
-          if @enviroment.repo_path == ''
-            @enviroment.config['Repo'] = nil
-            @enviroment.deep = 1
-          else
-            aux = @enviroment.repo_path.split('/')
-            aux.pop
-            @enviroment.repo_path = if aux.empty?
-                           ''
-                         else
-                           aux.join('/')
-                         end
-          end
-        elsif @enviroment.deep == TEAM
-          @enviroment.config['Team'] = nil
-          @enviroment.config['TeamID'] = nil
-          @teams_repos = []
-          @enviroment.deep = ORGS
-        elsif @enviroment.deep == ASSIG
-          @enviroment.deep = ORGS
-          @enviroment.config['Assig'] = nil
-        elsif @enviroment.deep == TEAM_REPO
-          if @enviroment.repo_path == ''
-            @enviroment.config['Repo'] = nil
-            @enviroment.deep = TEAM
-          else
-            aux = @enviroment.repo_path.split('/')
-            aux.pop
-            @enviroment.repo_path = if aux.empty?
-                           ''
-                         else
-                           aux.join('/')
-                         end
-          end
-        end
-      else
+  # Go back to any level
+  def cdback(returnall)
+    if returnall != true
+      if @enviroment.deep == ORGS
         @enviroment.config['Org'] = nil
-        @enviroment.config['Repo'] = nil
+        @enviroment.deep = 1
+        @orgs_repos = []
+      elsif @enviroment.deep == ORGS_REPO
+        if @enviroment.repo_path == ''
+          @enviroment.config['Repo'] = nil
+          @enviroment.deep = 2
+        else
+          aux = @enviroment.repo_path.split('/')
+          aux.pop
+          @enviroment.repo_path = if aux.empty?
+                                    ''
+                                  else
+                                    aux.join('/')
+                       end
+        end
+      elsif @enviroment.deep == USER_REPO
+        if @enviroment.repo_path == ''
+          @enviroment.config['Repo'] = nil
+          @enviroment.deep = 1
+        else
+          aux = @enviroment.repo_path.split('/')
+          aux.pop
+          @enviroment.repo_path = if aux.empty?
+                                    ''
+                                  else
+                                    aux.join('/')
+                       end
+        end
+      elsif @enviroment.deep == TEAM
         @enviroment.config['Team'] = nil
         @enviroment.config['TeamID'] = nil
+        @teams_repos = []
+        @enviroment.deep = ORGS
+      elsif @enviroment.deep == ASSIG
+        @enviroment.deep = ORGS
         @enviroment.config['Assig'] = nil
-        @enviroment.deep = 1
-        @orgs_repos = []; @teams_repos = []
-        @enviroment.repo_path = ''
+      elsif @enviroment.deep == TEAM_REPO
+        if @enviroment.repo_path == ''
+          @enviroment.config['Repo'] = nil
+          @enviroment.deep = TEAM
+        else
+          aux = @enviroment.repo_path.split('/')
+          aux.pop
+          @enviroment.repo_path = if aux.empty?
+                                    ''
+                                  else
+                                    aux.join('/')
+                       end
+        end
       end
+    else
+      @enviroment.config['Org'] = nil
+      @enviroment.config['Repo'] = nil
+      @enviroment.config['Team'] = nil
+      @enviroment.config['TeamID'] = nil
+      @enviroment.config['Assig'] = nil
+      @enviroment.deep = USER
+      @orgs_repos = []; @teams_repos = []
+      @enviroment.repo_path = ''
     end
+  end
 
-    # Go to the path, depends with the scope
+  # Go to the path, depends with the scope
   # if you are in user scope, first searchs Orgs then Repos, etc.
   def cd(path)
     if @enviroment.deep == ORGS_REPO || @enviroment.deep == USER_REPO || @enviroment.deep == TEAM_REPO
@@ -249,15 +244,15 @@ class Commands
     end
   end
 
-  #def orgs
-    #if @enviroment.deep == USER
-      #@sysbh.add_history_str(2, Organizations.new.show_orgs(@enviroment.client, @enviroment.config))
-    #elsif @enviroment.deep == ORGS
-      #Organizations.new.show_orgs(@enviroment.client, @enviroment.config)
-    #end
-  #end
+  # def orgs
+  # if @enviroment.deep == USER
+  # @sysbh.add_history_str(2, Organizations.new.show_orgs(@enviroment.client, @enviroment.config))
+  # elsif @enviroment.deep == ORGS
+  # Organizations.new.show_orgs(@enviroment.client, @enviroment.config)
+  # end
+  # end
 
-  def orgs(params)
+  def orgs(_params)
     @enviroment.deep.new.show_organizations(@enviroment.client, @enviroment.config)
   end
 
@@ -287,15 +282,15 @@ class Commands
       else
         @sysbh.showcachelist(@repos_list, nil)
       end
-    elsif @enviroment.deep == ORGS
+    elsif @enviroment.deep == ORG
       if @orgs_repos.empty?
         if all == false
-          list = repo.show_repos(@enviroment.client, @enviroment.config, ORGS, nil)
+          list = repo.show_repos(@enviroment.client, @enviroment.config, ORG, nil)
           @sysbh.add_history_str(2, list)
           @orgs_repos = list
         else
           # list=repo.show_repos(@enviroment.client,@enviroment.config,ORGS)
-          list = repo.get_repos_list(@enviroment.client, @enviroment.config, ORGS)
+          list = repo.get_repos_list(@enviroment.client, @enviroment.config, ORG)
           @sysbh.add_history_str(2, list)
           @orgs_repos = list
           puts list
@@ -350,33 +345,27 @@ class Commands
       c.show_collaborators(@enviroment.client, @enviroment.config, @enviroment.deep)
     end
   end
-  
-  def orgsn(params)
-    puts "EL DEEP: #{@enviroment.deep}"
-    puts "HOLA"
-    
-  end
 
-  def exit(params)
-    @enviroment.sysbh.save_memory(@enviroment.config_path,@enviroment.config)
-    @enviroment.sysbh.save_cache(@enviroment.config_path,@enviroment.config)
+  def exit(_params)
+    @enviroment.sysbh.save_memory(@enviroment.config_path, @enviroment.config)
+    @enviroment.sysbh.save_cache(@enviroment.config_path, @enviroment.config)
     @enviroment.sysbh.remove_temp("#{ENV['HOME']}/.ghedsh/temp")
-    
-    return 0
+
+    0
   end
 
   def new_repo(params)
-    #puts "HOLA"
-    #puts params
-    #options = Hash[*params.flatten]
-    #puts "opciones: #{options}"
-    #puts a
-    
-    #opts = {}
-    #opts[:has_issues] = ""
-    #opts[:has_wiki] = ""
-    #opts[:private] = "true"
-    #@enviroment.client.create_repository('prueba', opts)
+    # puts "HOLA"
+    # puts params
+    # options = Hash[*params.flatten]
+    # puts "opciones: #{options}"
+    # puts a
+
+    # opts = {}
+    # opts[:has_issues] = ""
+    # opts[:has_wiki] = ""
+    # opts[:private] = "true"
+    # @enviroment.client.create_repository('prueba', opts)
   end
 
   def display_commits(params)
@@ -388,7 +377,90 @@ class Commands
     puts
   end
 
-  def clear(params)
+  def clear(_params)
     system('clear')
+  end
+
+  def orgsn(_params)
+    puts "EL DEEP: #{@enviroment.deep}"
+
+    p @enviroment.config
+  end
+
+  def get_previous_config
+    @previous_config
+  end
+
+  def change_context(params)
+    if params.empty?
+      @enviroment.config['Org'] = nil
+      @enviroment.config['Repo'] = nil
+      @enviroment.config['Team'] = nil
+      @enviroment.config['TeamID'] = nil
+      @enviroment.config['Assig'] = nil
+
+      @enviroment.deep = USER
+    else
+      path = params[0].split('/')
+      clean_path = path.reject(&:empty?)
+      p clean_path[0]
+      # quitar los valores nil para comprobar los que tienen valor asignado
+      actual_config = @enviroment.config.compact
+
+      if actual_config['User'] && actual_config['Org']
+        if @enviroment.client.repository?("#{@enviroment.config['Org']}/#{clean_path[0]}")
+          @enviroment.config['Repo'] = clean_path[0]
+        end
+      else
+        if @enviroment.client.repository?("#{@enviroment.client.login}/#{clean_path[0]}")
+          puts 'seteo el repo'
+          @enviroment.config['Repo'] = clean_path[0]
+          @enviroment.deep = USER
+        elsif @enviroment.client.organization_member?(clean_path[0], @enviroment.client.login)
+          puts 'seteo la org'
+          @enviroment.config['Org'] = clean_path[0]
+          @enviroment.deep = ORG
+          clean_path.shift
+          unless clean_path.empty?
+            if @enviroment.client.repository?("#{@enviroment.config['Org']}/#{clean_path[0]}")
+              @enviroment.config['Repo'] = clean_path[0]
+            else
+              puts "#{"\u26A0".encode('utf-8')} #{Rainbow("Repo ''#{clean_path[0]}'' does not exist within org #{@enviroment.config['Org']}").yellow.underline}"
+            end
+          end
+        else
+          puts "#{"\u26A0".encode('utf-8')} #{Rainbow("You are currently not a ''#{clean_path[0]}'' org member or ''#{clean_path[0]}'' is not a repo.").yellow.underline}"
+        end
+      end
+      # la idea para ir para atras es comprobar si clean_path[0].include?('..')
+      #  tener en otra variable los valores config y deep pasados (es posible?)
+      #         if @enviroment.client.repository?("#{@enviroment.client.login}/#{clean_path[0]}")
+      #           puts 'seteo el repo'
+      #           @enviroment.config['Repo'] = clean_path[0]
+      #           @enviroment.deep = USER
+      #         end
+      #         # devuelve array con las organizaciones a las que pertenece el usuario autenticado
+      #         #user_orgs = []
+      #         #@enviroment.client.organizations.each do |it|
+      #           #user_orgs << it[:login]
+      #         #end
+      #         #user_orgs.include?(clean_path[0])
+      #         if @enviroment.client.organization_member?(clean_path[0], @enviroment.client.login)
+      #           puts 'seteo la org'
+      #           @enviroment.config['Org'] = clean_path[0]
+      #           @enviroment.deep = ORG
+      #           clean_path.shift
+      #           unless clean_path.empty?
+      #             if @enviroment.client.repository?("#{@enviroment.config['Org']}/#{clean_path[0]}")
+      #               @enviroment.config['Repo'] = clean_path[0]
+      #             end
+      #           end
+      #         end
+      #       #end
+      # unless @enviroment.client.organization_member?(path, @enviroment.client.login)
+      # puts "#{"\u26A0".encode('utf-8')} #{Rainbow("You are currently not a #{@enviroment.config['Org']} member.").yellow.underline}"
+      # end
+      # end
+    end
   end
 end
