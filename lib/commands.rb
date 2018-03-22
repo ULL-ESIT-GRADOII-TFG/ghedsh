@@ -3,7 +3,7 @@ require 'common'
 
 class Commands
   attr_accessor :enviroment
-  attr_reader :previous_config
+  attr_reader :previous_config_stack
 
   attr_reader :orgs_list
   attr_reader :repos_list
@@ -198,6 +198,32 @@ class Commands
   end
 
   def change_context(params)
+    #path = params[0].split('/')
+    #clean_path = path.reject(&:empty?)
+    if params.empty?
+      @enviroment.config['Org'] = nil
+      @enviroment.config['Repo'] = nil
+      @enviroment.config['Team'] = nil
+      @enviroment.config['TeamID'] = nil
+      @enviroment.config['Assig'] = nil
+
+      @enviroment.deep = USER
+    else
+      puts "entre en el else"
+      previous_config_stack = []
+      previous_config_stack.push(@enviroment.config)
+      env = @enviroment
+      action = params.join('')
+      puts action
+      @enviroment = eval(action)
+    end
+    
+
+    
+
+  end
+=begin
+  def change_context(params)
     if params.empty?
       @enviroment.config['Org'] = nil
       @enviroment.config['Repo'] = nil
@@ -269,4 +295,5 @@ class Commands
       # end
     end
   end
+=end
 end
