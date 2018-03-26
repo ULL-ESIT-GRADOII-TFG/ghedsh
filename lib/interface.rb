@@ -1,7 +1,4 @@
-require 'require_all'
-require 'json'
 require 'readline'
-require 'octokit'
 require 'optparse'
 require 'version'
 require 'context'
@@ -78,7 +75,7 @@ class Interface
         command_params = input
         unless command.to_s.empty?
           if !@shell_enviroment.commands.key?(command)
-            puts "#{command}: command not found"
+            puts Rainbow("-ghedsh: #{command}: command not found").yellow
           else
             result = @shell_enviroment.commands[command].call(command_params)
           end
