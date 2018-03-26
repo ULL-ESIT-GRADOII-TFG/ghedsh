@@ -5,6 +5,8 @@ require 'octokit'
 require 'optparse'
 require 'version'
 require 'context'
+require 'artii'
+require 'rainbow'
 
 class Interface
   def initialize; end
@@ -50,10 +52,11 @@ class Interface
     catch :ctrl_c do
       begin
         if options[:user].nil? && options[:token].nil? && !options[:path].nil?
-          run(options[:path], options[:token], options[:user])
+          @shell_enviroment = ShellContext.new(options[:user], options[:path], options[:token])
         else
-          run("#{ENV['HOME']}/.ghedsh", options[:token], options[:user])
+          @shell_enviroment = ShellContext.new(options[:user], "#{ENV['HOME']}/.ghedsh", options[:token])
         end
+        run
       rescue SystemExit, Interrupt
         raise
       rescue Exception => e
@@ -64,34 +67,27 @@ class Interface
   end
 
   # Main program
-  def run(config_path, argv_token, user)
-    opscript = []
-    shell_enviroment = ShellContext.new(user, config_path, argv_token)
-    puts "los comandos: #{shell_enviroment.commands}"
-    HelpM.new.welcome
+  def run
+    a = Artii::Base.new
+    puts Rainbow(a.asciify('GitHub Education Shell')).color(98, 177, 124)
     loop do
-        begin
-          op = Readline.readline(shell_enviroment.prompt, true).strip
-          # puts "op: #{op}"
-          opcd = op.split
-          # puts "opcd: #{opcd}"
-          command = opcd[0]
-          opcd.shift
-          command_params = opcd
-          puts "command: #{command}"
-          # puts "params: #{command_params}"
-          unless command.to_s.empty?
-            if !shell_enviroment.commands.key?(command)
-              puts "#{command}: command not found"
-            else
-              result = shell_enviroment.commands[command].call(command_params)
-            end
+      begin
+        input = Readline.readline(@shell_enviroment.prompt, true).strip.split
+        command = input[0]
+        input.shift
+        command_params = input
+        unless command.to_s.empty?
+          if !@shell_enviroment.commands.key?(command)
+            puts "#{command}: command not found"
+          else
+            result = @shell_enviroment.commands[command].call(command_params)
           end
-        rescue StandardError => e
-          puts e
-          # puts
-          # throw :ctrl_c
         end
+      rescue StandardError => e
+        puts e
+        # puts
+        # throw :ctrl_c
+      end
       break if result == 0
     end
   end
