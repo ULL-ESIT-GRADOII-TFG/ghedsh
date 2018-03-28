@@ -1,9 +1,10 @@
 require 'version'
 require 'common'
+require 'ostruct'
 
 class Commands
-  attr_accessor :enviroment
-  attr_reader :previous_config_stack
+  attr_reader :enviroment
+  attr_reader :struct
 
   attr_reader :orgs_list
   attr_reader :repos_list
@@ -13,9 +14,9 @@ class Commands
   attr_reader :issues_list
 
   def initialize
+    @context_stack = []
     @repos_list = []; @orgs_repos = []; @teams_repos = []; @orgs_list = []; @teamlist = []
     add_command('clear', method(:clear))
-    add_command('repos', method(:repos))
     add_command('help', method(:help))
     add_command('exit', method(:exit))
     add_command('new_repo', method(:new_repo))
@@ -31,6 +32,11 @@ class Commands
 
   def load_enviroment(console_enviroment)
     @enviroment = console_enviroment
+    @struct = OpenStruct.new
+    default_enviroment = {'User'=>@enviroment.client.login.to_s, 'Org'=>nil, 'Repo'=>nil, 'Team'=>nil, 'TeamID'=>nil, 'Assig'=>nil}
+    @struct.config = default_enviroment
+    @struct.deep = User
+    @enviroment.context_stack.push(@struct)
   end
 
   def help(opcd)
@@ -60,96 +66,6 @@ class Commands
 
   def orgs(_params)
     @enviroment.deep.new.show_organizations(@enviroment.client, @enviroment.config)
-  end
-
-  def people
-    if @enviroment.deep == ORGS
-      @sysbh.add_history_str(2, Organizations.new.show_organization_members_bs(@enviroment.client, @enviroment.config))
-    elsif @enviroment.deep == TEAM
-      @sysbh.add_history_str(2, Teams.new.show_team_members_bs(@enviroment.client, @enviroment.config))
-    end
-  end
-
-  def repos(params)
-    puts "parametros del comando repos #{params}"
-    repo = Repositories.new
-    if @enviroment.deep == USER
-      if @repos_list.empty?
-        if all == false
-          list = repo.show_repos(@enviroment.client, @enviroment.config, USER, nil)
-          @sysbh.add_history_str(2, list)
-          @repos_list = list
-        else
-          list = repo.get_repos_list(@enviroment.client, @enviroment.config, USER)
-          @sysbh.add_history_str(2, list)
-          @repos_list = list
-          puts list
-        end
-      else
-        @sysbh.showcachelist(@repos_list, nil)
-      end
-    elsif @enviroment.deep == ORG
-      if @orgs_repos.empty?
-        if all == false
-          list = repo.show_repos(@enviroment.client, @enviroment.config, ORG, nil)
-          @sysbh.add_history_str(2, list)
-          @orgs_repos = list
-        else
-          # list=repo.show_repos(@enviroment.client,@enviroment.config,ORGS)
-          list = repo.get_repos_list(@enviroment.client, @enviroment.config, ORG)
-          @sysbh.add_history_str(2, list)
-          @orgs_repos = list
-          puts list
-        end
-      else
-        @sysbh.showcachelist(@orgs_repos, nil)
-      end
-    elsif @enviroment.deep == TEAM
-      if @teams_repos.empty?
-        if all == false
-          list = repo.show_repos(@enviroment.client, @enviroment.config, TEAM, nil)
-          @sysbh.add_history_str(2, list)
-          @teams_repos = list
-        else
-          list = repo.show_repos(@enviroment.client, @enviroment.config, TEAM)
-          @sysbh.add_history_str(2, list)
-          @repos_list = list
-          puts list
-        end
-      else
-        @sysbh.showcachelist(@teams_repos, nil)
-      end
-    end
-  end
-
-  def get_teamlist(data)
-    list = []
-    for i in 0..data.size - 1
-      list.push(@teamlist[data[i]])
-    end
-    list
-  end
-
-  def commits
-    c = Repositories.new
-    if @enviroment.deep == ORGS_REPO || @enviroment.deep == USER_REPO || @enviroment.deep == TEAM_REPO
-      c.show_commits(@enviroment.client, @enviroment.config, @enviroment.deep)
-    end
-    print "\n"
-  end
-
-  def show_forks
-    c = Repositories.new
-    if @enviroment.deep == ORGS_REPO || @enviroment.deep == USER_REPO || @enviroment.deep == TEAM_REPO
-      c.show_forks(@enviroment.client, @enviroment.config, @enviroment.deep)
-    end
-  end
-
-  def collaborators
-    c = Repositories.new
-    if @enviroment.deep == ORGS_REPO || @enviroment.deep == USER_REPO || @enviroment.deep == TEAM_REPO
-      c.show_collaborators(@enviroment.client, @enviroment.config, @enviroment.deep)
-    end
   end
 
   def exit(_params)
@@ -193,10 +109,6 @@ class Commands
     p @enviroment.config
   end
 
-  def get_previous_config
-    @previous_config
-  end
-
   def change_context(params)
     #path = params[0].split('/')
     #clean_path = path.reject(&:empty?)
@@ -207,20 +119,39 @@ class Commands
       @enviroment.config['TeamID'] = nil
       @enviroment.config['Assig'] = nil
 
-      @enviroment.deep = USER
+      @enviroment.deep = User
+    elsif params[0] == '..'
+      if @enviroment.context_stack.size > 1
+        @enviroment.context_stack.pop
+        stack_pointer = @enviroment.context_stack.last
+        puts "actual: #{stack_pointer}"
+        @enviroment.config = stack_pointer.config
+        @enviroment.deep = stack_pointer.deep
+      else
+        p @struct.config
+        p @struct.deep
+        @enviroment.config = @struct.config
+        @enviroment.deep = @struct.deep
+      end
     else
       puts "entre en el else"
-      previous_config_stack = []
-      previous_config_stack.push(@enviroment.config)
-      env = @enviroment
+      
       action = params.join('')
       puts action
+      puts "antes del eval"
+      p @enviroment.context_stack
+      env = @enviroment
+
       @enviroment = eval(action)
+      #env.eval(action)
+      current_enviroment = OpenStruct.new
+      puts "CURRENT CONFIG"
+      p current_enviroment.config = @enviroment.config
+      current_enviroment.deep =  @enviroment.deep
+      @enviroment.context_stack.push(current_enviroment)
+      puts "despues del eval"
+      p @enviroment.context_stack
     end
-    
-
-    
-
   end
 =begin
   def change_context(params)
