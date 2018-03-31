@@ -2,8 +2,6 @@ require 'readline'
 require 'optparse'
 require 'version'
 require 'context'
-require 'artii'
-require 'rainbow'
 
 class Interface
   def initialize; end
@@ -65,8 +63,7 @@ class Interface
 
   # Main program
   def run
-    a = Artii::Base.new
-    puts Rainbow(a.asciify('GitHub Education Shell')).color(98, 177, 124)
+    puts @shell_enviroment.client.say('GitHub Education Shell')
     loop do
       begin
         input = Readline.readline(@shell_enviroment.prompt, true).strip.split
@@ -74,14 +71,15 @@ class Interface
         input.shift
         command_params = input
         unless command.to_s.empty?
-          if !@shell_enviroment.commands.key?(command)
-            puts Rainbow("-ghedsh: #{command}: command not found").yellow
-          else
+          if @shell_enviroment.commands.key?(command)
             result = @shell_enviroment.commands[command].call(command_params)
+          else
+            puts Rainbow("-ghedsh: #{command}: command not found").yellow
           end
         end
       rescue StandardError => e
         puts e
+        puts e.backtrace
         # puts
         # throw :ctrl_c
       end
