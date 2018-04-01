@@ -1,7 +1,7 @@
 require 'require_all'
 require_rel '.'
-require 'tty-prompt'
 require 'common'
+require_relative '../helpers'
 
 class User
   def info(client)
@@ -22,10 +22,6 @@ class User
         puts "No organization match with #{name}"
       else
         prompt = TTY::Prompt.new
-        prompt.on(:keypress) do |event|
-          prompt.trigger(:keydown) if event.value == 'j'
-          prompt.trigger(:keyup) if event.value == 'k'
-        end
         answer = prompt.select('Select desired organization', user_orgs)
         if enviroment.client.organization_member?(answer.to_s, enviroment.client.login.to_s)
           enviroment.config['Org'] = answer
@@ -47,21 +43,17 @@ class User
     if name.class == Regexp
       pattern = Regexp.new(name.source)
       user_repos = []
-      spinner = TTY::Spinner.new(Rainbow("Matching #{enviroment.client.login} repositories :spinner ...").color(4,255,0), format: :bouncing_ball)
+      spinner = custom_spinner("Matching #{enviroment.client.login} repositories :spinner ...")
       spinner.auto_spin
       enviroment.client.repositories.each do |repo|
         user_repos << repo[:name] if pattern.match(repo[:name].to_s)
       end
-      spinner.stop(Rainbow('done').color(4,255,0))
+      spinner.stop(Rainbow('done').color(4, 255, 0))
 
       if user_repos.empty?
         puts "No repository match with #{name}"
       else
         prompt = TTY::Prompt.new
-        prompt.on(:keypress) do |event|
-          prompt.trigger(:keydown) if event.value == 'j'
-          prompt.trigger(:keyup) if event.value == 'k'
-        end
         answer = prompt.select('Select desired repository', user_repos)
         enviroment.config['Repo'] = answer
         enviroment.deep = User
@@ -79,7 +71,7 @@ class User
   end
 
   def cd(type, name, enviroment)
-    nav = {'org' => method(:cd_org_scope), 'repo' => method(:cd_repo_scope)}
+    nav = { 'org' => method(:cd_org_scope), 'repo' => method(:cd_repo_scope) }
     nav[type].call(name, enviroment)
   end
 
@@ -97,7 +89,7 @@ class User
     Sys.new.open_url(mem[:html_url])
   end
 
-  def show_organizations(client, _config)
+  def show_organizations(client)
     puts
     organizations = client.list_organizations
     organizations.each do |i|
@@ -124,8 +116,7 @@ class User
     end
 
     begin
-      mem = enviroment.client.commits("#{enviroment.client.login}/#{repo}", options)
-      mem.each do |i|
+      enviroment.client.commits("#{enviroment.client.login}/#{repo}", options).each do |i|
         puts "\tSHA: #{i[:sha]}"
         puts "\t\t Commit date: #{i[:commit][:author][:date]}"
         puts "\t\t Commit author: #{i[:commit][:author][:name]}"
