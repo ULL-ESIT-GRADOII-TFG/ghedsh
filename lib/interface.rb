@@ -61,9 +61,12 @@ class Interface
     end
   end
 
-  # Main program
   def run
     puts @shell_enviroment.client.say('GitHub Education Shell')
+    sleep(1.5)
+    @shell_enviroment.client.say.clear
+    system('clear')
+    
     loop do
       begin
         input = Readline.readline(@shell_enviroment.prompt, true).strip.split
