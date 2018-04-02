@@ -2,6 +2,7 @@ require 'readline'
 require 'optparse'
 require 'version'
 require 'context'
+require 'helpers'
 
 class Interface
   def initialize; end
@@ -40,6 +41,7 @@ class Interface
   end
 
   def start
+    spinner = custom_spinner("Starting ghedsh CLI")
     options = parse
 
     trap('SIGINT') { puts; throw :ctrl_c }
@@ -51,6 +53,7 @@ class Interface
         else
           @shell_enviroment = ShellContext.new(options[:user], "#{ENV['HOME']}/.ghedsh", options[:token])
         end
+        spinner.stop(Rainbow('done').color(4, 255, 0))
         run
       rescue SystemExit, Interrupt
         raise
