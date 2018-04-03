@@ -77,6 +77,7 @@ class Commands
   end
 
   def get(org_name)
+    # puts RbConfig::CONFIG['host_os']
     # prueba-clasroom
     uri = "http://codelab-tfg1718.herokuapp.com/ghedsh/#{org_name[0]}"
     res = Net::HTTP.get_response(URI(uri))
@@ -94,7 +95,7 @@ class Commands
   def open(params); end
 
   def new_repo(_params)
-    puts RbConfig::CONFIG['host_os']
+   
 
     # user_url = @enviroment.client.web_endpoint << @enviroment.client.login
     # system("open #{user_url}")
