@@ -6,7 +6,7 @@ require 'optparse'
 require 'json'
 require 'actions/system'
 require 'version'
-require_relative './user.rb'
+require 'common'
 
 class Sys
   attr_reader :client
@@ -152,31 +152,31 @@ class Sys
     json = File.read("#{path}/ghedsh-cache.json")
     cache = JSON.parse(json)
     deep = User
-    if !cache['Team'].nil?
-      deep = if !cache['Repo'].nil?
-               5
-             else
-               4
-             end
-    elsif cache['Team'].nil?
-      deep = if !cache['Org'].nil?
-               if !cache['Repo'].nil?
-                 3
-               else
-                 deep = if !cache['Assig'].nil?
-                          6
-                        else
-                          2
-                        end
-                      end
-             else
-               if !cache['Repo'].nil?
-                 10
-               else
-                 User
-                      end
-             end
-    end
+    #     if !cache['Team'].nil?
+    #       deep = if !cache['Repo'].nil?
+    #                5
+    #              else
+    #                4
+    #              end
+    #     elsif cache['Team'].nil?
+    #       deep = if !cache['Org'].nil?
+    #                if !cache['Repo'].nil?
+    #                  3
+    #                else
+    #                  deep = if !cache['Assig'].nil?
+    #                           6
+    #                         else
+    #                           ORG
+    #                         end
+    #                       end
+    #              else
+    #                if !cache['Repo'].nil?
+    #                  User
+    #                else
+    #                  User
+    #                       end
+    #              end
+    #     end
     deep
    end
 
@@ -227,7 +227,7 @@ class Sys
     userhash = {}
 
     unless us.nil?
-      puts "Login succesful as #{us.login}\n"
+      puts Rainbow("Login succesful as #{us.login}\n").green
       config['User'] = us.login
       add_users(configure_path, (config['User']).to_s => token)
       save_token(configure_path, token)
