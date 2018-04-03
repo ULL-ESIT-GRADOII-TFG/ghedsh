@@ -7,12 +7,10 @@ class ShellContext
   attr_accessor :config
   attr_accessor :client
   attr_accessor :sysbh
-  attr_accessor :repo_path
   attr_accessor :commands
   attr_accessor :config_path
 
   def initialize(user, config_path, argv_token)
-    @repo_path = ''
     @commands = {}
     @config_path = config_path
     @sysbh = Sys.new
@@ -23,8 +21,7 @@ class ShellContext
     if !user.nil?
       @config = @sysbh.load_config_user(config_path, user)
       @client = @sysbh.client
-      ex = 0 if @config.nil? # !!!!!!!!!!!!!!! revisar 'ex', no pertenece aqui
-      @deep = USER
+      @deep = User
     else
       @config = @sysbh.load_config(config_path, argv_token) # retorna la configuracion ya guardada anteriormente
       @client = @sysbh.client
@@ -42,6 +39,6 @@ class ShellContext
   end
   
   def prompt
-    @deep.shell_prompt(@config, @repo_path)
+    @deep.shell_prompt(@config)
   end
 end
