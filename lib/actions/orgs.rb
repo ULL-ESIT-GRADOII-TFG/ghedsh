@@ -8,7 +8,7 @@ require 'readline'
 GITHUB_LIST = %w[githubid github idgithub github_id id_github githubuser github_user].freeze
 MAIL_LIST = ['email', 'mail', 'e-mail'].freeze
 
-class Organizations
+class Organization
   attr_accessor :orgslist
   attr_accessor :peoplelist
 
@@ -16,6 +16,51 @@ class Organizations
     @peoplelist = {}
     @peoplelist = Sys.new.load_people_db("#{ENV['HOME']}/.ghedsh")
     @peoplelist
+  end
+
+  def self.shell_prompt(config)
+    if config['Repo'].nil?
+      Rainbow("#{config['User']}> ").aqua + Rainbow("#{config['Org']}> ").magenta
+    else
+      Rainbow("#{config['User']}> ").aqua + Rainbow("#{config['Org']}> ").magenta + Rainbow("#{config['Repo']}> ").color(236, 151, 21)
+    end
+  end
+
+  def cd_repo_scope(name, client, enviroment)
+    if name.class == Regexp
+      pattern = Regexp.new(name.source)
+      org_repos = []
+      spinner = TTY::Spinner.new(Rainbow("Matching #{enviroment.config['Org']} repositories :spinner ...").color(4, 255, 0), format: :bouncing_ball)
+      spinner.auto_spin
+      client.organization_repositories(enviroment.config['Org'].to_s).each do |org_repo|
+        org_repos << org_repo[:name] if pattern.match(org_repo[:name].to_s)
+      end
+      spinner.stop(Rainbow('done').color(4, 255, 0))
+      if org_repos.empty?
+        puts "No repository match in with #{name} inside organization #{enviroment.config['Org']}"
+        return nil
+      else
+        prompt = TTY::Prompt.new
+        answer = prompt.select('Select desired organization repository', org_repos)
+        enviroment.config['Repo'] = answer
+        enviroment.deep = Organization
+      end
+    else
+      if client.repository?("#{enviroment.config['Org']}/#{name}")
+        enviroment.config['Repo'] = name
+        enviroment.deep = Organization
+      else
+        puts "Maybe #{name} is not an organizaton or currently does not exist."
+        return nil
+      end
+    end
+    enviroment
+  end
+  
+
+  def cd(type, name, client, enviroment)
+    nav = { 'repo' => method(:cd_repo_scope) }
+    nav[type].call(name, client, enviroment)
   end
 
   # Takes people info froma a csv file and gets into ghedsh people information
