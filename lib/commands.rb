@@ -63,7 +63,7 @@ class Commands
     if @enviroment.deep.method_defined? :show_organizations
       @enviroment.deep.new.show_organizations(@enviroment.client)
     else
-      puts "Command not available in context \"#{@enviroment.deep.name}\""
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").indianred
     end
     puts
   end
@@ -115,7 +115,7 @@ class Commands
     if @enviroment.deep.method_defined? :show_commits
       @enviroment.deep.new.show_commits(@enviroment, params)
     else
-      puts "Command not available in context \"#{@enviroment.deep.name}\""
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").indianred
     end
     puts
   end
@@ -171,7 +171,7 @@ class Commands
           @enviroment.deep = ret.deep
         end
       rescue StandardError => exception
-        puts exception.message
+        puts Rainbow(exception.message).indianred
       end
     end
   end
