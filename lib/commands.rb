@@ -1,29 +1,25 @@
 require 'version'
 require 'common'
 require 'ostruct'
+require 'net/http'
+require 'json'
 
 class Commands
   attr_reader :enviroment
-  attr_reader :struct
-
-  attr_reader :orgs_list
-  attr_reader :repos_list
-  attr_reader :teamlist
-  attr_reader :orgs_repos
-  attr_reader :teams_repos
-  attr_reader :issues_list
+  attr_accessor :struct
 
   def initialize
     @context_stack = []
-    @repos_list = []; @orgs_repos = []; @teams_repos = []; @orgs_list = []; @teamlist = []
     add_command('clear', method(:clear))
-    add_command('help', method(:help))
+    #add_command('help', method(:help))
     add_command('exit', method(:exit))
     add_command('new_repo', method(:new_repo))
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:orgs))
     add_command('orgsn', method(:orgsn))
     add_command('cd', method(:change_context))
+    add_command('get', method(:get))
+    add_command('bash', method(:bash))
   end
 
   def add_command(command_name, command)
@@ -33,39 +29,43 @@ class Commands
   def load_enviroment(console_enviroment)
     @enviroment = console_enviroment
     @struct = OpenStruct.new
-    default_enviroment = {'User'=>@enviroment.client.login.to_s, 'Org'=>nil, 'Repo'=>nil, 'Team'=>nil, 'TeamID'=>nil, 'Assig'=>nil}
+    default_enviroment = { 'User' => @enviroment.client.login.to_s, 'Org' => nil, 'Repo' => nil, 'Team' => nil, 'TeamID' => nil, 'Assig' => nil }
     @struct.config = default_enviroment
     @struct.deep = User
-    @enviroment.context_stack.push(@struct)
+    @context_stack.push(@struct)
   end
 
-  def help(opcd)
-    h = HelpM.new
-    if opcd.size >= 1
-      h.context(opcd[0..opcd.size - 1], @enviroment.deep)
-    else
-      if @enviroment.deep == USER
-        h.user
-      elsif @enviroment.deep == ORG
-        h.org
-      elsif @enviroment.deep == ORGS_REPO
-        h.org_repo
-      elsif @enviroment.deep == USER_REPO
-        h.user_repo
-      elsif @enviroment.deep == TEAM
-        h.orgs_teams
-      elsif @enviroment.deep == TEAM_REPO
-        h.team_repo
-      elsif @enviroment.deep == ASSIG
-        h.asssig
-      end
-    end
-  rescue StandardError => exception
-    puts exception
-  end
-
+  #   def help(opcd)
+  #     h = HelpM.new
+  #     if opcd.size >= 1
+  #       h.context(opcd[0..opcd.size - 1], @enviroment.deep)
+  #     else
+  #       if @enviroment.deep == USER
+  #         h.user
+  #       elsif @enviroment.deep == ORG
+  #         h.org
+  #       elsif @enviroment.deep == ORGS_REPO
+  #         h.org_repo
+  #       elsif @enviroment.deep == USER_REPO
+  #         h.user_repo
+  #       elsif @enviroment.deep == TEAM
+  #         h.orgs_teams
+  #       elsif @enviroment.deep == TEAM_REPO
+  #         h.team_repo
+  #       elsif @enviroment.deep == ASSIG
+  #         h.asssig
+  #       end
+  #     end
+  #   rescue StandardError => exception
+  #     puts exception
+  #   end
   def orgs(_params)
-    @enviroment.deep.new.show_organizations(@enviroment.client, @enviroment.config)
+    if @enviroment.deep.method_defined? :show_organizations
+      @enviroment.deep.new.show_organizations(@enviroment.client)
+    else
+      puts "Command not available in context \"#{@enviroment.deep.name}\""
+    end
+    puts
   end
 
   def exit(_params)
@@ -76,7 +76,28 @@ class Commands
     0
   end
 
-  def new_repo(params)
+  def get(org_name)
+    # prueba-clasroom
+    uri = "http://codelab-tfg1718.herokuapp.com/ghedsh/#{org_name[0]}"
+    res = Net::HTTP.get_response(URI(uri))
+    fich = JSON.parse(res.body)
+    fich.each do |item|
+      puts item['name']
+    end
+  end
+
+  def bash(params)
+    bash_command = params.join(' ')
+    system(bash_command)
+  end
+
+  def open(params); end
+
+  def new_repo(_params)
+    puts RbConfig::CONFIG['host_os']
+
+    # user_url = @enviroment.client.web_endpoint << @enviroment.client.login
+    # system("open #{user_url}")
     # puts "HOLA"
     # puts params
     # options = Hash[*params.flatten]
@@ -109,9 +130,8 @@ class Commands
     p @enviroment.config
   end
 
+  # ejemplo cambio de contexto (cd): cd User.new.cd('org',/ULL-*/,client,env)
   def change_context(params)
-    #path = params[0].split('/')
-    #clean_path = path.reject(&:empty?)
     if params.empty?
       @enviroment.config['Org'] = nil
       @enviroment.config['Repo'] = nil
@@ -119,112 +139,40 @@ class Commands
       @enviroment.config['TeamID'] = nil
       @enviroment.config['Assig'] = nil
 
+      @context_stack.clear
+      @context_stack.push(@struct)
+
       @enviroment.deep = User
     elsif params[0] == '..'
-      if @enviroment.context_stack.size > 1
-        @enviroment.context_stack.pop
-        stack_pointer = @enviroment.context_stack.last
-        puts "actual: #{stack_pointer}"
+      if @context_stack.size > 1
+        @context_stack.pop
+        stack_pointer = @context_stack.last
+
         @enviroment.config = stack_pointer.config
         @enviroment.deep = stack_pointer.deep
       else
-        p @struct.config
-        p @struct.deep
         @enviroment.config = @struct.config
         @enviroment.deep = @struct.deep
       end
     else
-      puts "entre en el else"
-      
-      action = params.join('')
-      puts action
-      puts "antes del eval"
-      p @enviroment.context_stack
-      env = @enviroment
-
-      @enviroment = eval(action)
-      #env.eval(action)
-      current_enviroment = OpenStruct.new
-      puts "CURRENT CONFIG"
-      p current_enviroment.config = @enviroment.config
-      current_enviroment.deep =  @enviroment.deep
-      @enviroment.context_stack.push(current_enviroment)
-      puts "despues del eval"
-      p @enviroment.context_stack
-    end
-  end
-=begin
-  def change_context(params)
-    if params.empty?
-      @enviroment.config['Org'] = nil
-      @enviroment.config['Repo'] = nil
-      @enviroment.config['Team'] = nil
-      @enviroment.config['TeamID'] = nil
-      @enviroment.config['Assig'] = nil
-
-      @enviroment.deep = USER
-    else
-      path = params[0].split('/')
-      clean_path = path.reject(&:empty?)
-      p clean_path[0]
-      # quitar los valores nil para comprobar los que tienen valor asignado
-      actual_config = @enviroment.config.compact
-
-      if actual_config['User'] && actual_config['Org']
-        if @enviroment.client.repository?("#{@enviroment.config['Org']}/#{clean_path[0]}")
-          @enviroment.config['Repo'] = clean_path[0]
+      begin
+        action = params.join('')
+        env = OpenStruct.new
+        env.config = Marshal.load(Marshal.dump(@enviroment.config))
+        env.deep = @enviroment.deep
+        client = @enviroment.client
+        ret = eval(action)
+        unless ret.nil?
+          current_enviroment = OpenStruct.new
+          current_enviroment.config = ret.config
+          current_enviroment.deep = ret.deep
+          @context_stack.push(current_enviroment)
+          @enviroment.config = ret.config
+          @enviroment.deep = ret.deep
         end
-      else
-        if @enviroment.client.repository?("#{@enviroment.client.login}/#{clean_path[0]}")
-          puts 'seteo el repo'
-          @enviroment.config['Repo'] = clean_path[0]
-          @enviroment.deep = USER
-        elsif @enviroment.client.organization_member?(clean_path[0], @enviroment.client.login)
-          puts 'seteo la org'
-          @enviroment.config['Org'] = clean_path[0]
-          @enviroment.deep = ORG
-          clean_path.shift
-          unless clean_path.empty?
-            if @enviroment.client.repository?("#{@enviroment.config['Org']}/#{clean_path[0]}")
-              @enviroment.config['Repo'] = clean_path[0]
-            else
-              puts "#{"\u26A0".encode('utf-8')} #{Rainbow("Repo ''#{clean_path[0]}'' does not exist within org #{@enviroment.config['Org']}").yellow.underline}"
-            end
-          end
-        else
-          puts "#{"\u26A0".encode('utf-8')} #{Rainbow("You are currently not a ''#{clean_path[0]}'' org member or ''#{clean_path[0]}'' is not a repo.").yellow.underline}"
-        end
+      rescue StandardError => exception
+        puts exception.message
       end
-      # la idea para ir para atras es comprobar si clean_path[0].include?('..')
-      #  tener en otra variable los valores config y deep pasados (es posible?)
-      #         if @enviroment.client.repository?("#{@enviroment.client.login}/#{clean_path[0]}")
-      #           puts 'seteo el repo'
-      #           @enviroment.config['Repo'] = clean_path[0]
-      #           @enviroment.deep = USER
-      #         end
-      #         # devuelve array con las organizaciones a las que pertenece el usuario autenticado
-      #         #user_orgs = []
-      #         #@enviroment.client.organizations.each do |it|
-      #           #user_orgs << it[:login]
-      #         #end
-      #         #user_orgs.include?(clean_path[0])
-      #         if @enviroment.client.organization_member?(clean_path[0], @enviroment.client.login)
-      #           puts 'seteo la org'
-      #           @enviroment.config['Org'] = clean_path[0]
-      #           @enviroment.deep = ORG
-      #           clean_path.shift
-      #           unless clean_path.empty?
-      #             if @enviroment.client.repository?("#{@enviroment.config['Org']}/#{clean_path[0]}")
-      #               @enviroment.config['Repo'] = clean_path[0]
-      #             end
-      #           end
-      #         end
-      #       #end
-      # unless @enviroment.client.organization_member?(path, @enviroment.client.login)
-      # puts "#{"\u26A0".encode('utf-8')} #{Rainbow("You are currently not a #{@enviroment.config['Org']} member.").yellow.underline}"
-      # end
-      # end
     end
   end
-=end
 end
