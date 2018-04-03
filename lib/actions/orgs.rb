@@ -56,7 +56,6 @@ class Organization
     end
     enviroment
   end
-  
 
   def cd(type, name, client, enviroment)
     nav = { 'repo' => method(:cd_repo_scope) }
