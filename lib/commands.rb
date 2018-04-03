@@ -5,13 +5,13 @@ require 'net/http'
 require 'json'
 
 class Commands
-  attr_reader :enviroment
+  attr_reader   :enviroment
   attr_accessor :struct
 
   def initialize
     @context_stack = []
     add_command('clear', method(:clear))
-    #add_command('help', method(:help))
+    # add_command('help', method(:help))
     add_command('exit', method(:exit))
     add_command('new_repo', method(:new_repo))
     add_command('commits', method(:display_commits))
