@@ -3,6 +3,7 @@ require 'json'
 require 'csv'
 require 'require_all'
 require_rel '.'
+require_relative '../helpers'
 require 'readline'
 
 GITHUB_LIST = %w[githubid github idgithub github_id id_github githubuser github_user].freeze
@@ -26,18 +27,18 @@ class Organization
     end
   end
 
-  def cd_repo_scope(name, client, enviroment)
+  def cd_repo(name, client, enviroment)
     if name.class == Regexp
       pattern = Regexp.new(name.source)
       org_repos = []
-      spinner = TTY::Spinner.new(Rainbow("Matching #{enviroment.config['Org']} repositories :spinner ...").color(4, 255, 0), format: :bouncing_ball)
+      spinner = custom_spinner("Matching #{enviroment.config['Org']} repositories :spinner ...")
       spinner.auto_spin
       client.organization_repositories(enviroment.config['Org'].to_s).each do |org_repo|
         org_repos << org_repo[:name] if pattern.match(org_repo[:name].to_s)
       end
-      spinner.stop(Rainbow('done').color(4, 255, 0))
+      spinner.stop(Rainbow('done!').color(4, 255, 0))
       if org_repos.empty?
-        puts "No repository match in with #{name} inside organization #{enviroment.config['Org']}"
+        puts Rainbow("No repository match in with #{name} inside organization #{enviroment.config['Org']}").color('#9f6000')
         return nil
       else
         prompt = TTY::Prompt.new
@@ -50,7 +51,7 @@ class Organization
         enviroment.config['Repo'] = name
         enviroment.deep = Organization
       else
-        puts "Maybe #{name} is not an organizaton or currently does not exist."
+        puts Rainbow("Maybe #{name} is not an organizaton or currently does not exist.").color('#9f6000')
         return nil
       end
     end
@@ -58,8 +59,8 @@ class Organization
   end
 
   def cd(type, name, client, enviroment)
-    nav = { 'repo' => method(:cd_repo_scope) }
-    nav[type].call(name, client, enviroment)
+    cd_scopes = { 'repo' => method(:cd_repo) }
+    cd_scopes[type].call(name, client, enviroment)
   end
 
   # Takes people info froma a csv file and gets into ghedsh people information
