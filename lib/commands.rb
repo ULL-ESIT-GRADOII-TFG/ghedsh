@@ -79,6 +79,7 @@ class Commands
   def get(org_name)
     # puts RbConfig::CONFIG['host_os']
     # prueba-clasroom
+    spinner = custom_spinner('Getting file from remote server ...')
     uri = "http://codelab-tfg1718.herokuapp.com/ghedsh/#{org_name[0]}"
     res = Net::HTTP.get_response(URI(uri))
     fich = JSON.parse(res.body)
@@ -162,6 +163,8 @@ class Commands
         env.config = Marshal.load(Marshal.dump(@enviroment.config))
         env.deep = @enviroment.deep
         client = @enviroment.client
+        action.chomp!(')')
+        action << ', client, env)'
         ret = eval(action)
         unless ret.nil?
           current_enviroment = OpenStruct.new
@@ -171,8 +174,11 @@ class Commands
           @enviroment.config = ret.config
           @enviroment.deep = ret.deep
         end
+        # manejar syntax error para añadir sugerencia
       rescue StandardError => exception
         puts Rainbow(exception.message).indianred
+      rescue SyntaxError => err
+        puts Rainbow('Syntax Error typing the command. Tip: cd <class>.new.cd(<scope>, <name or /Regexp>/)').indianred
       end
     end
   end
