@@ -21,15 +21,18 @@ class User
     end
   end
 
-  def cd_org_scope(name, client, enviroment)
+  def cd_org(name, client, enviroment)
     if name.class == Regexp
       pattern = Regexp.new(name.source)
       user_orgs = []
+      spinner = custom_spinner("Matching #{client.login} organizations :spinner ...")
+      spinner.auto_spin
       client.organizations.each do |org|
         user_orgs << org[:login] if pattern.match((org[:login]).to_s)
       end
+      spinner.stop(Rainbow('done!').color(4, 255, 0))
       if user_orgs.empty?
-        puts "No organization match with #{name}"
+        puts Rainbow("No organization match with #{name}").color('#9f6000')
         return nil
       else
         prompt = TTY::Prompt.new
@@ -44,14 +47,14 @@ class User
         enviroment.config['Org'] = name
         enviroment.deep = Organization
       else
-        puts "You are not currently #{name} member or #{name} is not an Organization."
+        puts Rainbow("You are not currently #{name} member or #{name} is not an Organization.").color('#9f6000')
         return nil
       end
     end
     enviroment
   end
 
-  def cd_repo_scope(name, client, enviroment)
+  def cd_repo(name, client, enviroment)
     if name.class == Regexp
       pattern = Regexp.new(name.source)
       user_repos = []
@@ -60,10 +63,9 @@ class User
       client.repositories.each do |repo|
         user_repos << repo[:name] if pattern.match(repo[:name].to_s)
       end
-      spinner.stop(Rainbow('done').color(4, 255, 0))
-
+      spinner.stop(Rainbow('done!').color(4, 255, 0))
       if user_repos.empty?
-        puts "No repository match with #{name}"
+        puts Rainbow("No repository match with #{name}").color('#9f6000')
         return nil
       else
         prompt = TTY::Prompt.new
@@ -76,7 +78,7 @@ class User
         enviroment.config['Repo'] = name
         enviroment.deep = User
       else
-        puts "Maybe #{name} is not a repository or currently does not exist."
+        puts Rainbow("Maybe #{name} is not a repository or currently does not exist.").color('#9f6000')
         return nil
       end
     end
@@ -84,8 +86,8 @@ class User
   end
 
   def cd(type, name, client, enviroment)
-    nav = { 'org' => method(:cd_org_scope), 'repo' => method(:cd_repo_scope) }
-    nav[type].call(name, client, enviroment)
+    cd_scopes = { 'org' => method(:cd_org), 'repo' => method(:cd_repo) }
+    cd_scopes[type].call(name, client, enviroment)
   end
 
   def open_user(client)
