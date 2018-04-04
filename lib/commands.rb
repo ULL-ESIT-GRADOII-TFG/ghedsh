@@ -63,7 +63,7 @@ class Commands
     if @enviroment.deep.method_defined? :show_organizations
       @enviroment.deep.new.show_organizations(@enviroment.client)
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").indianred
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
     puts
   end
@@ -117,7 +117,7 @@ class Commands
     if @enviroment.deep.method_defined? :show_commits
       @enviroment.deep.new.show_commits(@enviroment, params)
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").indianred
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
     puts
   end
@@ -127,7 +127,7 @@ class Commands
   end
 
   def orgsn(_params)
-    puts "EL DEEP: #{@enviroment.deep}"
+    puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
 
     p @enviroment.config
   end
@@ -165,20 +165,20 @@ class Commands
         client = @enviroment.client
         action.chomp!(')')
         action << ', client, env)'
-        ret = eval(action)
-        unless ret.nil?
+        changed_enviroment = eval(action)
+        unless changed_enviroment.nil?
           current_enviroment = OpenStruct.new
-          current_enviroment.config = ret.config
-          current_enviroment.deep = ret.deep
+          current_enviroment.config = changed_enviroment.config
+          current_enviroment.deep = changed_enviroment.deep
           @context_stack.push(current_enviroment)
-          @enviroment.config = ret.config
-          @enviroment.deep = ret.deep
+          @enviroment.config = changed_enviroment.config
+          @enviroment.deep = changed_enviroment.deep
         end
         # manejar syntax error para añadir sugerencia
       rescue StandardError => exception
-        puts Rainbow(exception.message).indianred
+        puts Rainbow(exception.message).color('#D8000C')
       rescue SyntaxError => err
-        puts Rainbow('Syntax Error typing the command. Tip: cd <class>.new.cd(<scope>, <name or /Regexp>/)').indianred
+        puts Rainbow('Syntax Error typing the command. Tip: cd <class>.new.cd(<scope>, <name or /Regexp>/)').color('#cc0000')
       end
     end
   end
