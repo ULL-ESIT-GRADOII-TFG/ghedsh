@@ -95,6 +95,7 @@ class Sys
       if !token.nil?
         @client = login(token)
         config['User'] = @client.login
+        config['user_url'] = @client.web_endpoint << @client.login
         userslist = load_users(configure_path)
 
         if userslist['users'].detect { |f| f[(config['User']).to_s] }.nil?
@@ -122,6 +123,7 @@ class Sys
         config = JSON.parse(json)
         @client = login(userFound[user.to_s])
         config['User'] = @client.login
+        config['user_url'] = @client.web_endpoint << @client.login
         save_token(configure_path, userFound[user.to_s])
         return config
       else
@@ -229,6 +231,8 @@ class Sys
     unless us.nil?
       puts Rainbow("Login succesful as #{us.login}\n").green
       config['User'] = us.login
+      config['user_url'] = us.web_endpoint << us.login
+
       add_users(configure_path, (config['User']).to_s => token)
       save_token(configure_path, token)
       @client = us
