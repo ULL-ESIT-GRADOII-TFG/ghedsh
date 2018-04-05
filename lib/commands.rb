@@ -15,7 +15,8 @@ class Commands
     add_command('exit', method(:exit))
     add_command('new_repo', method(:new_repo))
     add_command('commits', method(:display_commits))
-    add_command('orgs', method(:orgs))
+    add_command('repos', method(:display_repos))
+    add_command('orgs', method(:display_orgs))
     add_command('orgsn', method(:orgsn))
     add_command('cd', method(:change_context))
     add_command('get', method(:get))
@@ -59,9 +60,9 @@ class Commands
   #   rescue StandardError => exception
   #     puts exception
   #   end
-  def orgs(_params)
+  def display_orgs(params)
     if @enviroment.deep.method_defined? :show_organizations
-      @enviroment.deep.new.show_organizations(@enviroment.client)
+      @enviroment.deep.new.show_organizations(@enviroment.client, params)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
@@ -116,6 +117,15 @@ class Commands
   def display_commits(params)
     if @enviroment.deep.method_defined? :show_commits
       @enviroment.deep.new.show_commits(@enviroment, params)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+    end
+    puts
+  end
+
+  def display_repos(params)
+    if @enviroment.deep.method_defined? :show_repos
+      @enviroment.deep.new.show_repos(@enviroment.client, params)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
