@@ -20,6 +20,7 @@ class Commands
     add_command('orgsn', method(:orgsn))
     add_command('cd', method(:change_context))
     add_command('get', method(:get))
+    add_command('open', method(:open))
     add_command('bash', method(:bash))
   end
 
@@ -94,11 +95,11 @@ class Commands
     system(bash_command)
   end
 
-  def open(params); end
+  def open(params)
+    system("open #{@enviroment.config['user_url']}")
+  end
 
   def new_repo(_params)
-   
-
     # user_url = @enviroment.client.web_endpoint << @enviroment.client.login
     # system("open #{user_url}")
     # puts "HOLA"
@@ -139,7 +140,7 @@ class Commands
   def orgsn(_params)
     puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
 
-    p @enviroment.config
+    p @enviroment.client
   end
 
   # ejemplo cambio de contexto (cd): cd User.new.cd('org',/ULL-*/,client,env)
