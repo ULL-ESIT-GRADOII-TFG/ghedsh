@@ -95,10 +95,35 @@ class User
     Sys.new.open_url(mem[:html_url])
   end
 
-  def show_organizations(client)
+  def show_repos(client, params)
+    spinner = custom_spinner("Fetching #{client.login} repositories :spinner ...")
+    spinner.auto_spin
+    user_repos = []
+    client.repositories.each do |repo|
+      user_repos << repo[:name]
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+    if params.empty?
+      user_repos.each do |repo_name|
+        puts repo_name
+      end
+    else
+      str = params[0].gsub(/\//, '')
+      pattern = Regexp.new(str)
+      occurences = 0
+      user_repos.each do |repo_name|
+        if pattern.match(repo_name)
+          puts repo_name
+          occurences += 1
+        end
+      end
+      puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if occurences.zero?
+    end
+  end
+
+  def show_organizations(client, _params)
     puts
-    organizations = client.list_organizations
-    organizations.each do |i|
+    client.list_organizations.each do |i|
       puts i[:login]
     end
   end
