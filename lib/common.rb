@@ -6,6 +6,7 @@ require 'actions/teams'
 require 'actions/user'
 require 'rainbow' 
 require 'tty-spinner'
+require 'tty-prompt'
 
 #USER = User
 #ORG = Organization
