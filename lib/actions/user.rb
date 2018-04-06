@@ -5,13 +5,6 @@ require_relative '../helpers'
 require 'ostruct'
 
 class User
-  def info(client)
-    mem = client.user(client.login)
-    puts m[:login]
-    puts m[:name]
-    puts m[:email]
-  end
-
   # Defined as method class in order to call it within context.rb
   def self.shell_prompt(config)
     if config['Repo'].nil?
@@ -128,6 +121,16 @@ class User
     end
   end
 
+  def create_repo(client, repo_name, options)
+    begin
+      client.create_repository(repo_name, options)
+      puts Rainbow("Repository created correctly!").color(79, 138, 16)
+    rescue => exception
+      puts
+      puts Rainbow("#{exception.message}").color('#cc0000')
+    end
+  end
+
   def show_commits(enviroment, params)
     options = {}
     if !enviroment.config['Repo'].nil?
@@ -145,7 +148,6 @@ class User
                         params[1]
                       end
     end
-
     begin
       enviroment.client.commits("#{enviroment.client.login}/#{repo}", options).each do |i|
         puts "\tSHA: #{i[:sha]}"
@@ -155,7 +157,7 @@ class User
       end
     rescue StandardError => exception
       puts exception
-      puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color('#00529B') 
+      puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color('#00529B')
     end
   end
 end
