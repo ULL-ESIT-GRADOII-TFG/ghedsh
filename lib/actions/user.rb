@@ -90,11 +90,6 @@ class User
     cd_scopes[type].call(name, client, enviroment)
   end
 
-  def open_user(client)
-    mem = client.user(client.login)
-    Sys.new.open_url(mem[:html_url])
-  end
-
   def show_repos(client, params)
     spinner = custom_spinner("Fetching #{client.login} repositories :spinner ...")
     spinner.auto_spin
@@ -108,23 +103,28 @@ class User
         puts repo_name
       end
     else
-      str = params[0].gsub(/\//, '')
-      pattern = Regexp.new(str)
-      occurences = 0
-      user_repos.each do |repo_name|
-        if pattern.match(repo_name)
-          puts repo_name
-          occurences += 1
-        end
-      end
-      puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if occurences.zero?
+      pattern = build_regexp_from_string(params[0])
+      occurrences = show_matching_items(user_repos, pattern)
+      puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
     end
   end
 
-  def show_organizations(client, _params)
-    puts
-    client.list_organizations.each do |i|
-      puts i[:login]
+  def show_organizations(client, params)
+    spinner = custom_spinner("Fetching #{client.login} repositories :spinner ...")
+    spinner.auto_spin
+    user_orgs = []
+    client.list_organizations.each do |org|
+      user_orgs << org[:login]
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+    if params.empty?
+      user_orgs.each do |org_name|
+        puts org_name
+      end
+    else
+      pattern = build_regexp_from_string(params[0])
+      occurrences = show_matching_items(user_orgs, pattern)
+      puts Rainbow("No organization matched \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
     end
   end
 
@@ -155,7 +155,7 @@ class User
       end
     rescue StandardError => exception
       puts exception
-      puts "If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')"
+      puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color('#00529B') 
     end
   end
 end
