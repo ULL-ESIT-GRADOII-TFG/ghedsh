@@ -99,20 +99,24 @@ class Commands
     system("open #{@enviroment.config['user_url']}")
   end
 
-  def new_repo(_params)
-    # user_url = @enviroment.client.web_endpoint << @enviroment.client.login
-    # system("open #{user_url}")
-    # puts "HOLA"
-    # puts params
-    # options = Hash[*params.flatten]
-    # puts "opciones: #{options}"
-    # puts a
-
-    # opts = {}
-    # opts[:has_issues] = ""
-    # opts[:has_wiki] = ""
-    # opts[:private] = "true"
-    # @enviroment.client.create_repository('prueba', opts)
+  def new_repo(params)
+    if @enviroment.deep.method_defined? :create_repo
+      begin
+        repo_name = params[0]
+        options = repo_creation_guide
+        if options == 'Default'
+          @enviroment.deep.new.create_repo(@enviroment.client, repo_name, options = {})
+        else
+          p options
+          @enviroment.deep.new.create_repo(@enviroment.client, repo_name, options)
+        end
+      rescue => exception
+        puts Rainbow("#{exception.message}").color('#cc0000')
+      end
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+    end
+    puts
   end
 
   def display_commits(params)
