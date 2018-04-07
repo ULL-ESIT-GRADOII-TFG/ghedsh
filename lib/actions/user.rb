@@ -122,23 +122,39 @@ class User
   end
 
   def create_repo(client, repo_name, options)
-    begin
-      client.create_repository(repo_name, options)
-      puts Rainbow("Repository created correctly!").color(79, 138, 16)
-    rescue => exception
-      puts
-      puts Rainbow("#{exception.message}").color('#cc0000')
-    end
+    client.create_repository(repo_name, options)
+    puts Rainbow('Repository created correctly!').color(79, 138, 16)
+  rescue StandardError => exception
+    puts
+    puts Rainbow(exception.message.to_s).color('#cc0000')
   end
 
   def remove_repo(client, repo_name)
-    begin
-      client.delete_repository("#{client.login}/#{repo_name}")
-      puts Rainbow("Repository deleted.").color('#00529B')
-    rescue => exception
-      puts
-      puts Rainbow("#{exception.message}").color('#cc0000')
+    client.delete_repository("#{client.login}/#{repo_name}")
+    puts Rainbow('Repository deleted.').color('#00529B')
+  rescue StandardError => exception
+    puts
+    puts Rainbow(exception.message.to_s).color('#cc0000')
+  end
+
+  def clone_repository(client, repo_name)
+    ssh_url = []
+    if repo_name.include?('/')
+      pattern = build_regexp_from_string(repo_name)
+      client.repositories.each do |repo|
+        ssh_url << repo[:clone_url] if pattern.match(repo[:name])
+      end
+      puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if ssh_url.empty?
+    else
+      repo = client.repository("#{client.login}/#{repo_name}")
+      ssh_url << repo[:ssh_url]
     end
+    unless ssh_url.empty?
+      perform_git_clone(ssh_url)
+    end
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts
   end
 
   def show_commits(enviroment, params)
