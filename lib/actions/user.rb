@@ -103,7 +103,7 @@ class User
   end
 
   def show_organizations(client, params)
-    spinner = custom_spinner("Fetching #{client.login} repositories :spinner ...")
+    spinner = custom_spinner("Fetching #{client.login} organizations :spinner ...")
     spinner.auto_spin
     user_orgs = []
     client.list_organizations.each do |org|

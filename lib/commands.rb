@@ -38,30 +38,6 @@ class Commands
     @context_stack.push(@struct)
   end
 
-  #   def help(opcd)
-  #     h = HelpM.new
-  #     if opcd.size >= 1
-  #       h.context(opcd[0..opcd.size - 1], @enviroment.deep)
-  #     else
-  #       if @enviroment.deep == USER
-  #         h.user
-  #       elsif @enviroment.deep == ORG
-  #         h.org
-  #       elsif @enviroment.deep == ORGS_REPO
-  #         h.org_repo
-  #       elsif @enviroment.deep == USER_REPO
-  #         h.user_repo
-  #       elsif @enviroment.deep == TEAM
-  #         h.orgs_teams
-  #       elsif @enviroment.deep == TEAM_REPO
-  #         h.team_repo
-  #       elsif @enviroment.deep == ASSIG
-  #         h.asssig
-  #       end
-  #     end
-  #   rescue StandardError => exception
-  #     puts exception
-  #   end
   def display_orgs(params)
     if @enviroment.deep.method_defined? :show_organizations
       @enviroment.deep.new.show_organizations(@enviroment.client, params)
