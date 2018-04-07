@@ -15,6 +15,7 @@ class Commands
     add_command('exit', method(:exit))
     add_command('new_repo', method(:new_repo))
     add_command('rm_repo', method(:rm_repo))
+    add_command('clone', method(:clone_repo))
     add_command('commits', method(:display_commits))
     add_command('repos', method(:display_repos))
     add_command('orgs', method(:display_orgs))
@@ -104,6 +105,14 @@ class Commands
     puts
   end
 
+  def clone_repo(params)
+    if @enviroment.deep.method_defined? :clone_repository
+      @enviroment.deep.new.clone_repository(@enviroment.client, params[0])
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+    end
+  end
+
   def display_commits(params)
     if @enviroment.deep.method_defined? :show_commits
       @enviroment.deep.new.show_commits(@enviroment, params)
@@ -131,12 +140,16 @@ class Commands
   end
 
   def orgsn(_params)
-    puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
-
-    p @enviroment.client
+    #puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
+    #p FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
+    #FileUtils.cd('/') do  # chdir
+      # ...               # do something
+    #end  
+    #repo = @enviroment.client.repository('alu0100816167/papa')
+    #p repo[:clone_url]
   end
 
-  # ejemplo cambio de contexto (cd): cd User.new.cd('org',/ULL-*/,client,env)
+  # ejemplo cambio de contexto (cd): cd User.new.cd('org',/ULL-*/)
   def change_context(params)
     if params.empty?
       @enviroment.config['Org'] = nil
