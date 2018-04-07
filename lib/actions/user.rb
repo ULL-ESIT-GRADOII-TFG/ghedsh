@@ -131,6 +131,16 @@ class User
     end
   end
 
+  def remove_repo(client, repo_name)
+    begin
+      client.delete_repository("#{client.login}/#{repo_name}")
+      puts Rainbow("Repository deleted.").color('#00529B')
+    rescue => exception
+      puts
+      puts Rainbow("#{exception.message}").color('#cc0000')
+    end
+  end
+
   def show_commits(enviroment, params)
     options = {}
     if !enviroment.config['Repo'].nil?

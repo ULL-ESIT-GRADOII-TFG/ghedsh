@@ -14,6 +14,7 @@ class Commands
     # add_command('help', method(:help))
     add_command('exit', method(:exit))
     add_command('new_repo', method(:new_repo))
+    add_command('rm_repo', method(:rm_repo))
     add_command('commits', method(:display_commits))
     add_command('repos', method(:display_repos))
     add_command('orgs', method(:display_orgs))
@@ -95,7 +96,7 @@ class Commands
     system(bash_command)
   end
 
-  def open(params)
+  def open(_params)
     system("open #{@enviroment.config['user_url']}")
   end
 
@@ -107,12 +108,20 @@ class Commands
         if options == 'Default'
           @enviroment.deep.new.create_repo(@enviroment.client, repo_name, options = {})
         else
-          p options
           @enviroment.deep.new.create_repo(@enviroment.client, repo_name, options)
         end
-      rescue => exception
-        puts Rainbow("#{exception.message}").color('#cc0000')
+      rescue StandardError => exception
+        puts Rainbow(exception.message.to_s).color('#cc0000')
       end
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+    end
+    puts
+  end
+
+  def rm_repo(params)
+    if @enviroment.deep.method_defined? :remove_repo
+      @enviroment.deep.new.remove_repo(@enviroment.client, params[0])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
@@ -126,6 +135,10 @@ class Commands
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
     puts
+  end
+
+  def new_issue(params)
+
   end
 
   def display_repos(params)
