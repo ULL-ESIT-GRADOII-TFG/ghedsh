@@ -35,7 +35,18 @@ class Commands
   def load_enviroment(console_enviroment)
     @enviroment = console_enviroment
     @struct = OpenStruct.new
-    default_enviroment = { 'User' => @enviroment.client.login.to_s, 'Org' => nil, 'Repo' => nil, 'Team' => nil, 'TeamID' => nil, 'Assig' => nil }
+    default_enviroment = {
+      'User' => @enviroment.client.login.to_s,
+      'user_url' => @enviroment.client.web_endpoint.to_s << @enviroment.client.login.to_s,
+      'Org' => nil,
+      'org_url' => nil,
+      'Repo' => nil,
+      'repo_url' => nil,
+      'Team' => nil,
+      'team_url' => nil,
+      'TeamID' => nil,
+      'Assig' => nil
+    }
     @struct.config = default_enviroment
     @struct.deep = User
     @context_stack.push(@struct)
@@ -77,11 +88,10 @@ class Commands
 
   def open(_params)
     if @enviroment.deep.method_defined? :open_info
-      @enviroment.deep.new.open_info(@enviroment)
+      @enviroment.deep.new.open_info(@enviroment.config)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
-    #system("open #{@enviroment.config['user_url']}")
   end
 
   def new_repo(params)
@@ -150,6 +160,9 @@ class Commands
   end
 
   def orgsn(_params)
+    @enviroment.client.organization('Canary-Analytics').each do |i|
+      p i
+    end
     # puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
     # p FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
     # FileUtils.cd('/') do  # chdir
