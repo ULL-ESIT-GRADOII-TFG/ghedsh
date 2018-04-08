@@ -95,7 +95,7 @@ class Sys
       if !token.nil?
         @client = login(token)
         config['User'] = @client.login
-        config['user_url'] = @client.web_endpoint << @client.login
+        config['user_url'] = @client.web_endpoint.to_s << @client.login.to_s
         userslist = load_users(configure_path)
 
         if userslist['users'].detect { |f| f[(config['User']).to_s] }.nil?
@@ -123,7 +123,7 @@ class Sys
         config = JSON.parse(json)
         @client = login(userFound[user.to_s])
         config['User'] = @client.login
-        config['user_url'] = @client.web_endpoint << @client.login
+        config['user_url'] = @client.web_endpoint.to_s << @client.login.to_s
         save_token(configure_path, userFound[user.to_s])
         return config
       else
