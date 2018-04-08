@@ -27,6 +27,14 @@ class Organization
     end
   end
 
+  def open_info(config)
+    if config['Repo'].nil?
+      open_url(config['org_url'].to_s)
+    else
+      open_url(config['repo_url'].to_s)
+    end
+  end
+
   def cd_repo(name, client, enviroment)
     if name.class == Regexp
       pattern = Regexp.new(name.source)
