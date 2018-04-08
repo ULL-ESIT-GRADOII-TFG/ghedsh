@@ -2,6 +2,7 @@ require 'tty-prompt'
 require 'tty-spinner'
 require 'rainbow'
 require 'fileutils'
+require 'rbconfig'
 
 # colors:
 # error: .color('#cc0000')
@@ -65,4 +66,13 @@ def perform_git_clone(https_url)
 rescue StandardError => exception
   puts Rainbow(exception.message.to_s).color('#cc0000')
   puts
+end
+
+def open_url(url)
+  os = RbConfig::CONFIG['host_os']
+  if os.downcase.include?('linux')
+    system("xdg-open #{url}")
+  elsif os.downcase.include?('darwin')
+    system("open #{url}")
+  end
 end
