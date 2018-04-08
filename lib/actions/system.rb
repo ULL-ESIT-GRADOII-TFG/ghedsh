@@ -336,7 +336,7 @@ class Sys
 
   # creates all ghedsh local stuff
   def create_config(configure_path)
-    con = { User: nil, Org: nil, Repo: nil, Team: nil, TeamID: nil }
+    con = { User: nil, user_url: nil, Org: nil, org_url: nil, Repo: nil, repo_url: nil, Team: nil, team_url: nil, TeamID: nil }
     us = { login: nil, users: [] }
     FileUtils.mkdir_p(configure_path)
     File.write("#{configure_path}/ghedsh-cache.json", con.to_json)
@@ -349,7 +349,7 @@ class Sys
   end
 
   def clear_cache(path)
-    con = { User: nil, Org: nil, Repo: nil, Team: nil, TeamID: nil }
+    con = { User: nil, user_url: nil, Org: nil, org_url: nil, Repo: nil, repo_url: nil, Team: nil, team_url: nil, TeamID: nil }
     File.write("#{path}/ghedsh-cache.json", con.to_json)
   end
 
