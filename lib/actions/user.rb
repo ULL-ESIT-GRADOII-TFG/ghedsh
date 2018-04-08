@@ -14,6 +14,14 @@ class User
     end
   end
 
+  def open_info(enviroment)
+    if enviroment.config['Repo'].nil?
+      open_url(enviroment.config['user_url'].to_s)
+    else
+      open_url(enviroment.config['repo_url'].to_s)
+    end
+  end
+
   def cd_org(name, client, enviroment)
     if name.class == Regexp
       pattern = Regexp.new(name.source)
@@ -151,6 +159,8 @@ class User
     end
     unless ssh_url.empty?
       perform_git_clone(ssh_url)
+      puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color('#00529B')
+      puts
     end
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color('#cc0000')
