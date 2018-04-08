@@ -3,6 +3,7 @@ require 'common'
 require 'ostruct'
 require 'net/http'
 require 'json'
+require 'fileutils'
 
 class Commands
   attr_reader   :enviroment
@@ -13,11 +14,12 @@ class Commands
     add_command('clear', method(:clear))
     # add_command('help', method(:help))
     add_command('exit', method(:exit))
+    add_command('repos', method(:display_repos))
     add_command('new_repo', method(:new_repo))
     add_command('rm_repo', method(:rm_repo))
     add_command('clone', method(:clone_repo))
+    add_command('rm_cloned', method(:delete_cloned_repos))
     add_command('commits', method(:display_commits))
-    add_command('repos', method(:display_repos))
     add_command('orgs', method(:display_orgs))
     add_command('orgsn', method(:orgsn))
     add_command('cd', method(:change_context))
@@ -74,7 +76,12 @@ class Commands
   end
 
   def open(_params)
-    system("open #{@enviroment.config['user_url']}")
+    if @enviroment.deep.method_defined? :open_info
+      @enviroment.deep.new.open_info(@enviroment)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+    end
+    #system("open #{@enviroment.config['user_url']}")
   end
 
   def new_repo(params)
@@ -113,6 +120,11 @@ class Commands
     end
   end
 
+  def delete_cloned_repos(_params)
+    FileUtils.remove_entry_secure("#{Dir.home}/ghedsh_cloned", force = true)
+    puts Rainbow("Cloned content deleted.\n").color('#00529B')
+  end
+
   def display_commits(params)
     if @enviroment.deep.method_defined? :show_commits
       @enviroment.deep.new.show_commits(@enviroment, params)
@@ -122,9 +134,7 @@ class Commands
     puts
   end
 
-  def new_issue(params)
-
-  end
+  def new_issue(params); end
 
   def display_repos(params)
     if @enviroment.deep.method_defined? :show_repos
@@ -140,13 +150,13 @@ class Commands
   end
 
   def orgsn(_params)
-    #puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
-    #p FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
-    #FileUtils.cd('/') do  # chdir
-      # ...               # do something
-    #end  
-    #repo = @enviroment.client.repository('alu0100816167/papa')
-    #p repo[:clone_url]
+    # puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
+    # p FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
+    # FileUtils.cd('/') do  # chdir
+    # ...               # do something
+    # end
+    # repo = @enviroment.client.repository('alu0100816167/papa')
+    # p repo[:clone_url]
   end
 
   # ejemplo cambio de contexto (cd): cd User.new.cd('org',/ULL-*/)
