@@ -14,11 +14,11 @@ class User
     end
   end
 
-  def open_info(enviroment)
-    if enviroment.config['Repo'].nil?
-      open_url(enviroment.config['user_url'].to_s)
+  def open_info(config)
+    if config['Repo'].nil?
+      open_url(config['user_url'].to_s)
     else
-      open_url(enviroment.config['repo_url'].to_s)
+      open_url(config['repo_url'].to_s)
     end
   end
 
@@ -26,10 +26,14 @@ class User
     if name.class == Regexp
       pattern = Regexp.new(name.source)
       user_orgs = []
+      user_orgs_url = {}
       spinner = custom_spinner("Matching #{client.login} organizations :spinner ...")
       spinner.auto_spin
       client.organizations.each do |org|
-        user_orgs << org[:login] if pattern.match((org[:login]).to_s)
+        if pattern.match((org[:login]).to_s)
+          user_orgs << org[:login]
+          user_orgs_url[org[:login].to_s] = "https://github.com/" << org[:login].to_s
+        end
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
       if user_orgs.empty?
@@ -38,14 +42,14 @@ class User
       else
         prompt = TTY::Prompt.new
         answer = prompt.select('Select desired organization', user_orgs)
-        if client.organization_member?(answer.to_s, client.login.to_s)
-          enviroment.config['Org'] = answer
-          enviroment.deep = Organization
-        end
+        enviroment.config['Org'] = answer
+        enviroment.config['org_url'] = user_orgs_url[answer]
+        enviroment.deep = Organization
       end
     else
-      if enviroment.client.organization_member?(name.to_s, client.login.to_s)
+      if client.organization_member?(name.to_s, client.login.to_s)
         enviroment.config['Org'] = name
+        enviroment.config['org_url'] = "https://github.com/" << name.to_s
         enviroment.deep = Organization
       else
         puts Rainbow("You are not currently #{name} member or #{name} is not an Organization.").color('#9f6000')
@@ -59,10 +63,14 @@ class User
     if name.class == Regexp
       pattern = Regexp.new(name.source)
       user_repos = []
+      user_repos_url = {}
       spinner = custom_spinner("Matching #{client.login} repositories :spinner ...")
       spinner.auto_spin
       client.repositories.each do |repo|
-        user_repos << repo[:name] if pattern.match(repo[:name].to_s)
+        if pattern.match(repo[:name].to_s)
+          user_repos << repo[:name]
+          user_repos_url[repo[:name].to_s] = repo[:html_url]
+        end
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
       if user_repos.empty?
@@ -72,11 +80,19 @@ class User
         prompt = TTY::Prompt.new
         answer = prompt.select('Select desired repository', user_repos)
         enviroment.config['Repo'] = answer
+        enviroment.config['repo_url'] = user_repos_url[answer]
         enviroment.deep = User
       end
     else
       if client.repository?("#{client.login}/#{name}")
+        res = {}
+        # client.repository returns array of arrays (in hash format)[ [key1, value1], [key2, value2] ]
+        # thats why first we convert the api response to hash
+        client.repository("#{client.login}/#{name}").each do |key, value|
+          res[key] = value
+        end
         enviroment.config['Repo'] = name
+        enviroment.config['repo_url'] = res[:html_url]
         enviroment.deep = User
       else
         puts Rainbow("Maybe #{name} is not a repository or currently does not exist.").color('#9f6000')
