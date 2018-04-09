@@ -50,7 +50,8 @@ class Organization
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
       if org_repos.empty?
-        puts Rainbow("No repository match in with #{name} inside organization #{enviroment.config['Org']}").color('#9f6000')
+        puts Rainbow("No repository matched with #{name.source} inside organization #{enviroment.config['Org']}").color('#9f6000')
+        puts
         return nil
       else
         prompt = TTY::Prompt.new
@@ -73,8 +74,51 @@ class Organization
     enviroment
   end
 
+  def cd_team(name, client, enviroment)
+    org_teams = []
+    org_teams_id = {}
+    client.organization_teams("#{enviroment.config['Org']}").each do |team|
+      org_teams << team[:name]
+      org_teams_id[team[:name].to_s] = team[:id]
+    end
+    if name.class == Regexp
+      pattern = Regexp.new(name.source)
+      spinner = custom_spinner("Matching #{enviroment.config['Org']} teams :spinner ...")
+      spinner.auto_spin
+      name_matches = []
+      org_teams.each do |team_name|
+        if pattern.match(team_name.to_s)
+          name_matches << team_name
+        end
+      end
+      spinner.stop(Rainbow('done!').color(4, 255, 0))
+      if name_matches.empty?
+        puts Rainbow("No team matched with #{name.source} inside organization #{enviroment.config['Org']}").color('#9f6000')
+        return nil
+      else
+        prompt = TTY::Prompt.new
+        answer = prompt.select('Select desired organization', name_matches)
+        enviroment.config['Team'] = answer
+        enviroment.config['TeamID'] = org_teams_id[answer]
+        enviroment.config['team_url'] = "https://github.com/orgs/" << enviroment.config['Org'] << '/teams/' << enviroment.config['Team']
+        enviroment.deep = Team
+      end
+    else
+      if org_teams.include?(name)
+        enviroment.config['Team'] = name
+        enviroment.config['TeamID'] = org_teams_id[name]
+        enviroment.config['team_url'] = "https://github.com/orgs/" << enviroment.config['Org'] << '/teams/' << enviroment.config['Team']
+        enviroment.deep = Team
+      else
+        puts Rainbow("Maybe #{name} is not a #{enviroment.config['Org']} team or currently does not exist.").color('#9f6000')
+        return nil
+      end
+    end
+    enviroment
+  end
+
   def cd(type, name, client, enviroment)
-    cd_scopes = { 'repo' => method(:cd_repo) }
+    cd_scopes = { 'repo' => method(:cd_repo), 'team' => method(:cd_team) }
     cd_scopes[type].call(name, client, enviroment)
   end
 
