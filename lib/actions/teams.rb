@@ -6,10 +6,23 @@ require_rel '.'
 
 class Team
   attr_accessor :teamlist; :groupsteams
+  
+  def self.shell_prompt(config)
+    if config['Repo'].nil?
+      Rainbow("#{config['User']}> ").aqua << Rainbow("#{config['Org']}> ").magenta << Rainbow("#{config['Team']}> ").color('#eeff41')
+    else
+      Rainbow("#{config['User']}> ").aqua + Rainbow("#{config['Org']}> ").magenta
+        + Rainbow("#{config['Team']}> ").color('#eeff41')
+        + Rainbow("#{config['Repo']}> ").color(236, 151, 21)
+    end
+  end
 
-  def initialize
-    @teamlist = {}
-    @groupsteams = {}
+  def open_info(config)
+    if config['Repo'].nil?
+      open_url(config['team_url'].to_s)
+    else
+      open_url(config['repo_url'].to_s)
+    end
   end
 
   def add_to_team(client, config, path)
