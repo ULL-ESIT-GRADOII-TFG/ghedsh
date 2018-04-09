@@ -160,9 +160,6 @@ class Commands
   end
 
   def orgsn(_params)
-    @enviroment.client.organization('Canary-Analytics').each do |i|
-      p i
-    end
     # puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
     # p FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
     # FileUtils.cd('/') do  # chdir

@@ -39,10 +39,14 @@ class Organization
     if name.class == Regexp
       pattern = Regexp.new(name.source)
       org_repos = []
+      org_repos_url = {}
       spinner = custom_spinner("Matching #{enviroment.config['Org']} repositories :spinner ...")
       spinner.auto_spin
       client.organization_repositories(enviroment.config['Org'].to_s).each do |org_repo|
-        org_repos << org_repo[:name] if pattern.match(org_repo[:name].to_s)
+        if pattern.match(org_repo[:name].to_s)
+          org_repos << org_repo[:name]
+          org_repos_url[org_repo[:name].to_s] = org_repo[:html_url]
+        end
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
       if org_repos.empty?
@@ -52,11 +56,14 @@ class Organization
         prompt = TTY::Prompt.new
         answer = prompt.select('Select desired organization repository', org_repos)
         enviroment.config['Repo'] = answer
+        enviroment.config['repo_url'] = org_repos_url[answer]
         enviroment.deep = Organization
       end
     else
       if client.repository?("#{enviroment.config['Org']}/#{name}")
+        org_repo_url = "https://github.com/" << enviroment.config['Org'].to_s << '/' << name.to_s
         enviroment.config['Repo'] = name
+        enviroment.config['repo_url'] = org_repo_url
         enviroment.deep = Organization
       else
         puts Rainbow("Maybe #{name} is not an organizaton or currently does not exist.").color('#9f6000')
