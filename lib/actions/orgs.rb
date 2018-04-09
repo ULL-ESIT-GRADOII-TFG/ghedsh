@@ -61,7 +61,7 @@ class Organization
       end
     else
       if client.repository?("#{enviroment.config['Org']}/#{name}")
-        org_repo_url = "https://github.com/" << enviroment.config['Org'].to_s << '/' << name.to_s
+        org_repo_url = 'https://github.com/' << enviroment.config['Org'].to_s << '/' << name.to_s
         enviroment.config['Repo'] = name
         enviroment.config['repo_url'] = org_repo_url
         enviroment.deep = Organization
