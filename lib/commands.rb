@@ -21,6 +21,7 @@ class Commands
     add_command('rm_cloned', method(:delete_cloned_repos))
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:display_orgs))
+    add_command('members', method(:display_members))
     add_command('orgsn', method(:orgsn))
     add_command('cd', method(:change_context))
     add_command('get', method(:get))
@@ -71,7 +72,7 @@ class Commands
 
   def get(org_name)
     # puts RbConfig::CONFIG['host_os']
-    # prueba-clasroom
+    # prueba-classroom
     spinner = custom_spinner('Getting file from remote server ...')
     uri = "http://codelab-tfg1718.herokuapp.com/ghedsh/#{org_name[0]}"
     res = Net::HTTP.get_response(URI(uri))
@@ -144,6 +145,15 @@ class Commands
     puts
   end
 
+  def display_members(params)
+    if @enviroment.deep.method_defined? :show_members
+      @enviroment.deep.new.show_members(@enviroment.client, @enviroment.config, params[0])
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+    end
+    puts
+  end
+
   def new_issue(params); end
 
   def display_repos(params)
@@ -160,6 +170,9 @@ class Commands
   end
 
   def orgsn(_params)
+    @enviroment.client.organization_members('ULL-ESIT-GRADOII-TFG').each do |i|
+      p i[:login]
+    end
     # puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
     # p FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
     # FileUtils.cd('/') do  # chdir
