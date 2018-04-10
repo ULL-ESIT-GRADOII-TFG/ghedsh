@@ -87,9 +87,9 @@ class Commands
     system(bash_command)
   end
 
-  def open(_params)
+  def open(params)
     if @enviroment.deep.method_defined? :open_info
-      @enviroment.deep.new.open_info(@enviroment.config)
+      @enviroment.deep.new.open_info(@enviroment.config, params[0], @enviroment.client)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
@@ -171,7 +171,7 @@ class Commands
 
   def orgsn(_params)
     @enviroment.client.organization_members('ULL-ESIT-GRADOII-TFG').each do |i|
-      p i[:login]
+      p i[:html_url]
     end
     # puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
     # p FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
