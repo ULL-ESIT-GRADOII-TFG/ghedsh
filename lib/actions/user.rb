@@ -109,7 +109,7 @@ class User
     cd_scopes[type].call(name, client, enviroment)
   end
 
-  def show_repos(client, params)
+  def show_repos(client, _config, params)
     spinner = custom_spinner("Fetching #{client.login} repositories :spinner ...")
     spinner.auto_spin
     user_repos = []
@@ -117,12 +117,12 @@ class User
       user_repos << repo[:name]
     end
     spinner.stop(Rainbow('done!').color(4, 255, 0))
-    if params.empty?
+    if params.nil?
       user_repos.each do |repo_name|
         puts repo_name
       end
     else
-      pattern = build_regexp_from_string(params[0])
+      pattern = build_regexp_from_string(params)
       occurrences = show_matching_items(user_repos, pattern)
       puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
     end
