@@ -21,9 +21,9 @@ class Organization
 
   def self.shell_prompt(config)
     if config['Repo'].nil?
-      Rainbow("#{config['User']}> ").aqua + Rainbow("#{config['Org']}> ").magenta
+      Rainbow("#{config['User']}> ").aqua << Rainbow("#{config['Org']}> ").magenta
     else
-      Rainbow("#{config['User']}> ").aqua + Rainbow("#{config['Org']}> ").magenta + Rainbow("#{config['Repo']}> ").color(236, 151, 21)
+      Rainbow("#{config['User']}> ").aqua << Rainbow("#{config['Org']}> ").magenta << Rainbow("#{config['Repo']}> ").color(236, 151, 21)
     end
   end
 
@@ -32,6 +32,25 @@ class Organization
       open_url(config['org_url'].to_s)
     else
       open_url(config['repo_url'].to_s)
+    end
+  end
+
+  def show_repos(client, config, params)
+    spinner = custom_spinner("Fetching #{config['Org']} repositories :spinner ...")
+    spinner.auto_spin
+    org_repos = []
+    client.organization_repositories(config['Org'].to_s).each do |repo|
+      org_repos << repo[:name]
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+    if params.nil?
+      org_repos.each do |repo_name|
+        puts repo_name
+      end
+    else
+      pattern = build_regexp_from_string(params)
+      occurrences = show_matching_items(org_repos, pattern)
+      puts Rainbow("No repository inside #{config['Org']} matched  \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
     end
   end
 
