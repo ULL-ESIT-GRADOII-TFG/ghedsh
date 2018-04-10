@@ -54,6 +54,25 @@ class Organization
     end
   end
 
+  def show_members(client, config, params)
+    spinner = custom_spinner("Fetching #{config['Org']} members :spinner ...")
+    spinner.auto_spin
+    org_members = []
+    client.organization_members(config['Org'].to_s).each do |member|
+      org_members << member[:login]
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+    if params.nil?
+      org_members.each do |name|
+        puts name
+      end
+    else
+      pattern = build_regexp_from_string(params)
+      occurrences = show_matching_items(org_members, pattern)
+      puts Rainbow("No member inside #{config['Org']} matched  \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
+    end
+  end
+
   def cd_repo(name, client, enviroment)
     if name.class == Regexp
       pattern = Regexp.new(name.source)
