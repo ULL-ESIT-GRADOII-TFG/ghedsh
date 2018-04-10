@@ -148,7 +148,7 @@ class Commands
 
   def display_repos(params)
     if @enviroment.deep.method_defined? :show_repos
-      @enviroment.deep.new.show_repos(@enviroment.client, params)
+      @enviroment.deep.new.show_repos(@enviroment.client, @enviroment.config, params[0])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
