@@ -14,7 +14,7 @@ class User
     end
   end
 
-  def open_info(config)
+  def open_info(config, params = nil, client = nil)
     if config['Repo'].nil?
       open_url(config['user_url'].to_s)
     else
