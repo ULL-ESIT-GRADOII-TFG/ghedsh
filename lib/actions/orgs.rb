@@ -27,7 +27,15 @@ class Organization
     end
   end
 
-  def open_info(config)
+  def open_info(config, params, client)
+    unless params.nil?
+      # looking for org member by regexp
+      pattern = build_regexp_from_string(params)
+      member_url = select_member(config, pattern, client)
+      open_url(member_url.to_s) unless member_url.nil?
+      return
+    end
+
     if config['Repo'].nil?
       open_url(config['org_url'].to_s)
     else
