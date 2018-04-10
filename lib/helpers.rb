@@ -56,6 +56,25 @@ def repo_creation_guide
   end
 end
 
+def select_member(config, pattern, client)
+  members = []
+  members_url = {}
+  client.organization_members(config['Org'].to_s).each do |member|
+    if pattern.match(member[:login].to_s)
+      members << member[:login]
+      members_url[member[:login]] = member[:html_url]
+    end
+  end
+  if members.empty?
+    puts Rainbow("No member matched with #{pattern.source} inside organization #{config['Org']}").color('#9f6000')
+    puts
+  else
+    prompt = TTY::Prompt.new
+    answer = prompt.select('Select desired organization member', members)
+  end
+  members_url[answer]
+end
+
 def perform_git_clone(https_url)
   FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
   FileUtils.cd("#{Dir.home}/ghedsh_cloned") do
