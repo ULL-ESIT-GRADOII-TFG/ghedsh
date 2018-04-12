@@ -151,8 +151,8 @@ class User
     client.create_repository(repo_name, options)
     puts Rainbow('Repository created correctly!').color(79, 138, 16)
   rescue StandardError => exception
-    puts
     puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts
   end
 
   def remove_repo(client, repo_name)

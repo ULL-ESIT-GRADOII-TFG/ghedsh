@@ -21,7 +21,7 @@ class Commands
     add_command('rm_cloned', method(:delete_cloned_repos))
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:display_orgs))
-    add_command('members', method(:display_members))
+    add_command('people', method(:display_people))
     add_command('orgsn', method(:orgsn))
     add_command('cd', method(:change_context))
     add_command('get', method(:get))
@@ -145,9 +145,9 @@ class Commands
     puts
   end
 
-  def display_members(params)
-    if @enviroment.deep.method_defined? :show_members
-      @enviroment.deep.new.show_members(@enviroment.client, @enviroment.config, params[0])
+  def display_people(params)
+    if @enviroment.deep.method_defined? :show_people
+      @enviroment.deep.new.show_people(@enviroment.client, @enviroment.config, params[0])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
     end
@@ -170,16 +170,20 @@ class Commands
   end
 
   def orgsn(_params)
-    @enviroment.client.organization_members('ULL-ESIT-GRADOII-TFG').each do |i|
-      p i[:html_url]
+    #@enviroment.client.organization_members('ULL-ESIT-GRADOII-TFG').each do |i|
+      #p i
+    #nd
+    #puts
+    #puts
+    #puts
+    res = {}
+    @enviroment.client.organization_membership('ULL-ESIT-GRADOII-TFG').each do |key, value|
+      res[key] = value
     end
-    # puts Rainbow("EL DEEP: #{@enviroment.deep}").color('#9f6000')
-    # p FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
-    # FileUtils.cd('/') do  # chdir
-    # ...               # do something
-    # end
-    # repo = @enviroment.client.repository('alu0100816167/papa')
-    # p repo[:clone_url]
+    p res[:role]
+    @enviroment.client.outside_collaborators('ULL-ESIT-GRADOII-TFG').each do |i|
+      p i
+    end
   end
 
   # ejemplo cambio de contexto (cd): cd User.new.cd('org',/ULL-*/)
