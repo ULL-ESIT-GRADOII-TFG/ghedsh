@@ -3,6 +3,7 @@ require 'tty-spinner'
 require 'rainbow'
 require 'fileutils'
 require 'rbconfig'
+require 'terminal-table'
 
 # colors:
 # error: .color('#cc0000')
@@ -13,6 +14,19 @@ require 'rbconfig'
 
 def custom_spinner(message)
   spinner = TTY::Spinner.new(Rainbow(message.to_s).color(79, 138, 16), format: :bouncing_ball)
+end
+def build_item_table(item, pattern)
+  matches = 0
+  rows = []
+  item.each do |i, v|
+    if pattern.match(i)
+      rows << [i, v]
+      matches += 1
+    end
+  end
+  table = table = Terminal::Table.new :headings => ['Github ID', 'Role'], :rows => rows
+  puts table
+  matches
 end
 
 def show_matching_items(item, pattern)
