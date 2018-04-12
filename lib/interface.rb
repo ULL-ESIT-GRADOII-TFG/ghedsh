@@ -72,7 +72,11 @@ class Interface
     
     loop do
       begin
-        input = Readline.readline(@shell_enviroment.prompt, true).strip.split
+        input = Readline.readline(@shell_enviroment.prompt, true)
+        if input.nil?
+          throw :ctrl_c
+        end
+        input = input.strip.split
         command = input[0]
         input.shift
         command_params = input
