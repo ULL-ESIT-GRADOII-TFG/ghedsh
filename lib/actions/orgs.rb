@@ -41,6 +41,9 @@ class Organization
     else
       open_url(config['repo_url'].to_s)
     end
+  rescue StandardError => exception
+    puts
+    puts Rainbow(exception.message.to_s).color('#cc0000')
   end
 
   def show_repos(client, config, params)
@@ -62,21 +65,29 @@ class Organization
     end
   end
 
-  def show_members(client, config, params)
-    spinner = custom_spinner("Fetching #{config['Org']} members :spinner ...")
+  def show_people(client, config, params)
+    spinner = custom_spinner("Fetching #{config['Org']} people :spinner ...")
     spinner.auto_spin
     org_members = []
     client.organization_members(config['Org'].to_s).each do |member|
-      org_members << member[:login]
+      org_members << [member[:login], 'member']
+    end
+    membership = {}
+    client.organization_membership(config['Org'].to_s).each do |key, value|
+      membership[key] = value
+    end
+    if membership[:role] == 'admin'
+      client.outside_collaborators(config['Org'].to_s).each do |collab|
+        org_members << [collab[:login], 'outside collaborator']
+      end
     end
     spinner.stop(Rainbow('done!').color(4, 255, 0))
     if params.nil?
-      org_members.each do |name|
-        puts name
-      end
+      table = Terminal::Table.new headings: ['Github ID', 'Role'], rows: org_members
+      puts table
     else
       pattern = build_regexp_from_string(params)
-      occurrences = show_matching_items(org_members, pattern)
+      occurrences = build_item_table(org_members, pattern) # show_matching_items(org_members, pattern)
       puts Rainbow("No member inside #{config['Org']} matched  \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
     end
   end
