@@ -14,7 +14,16 @@ class User
     end
   end
 
-  def open_info(config, params = nil, client = nil)
+  def build_cd_syntax(type, name)
+    syntax_map = { 'repo' => "User.new.cd('repo', #{name}, client, env)",
+                   'org' => "User.new.cd('org', #{name}, client, env)" }
+    unless syntax_map.key?(type)
+      raise Rainbow("cd #{type} currently not supported.").color('#cc0000')
+    end
+    syntax_map[type]
+  end
+
+  def open_info(config, _params = nil, _client = nil)
     if config['Repo'].nil?
       open_url(config['user_url'].to_s)
     else
@@ -32,7 +41,7 @@ class User
       client.organizations.each do |org|
         if pattern.match((org[:login]).to_s)
           user_orgs << org[:login]
-          user_orgs_url[org[:login].to_s] = "https://github.com/" << org[:login].to_s
+          user_orgs_url[org[:login].to_s] = 'https://github.com/' << org[:login].to_s
         end
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
@@ -50,7 +59,7 @@ class User
     else
       if client.organization_member?(name.to_s, client.login.to_s)
         enviroment.config['Org'] = name
-        enviroment.config['org_url'] = "https://github.com/" << name.to_s
+        enviroment.config['org_url'] = 'https://github.com/' << name.to_s
         enviroment.deep = Organization
       else
         puts Rainbow("You are not currently #{name} member or #{name} is not an Organization.").color('#9f6000')
