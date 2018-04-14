@@ -1,8 +1,6 @@
 require 'version'
 require 'common'
 require 'ostruct'
-require 'net/http'
-require 'json'
 require 'fileutils'
 
 class Commands
@@ -170,12 +168,6 @@ class Commands
   end
 
   def orgsn(_params)
-    #@enviroment.client.organization_members('ULL-ESIT-GRADOII-TFG').each do |i|
-      #p i
-    #nd
-    #puts
-    #puts
-    #puts
     res = {}
     @enviroment.client.organization_membership('ULL-ESIT-GRADOII-TFG').each do |key, value|
       res[key] = value
@@ -186,7 +178,6 @@ class Commands
     end
   end
 
-  # ejemplo cambio de contexto (cd): cd User.new.cd('org',/ULL-*/)
   def change_context(params)
     if params.empty?
       @enviroment.config['Org'] = nil
@@ -212,28 +203,26 @@ class Commands
       end
     else
       begin
-        action = params.join('')
-        env = OpenStruct.new
-        env.config = Marshal.load(Marshal.dump(@enviroment.config))
-        env.deep = @enviroment.deep
-        client = @enviroment.client
-        action.chomp!(')')
-        action << ', client, env)'
-        changed_enviroment = eval(action)
-        unless changed_enviroment.nil?
-          current_enviroment = OpenStruct.new
-          current_enviroment.config = changed_enviroment.config
-          current_enviroment.deep = changed_enviroment.deep
-          @context_stack.push(current_enviroment)
-          @enviroment.config = changed_enviroment.config
-          @enviroment.deep = changed_enviroment.deep
-        end
-        # manejar syntax error para añadir sugerencia
-      rescue StandardError => exception
-        puts Rainbow(exception.message).color('#D8000C')
-      rescue SyntaxError => err
-        puts Rainbow('Syntax Error typing the command. Tip: cd <class>.new.cd(<scope>, <name or /Regexp>/)').color('#cc0000')
+      action = @enviroment.deep.new.build_cd_syntax(params[0], params[1])
+      env = OpenStruct.new
+      env.config = Marshal.load(Marshal.dump(@enviroment.config))
+      env.deep = @enviroment.deep
+      client = @enviroment.client
+      changed_enviroment = eval(action)
+      unless changed_enviroment.nil?
+        current_enviroment = OpenStruct.new
+        current_enviroment.config = changed_enviroment.config
+        current_enviroment.deep = changed_enviroment.deep
+        @context_stack.push(current_enviroment)
+        @enviroment.config = changed_enviroment.config
+        @enviroment.deep = changed_enviroment.deep
       end
+      # manejar syntax error para añadir sugerencia
+    rescue StandardError => exception
+      puts Rainbow(exception.message).color('#D8000C')
+    rescue SyntaxError => err
+      puts Rainbow('Syntax Error typing the command. Tip: cd <class>.new.cd(<scope>, <name or /Regexp>/)').color('#cc0000')
+    end
     end
   end
 end
