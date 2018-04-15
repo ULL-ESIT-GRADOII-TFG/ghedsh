@@ -27,6 +27,15 @@ class Organization
     end
   end
 
+  def build_cd_syntax(type, name)
+    syntax_map = { 'repo' => "Organization.new.cd('repo', #{name}, client, env)",
+                   'team' => "Organization.new.cd('team', #{name}, client, env)" }
+    unless syntax_map.key?(type)
+      raise Rainbow("cd #{type} currently not supported.").color('#cc0000')
+    end
+    syntax_map[type]
+  end
+
   def open_info(config, params, client)
     unless params.nil?
       # looking for org member by regexp
