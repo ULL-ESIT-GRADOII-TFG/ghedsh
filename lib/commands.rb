@@ -55,7 +55,7 @@ class Commands
     if @enviroment.deep.method_defined? :show_organizations
       @enviroment.deep.new.show_organizations(@enviroment.client, params)
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
     puts
   end
@@ -89,7 +89,7 @@ class Commands
     if @enviroment.deep.method_defined? :open_info
       @enviroment.deep.new.open_info(@enviroment.config, params[0], @enviroment.client)
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
   end
 
@@ -107,7 +107,7 @@ class Commands
         puts Rainbow(exception.message.to_s).color('#cc0000')
       end
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
     puts
   end
@@ -116,7 +116,7 @@ class Commands
     if @enviroment.deep.method_defined? :remove_repo
       @enviroment.deep.new.remove_repo(@enviroment.client, params[0])
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
     puts
   end
@@ -125,7 +125,7 @@ class Commands
     if @enviroment.deep.method_defined? :clone_repository
       @enviroment.deep.new.clone_repository(@enviroment.client, params[0])
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
   end
 
@@ -138,7 +138,7 @@ class Commands
     if @enviroment.deep.method_defined? :show_commits
       @enviroment.deep.new.show_commits(@enviroment, params)
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
     puts
   end
@@ -147,7 +147,7 @@ class Commands
     if @enviroment.deep.method_defined? :show_people
       @enviroment.deep.new.show_people(@enviroment.client, @enviroment.config, params[0])
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
     puts
   end
@@ -158,7 +158,7 @@ class Commands
     if @enviroment.deep.method_defined? :show_repos
       @enviroment.deep.new.show_repos(@enviroment.client, @enviroment.config, params[0])
     else
-      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color('#9f6000')
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
     puts
   end
