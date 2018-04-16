@@ -221,7 +221,9 @@ class Commands
     rescue StandardError => exception
       puts Rainbow(exception.message).color('#D8000C')
     rescue SyntaxError => err
-      puts Rainbow('Syntax Error typing the command. Tip: cd <class>.new.cd(<scope>, <name or /Regexp>/)').color('#cc0000')
+      puts Rainbow('Syntax Error typing the command. Tip: cd <type> <Regexp|String>').color('#cc0000')
+      puts Rainbow('Regexp options for Ruby: /i, /m, /x, /o').color('#cc0000')
+      puts
     end
     end
   end

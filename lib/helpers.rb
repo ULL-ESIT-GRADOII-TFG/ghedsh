@@ -41,8 +41,11 @@ def show_matching_items(item, pattern)
 end
 
 def build_regexp_from_string(string)
-  str = string.gsub(/\//, '')
+  str = eval(string) #string.gsub(/\//, '')
   pattern = Regexp.new(str)
+rescue => e
+  puts Rainbow(e.message.to_s).color('#cc0000')
+  puts
 end
 
 def repo_creation_guide

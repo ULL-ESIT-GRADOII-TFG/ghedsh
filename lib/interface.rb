@@ -73,6 +73,7 @@ class Interface
     loop do
       begin
         input = Readline.readline(@shell_enviroment.prompt, true)
+        # handle ctrl-d (eof)
         if input.nil?
           throw :ctrl_c
         end
@@ -90,8 +91,6 @@ class Interface
       rescue StandardError => e
         puts e
         puts e.backtrace
-        # puts
-        # throw :ctrl_c
       end
       break if result == 0
     end
