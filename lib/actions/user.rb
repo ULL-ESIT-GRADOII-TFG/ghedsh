@@ -33,7 +33,7 @@ class User
 
   def cd_org(name, client, enviroment)
     if name.class == Regexp
-      pattern = Regexp.new(name.source)
+      pattern = Regexp.new(name.source, name.options)
       user_orgs = []
       user_orgs_url = {}
       spinner = custom_spinner("Matching #{client.login} organizations :spinner ...")
@@ -72,7 +72,7 @@ class User
 
   def cd_repo(name, client, enviroment)
     if name.class == Regexp
-      pattern = Regexp.new(name.source)
+      pattern = Regexp.new(name.source, name.options)
       user_repos = []
       user_repos_url = {}
       spinner = custom_spinner("Matching #{client.login} repositories :spinner ...")

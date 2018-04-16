@@ -103,7 +103,7 @@ class Organization
 
   def cd_repo(name, client, enviroment)
     if name.class == Regexp
-      pattern = Regexp.new(name.source)
+      pattern = Regexp.new(name.source, name.options)
       org_repos = []
       org_repos_url = {}
       spinner = custom_spinner("Matching #{enviroment.config['Org']} repositories :spinner ...")
@@ -151,7 +151,7 @@ class Organization
     end
     spinner.stop(Rainbow('done!').color(4, 255, 0))
     if name.class == Regexp
-      pattern = Regexp.new(name.source)
+      pattern = Regexp.new(name.source, name.options)
       name_matches = []
       org_teams.each do |team_name|
         name_matches << team_name if pattern.match(team_name.to_s)
