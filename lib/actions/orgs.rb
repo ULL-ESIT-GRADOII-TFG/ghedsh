@@ -118,7 +118,7 @@ class Organization
       if org_repos.empty?
         puts Rainbow("No repository matched with #{name.source} inside organization #{enviroment.config['Org']}").color('#9f6000')
         puts
-        return nil
+        return
       else
         prompt = TTY::Prompt.new
         answer = prompt.select('Select desired organization repository', org_repos)
@@ -134,7 +134,7 @@ class Organization
         enviroment.deep = Organization
       else
         puts Rainbow("Maybe #{name} is not an organizaton or currently does not exist.").color('#9f6000')
-        return nil
+        return
       end
     end
     enviroment
@@ -159,7 +159,7 @@ class Organization
       if name_matches.empty?
         puts Rainbow("No team matched with \/#{name.source}\/ inside organization #{enviroment.config['Org']}").color('#9f6000')
         puts
-        return nil
+        return
       else
         prompt = TTY::Prompt.new
         answer = prompt.select('Select desired organization', name_matches)
@@ -177,7 +177,7 @@ class Organization
       else
         puts Rainbow("Maybe #{name} is not a #{enviroment.config['Org']} team or currently does not exist.").color('#9f6000')
         puts
-        return nil
+        return
       end
     end
     enviroment
@@ -264,7 +264,7 @@ class Organization
           end
         else
           puts 'No relationship found between github users and emails.'
-          return nil
+          return
         end
       else # insercion normal, relacion ya hecha
         users.each do |i|

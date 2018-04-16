@@ -48,7 +48,7 @@ class User
       if user_orgs.empty?
         puts Rainbow("No organization match with #{name.source}").color('#9f6000')
         puts
-        return nil
+        return
       else
         prompt = TTY::Prompt.new
         answer = prompt.select('Select desired organization', user_orgs)
@@ -64,7 +64,7 @@ class User
       else
         puts Rainbow("You are not currently #{name} member or #{name} is not an Organization.").color('#9f6000')
         puts
-        return nil
+        return
       end
     end
     enviroment
@@ -86,7 +86,7 @@ class User
       spinner.stop(Rainbow('done!').color(4, 255, 0))
       if user_repos.empty?
         puts Rainbow("No repository match with \/#{name.source}\/").color('#9f6000')
-        return nil
+        return
       else
         prompt = TTY::Prompt.new
         answer = prompt.select('Select desired repository', user_repos)
@@ -107,7 +107,7 @@ class User
         enviroment.deep = User
       else
         puts Rainbow("Maybe #{name} is not a repository or currently does not exist.").color('#9f6000')
-        return nil
+        return
       end
     end
     enviroment

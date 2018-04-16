@@ -33,8 +33,8 @@ class Commands
 
   def load_enviroment(console_enviroment)
     @enviroment = console_enviroment
-    @struct = OpenStruct.new
-    default_enviroment = {
+    @default_enviroment = OpenStruct.new
+    default_config = {
       'User' => @enviroment.client.login.to_s,
       'user_url' => @enviroment.client.web_endpoint.to_s << @enviroment.client.login.to_s,
       'Org' => nil,
@@ -46,9 +46,9 @@ class Commands
       'TeamID' => nil,
       'Assig' => nil
     }
-    @struct.config = default_enviroment
-    @struct.deep = User
-    @context_stack.push(@struct)
+    @default_enviroment.config = default_config
+    @default_enviroment.deep = User
+    @context_stack.push(@default_enviroment)
   end
 
   def display_orgs(params)
@@ -187,7 +187,7 @@ class Commands
       @enviroment.config['Assig'] = nil
 
       @context_stack.clear
-      @context_stack.push(@struct)
+      @context_stack.push(@default_enviroment)
 
       @enviroment.deep = User
     elsif params[0] == '..'
@@ -198,8 +198,8 @@ class Commands
         @enviroment.config = stack_pointer.config
         @enviroment.deep = stack_pointer.deep
       else
-        @enviroment.config = @struct.config
-        @enviroment.deep = @struct.deep
+        @enviroment.config = @default_enviroment.config
+        @enviroment.deep = @default_enviroment.deep
       end
     else
       begin
