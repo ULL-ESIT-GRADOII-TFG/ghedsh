@@ -221,6 +221,7 @@ class User
     rescue StandardError => exception
       puts exception
       puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color('#00529B')
+      puts
     end
   end
 end

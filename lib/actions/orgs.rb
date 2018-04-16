@@ -188,6 +188,36 @@ class Organization
     cd_scopes[type].call(name, client, enviroment)
   end
 
+  def show_commits(enviroment, params)
+    options = {}
+    if !enviroment.config['Repo'].nil?
+      repo = enviroment.config['Repo']
+      options[:sha] = if params.empty?
+                        'master'
+                      else
+                        params[0]
+                      end
+    else
+      repo = params[0]
+      options[:sha] = if params[1].nil?
+                        'master'
+                      else
+                        params[1]
+                      end
+    end
+    begin
+      enviroment.client.commits("#{enviroment.config['Org']}/#{repo}", options).each do |i|
+        puts "\tSHA: #{i[:sha]}"
+        puts "\t\t Commit date: #{i[:commit][:author][:date]}"
+        puts "\t\t Commit author: #{i[:commit][:author][:name]}"
+        puts "\t\t\t Commit message: #{i[:commit][:message]}"
+      end
+    rescue StandardError => exception
+      puts exception
+      puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color('#00529B')
+    end
+  end
+
   # Takes people info froma a csv file and gets into ghedsh people information
   def add_people_info(client, config, file, relation)
     list = load_people
