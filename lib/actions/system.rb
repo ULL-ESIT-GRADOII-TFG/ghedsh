@@ -142,43 +142,16 @@ class Sys
     users
   end
 
-  # USER=1
-  # ORGS=2
-  # USER_REPO=10
-  # ORGS_REPO=3
-  # TEAM=4
-  # ASSIG=6
-  # TEAM_REPO=5
-
   def return_deep(path)
     json = File.read("#{path}/ghedsh-cache.json")
     cache = JSON.parse(json)
     deep = User
-    #     if !cache['Team'].nil?
-    #       deep = if !cache['Repo'].nil?
-    #                5
-    #              else
-    #                4
-    #              end
-    #     elsif cache['Team'].nil?
-    #       deep = if !cache['Org'].nil?
-    #                if !cache['Repo'].nil?
-    #                  3
-    #                else
-    #                  deep = if !cache['Assig'].nil?
-    #                           6
-    #                         else
-    #                           ORG
-    #                         end
-    #                       end
-    #              else
-    #                if !cache['Repo'].nil?
-    #                  User
-    #                else
-    #                  User
-    #                       end
-    #              end
-    #     end
+    unless cache['Team'].nil?
+      return deep = Team
+    end
+    unless cache['Org'].nil?
+      return deep = Organization
+    end
     deep
    end
 
