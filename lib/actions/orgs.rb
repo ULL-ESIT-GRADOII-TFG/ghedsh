@@ -211,11 +211,31 @@ class Organization
         puts "\t\t Commit date: #{i[:commit][:author][:date]}"
         puts "\t\t Commit author: #{i[:commit][:author][:name]}"
         puts "\t\t\t Commit message: #{i[:commit][:message]}"
+        puts
       end
     rescue StandardError => exception
       puts exception
       puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color('#00529B')
     end
+  end
+
+  def create_repo(enviroment, repo_name, options)
+    client = enviroment.client
+    options[:organization] = enviroment.config['Org'].to_s
+    client.create_repository(repo_name, options)
+    puts Rainbow('Repository created correctly!').color(79, 138, 16)
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts
+  end
+
+  def remove_repo(enviroment, repo_name)
+    client = enviroment.client
+    client.delete_repository("#{enviroment.config['Org']}/#{repo_name}")
+    puts Rainbow('Repository deleted.').color('#00529B')
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts
   end
 
   # Takes people info froma a csv file and gets into ghedsh people information
