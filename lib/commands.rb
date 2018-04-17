@@ -99,9 +99,9 @@ class Commands
         repo_name = params[0]
         options = repo_creation_guide
         if options == 'Default'
-          @enviroment.deep.new.create_repo(@enviroment.client, repo_name, options = {})
+          @enviroment.deep.new.create_repo(@enviroment, repo_name, options = {})
         else
-          @enviroment.deep.new.create_repo(@enviroment.client, repo_name, options)
+          @enviroment.deep.new.create_repo(@enviroment, repo_name, options)
         end
       rescue StandardError => exception
         puts Rainbow(exception.message.to_s).color('#cc0000')
@@ -114,7 +114,7 @@ class Commands
 
   def rm_repo(params)
     if @enviroment.deep.method_defined? :remove_repo
-      @enviroment.deep.new.remove_repo(@enviroment.client, params[0])
+      @enviroment.deep.new.remove_repo(@enviroment, params[0])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end

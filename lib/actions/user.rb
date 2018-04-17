@@ -156,7 +156,8 @@ class User
     end
   end
 
-  def create_repo(client, repo_name, options)
+  def create_repo(enviroment, repo_name, options)
+    client = enviroment.client
     client.create_repository(repo_name, options)
     puts Rainbow('Repository created correctly!').color(79, 138, 16)
   rescue StandardError => exception
@@ -164,7 +165,8 @@ class User
     puts
   end
 
-  def remove_repo(client, repo_name)
+  def remove_repo(enviroment, repo_name)
+    client = enviroment.client
     client.delete_repository("#{client.login}/#{repo_name}")
     puts Rainbow('Repository deleted.').color('#00529B')
   rescue StandardError => exception
