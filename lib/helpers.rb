@@ -92,9 +92,18 @@ def select_member(config, pattern, client)
   members_url[answer]
 end
 
-def perform_git_clone(https_url)
-  FileUtils.mkdir_p("#{Dir.home}/ghedsh_cloned")
-  FileUtils.cd("#{Dir.home}/ghedsh_cloned") do
+def perform_git_clone(https_url, custom_path)
+  if custom_path.nil?
+    dir_path = "#{Dir.home}/ghedsh_cloned"
+  else
+    dir_path = "#{Dir.home}#{custom_path}"
+  end
+  begin
+    FileUtils.mkdir_p(dir_path)
+  rescue => exception
+    puts Rainbow(exception.message.to_s).color('#cc0000')
+  end
+  FileUtils.cd(dir_path) do
     https_url.each do |i|
       system("git clone --progress #{i}")
     end

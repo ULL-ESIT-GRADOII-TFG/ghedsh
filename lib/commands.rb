@@ -123,7 +123,7 @@ class Commands
 
   def clone_repo(params)
     if @enviroment.deep.method_defined? :clone_repository
-      @enviroment.deep.new.clone_repository(@enviroment.client, params[0])
+      @enviroment.deep.new.clone_repository(@enviroment.client, params[0], params[1])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end

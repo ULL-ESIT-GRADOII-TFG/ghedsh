@@ -174,7 +174,7 @@ class User
     puts Rainbow(exception.message.to_s).color('#cc0000')
   end
 
-  def clone_repository(client, repo_name)
+  def clone_repository(client, repo_name, custom_path)
     ssh_url = []
     if repo_name.include?('/')
       pattern = build_regexp_from_string(repo_name)
@@ -187,8 +187,12 @@ class User
       ssh_url << repo[:ssh_url]
     end
     unless ssh_url.empty?
-      perform_git_clone(ssh_url)
-      puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color('#00529B')
+      perform_git_clone(ssh_url, custom_path)
+      if custom_path.nil?
+        puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color('#00529B')
+      else
+        puts Rainbow("Cloned files are on directory #{Dir.home}#{custom_path}").color('#00529B')
+      end
       puts
     end
   rescue StandardError => exception
