@@ -18,7 +18,7 @@ class User
     syntax_map = { 'repo' => "User.new.cd('repo', #{name}, client, env)",
                    'org' => "User.new.cd('org', #{name}, client, env)" }
     unless syntax_map.key?(type)
-      raise Rainbow("cd #{type} currently not supported.").color('#cc0000')
+      raise Rainbow("cd #{type} currently not supported.").color(ERROR_CODE)
     end
     syntax_map[type]
   end
@@ -46,7 +46,7 @@ class User
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
       if user_orgs.empty?
-        puts Rainbow("No organization match with #{name.source}").color('#9f6000')
+        puts Rainbow("No organization match with #{name.source}").color(WARNING_CODE)
         puts
         return
       else
@@ -62,7 +62,7 @@ class User
         enviroment.config['org_url'] = 'https://github.com/' << name.to_s
         enviroment.deep = Organization
       else
-        puts Rainbow("You are not currently #{name} member or #{name} is not an Organization.").color('#9f6000')
+        puts Rainbow("You are not currently #{name} member or #{name} is not an Organization.").color(WARNING_CODE)
         puts
         return
       end
@@ -85,7 +85,7 @@ class User
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
       if user_repos.empty?
-        puts Rainbow("No repository match with \/#{name.source}\/").color('#9f6000')
+        puts Rainbow("No repository match with \/#{name.source}\/").color(WARNING_CODE)
         return
       else
         prompt = TTY::Prompt.new
@@ -106,7 +106,7 @@ class User
         enviroment.config['repo_url'] = res[:html_url]
         enviroment.deep = User
       else
-        puts Rainbow("Maybe #{name} is not a repository or currently does not exist.").color('#9f6000')
+        puts Rainbow("Maybe #{name} is not a repository or currently does not exist.").color(WARNING_CODE)
         return
       end
     end
@@ -161,7 +161,7 @@ class User
     client.create_repository(repo_name, options)
     puts Rainbow('Repository created correctly!').color(79, 138, 16)
   rescue StandardError => exception
-    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
     puts
   end
 
@@ -171,7 +171,7 @@ class User
     puts Rainbow('Repository deleted.').color('#00529B')
   rescue StandardError => exception
     puts
-    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
   def clone_repository(enviroment, repo_name, custom_path)
@@ -197,7 +197,7 @@ class User
       puts
     end
   rescue StandardError => exception
-    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
     puts
   end
 
