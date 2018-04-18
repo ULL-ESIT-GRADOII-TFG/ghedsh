@@ -174,7 +174,8 @@ class User
     puts Rainbow(exception.message.to_s).color('#cc0000')
   end
 
-  def clone_repository(client, repo_name, custom_path)
+  def clone_repository(enviroment, repo_name, custom_path)
+    client = enviroment.client
     ssh_url = []
     if repo_name.include?('/')
       pattern = build_regexp_from_string(repo_name)

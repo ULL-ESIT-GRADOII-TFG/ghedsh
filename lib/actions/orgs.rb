@@ -1,4 +1,4 @@
-require 'octokit'
+#require 'octokit'
 require 'json'
 require 'csv'
 require 'require_all'
@@ -10,14 +10,6 @@ GITHUB_LIST = %w[githubid github idgithub github_id id_github githubuser github_
 MAIL_LIST = ['email', 'mail', 'e-mail'].freeze
 
 class Organization
-  attr_accessor :orgslist
-  attr_accessor :peoplelist
-
-  def load_people
-    @peoplelist = {}
-    @peoplelist = Sys.new.load_people_db("#{ENV['HOME']}/.ghedsh")
-    @peoplelist
-  end
 
   def self.shell_prompt(config)
     if config['Repo'].nil?
@@ -72,6 +64,32 @@ class Organization
       occurrences = show_matching_items(org_repos, pattern)
       puts Rainbow("No repository inside #{config['Org']} matched  \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
     end
+  end
+
+  def clone_repository(client, repo_name, custom_path)
+    ssh_url = []
+    if repo_name.include?('/')
+      pattern = build_regexp_from_string(repo_name)
+      client.organization_repositories(config['Org'].to_s).each do |repo|
+        ssh_url << repo[:clone_url] if pattern.match(repo[:name])
+      end
+      puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if ssh_url.empty?
+    else
+      repo = client.repository("#{config['Org']}/#{repo_name}")
+      ssh_url << repo[:ssh_url]
+    end
+    unless ssh_url.empty?
+      perform_git_clone(ssh_url, custom_path)
+      if custom_path.nil?
+        puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color('#00529B')
+      else
+        puts Rainbow("Cloned files are on directory #{Dir.home}#{custom_path}").color('#00529B')
+      end
+      puts
+    end
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts
   end
 
   def show_people(client, config, params)
