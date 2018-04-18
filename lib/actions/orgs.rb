@@ -1,10 +1,8 @@
-#require 'octokit'
 require 'json'
 require 'csv'
 require 'require_all'
-require_rel '.'
+require_relative '../common'
 require_relative '../helpers'
-require 'readline'
 
 GITHUB_LIST = %w[githubid github idgithub github_id id_github githubuser github_user].freeze
 MAIL_LIST = ['email', 'mail', 'e-mail'].freeze
@@ -23,7 +21,7 @@ class Organization
     syntax_map = { 'repo' => "Organization.new.cd('repo', #{name}, client, env)",
                    'team' => "Organization.new.cd('team', #{name}, client, env)" }
     unless syntax_map.key?(type)
-      raise Rainbow("cd #{type} currently not supported.").color('#cc0000')
+      raise Rainbow("cd #{type} currently not supported.").color(ERROR_CODE)
     end
     syntax_map[type]
   end
@@ -43,8 +41,8 @@ class Organization
       open_url(config['repo_url'].to_s)
     end
   rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
     puts
-    puts Rainbow(exception.message.to_s).color('#cc0000')
   end
 
   def show_repos(client, config, params)
@@ -62,7 +60,7 @@ class Organization
     else
       pattern = build_regexp_from_string(params)
       occurrences = show_matching_items(org_repos, pattern)
-      puts Rainbow("No repository inside #{config['Org']} matched  \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
+      puts Rainbow("No repository inside #{config['Org']} matched  \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
     end
   end
 
@@ -73,7 +71,7 @@ class Organization
       client.organization_repositories(config['Org'].to_s).each do |repo|
         ssh_url << repo[:clone_url] if pattern.match(repo[:name])
       end
-      puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if ssh_url.empty?
+      puts Rainbow("No repository matched \/#{pattern.source}\/").color(INFO_CODE) if ssh_url.empty?
     else
       repo = client.repository("#{config['Org']}/#{repo_name}")
       ssh_url << repo[:ssh_url]
@@ -81,14 +79,14 @@ class Organization
     unless ssh_url.empty?
       perform_git_clone(ssh_url, custom_path)
       if custom_path.nil?
-        puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color('#00529B')
+        puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color(INFO_CODE)
       else
-        puts Rainbow("Cloned files are on directory #{Dir.home}#{custom_path}").color('#00529B')
+        puts Rainbow("Cloned files are on directory #{Dir.home}#{custom_path}").color(INFO_CODE)
       end
       puts
     end
   rescue StandardError => exception
-    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
     puts
   end
 
@@ -115,7 +113,7 @@ class Organization
     else
       pattern = build_regexp_from_string(params)
       occurrences = build_item_table(org_members, pattern) # show_matching_items(org_members, pattern)
-      puts Rainbow("No member inside #{config['Org']} matched  \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
+      puts Rainbow("No member inside #{config['Org']} matched  \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
     end
   end
 
@@ -134,7 +132,7 @@ class Organization
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
       if org_repos.empty?
-        puts Rainbow("No repository matched with #{name.source} inside organization #{enviroment.config['Org']}").color('#9f6000')
+        puts Rainbow("No repository matched with #{name.source} inside organization #{enviroment.config['Org']}").color(WARNING_CODE)
         puts
         return
       else
@@ -151,7 +149,7 @@ class Organization
         enviroment.config['repo_url'] = org_repo_url
         enviroment.deep = Organization
       else
-        puts Rainbow("Maybe #{name} is not an organizaton or currently does not exist.").color('#9f6000')
+        puts Rainbow("Maybe #{name} is not an organizaton or currently does not exist.").color(WARNING_CODE)
         return
       end
     end
@@ -175,7 +173,7 @@ class Organization
         name_matches << team_name if pattern.match(team_name.to_s)
       end
       if name_matches.empty?
-        puts Rainbow("No team matched with \/#{name.source}\/ inside organization #{enviroment.config['Org']}").color('#9f6000')
+        puts Rainbow("No team matched with \/#{name.source}\/ inside organization #{enviroment.config['Org']}").color(WARNING_CODE)
         puts
         return
       else
@@ -193,7 +191,7 @@ class Organization
         enviroment.config['team_url'] = 'https://github.com/orgs/' << enviroment.config['Org'] << '/teams/' << enviroment.config['Team']
         enviroment.deep = Team
       else
-        puts Rainbow("Maybe #{name} is not a #{enviroment.config['Org']} team or currently does not exist.").color('#9f6000')
+        puts Rainbow("Maybe #{name} is not a #{enviroment.config['Org']} team or currently does not exist.").color(WARNING_CODE)
         puts
         return
       end
@@ -233,7 +231,7 @@ class Organization
       end
     rescue StandardError => exception
       puts exception
-      puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color('#00529B')
+      puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color(INFO_CODE)
     end
   end
 
@@ -243,16 +241,16 @@ class Organization
     client.create_repository(repo_name, options)
     puts Rainbow('Repository created correctly!').color(79, 138, 16)
   rescue StandardError => exception
-    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
     puts
   end
 
   def remove_repo(enviroment, repo_name)
     client = enviroment.client
     client.delete_repository("#{enviroment.config['Org']}/#{repo_name}")
-    puts Rainbow('Repository deleted.').color('#00529B')
+    puts Rainbow('Repository deleted.').color(INFO_CODE)
   rescue StandardError => exception
-    puts Rainbow(exception.message.to_s).color('#cc0000')
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
     puts
   end
 
