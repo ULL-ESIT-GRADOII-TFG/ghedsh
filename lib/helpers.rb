@@ -15,6 +15,7 @@ require 'terminal-table'
 def custom_spinner(message)
   spinner = TTY::Spinner.new(Rainbow(message.to_s).color(79, 138, 16), format: :bouncing_ball)
 end
+
 def build_item_table(item, pattern)
   matches = 0
   rows = []
@@ -24,7 +25,7 @@ def build_item_table(item, pattern)
       matches += 1
     end
   end
-  table = table = Terminal::Table.new :headings => ['Github ID', 'Role'], :rows => rows
+  table = table = Terminal::Table.new headings: ['Github ID', 'Role'], rows: rows
   puts table
   matches
 end
@@ -41,10 +42,10 @@ def show_matching_items(item, pattern)
 end
 
 def build_regexp_from_string(string)
-  str = eval(string) #string.gsub(/\//, '')
+  str = eval(string) # string.gsub(/\//, '')
   pattern = Regexp.new(str)
-rescue => e
-  puts Rainbow(e.message.to_s).color('#cc0000')
+rescue SyntaxError => e
+  puts Rainbow('Error building Regexp, check syntax.').color('#cc0000')
   puts
 end
 
@@ -93,14 +94,14 @@ def select_member(config, pattern, client)
 end
 
 def perform_git_clone(https_url, custom_path)
-  if custom_path.nil?
-    dir_path = "#{Dir.home}/ghedsh_cloned"
-  else
-    dir_path = "#{Dir.home}#{custom_path}"
-  end
+  dir_path = if custom_path.nil?
+               "#{Dir.home}/ghedsh_cloned"
+             else
+               "#{Dir.home}#{custom_path}"
+             end
   begin
     FileUtils.mkdir_p(dir_path)
-  rescue => exception
+  rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color('#cc0000')
   end
   FileUtils.cd(dir_path) do
