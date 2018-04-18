@@ -133,7 +133,7 @@ class User
     else
       pattern = build_regexp_from_string(params)
       occurrences = show_matching_items(user_repos, pattern)
-      puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
+      puts Rainbow("No repository matched \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
     end
   end
 
@@ -152,7 +152,7 @@ class User
     else
       pattern = build_regexp_from_string(params[0])
       occurrences = show_matching_items(user_orgs, pattern)
-      puts Rainbow("No organization matched \/#{pattern.source}\/").color('#00529B') if occurrences.zero?
+      puts Rainbow("No organization matched \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
     end
   end
 
@@ -168,10 +168,10 @@ class User
   def remove_repo(enviroment, repo_name)
     client = enviroment.client
     client.delete_repository("#{client.login}/#{repo_name}")
-    puts Rainbow('Repository deleted.').color('#00529B')
+    puts Rainbow('Repository deleted.').color(INFO_CODE)
   rescue StandardError => exception
     puts
-    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+    puts Rainbow(exception.message.to_s).color('#cc0000')
   end
 
   def clone_repository(enviroment, repo_name, custom_path)
@@ -182,7 +182,7 @@ class User
       client.repositories.each do |repo|
         ssh_url << repo[:clone_url] if pattern.match(repo[:name])
       end
-      puts Rainbow("No repository matched \/#{pattern.source}\/").color('#00529B') if ssh_url.empty?
+      puts Rainbow("No repository matched \/#{pattern.source}\/").color(INFO_CODE) if ssh_url.empty?
     else
       repo = client.repository("#{client.login}/#{repo_name}")
       ssh_url << repo[:ssh_url]
@@ -190,14 +190,14 @@ class User
     unless ssh_url.empty?
       perform_git_clone(ssh_url, custom_path)
       if custom_path.nil?
-        puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color('#00529B')
+        puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color(INFO_CODE)
       else
-        puts Rainbow("Cloned files are on directory #{Dir.home}#{custom_path}").color('#00529B')
+        puts Rainbow("Cloned files are on directory #{Dir.home}#{custom_path}").color(INFO_CODE)
       end
       puts
     end
   rescue StandardError => exception
-    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+    puts Rainbow(exception.message.to_s).color('#cc0000')
     puts
   end
 
@@ -227,7 +227,7 @@ class User
       end
     rescue StandardError => exception
       puts exception
-      puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color('#00529B')
+      puts Rainbow("If you are not currently on a repo, USAGE TIP: `commits <repo_name> [branch_name]` (default: 'master')").color(INFO_CODE)
       puts
     end
   end
