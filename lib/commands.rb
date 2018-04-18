@@ -20,6 +20,7 @@ class Commands
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:display_orgs))
     add_command('people', method(:display_people))
+    add_command('teams', method(:display_teams))
     add_command('orgsn', method(:orgsn))
     add_command('cd', method(:change_context))
     add_command('get', method(:get))
@@ -146,6 +147,15 @@ class Commands
   def display_people(params)
     if @enviroment.deep.method_defined? :show_people
       @enviroment.deep.new.show_people(@enviroment.client, @enviroment.config, params[0])
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
+  def display_teams(params)
+    if @enviroment.deep.method_defined? :show_teams
+      @enviroment.deep.new.show_teams(@enviroment.client, @enviroment.config, params[0])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end

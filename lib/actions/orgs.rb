@@ -64,6 +64,25 @@ class Organization
     end
   end
 
+  def show_teams(client, config, params)
+    org_teams = []
+    spinner = custom_spinner("Fetching #{config['Org']} teams :spinner ...")
+    spinner.auto_spin
+    client.organization_teams(config['Org'].to_s).each do |team|
+      org_teams << team[:name]
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+    if params.nil?
+      org_teams.each do |name|
+        puts name
+      end
+    else
+      pattern = build_regexp_from_string(params)
+      occurrences = show_matching_items(org_teams, pattern)
+      puts Rainbow("No team inside #{config['Org']} matched  \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
+    end
+  end
+
   def clone_repository(client, repo_name, custom_path)
     ssh_url = []
     if repo_name.include?('/')
