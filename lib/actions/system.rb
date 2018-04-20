@@ -11,9 +11,7 @@ require 'common'
 class Sys
   attr_reader :client
   attr_reader :memory
-  LIST = ['repos', 'exit', 'orgs', 'help', 'people', 'teams', 'cd ', 'cd repo ', 'commits', 'forks', 'add_team_member ', 'new team ', 'rm team ', 'new repository ', 'new assignment ', 'clone ', 'issues',
-          'version', 'cat ', 'groups', 'files', 'assignments', 'new issue ', 'open issue', 'new ', 'open ', 'close issue', 'new group ', 'rm group', 'rm ', 'do ', 'info', 'make', 'add repo',
-          'add group', 'rm repository ', 'new people info ', 'private ', 'people info ', 'new issue comment ', 'rm people info', 'change repo', 'add students', 'new relation', 'rm clone files'].sort
+  LIST = %w[clear exit repos new_repo new_team rm_repo clone rm_cloned commits orgs people teams cd open bash].sort
 
   def initialize
     @memory = []
@@ -146,12 +144,8 @@ class Sys
     json = File.read("#{path}/ghedsh-cache.json")
     cache = JSON.parse(json)
     deep = User
-    unless cache['Team'].nil?
-      return deep = Team
-    end
-    unless cache['Org'].nil?
-      return deep = Organization
-    end
+    return deep = Team unless cache['Team'].nil?
+    return deep = Organization unless cache['Org'].nil?
     deep
    end
 
