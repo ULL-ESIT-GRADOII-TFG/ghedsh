@@ -1,0 +1,19 @@
+{
+  "teams": [{
+      "name": "team_1",
+      "members": ["member_1", "member_2", "member_3", "mimebro_4"],
+      "privacy": "secret|closed"
+    },
+
+    {
+      "name": "team_2",
+      "members": ["member_1", "member_2", "member_3", "member_4", "member_5"],
+      "privacy": "secret|closed"
+    },
+    {
+      "name": "equipo_3",
+      "members": ["member_1", "member_2", "member_3", "member_4", "member_5", "member_6"],
+      "privacy": "secret|closed"
+    }
+  ]
+}
