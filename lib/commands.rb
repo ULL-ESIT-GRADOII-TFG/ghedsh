@@ -14,6 +14,7 @@ class Commands
     add_command('exit', method(:exit))
     add_command('repos', method(:display_repos))
     add_command('new_repo', method(:new_repo))
+    add_command('new_team', method(:new_team))
     add_command('rm_repo', method(:rm_repo))
     add_command('clone', method(:clone_repo))
     add_command('rm_cloned', method(:delete_cloned_repos))
@@ -162,6 +163,15 @@ class Commands
     puts
   end
 
+  def new_team(params)
+    if @enviroment.deep.method_defined? :create_team
+      @enviroment.deep.new.create_team(@enviroment.client, @enviroment.config, params[0])
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
   def new_issue(params); end
 
   def display_repos(params)
@@ -178,14 +188,6 @@ class Commands
   end
 
   def orgsn(_params)
-    res = {}
-    @enviroment.client.organization_membership('ULL-ESIT-GRADOII-TFG').each do |key, value|
-      res[key] = value
-    end
-    p res[:role]
-    @enviroment.client.outside_collaborators('ULL-ESIT-GRADOII-TFG').each do |i|
-      p i
-    end
   end
 
   def change_context(params)
