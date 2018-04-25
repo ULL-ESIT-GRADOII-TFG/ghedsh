@@ -327,9 +327,14 @@ class Organization
         puts Rainbow('Teams created correctly!').color(79, 138, 16)
         puts Rainbow("Could not add following members: #{members_not_added}").color(WARNING_CODE) unless members_not_added.empty?
       rescue StandardError => e
-        puts e.message
+        puts Rainbow(e.message.to_s).color(ERROR_CODE)
       end
     end
+  end
+
+  def remove_team(client, config)
+    teams_url = "https://github.com/orgs/#{config['Org']}/teams"
+    open_url(teams_url)
   end
 
   def search_rexp_people_info(_client, config, exp)
