@@ -175,7 +175,7 @@ class Commands
 
   def rm_team(params)
     if @enviroment.deep.method_defined? :remove_team
-      @enviroment.deep.new.remove_team(@enviroment.client, @enviroment.config)
+      @enviroment.deep.new.remove_team(@enviroment.config)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end

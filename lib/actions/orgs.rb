@@ -180,7 +180,7 @@ class Organization
       puts table
     else
       unless params.include?('/')
-        raise Rainbow("Parameter must be a Regexp. Example: /pattern/").color(ERROR_CODE)
+        raise Rainbow('Parameter must be a Regexp. Example: /pattern/').color(ERROR_CODE)
         return
       end
       pattern = build_regexp_from_string(params)
@@ -236,7 +236,7 @@ class Organization
   end
 
   # perform cd to team scope, first we retrieve all user's orgs, then we check 'name'
-  #   if its a Regexp then matches are displayed on screen and user selects one (if no match warning 
+  #   if its a Regexp then matches are displayed on screen and user selects one (if no match warning
   #   is shown and we return nil)
   #   if 'name' is not a Regexp then it must be the full team's name so we check that is inside org_teams
   #   Last option is showing a warning and return nil (so we dont push to the stack_context)
@@ -412,7 +412,7 @@ class Organization
   #
   # @param client [Object] Octokit client object
   # @param config [Hash] user configuration tracking current org, repo, etc.
-  def remove_team(client, config)
+  def remove_team(config)
     teams_url = "https://github.com/orgs/#{config['Org']}/teams"
     open_url(teams_url)
   end
