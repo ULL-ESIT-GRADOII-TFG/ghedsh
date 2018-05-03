@@ -8,8 +8,12 @@ require_relative '../helpers'
 GITHUB_LIST = %w[githubid github idgithub github_id id_github githubuser github_user].freeze
 MAIL_LIST = ['email', 'mail', 'e-mail'].freeze
 
+# Class containing actions available inside an organization
+#
 # @see http://octokit.github.io/octokit.rb/Octokit/Client.html
 class Organization
+  # CLI prompt, info about the current (CLI) scope
+  # @param config [Hash] user configuration tracking current org, repo, etc.
   def self.shell_prompt(config)
     if config['Repo'].nil?
       Rainbow("#{config['User']}> ").aqua << Rainbow("#{config['Org']}> ").magenta
@@ -18,6 +22,10 @@ class Organization
     end
   end
 
+  # Builds final cd syntax. Transforms user's CLI input to valid Ruby expression doing some parsing.
+  # @param type [String] scope of cd command
+  # @param name [String, Regexp] name of repo, org, team etc. inside current organization
+  # @return syntax_map [String] Valid Ruby expression to perform eval.
   def build_cd_syntax(type, name)
     syntax_map = { 'repo' => "Organization.new.cd('repo', #{name}, client, env)",
                    'team' => "Organization.new.cd('team', #{name}, client, env)" }
@@ -27,6 +35,17 @@ class Organization
     syntax_map[type]
   end
 
+  # Open info on default browser.
+  #
+  # If 'params' is String or Regexp user selects referred organization members
+  #
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @params [String, Regexp]
+  # @param client [Object] Octokit client object
+  # @example open user profile URL with String provided
+  #   User > Org > open 'some_user'
+  # @example open user URL with Regexp provided
+  #   User > Org > open /pattern/
   def open_info(config, params, client)
     unless params.nil?
       # looking for org member by regexp
@@ -46,6 +65,11 @@ class Organization
     puts
   end
 
+  # Display organization repos
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @param params [Regexp] regexp to check repo name
   def show_repos(client, config, params)
     spinner = custom_spinner("Fetching #{config['Org']} repositories :spinner ...")
     spinner.auto_spin
@@ -65,6 +89,11 @@ class Organization
     end
   end
 
+  # Display organization teams
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @param params [Regexp] regexp to check team name
   def show_teams(client, config, params)
     org_teams = []
     spinner = custom_spinner("Fetching #{config['Org']} teams :spinner ...")
@@ -84,7 +113,16 @@ class Organization
     end
   end
 
-  def clone_repository(client, repo_name, custom_path)
+  # Clone a repository, if repo_name is Regexp it will clone all org repositories matching pattern
+  #   if repo_name is String searches for that repo and clones it
+  #
+  # @param enviroment [ShellContext] contains the shell context, including Octokit client and user config
+  # @param repo_name [Regexp, String] pattern or name of repo
+  # @param custom_path [String] if is not provided default path is HOME/ghedsh-cloned else is some
+  #   path under HOME (already existing or not)
+  def clone_repository(enviroment, repo_name, custom_path)
+    client = enviroment.client
+    config = enviroment.config
     ssh_url = []
     if repo_name.include?('/')
       pattern = build_regexp_from_string(repo_name)
@@ -110,6 +148,16 @@ class Organization
     puts
   end
 
+  # Display organization people. It shows all members and if the authenticated user is org admin
+  #   also displays outside collaborators.
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @param params [Regexp] if provided, it must be a Regexp
+  # @example Display organization people
+  #   User > Org > people
+  # @example Display people matching Regexp
+  #   User > Org > people /alu/
   def show_people(client, config, params)
     spinner = custom_spinner("Fetching #{config['Org']} people :spinner ...")
     spinner.auto_spin
@@ -131,12 +179,23 @@ class Organization
       table = Terminal::Table.new headings: ['Github ID', 'Role'], rows: org_members
       puts table
     else
+      unless params.include?('/')
+        raise Rainbow("Parameter must be a Regexp. Example: /pattern/").color(ERROR_CODE)
+        return
+      end
       pattern = build_regexp_from_string(params)
-      occurrences = build_item_table(org_members, pattern) # show_matching_items(org_members, pattern)
+      occurrences = build_item_table(org_members, pattern)
       puts Rainbow("No member inside #{config['Org']} matched  \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
     end
   end
 
+  # perform cd to repo scope, if 'name' is a Regexp, matches are stored and then we let the user select one
+  #   if is not a Regexp, check that the string provided is a vale repository name
+  #
+  # @param name [String, Regexp] repo name
+  # @param client [Object] Octokit client object
+  # @param enviroment [ShellContext] contains the shell context, including Octokit client and user config
+  # @return [ShellContext] changed context is returned if there is not an error during process.
   def cd_repo(name, client, enviroment)
     if name.class == Regexp
       pattern = Regexp.new(name.source, name.options)
@@ -176,6 +235,16 @@ class Organization
     enviroment
   end
 
+  # perform cd to team scope, first we retrieve all user's orgs, then we check 'name'
+  #   if its a Regexp then matches are displayed on screen and user selects one (if no match warning 
+  #   is shown and we return nil)
+  #   if 'name' is not a Regexp then it must be the full team's name so we check that is inside org_teams
+  #   Last option is showing a warning and return nil (so we dont push to the stack_context)
+  #
+  # @param name [String, Regexp] team name
+  # @param client [Object] Octokit client object
+  # @param enviroment [ShellContext] contains the shell context, including Octokit client and user config
+  # @return [ShellContext] changed context is returned if there is not an error during process.
   def cd_team(name, client, enviroment)
     org_teams = []
     org_teams_id = {}
@@ -220,18 +289,23 @@ class Organization
   end
 
   # cd method contains a hash representing where user can navigate depending on context. In this case
-  # inside an organization user is allowed to change to a org repo and org team.
-  # In order to add new 'cd types' see example below.
-  # @params type [String] name of the navigating option (repo, org, team, etc.)
-  # @params name [String|Regexp] String or Regexp to find the repository.
+  #   inside an organization user is allowed to change to a org repo and org team.
+  #   In order to add new 'cd types' see example below.
+  #
+  # @param type [String] name of the navigating option (repo, org, team, etc.)
+  # @param name [String, Regexp] String or Regexp to find the repository.
+  # @example add 'chuchu' cd scope
+  #   add to cd_scopes = {'chuchu => method(:cd_chuchu)}
+  #   call it with (name, client, enviroment) parameters
   def cd(type, name, client, enviroment)
     cd_scopes = { 'repo' => method(:cd_repo), 'team' => method(:cd_team) }
     cd_scopes[type].call(name, client, enviroment)
   end
 
-  # Shows commits of current repo. If user is not in a repo, repository name for commit showing must be provided.
-  # @params enviroment [ShellContext] contains the shell context, including Octokit client and user config
-  # @params params [Array<String>] if user is not on a repo then params[0] is repo name. Optionally,
+  # Show commits of current repo. If user is not in a repo, repository name for commit showing must be provided.
+  #
+  # @param enviroment [ShellContext] contains the shell context, including Octokit client and user config
+  # @param params [Array<String>] if user is not on a repo then params[0] is repo name. Optionally,
   #   branch can be specified (value is in params[1]), if not provided default branch is master
   def show_commits(enviroment, params)
     options = {}
@@ -265,6 +339,7 @@ class Organization
   end
 
   # Repo creation: creates new repo inside current org
+  #
   # @param enviroment [ShellContext] contains the shell context, including Octokit client and user config
   # @param repo_name [String] repository name
   # @param options [Hash] repository options (repo organization, visibility, etc)
@@ -279,9 +354,9 @@ class Organization
  end
 
   # Removes repository by name
+  #
   # @param enviroment [ShellContext] contains the shell context, including Octokit client and user config
   # @param repo_name [String] name of the repo to be removed
-
   def remove_repo(enviroment, repo_name)
     client = enviroment.client
     client.delete_repository("#{enviroment.config['Org']}/#{repo_name}")
@@ -292,12 +367,13 @@ class Organization
   end
 
   # Team creation: opens team creation page on default browser when calling new_team
-  # with no options. If option provided, it must be the directory and name of the JSON file
-  # somewhere in your HOME directory for bulk creation of teams and members.
+  #   with no options. If option provided, it must be the directory and name of the JSON file
+  #   somewhere in your HOME directory for bulk creation of teams and members.
+  #
   # @param client [Object] Octokit client object
   # @param config [Hash] user configuration tracking current org, repo, etc.
   # @param params [Array<String>] user specified parameters, if not nil must be path to teams JSON file.
-  # @example Open current org and create new team
+  # @example Open current org URL and create new team
   #   User > Org > new_team
   # @example Create multiple teams with its members inside current org
   #   User > Org > new_team HOME/path/to/file/creation.json
@@ -332,6 +408,10 @@ class Organization
     end
   end
 
+  # Open org's team list and delete manually (faster than checking teams IDs and delete it)
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
   def remove_team(client, config)
     teams_url = "https://github.com/orgs/#{config['Org']}/teams"
     open_url(teams_url)
