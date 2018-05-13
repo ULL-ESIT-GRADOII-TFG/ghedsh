@@ -174,6 +174,15 @@ class User
     puts Rainbow(exception.message.to_s).color('#cc0000')
   end
 
+  def create_issue(config)
+    if config['Repo']
+      issue_creation_url = "https://github.com/#{config['User']}/#{config['Repo']}/issues/new"
+      open_url(issue_creation_url)
+    else
+      puts Rainbow("Change to repo in order to create an issue.").color(INFO_CODE)
+    end
+  end
+
   def clone_repository(enviroment, repo_name, custom_path)
     client = enviroment.client
     ssh_url = []
