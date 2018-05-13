@@ -4,7 +4,7 @@ require 'ostruct'
 require 'fileutils'
 
 class Commands
-  attr_reader   :enviroment
+  attr_reader :enviroment
 
   def initialize
     @context_stack = []
@@ -12,6 +12,7 @@ class Commands
     # add_command('help', method(:help))
     add_command('exit', method(:exit))
     add_command('new_issue', method(:new_issue))
+    add_command('issues', method(:display_issues))
     add_command('repos', method(:display_repos))
     add_command('new_repo', method(:new_repo))
     add_command('rm_repo', method(:rm_repo))
@@ -173,7 +174,7 @@ class Commands
     puts
   end
 
-  def rm_team(params)
+  def rm_team(_params)
     if @enviroment.deep.method_defined? :remove_team
       @enviroment.deep.new.remove_team(@enviroment.config)
     else
@@ -182,9 +183,17 @@ class Commands
     puts
   end
 
-  def new_issue(params)
+  def new_issue(_params)
     if @enviroment.deep.method_defined? :create_issue
       @enviroment.deep.new.create_issue(@enviroment.config)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+  end
+
+  def display_issues(_params)
+    if @enviroment.deep.method_defined? :show_issues
+      @enviroment.deep.new.show_issues(@enviroment.config)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
@@ -204,7 +213,7 @@ class Commands
   end
 
   def orgsn(_params)
-    #prueba-classroom-tfg
+    # prueba-classroom-tfg
   end
 
   def change_context(params)

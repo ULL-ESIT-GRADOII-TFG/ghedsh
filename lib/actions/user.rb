@@ -179,7 +179,16 @@ class User
       issue_creation_url = "https://github.com/#{config['User']}/#{config['Repo']}/issues/new"
       open_url(issue_creation_url)
     else
-      puts Rainbow("Change to repo in order to create an issue.").color(INFO_CODE)
+      puts Rainbow('Change to repo in order to create an issue.').color(INFO_CODE)
+    end
+  end
+
+  def show_issues(config)
+    if config['Repo']
+      issues_url = "https://github.com/#{config['User']}/#{config['Repo']}/issues"
+      open_url(issues_url)
+    else
+      puts Rainbow('Change to repo in order to view all issues').color(INFO_CODE)
     end
   end
 
