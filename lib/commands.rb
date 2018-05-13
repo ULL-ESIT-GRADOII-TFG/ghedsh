@@ -5,18 +5,18 @@ require 'fileutils'
 
 class Commands
   attr_reader   :enviroment
-  attr_accessor :struct
 
   def initialize
     @context_stack = []
     add_command('clear', method(:clear))
     # add_command('help', method(:help))
     add_command('exit', method(:exit))
+    add_command('new_issue', method(:new_issue))
     add_command('repos', method(:display_repos))
     add_command('new_repo', method(:new_repo))
+    add_command('rm_repo', method(:rm_repo))
     add_command('new_team', method(:new_team))
     add_command('rm_team', method(:rm_team))
-    add_command('rm_repo', method(:rm_repo))
     add_command('clone', method(:clone_repo))
     add_command('rm_cloned', method(:delete_cloned_repos))
     add_command('commits', method(:display_commits))
@@ -182,7 +182,13 @@ class Commands
     puts
   end
 
-  def new_issue(params); end
+  def new_issue(params)
+    if @enviroment.deep.method_defined? :create_issue
+      @enviroment.deep.new.create_issue(@enviroment.config)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+  end
 
   def display_repos(params)
     if @enviroment.deep.method_defined? :show_repos
@@ -198,6 +204,7 @@ class Commands
   end
 
   def orgsn(_params)
+    #prueba-classroom-tfg
   end
 
   def change_context(params)
