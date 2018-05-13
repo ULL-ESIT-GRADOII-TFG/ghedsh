@@ -148,6 +148,34 @@ class Organization
     puts
   end
 
+  # Open default browser ready to create an issue with GitHub form.
+  #
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @example create issue
+  #   User > Org > Repo > new_issue
+  def create_issue(config)
+    if config['Repo']
+      issue_creation_url = "https://github.com/#{config['Org']}/#{config['Repo']}/issues/new"
+      open_url(issue_creation_url)
+    else
+      puts Rainbow('Change to repo in order to create an issue.').color(INFO_CODE)
+    end
+  end
+
+  # Open default browser and shows open issues
+  #
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @example open issue's list
+  #   User > Org > Repo > issues
+  def show_issues(config)
+    if config['Repo']
+      issues_url = "https://github.com/#{config['Org']}/#{config['Repo']}/issues"
+      open_url(issues_url)
+    else
+      puts Rainbow('Change to repo in order to view all issues').color(INFO_CODE)
+    end
+  end
+
   # Display organization people. It shows all members and if the authenticated user is org admin
   #   also displays outside collaborators.
   #
@@ -364,6 +392,12 @@ class Organization
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
     puts
+  end
+
+  # Removes a group of GitHub users from an organization
+  #
+  #
+  def remove_org_member()
   end
 
   # Team creation: opens team creation page on default browser when calling new_team
