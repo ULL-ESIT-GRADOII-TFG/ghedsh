@@ -22,6 +22,7 @@ class Commands
     add_command('rm_cloned', method(:delete_cloned_repos))
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:display_orgs))
+    add_command('invite_member', method(:add_member))
     add_command('people', method(:display_people))
     add_command('teams', method(:display_teams))
     add_command('orgsn', method(:orgsn))
@@ -58,6 +59,15 @@ class Commands
   def display_orgs(params)
     if @enviroment.deep.method_defined? :show_organizations
       @enviroment.deep.new.show_organizations(@enviroment.client, params)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
+  def invite_member(params)
+    if @enviroment.deep.method_defined? :add_member
+      @enviroment.deep.new.add_member(@enviroment.client, @enviroment.enviroment, params)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end

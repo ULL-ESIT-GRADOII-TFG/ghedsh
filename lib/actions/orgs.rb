@@ -162,6 +162,15 @@ class Organization
     end
   end
 
+  # Add members typing them separately
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @example add two members to current org
+  #   User > Org > invite_member member1 member2
+  def add_member(client, config, members)
+  end
+
   # Open default browser and shows open issues
   #
   # @param config [Hash] user configuration tracking current org, repo, etc.
