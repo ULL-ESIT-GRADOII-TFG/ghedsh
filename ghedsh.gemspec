@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
  s.homepage = 'https://github.com/ULL-ESIT-GRADOII-TFG/ghedsh'
  s.require_paths = ['lib']
  s.required_ruby_version = '>= 1.9.3'
- s.add_dependency 'octokit', '~> 3.3'
+ s.add_dependency 'octokit', '~> 4.8'
  s.add_dependency 'require_all', '~> 1.3.2'
  s.add_development_dependency 'rake'
  s.add_development_dependency 'bundler', '~> 1.5'
