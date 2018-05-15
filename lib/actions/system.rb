@@ -190,7 +190,7 @@ class Sys
       login: username,
       password: passwd
     response = client.create_authorization(scopes: ['user', 'repo', 'admin:org', 'admin:public_key', 'admin:repo_hook', 'admin:org_hook', 'gist', 'notifications', 'delete_repo', 'admin:gpg_key'],
-                                           note: 'Probando autenticacion ghdesh')
+                                           note: 'GitHub Education Shell auth token')
     token = response[:token]
     us = login(token)
     userhash = {}
