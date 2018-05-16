@@ -208,6 +208,31 @@ class Organization
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
+  # Invite as members all outside collaborators from organization. 
+  # This action needs admin permissions on the organization.
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  def invite_all_outside_collaborators(client, config)
+    permissions = client.organization_membership(config['Org'], opts = { user: client.login })
+    if permissions[:role] == 'admin'
+      spinner = custom_spinner('Sending invitations :spinner ...')
+      outside_collaborators = []
+      client.outside_collaborators(config['Org']).each do |i|
+        outside_collaborators.push(i[:login])
+      end
+      outside_collaborators.each do |j|
+        options = { role: 'member', user: j.to_s }
+        client.update_organization_membership(config['Org'], options)
+      end
+      spinner.stop(Rainbow('done!').color(4, 255, 0))
+    else
+      puts Rainbow("You must have Admin permissions on #{config['Org']} to run this command.").underline.color(WARNING_CODE)
+    end
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+  end
+
   # Open default browser and shows open issues
   #
   # @param config [Hash] user configuration tracking current org, repo, etc.
