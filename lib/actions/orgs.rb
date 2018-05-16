@@ -166,20 +166,44 @@ class Organization
   #
   # @param client [Object] Octokit client object
   # @param config [Hash] user configuration tracking current org, repo, etc.
-  # @example add two members to current org
+  # @example add two members to current org (separated with commas)
+  #   User > Org > invite_member member1, member2
+  # @example add two members to current org (separated with blanks)
   #   User > Org > invite_member member1 member2
+  # @example add members to current org (commas and blanks combined)
+  #   User > Org > invite_member member1, member2 member4, member5
   def add_members(client, config, members)
     if members.nil?
       puts Rainbow('Please type each member you would like to add.').color(INFO_CODE)
     else
       people = split_members(members)
-      spinner = custom_spinner("Adding member(s) :spinner ...")
+      spinner = custom_spinner('Adding member(s) :spinner ...')
       people.each do |i|
         options = { role: 'member', user: i.to_s }
         client.update_organization_membership(config['Org'].to_s, options)
       end
       spinner.stop(Rainbow('done!').color(4, 255, 0))
     end
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+  end
+
+  # Add members from file (JSON)
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  def add_members_from_file(client, config, path)
+    file_path = "#{Dir.home}#{path}"
+    members_json = File.read(file_path)
+    members_file = JSON.parse(members_json)
+    spinner = custom_spinner('Adding members from file :spinner ...')
+    members_file['members'].each do |member|
+      options = { role: 'member', user: member['id'].to_s }
+      client.update_organization_membership(config['Org'].to_s, options)
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+  rescue Errno::ENOENT
+    puts Rainbow('Could not open file, check file location.').color(ERROR_CODE)
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
