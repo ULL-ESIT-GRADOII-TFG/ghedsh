@@ -23,6 +23,7 @@ class Commands
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:display_orgs))
     add_command('invite_member', method(:invite_member))
+    add_command('invite_member_from_file', method(:invite_member_from_file))
     add_command('people', method(:display_people))
     add_command('teams', method(:display_teams))
     add_command('orgsn', method(:orgsn))
@@ -68,6 +69,15 @@ class Commands
   def invite_member(params)
     if @enviroment.deep.method_defined? :add_member
       @enviroment.deep.new.add_members(@enviroment.client, @enviroment.config, params)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
+  def invite_member_from_file(params)
+    if @enviroment.deep.method_defined? :add_members_from_file
+      @enviroment.deep.new.add_members_from_file(@enviroment.client, @enviroment.config, params[0])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
@@ -223,15 +233,6 @@ class Commands
   end
 
   def orgsn(params)
-    members = []
-    params.each do |i|
-      string = i.split(/[,(\s)?]/)
-      members.push(string)
-    end
-    members = members.flatten
-    #a = params.join(' ')
-    p members
-    # prueba-classroom-tfg
   end
 
   def change_context(params)
