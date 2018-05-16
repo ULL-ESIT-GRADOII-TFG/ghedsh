@@ -24,6 +24,7 @@ class Commands
     add_command('orgs', method(:display_orgs))
     add_command('invite_member', method(:invite_member))
     add_command('invite_member_from_file', method(:invite_member_from_file))
+    add_command('invite_outside_collaborators', method(:invite_outside_collaborators))
     add_command('people', method(:display_people))
     add_command('teams', method(:display_teams))
     add_command('orgsn', method(:orgsn))
@@ -78,6 +79,15 @@ class Commands
   def invite_member_from_file(params)
     if @enviroment.deep.method_defined? :add_members_from_file
       @enviroment.deep.new.add_members_from_file(@enviroment.client, @enviroment.config, params[0])
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
+  def invite_outside_collaborators(params)
+    if @enviroment.deep.method_defined? :invite_all_outside_collaborators
+      @enviroment.deep.new.invite_all_outside_collaborators(@enviroment.client, @enviroment.config)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
@@ -233,6 +243,26 @@ class Commands
   end
 
   def orgsn(params)
+=begin
+    m = []
+    @enviroment.client.outside_collaborators('prueba-permisos').each do |i|
+      m.push(i[:login])
+    end
+    m.each do |j|
+      options = { role: 'member', user: j.to_s }
+      @enviroment.client.update_organization_membership('prueba-permisos', options)
+    end
+=end
+    #options = { role: 'member', user: member['id'].to_s }
+    #client.update_organization_membership(config['Org'].to_s, options)
+    #ULL-ESIT-DSI-1617
+    #ULL-ESIT-GRADOII-TFG
+    #@enviroment.client.outside_collaborators('').each do |collab|
+      #collab[:login], 'outside collaborator']
+      #p collab
+    #end
+    #p @enviroment.client.organization_memberships
+    #p permissions[:role]
   end
 
   def change_context(params)
