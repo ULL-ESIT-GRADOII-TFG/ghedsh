@@ -114,6 +114,15 @@ rescue StandardError => exception
   puts
 end
 
+def split_members(members_list)
+  members = []
+  members_list.each do |i|
+    string = i.split(/[,(\s)?]/)
+    members.push(string)
+  end
+  members = members.flatten
+end
+
 def open_url(url)
   os = RbConfig::CONFIG['host_os']
   if os.downcase.include?('linux')
