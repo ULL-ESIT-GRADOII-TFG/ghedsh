@@ -188,7 +188,7 @@ class Organization
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
-  # Add members from file (JSON)
+  # Add members from file (JSON). File must be located somewhere in HOME.
   #
   # @param client [Object] Octokit client object
   # @param config [Hash] user configuration tracking current org, repo, etc.
