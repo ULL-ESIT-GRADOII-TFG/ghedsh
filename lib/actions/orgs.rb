@@ -168,7 +168,20 @@ class Organization
   # @param config [Hash] user configuration tracking current org, repo, etc.
   # @example add two members to current org
   #   User > Org > invite_member member1 member2
-  def add_member(client, config, members)
+  def add_members(client, config, members)
+    if members.nil?
+      puts Rainbow('Please type each member you would like to add.').color(INFO_CODE)
+    else
+      people = split_members(members)
+      spinner = custom_spinner("Adding member(s) :spinner ...")
+      people.each do |i|
+        options = { role: 'member', user: i.to_s }
+        client.update_organization_membership(config['Org'].to_s, options)
+      end
+      spinner.stop(Rainbow('done!').color(4, 255, 0))
+    end
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
   # Open default browser and shows open issues
@@ -406,8 +419,7 @@ class Organization
   # Removes a group of GitHub users from an organization
   #
   #
-  def remove_org_member()
-  end
+  def remove_org_member; end
 
   # Team creation: opens team creation page on default browser when calling new_team
   #   with no options. If option provided, it must be the directory and name of the JSON file
@@ -419,7 +431,7 @@ class Organization
   # @example Open current org URL and create new team
   #   User > Org > new_team
   # @example Create multiple teams with its members inside current org
-  #   User > Org > new_team HOME/path/to/file/creation.json
+  #   User > Org > new_team (HOME)/path/to/file/creation.json
   def create_team(client, config, params)
     if params.nil?
       team_creation_url = "https://github.com/orgs/#{config['Org']}/new-team"
