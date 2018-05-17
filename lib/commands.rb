@@ -243,7 +243,6 @@ class Commands
   end
 
   def orgsn(params)
-
   end
 
   def change_context(params)
