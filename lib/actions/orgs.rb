@@ -208,27 +208,48 @@ class Organization
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
-  # Invite as members all outside collaborators from organization. 
+  # Invite as members all outside collaborators from organization.
   # This action needs admin permissions on the organization.
+  # This method checks first if parameter is an existing file, then checks Regexp, else invites all
+  # outside collaborators of current organization.
   #
   # @param client [Object] Octokit client object
   # @param config [Hash] user configuration tracking current org, repo, etc.
-  def invite_all_outside_collaborators(client, config)
+  def invite_all_outside_collaborators(client, config, param)
     permissions = client.organization_membership(config['Org'], opts = { user: client.login })
-    if permissions[:role] == 'admin'
-      spinner = custom_spinner('Sending invitations :spinner ...')
-      outside_collaborators = []
-      client.outside_collaborators(config['Org']).each do |i|
-        outside_collaborators.push(i[:login])
-      end
-      outside_collaborators.each do |j|
-        options = { role: 'member', user: j.to_s }
-        client.update_organization_membership(config['Org'], options)
-      end
-      spinner.stop(Rainbow('done!').color(4, 255, 0))
-    else
+    unless permissions[:role] == 'admin'
       puts Rainbow("You must have Admin permissions on #{config['Org']} to run this command.").underline.color(WARNING_CODE)
+      return
     end
+    outside_collaborators = []
+    spinner = custom_spinner('Sending invitations :spinner ...')
+    if File.file?("#{Dir.home}#{param}")
+      puts 'Adding outside collaborators from file'
+      file_path = "#{Dir.home}#{param}"
+      collab_json = File.read(file_path)
+      collab_file = JSON.parse(collab_json)
+      collab_file['collabs'].each do |collab|
+        outside_collaborators.push(collab['id'])
+      end
+    elsif eval(param).is_a?(Regexp)
+      pattern = build_regexp_from_string(param)
+      client.outside_collaborators(config['Org']).each do |i|
+        outside_collaborators.push(i[:login]) if pattern.match(i[:login])
+      end
+    else
+      begin
+        client.outside_collaborators(config['Org']).each do |i|
+          outside_collaborators.push(i[:login])
+        end
+      rescue StandardError => exception
+        puts Rainbow('If you entered file path, please ensure that is the correct path.').color(ERROR_CODE)
+      end
+    end
+    outside_collaborators.each do |j|
+      options = { role: 'member', user: j.to_s }
+      client.update_organization_membership(config['Org'], options)
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
