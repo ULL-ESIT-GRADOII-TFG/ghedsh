@@ -23,6 +23,7 @@ class Commands
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:display_orgs))
     add_command('invite_member', method(:invite_member))
+    add_command('remove_member', method(:remove_member))
     add_command('invite_member_from_file', method(:invite_member_from_file))
     add_command('invite_outside_collaborators', method(:invite_outside_collaborators))
     add_command('people', method(:display_people))
@@ -68,7 +69,7 @@ class Commands
   end
 
   def invite_member(params)
-    if @enviroment.deep.method_defined? :add_member
+    if @enviroment.deep.method_defined? :add_members
       @enviroment.deep.new.add_members(@enviroment.client, @enviroment.config, params)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
@@ -79,6 +80,15 @@ class Commands
   def invite_member_from_file(params)
     if @enviroment.deep.method_defined? :add_members_from_file
       @enviroment.deep.new.add_members_from_file(@enviroment.client, @enviroment.config, params[0])
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
+  def remove_member(params)
+    if @enviroment.deep.method_defined? :delete_member
+      @enviroment.deep.new.delete_member(@enviroment.client, @enviroment.config, params[0])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
@@ -243,6 +253,11 @@ class Commands
   end
 
   def orgsn(params)
+    params[0].prepend("/")
+    file_path = "#{Dir.home}#{params[0]}"
+    p file_path[0]
+    p file_path = file_path.delete('"')
+    puts File.file?(file_path) ? true : false
   end
 
   def change_context(params)
