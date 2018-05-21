@@ -18,7 +18,7 @@ class Commands
     add_command('rm_repo', method(:rm_repo))
     add_command('new_team', method(:new_team))
     add_command('set_private', method(:set_private))
-    #add_command('set_public', method(:set_public))
+    add_command('set_public', method(:set_public))
     add_command('rm_team', method(:rm_team))
     add_command('clone', method(:clone_repo))
     add_command('rm_cloned', method(:delete_cloned_repos))
@@ -170,6 +170,15 @@ class Commands
   def set_private(params)
     if @enviroment.deep.method_defined? :change_to_private_repo
       @enviroment.deep.new.change_to_private_repo(@enviroment.client, @enviroment.config, params[0])
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
+  def set_public(params)
+    if @enviroment.deep.method_defined? :change_to_public_repo
+      @enviroment.deep.new.change_to_public_repo(@enviroment.client, @enviroment.config, params[0])
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
