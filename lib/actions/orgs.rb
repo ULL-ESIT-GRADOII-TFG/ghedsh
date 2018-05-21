@@ -10,7 +10,7 @@ MAIL_LIST = ['email', 'mail', 'e-mail'].freeze
 
 # Class containing actions available inside an organization
 #
-# @see http://octokit.github.io/octokit.rb/Octokit/Client.html
+# @see http://octokit.github.io/octokit.rb/Octokit/Client/Organizations.html
 class Organization
   # CLI prompt, info about the current (CLI) scope
   # @param config [Hash] user configuration tracking current org, repo, etc.
@@ -173,7 +173,7 @@ class Organization
   # @example add members to current org (commas and blanks combined)
   #   User > Org > invite_member member1, member2 member4, member5
   def add_members(client, config, members)
-    if members.nil?
+    if members.empty?
       puts Rainbow('Please type each member you would like to add.').color(INFO_CODE)
     else
       people = split_members(members)
@@ -208,6 +208,47 @@ class Organization
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
+  # Removes a group of members form current organization. It is possible to specify them
+  # in a file or with Regexp to match GitHub IDs.
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @param param [String, Regexp] if string must be file path to remove memebers from file
+  # if Regexp will remove matching GitHub IDs from organization
+  def delete_member(client, config, param)
+    permissions = client.organization_membership(config['Org'], opts = { user: client.login })
+    unless permissions[:role] == 'admin'
+      puts Rainbow("You must have Admin permissions on #{config['Org']} to run this command.").underline.color(WARNING_CODE)
+      return
+    end
+    if is_file?("#{Dir.home}#{param}")
+      puts 'Removing member/members from file.'
+      file_path = "#{Dir.home}#{param}"
+      remove_json = File.read(file_path)
+      remove_member_file = JSON.parse(remove_json)
+      remove_member_file['remove'].each do |member|
+        client.remove_organization_member(congif['Org'], member['id'].to_s)
+      end
+    elsif eval(param).is_a?(Regexp)
+      members_to_remove = []
+      pattern = build_regexp_from_string(param)
+      client.organization_members(config['Org'].to_s).each do |member|
+        members_to_remove.push(member[:login]) if pattern.match(member[:login])
+      end
+      if members_to_remove.empty?
+        puts Rainbow("No members to remove matched with \/#{pattern.source}\/").color(WARNING_CODE)
+      else
+        members_to_remove.each do |i|
+          client.remove_organization_member(congif['Org'], i.to_s)
+        end
+      end
+    end
+  rescue SyntaxError => e
+    puts Rainbow("Parameter is not a file and there was a Syntax Error building Regexp.").color(ERROR_CODE)
+  rescue StandardError => e
+    puts Rainbow("#{e.message}").color(ERROR_CODE)
+  end
+
   # Invite as members all outside collaborators from organization.
   # This action needs admin permissions on the organization.
   # This method checks first if parameter is an existing file, then checks Regexp, else invites all
@@ -215,6 +256,7 @@ class Organization
   #
   # @param client [Object] Octokit client object
   # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @param param [String, Regexp] file path or Regexp to invite outside collabs
   def invite_all_outside_collaborators(client, config, param)
     permissions = client.organization_membership(config['Org'], opts = { user: client.login })
     unless permissions[:role] == 'admin'
@@ -223,7 +265,7 @@ class Organization
     end
     outside_collaborators = []
     spinner = custom_spinner('Sending invitations :spinner ...')
-    if File.file?("#{Dir.home}#{param}")
+    if is_file?("#{Dir.home}#{param}")
       puts 'Adding outside collaborators from file'
       file_path = "#{Dir.home}#{param}"
       collab_json = File.read(file_path)
@@ -250,6 +292,8 @@ class Organization
       client.update_organization_membership(config['Org'], options)
     end
     spinner.stop(Rainbow('done!').color(4, 255, 0))
+  rescue SyntaxError => e
+    puts Rainbow("Parameter is not a file and there was a Syntax Error building Regexp.").color(ERROR_CODE)
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
@@ -360,7 +404,7 @@ class Organization
   #   is shown and we return nil)
   #   if 'name' is not a Regexp then it must be the full team's name so we check that is inside org_teams
   #   Last option is showing a warning and return nil (so we dont push to the stack_context)
-  #
+  # 
   # @param name [String, Regexp] team name
   # @param client [Object] Octokit client object
   # @param enviroment [ShellContext] contains the shell context, including Octokit client and user config
