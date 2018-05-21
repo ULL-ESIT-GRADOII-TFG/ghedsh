@@ -137,6 +137,38 @@ class User
     end
   end
 
+  def change_to_private_repo(client, config, params)
+    pattern = build_regexp_from_string(params)
+    spinner = custom_spinner("Setting private repos :spinner ...")
+    spinner.auto_spin
+    repos = []
+    client.repositories.each do |repo|
+      repos.push(repo[:name]) if pattern.match(repo[:name])
+    end
+    repos.each do |i|
+      client.set_private("#{client.login}/#{i}")
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+  end
+
+  def change_to_public_repo(client, config, params)
+    pattern = build_regexp_from_string(params)
+    spinner = custom_spinner("Setting public repos :spinner ...")
+    spinner.auto_spin
+    repos = []
+    client.repositories.each do |repo|
+      repos.push(repo[:name]) if pattern.match(repo[:name])
+    end
+    repos.each do |i|
+      client.set_public("#{client.login}/#{i}")
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+  end
+
   def show_organizations(client, params)
     spinner = custom_spinner("Fetching #{client.login} organizations :spinner ...")
     spinner.auto_spin
