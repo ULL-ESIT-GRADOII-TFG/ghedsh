@@ -89,6 +89,11 @@ class Organization
     end
   end
 
+  # Set organization repos privacy to private. You need a paid plan to set private repos inside an organization
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @param params [Regexp] regexp to change privacy of matching repos.
   def change_to_private_repo(client, config, params)
     pattern = build_regexp_from_string(params)
     spinner = custom_spinner("Setting private repos :spinner ...")
@@ -105,6 +110,11 @@ class Organization
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
+  # Set organization repos privacy to public.
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @param params [Regexp] regexp to change privacy of matching repos.
   def change_to_public_repo(client, config, params)
     pattern = build_regexp_from_string(params)
     spinner = custom_spinner("Setting public repos :spinner ...")
