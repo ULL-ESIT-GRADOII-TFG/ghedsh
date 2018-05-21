@@ -49,6 +49,11 @@ rescue SyntaxError => e
   puts
 end
 
+def is_file?(path)
+  path = path.delete('"')
+  File.file?("#{Dir.home}#{path}") ? true : false
+end
+
 def repo_creation_guide
   puts Rainbow("Select 'Default' to create a quick public repo.").color('#f18973')
   puts Rainbow("Select 'Custom' for private/public repo whith specific options.").color('#f18973')
