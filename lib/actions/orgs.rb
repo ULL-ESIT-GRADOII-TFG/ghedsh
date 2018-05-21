@@ -105,6 +105,22 @@ class Organization
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
+  def change_to_public_repo(client, config, params)
+    pattern = build_regexp_from_string(params)
+    spinner = custom_spinner("Setting public repos :spinner ...")
+    spinner.auto_spin
+    repos = []
+    client.organization_repositories(config['Org'].to_s).each do |repo|
+      repos.push(repo[:name]) if pattern.match(repo[:name])
+    end
+    repos.each do |i|
+      client.set_public("#{config['Org']}/#{i}")
+    end
+    spinner.stop(Rainbow('done!').color(4, 255, 0))
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+  end
+
   # Display organization teams
   #
   # @param client [Object] Octokit client object
