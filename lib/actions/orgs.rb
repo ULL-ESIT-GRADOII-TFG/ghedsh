@@ -179,9 +179,9 @@ class Organization
     unless ssh_url.empty?
       perform_git_clone(ssh_url, custom_path)
       if custom_path.nil?
-        puts Rainbow("Cloned files are on directory #{Dir.home}/ghedsh_cloned").color(INFO_CODE)
+        puts Rainbow("Cloned into #{Dir.pwd}").color(INFO_CODE).underline
       else
-        puts Rainbow("Cloned files are on directory #{Dir.home}#{custom_path}").color(INFO_CODE)
+        puts Rainbow("Cloned into #{Dir.home}#{custom_path}").color(INFO_CODE).underline
       end
       puts
     end
