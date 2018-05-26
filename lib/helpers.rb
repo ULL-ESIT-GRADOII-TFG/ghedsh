@@ -100,7 +100,7 @@ end
 
 def perform_git_clone(https_url, custom_path)
   dir_path = if custom_path.nil?
-               "#{Dir.home}/ghedsh_cloned"
+               "#{Dir.pwd}"
              else
                "#{Dir.home}#{custom_path}"
              end

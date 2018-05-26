@@ -282,7 +282,7 @@ class Commands
 =end
 # ULL-ESIT-GRADOII-TFG/edit-privacy
   # p @enviroment.client.set_public('prueba-permisos/test-repo')
-  @enviroment.client.set_private('ULL-ESIT-GRADOII-TFG/edit-privacy')
+  puts Dir.pwd
   end
 
   def change_context(params)
