@@ -39,3 +39,11 @@ Thumbs.db
 
 # TODO file
 TODO.txt
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
