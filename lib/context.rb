@@ -15,9 +15,7 @@ class ShellContext
     @config_path = config_path
     @sysbh = Sys.new
     @sysbh.write_initial_memory
-    # orden de busqueda: ~/.ghedsh.json ./ghedsh.json ENV["ghedsh"] --configpath path/to/file.json
 
-    # control de carga de parametros en el logueo de la aplicacion
     if !user.nil?
       @config = @sysbh.load_config_user(config_path, user)
       @client = @sysbh.client
