@@ -1,6 +1,6 @@
 require 'require_all'
 require_rel '.'
-require 'common'
+require_relative '../common'
 require_relative '../helpers'
 require 'ostruct'
 
