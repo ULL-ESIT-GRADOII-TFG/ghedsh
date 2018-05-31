@@ -12,7 +12,7 @@ class Sys
   attr_reader :client
   attr_reader :memory
   LIST = %w[clear exit repos new_repo new_team rm_team rm_repo new_issue issues clone invite_outside_collaborators
-            rm_cloned commits orgs invite_member_from_file invite_member people teams cd open bash].sort
+            rm_cloned files commits orgs invite_member_from_file invite_member people teams cd open bash].sort
 
   def initialize
     @memory = []

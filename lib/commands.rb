@@ -19,6 +19,7 @@ class Commands
     add_command('new_team', method(:new_team))
     add_command('set_private', method(:set_private))
     add_command('set_public', method(:set_public))
+    add_command('files', method(:show_files))
     add_command('rm_team', method(:rm_team))
     add_command('clone', method(:clone_repo))
     add_command('rm_cloned', method(:delete_cloned_repos))
@@ -32,7 +33,6 @@ class Commands
     add_command('teams', method(:display_teams))
     add_command('orgsn', method(:orgsn))
     add_command('cd', method(:change_context))
-    add_command('get', method(:get))
     add_command('open', method(:open))
     add_command('bash', method(:bash))
   end
@@ -64,6 +64,15 @@ class Commands
   def display_orgs(params)
     if @enviroment.deep.method_defined? :show_organizations
       @enviroment.deep.new.show_organizations(@enviroment.client, params)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
+  def show_files(params)
+    if @enviroment.deep.method_defined? :show_files
+      @enviroment.deep.new.show_files(@enviroment.client, @enviroment.config, params)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
@@ -112,18 +121,6 @@ class Commands
     @enviroment.sysbh.remove_temp("#{ENV['HOME']}/.ghedsh/temp")
 
     0
-  end
-
-  def get(org_name)
-    # puts RbConfig::CONFIG['host_os']
-    # prueba-classroom
-    spinner = custom_spinner('Getting file from remote server ...')
-    uri = "http://codelab-tfg1718.herokuapp.com/ghedsh/#{org_name[0]}"
-    res = Net::HTTP.get_response(URI(uri))
-    fich = JSON.parse(res.body)
-    fich.each do |item|
-      puts item['name']
-    end
   end
 
   def bash(params)
@@ -273,16 +270,24 @@ class Commands
   end
 
   def orgsn(params)
-=begin
-    params[0].prepend("/")
-    file_path = "#{Dir.home}#{params[0]}"
-    p file_path[0]
-    p file_path = file_path.delete('"')
-    puts File.file?(file_path) ? true : false
-=end
-# ULL-ESIT-GRADOII-TFG/edit-privacy
-  # p @enviroment.client.set_public('prueba-permisos/test-repo')
-  puts Dir.pwd
+    #     params[0].prepend("/")
+    #     file_path = "#{Dir.home}#{params[0]}"
+    #     p file_path[0]
+    #     p file_path = file_path.delete('"')
+    #     puts File.file?(file_path) ? true : false
+    #
+    puts 'hola' if @enviroment.config['Repo']
+    options = { path: '' }
+    options[:path] = params[0] unless params.empty?
+    @enviroment.client.contents('ULL-ESIT-GRADOII-TFG/ghedsh', options).each do |i|
+      puts "#{i[:name]} (#{i[:type]})"
+    end
+    # ULL-ESIT-GRADOII-TFG/edit-privacy
+    # p @enviroment.client.set_public('prueba-permisos/test-repo')
+    # repos_to_clone = [{:name => 'ej1', :ssh_url => 'ssh'}, {:name => 'ej1', :ssh_url => 'ssh'}]
+    # repos_to_clone.each do |i|
+    # puts i[:name]
+    # end
   end
 
   def change_context(params)

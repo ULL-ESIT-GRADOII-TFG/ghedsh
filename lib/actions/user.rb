@@ -137,9 +137,9 @@ class User
     end
   end
 
-  def change_to_private_repo(client, config, params)
+  def change_to_private_repo(client, _config, params)
     pattern = build_regexp_from_string(params)
-    spinner = custom_spinner("Setting private repos :spinner ...")
+    spinner = custom_spinner('Setting private repos :spinner ...')
     spinner.auto_spin
     repos = []
     client.repositories.each do |repo|
@@ -153,9 +153,9 @@ class User
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
-  def change_to_public_repo(client, config, params)
+  def change_to_public_repo(client, _config, params)
     pattern = build_regexp_from_string(params)
-    spinner = custom_spinner("Setting public repos :spinner ...")
+    spinner = custom_spinner('Setting public repos :spinner ...')
     spinner.auto_spin
     repos = []
     client.repositories.each do |repo|
@@ -224,18 +224,32 @@ class User
     end
   end
 
+  def show_files(client, config, params)
+    if config['Repo']
+      options = { path: '' }
+      options[:path] = params[0] unless params.empty?
+      client.contents("#{client.login}/#{config['Repo']}", options).each do |i|
+        puts "#{i[:name]} (#{i[:type]})"
+      end
+    else
+      puts Rainbow('Please change to repository to see its files.').color(INFO_CODE)
+    end
+  rescue StandardError => e
+    puts Rainbow(e.message.to_s).color(ERROR_CODE)
+  end
+
   def clone_repository(enviroment, repo_name, custom_path)
     client = enviroment.client
     repos_to_clone = []
     if repo_name.include?('/')
       pattern = build_regexp_from_string(repo_name)
       client.repositories.each do |repo|
-        repos_to_clone << {:name => repo[:name], :ssh_url => repo[:clone_url]} if pattern.match(repo[:name])
+        repos_to_clone << { name: repo[:name], ssh_url: repo[:clone_url] } if pattern.match(repo[:name])
       end
       puts Rainbow("No repository matched \/#{pattern.source}\/").color(INFO_CODE) if repos_to_clone.empty?
     else
       repo = client.repository("#{client.login}/#{repo_name}")
-      repos_to_clone << {:name => repo[:name], :ssh_url => repo[:clone_url]}
+      repos_to_clone << { name: repo[:name], ssh_url: repo[:clone_url] }
     end
     unless repos_to_clone.empty?
       perform_git_clone(repos_to_clone, custom_path)

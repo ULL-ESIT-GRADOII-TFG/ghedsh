@@ -96,7 +96,7 @@ class Organization
   # @param params [Regexp] regexp to change privacy of matching repos.
   def change_to_private_repo(client, config, params)
     pattern = build_regexp_from_string(params)
-    spinner = custom_spinner("Setting private repos :spinner ...")
+    spinner = custom_spinner('Setting private repos :spinner ...')
     spinner.auto_spin
     repos = []
     client.organization_repositories(config['Org'].to_s).each do |repo|
@@ -117,7 +117,7 @@ class Organization
   # @param params [Regexp] regexp to change privacy of matching repos.
   def change_to_public_repo(client, config, params)
     pattern = build_regexp_from_string(params)
-    spinner = custom_spinner("Setting public repos :spinner ...")
+    spinner = custom_spinner('Setting public repos :spinner ...')
     spinner.auto_spin
     repos = []
     client.organization_repositories(config['Org'].to_s).each do |repo|
@@ -129,6 +129,25 @@ class Organization
     spinner.stop(Rainbow('done!').color(4, 255, 0))
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+  end
+
+  # Display files and directories within a repository
+  #
+  # @param client [Object] Octokit client object
+  # @param config [Hash] user configuration tracking current org, repo, etc.
+  # @params params [String] Subdirectory within a repo, if not provided shows root directory
+  def show_files(client, config, params)
+    if config['Repo']
+      options = { path: '' }
+      options[:path] = params[0] unless params.empty?
+      client.contents("#{config['Org']}/#{config['Repo']}", options).each do |i|
+        puts "#{i[:name]} (#{i[:type]})"
+      end
+    else
+      puts Rainbow('Please change to organization repository to see its files.').color(INFO_CODE)
+    end
+  rescue StandardError => e
+    puts Rainbow(e.message.to_s).color(ERROR_CODE)
   end
 
   # Display organization teams
@@ -169,12 +188,12 @@ class Organization
     if repo_name.include?('/')
       pattern = build_regexp_from_string(repo_name)
       client.organization_repositories(config['Org'].to_s).each do |repo|
-        repos_to_clone << {:name => repo[:name], :ssh_url => repo[:clone_url]} if pattern.match(repo[:name])
+        repos_to_clone << { name: repo[:name], ssh_url: repo[:clone_url] } if pattern.match(repo[:name])
       end
       puts Rainbow("No repository matched \/#{pattern.source}\/").color(INFO_CODE) if repos_to_clone.empty?
     else
       repo = client.repository("#{config['Org']}/#{repo_name}")
-      repos_to_clone << {:name => repo[:name], :ssh_url => repo[:clone_url]}
+      repos_to_clone << { name: repo[:name], ssh_url: repo[:clone_url] }
     end
     unless repos_to_clone.empty?
       perform_git_clone(repos_to_clone, custom_path)
@@ -286,9 +305,9 @@ class Organization
       end
     end
   rescue SyntaxError => e
-    puts Rainbow("Parameter is not a file and there was a Syntax Error building Regexp.").color(ERROR_CODE)
+    puts Rainbow('Parameter is not a file and there was a Syntax Error building Regexp.').color(ERROR_CODE)
   rescue StandardError => e
-    puts Rainbow("#{e.message}").color(ERROR_CODE)
+    puts Rainbow(e.message.to_s).color(ERROR_CODE)
   end
 
   # Invite as members all outside collaborators from organization.
@@ -335,7 +354,7 @@ class Organization
     end
     spinner.stop(Rainbow('done!').color(4, 255, 0))
   rescue SyntaxError => e
-    puts Rainbow("Parameter is not a file and there was a Syntax Error building Regexp.").color(ERROR_CODE)
+    puts Rainbow('Parameter is not a file and there was a Syntax Error building Regexp.').color(ERROR_CODE)
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
@@ -446,7 +465,7 @@ class Organization
   #   is shown and we return nil)
   #   if 'name' is not a Regexp then it must be the full team's name so we check that is inside org_teams
   #   Last option is showing a warning and return nil (so we dont push to the stack_context)
-  # 
+  #
   # @param name [String, Regexp] team name
   # @param client [Object] Octokit client object
   # @param enviroment [ShellContext] contains the shell context, including Octokit client and user config
