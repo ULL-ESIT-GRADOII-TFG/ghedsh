@@ -13,7 +13,7 @@ require 'terminal-table'
 # success: .color(79, 138, 16)
 
 def custom_spinner(message)
-  spinner = TTY::Spinner.new(Rainbow(message.to_s).color(79, 138, 16), format: :bouncing_ball)
+  TTY::Spinner.new(Rainbow(message.to_s).color(79, 138, 16), format: :bouncing_ball)
 end
 
 def build_item_table(item, pattern)
@@ -25,7 +25,7 @@ def build_item_table(item, pattern)
       matches += 1
     end
   end
-  table = table = Terminal::Table.new headings: ['Github ID', 'Role'], rows: rows
+  table = Terminal::Table.new headings: ['Github ID', 'Role'], rows: rows
   puts table
   matches
 end
@@ -43,7 +43,7 @@ end
 
 def build_regexp_from_string(string)
   str = eval(string) # string.gsub(/\//, '')
-  pattern = Regexp.new(str)
+  Regexp.new(str)
 rescue SyntaxError => e
   puts Rainbow('Error building Regexp, check syntax.').color('#cc0000')
   puts
@@ -98,9 +98,9 @@ def select_member(config, pattern, client)
   members_url[answer]
 end
 
-def perform_git_clone(https_url, custom_path)
+def perform_git_clone(repos_to_clone, custom_path)
   dir_path = if custom_path.nil?
-               "#{Dir.pwd}"
+               Dir.pwd.to_s
              else
                "#{Dir.home}#{custom_path}"
              end
@@ -109,9 +109,18 @@ def perform_git_clone(https_url, custom_path)
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color('#cc0000')
   end
-  FileUtils.cd(dir_path) do
-    https_url.each do |i|
-      system("git clone --progress #{i}")
+  repos_to_clone.each do |repos|
+    FileUtils.cd(dir_path) do
+      if !Dir.exist?("#{dir_path}/#{repos[:name]}") || Dir.empty?("#{dir_path}/#{repos[:name]}")
+        system("git clone --progress #{repos[:ssh_url]}")
+        puts
+      else
+        FileUtils.cd("#{dir_path}/#{repos[:name]}") do
+          puts repos[:name]
+          system('git pull --all')
+          puts
+        end
+      end
     end
   end
 rescue StandardError => exception

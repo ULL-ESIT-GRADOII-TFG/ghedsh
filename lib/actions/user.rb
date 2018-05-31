@@ -226,19 +226,19 @@ class User
 
   def clone_repository(enviroment, repo_name, custom_path)
     client = enviroment.client
-    ssh_url = []
+    repos_to_clone = []
     if repo_name.include?('/')
       pattern = build_regexp_from_string(repo_name)
       client.repositories.each do |repo|
-        ssh_url << repo[:clone_url] if pattern.match(repo[:name])
+        repos_to_clone << {:name => repo[:name], :ssh_url => repo[:clone_url]} if pattern.match(repo[:name])
       end
-      puts Rainbow("No repository matched \/#{pattern.source}\/").color(INFO_CODE) if ssh_url.empty?
+      puts Rainbow("No repository matched \/#{pattern.source}\/").color(INFO_CODE) if repos_to_clone.empty?
     else
       repo = client.repository("#{client.login}/#{repo_name}")
-      ssh_url << repo[:ssh_url]
+      repos_to_clone << {:name => repo[:name], :ssh_url => repo[:clone_url]}
     end
-    unless ssh_url.empty?
-      perform_git_clone(ssh_url, custom_path)
+    unless repos_to_clone.empty?
+      perform_git_clone(repos_to_clone, custom_path)
       if custom_path.nil?
         puts Rainbow("Cloned into #{Dir.pwd}").color(INFO_CODE).underline
       else
