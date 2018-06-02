@@ -112,7 +112,7 @@ def perform_git_clone(repos_to_clone, custom_path)
   repos_to_clone.each do |repos|
     FileUtils.cd(dir_path) do
       if !Dir.exist?("#{dir_path}/#{repos[:name]}") || Dir.empty?("#{dir_path}/#{repos[:name]}")
-        system("git clone --progress #{repos[:ssh_url]}")
+        system("git clone --recurse-submodules --progress #{repos[:ssh_url]}")
         puts
       else
         FileUtils.cd("#{dir_path}/#{repos[:name]}") do
