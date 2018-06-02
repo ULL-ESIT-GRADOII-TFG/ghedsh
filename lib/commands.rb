@@ -35,6 +35,7 @@ class Commands
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:display_orgs))
     add_command('new_eval', method(:new_eval))
+    add_command('foreach_eval', method(:foreach_eval))
     add_command('invite_member', method(:invite_member))
     add_command('remove_member', method(:remove_member))
     add_command('invite_member_from_file', method(:invite_member_from_file))
@@ -102,6 +103,19 @@ class Commands
   def new_eval(params)
     if @enviroment.deep.method_defined? :new_eval
       @enviroment.deep.new.new_eval(@enviroment.client, @enviroment.config, params)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
+  # Run a bash command over each submodule inside a evaluation repo
+  # Requirements: Current working directory must be the evaluation repo containing all submodules
+  #
+  # @param [Array<String>] params command to run over each submodule
+  def foreach_eval(params)
+    if @enviroment.deep.method_defined? :foreach_eval
+      @enviroment.deep.new.foreach_eval(@enviroment.client, @enviroment.config, params)
     else
       puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
     end
@@ -369,17 +383,6 @@ class Commands
     #     p file_path[0]
     #     p file_path = file_path.delete('"')
     #     puts File.file?(file_path) ? true : false
-    #
-    #puts 'hola' if @enviroment.config['Repo']
-    #options = { path: '' }
-    #options[:path] = params[0] unless params.empty?
-    #@enviroment.client.contents('ULL-ESIT-GRADOII-TFG/ghedsh', options).each do |i|
-      #puts "#{i[:name]} (#{i[:type]})"
-    #end
-    #FileUtils.mkdir_p("#{Dir.pwd}/eval_repo")
-    @enviroment.client.organization_repositories('ULL-ESIT-GRADOII-TFG').each do |i|
-      p i[:ssh_url]
-    end
   end
 
   # Change CLI context and move between repositories, organization, teams

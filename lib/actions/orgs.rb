@@ -166,6 +166,20 @@ class Organization
     puts Rainbow(e.message.to_s).color(ERROR_CODE)
   end
 
+  # Evaluate a bash command in each submodule
+  #
+  # @param [Object] client Octokit client object
+  # @param [Hash] config user configuration tracking current org, repo, etc.
+  # @param [Array<String>] params bash command
+  def foreach_eval(client, config, params)
+    command = params.join(' ')
+    FileUtils.cd(Dir.pwd) do
+      system("git submodule foreach '#{command}'")
+    end
+  rescue StandardError => e
+    puts Rainbow(e.message.to_s).color(ERROR_CODE)
+  end
+
   # Display files and directories within a repository
   #
   # @param client [Object] Octokit client object
