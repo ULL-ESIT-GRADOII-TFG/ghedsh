@@ -34,6 +34,7 @@ class Commands
     add_command('rm_cloned', method(:delete_cloned_repos))
     add_command('commits', method(:display_commits))
     add_command('orgs', method(:display_orgs))
+    add_command('new_eval', method(:new_eval))
     add_command('invite_member', method(:invite_member))
     add_command('remove_member', method(:remove_member))
     add_command('invite_member_from_file', method(:invite_member_from_file))
@@ -84,7 +85,7 @@ class Commands
   # Display organization depending on context. If method is not defined in current deep, information
   # is provided.
   #
-  # @param [Array] params user provided parameters, like Regexp to show matching organizations
+  # @param [Array<String>] params user provided parameters, like Regexp to show matching organizations
   def display_orgs(params)
     if @enviroment.deep.method_defined? :show_organizations
       @enviroment.deep.new.show_organizations(@enviroment.client, params)
@@ -94,9 +95,22 @@ class Commands
     puts
   end
 
+  # Creates a 'super repo' containing subrepos of assignments
+  #
+  # @param [Array<String>] params first provide name of eval repository and a Regexp to match
+  # repos to add them as submodules
+  def new_eval(params)
+    if @enviroment.deep.method_defined? :new_eval
+      @enviroment.deep.new.new_eval(@enviroment.client, @enviroment.config, params)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
   # Display files from current repo.
   #
-  # @param [Array] params user provided parameters, like path within a repository
+  # @param [Array<String>] params user provided parameters, like path within a repository
   def show_files(params)
     if @enviroment.deep.method_defined? :show_files
       @enviroment.deep.new.show_files(@enviroment.client, @enviroment.config, params)
@@ -107,7 +121,7 @@ class Commands
   end
 
   # Invite member to organization
-  # @param [Array] params user provided parameters, like members to be added
+  # @param [Array<String>] params user provided parameters, like members to be added
   def invite_member(params)
     if @enviroment.deep.method_defined? :add_members
       @enviroment.deep.new.add_members(@enviroment.client, @enviroment.config, params)
@@ -118,7 +132,7 @@ class Commands
   end
 
   # Invite members from JSON files. file_templates directory has template with file structure for this command.
-  # @param [Array] params path to JSON file  containing members
+  # @param [Array<String>] params path to JSON file  containing members
   def invite_member_from_file(params)
     if @enviroment.deep.method_defined? :add_members_from_file
       @enviroment.deep.new.add_members_from_file(@enviroment.client, @enviroment.config, params[0])
@@ -129,7 +143,7 @@ class Commands
   end
 
   # Remove member from oranization.
-  # @param [Array] params path to JSON file containing members to be removed or Regexp to match members
+  # @param [Array<String>] params path to JSON file containing members to be removed or Regexp to match members
   #   to be removed. file_templates contains a template for this command.
   def remove_member(params)
     if @enviroment.deep.method_defined? :delete_member
@@ -141,7 +155,7 @@ class Commands
   end
   
   # Invite outside collaborators of an organization to be members of that organization.
-  # @param [Array] params path to file or Regexp to match outside collaborators to be invited.
+  # @param [Array<String>] params path to file or Regexp to match outside collaborators to be invited.
   #   file_templates contains a JSON template for this command.
   def invite_outside_collaborators(params)
     if @enviroment.deep.method_defined? :invite_all_outside_collaborators
@@ -163,7 +177,7 @@ class Commands
   end
 
   # Runs a bash command.
-  # @param [Array] params bash command to perform
+  # @param [Array<String>] params bash command to perform
   def bash(params)
     bash_command = params.join(' ')
     system(bash_command)
@@ -181,7 +195,7 @@ class Commands
   # Create new repository with the provided name. Two modes are available: fast and custom. Fast mode creates a public repo.
   # Custom mode allows to set several details, like privacy, description, .gitignore template, etc.
   #
-  # @param [Array] params repository name
+  # @param [Array<String>] params repository name
   def new_repo(params)
     if @enviroment.deep.method_defined? :create_repo
       begin
@@ -203,7 +217,7 @@ class Commands
 
   # Remove repository
   #
-  # @param [Array] params repository name to be deleted
+  # @param [Array<String>] params repository name to be deleted
   def rm_repo(params)
     if @enviroment.deep.method_defined? :remove_repo
       @enviroment.deep.new.remove_repo(@enviroment, params[0])
@@ -215,7 +229,7 @@ class Commands
 
   # Change repository to private.
   #
-  # @param [Array] params Regexp to match repositories and edit its privacy
+  # @param [Array<String>] params Regexp to match repositories and edit its privacy
   def set_private(params)
     if @enviroment.deep.method_defined? :change_to_private_repo
       @enviroment.deep.new.change_to_private_repo(@enviroment.client, @enviroment.config, params[0])
@@ -227,7 +241,7 @@ class Commands
 
   # Change repository to public
   #
-  # @param [Array] params Regexp to match repositories and edit its privacy
+  # @param [Array<String>] params Regexp to match repositories and edit its privacy
   def set_public(params)
     if @enviroment.deep.method_defined? :change_to_public_repo
       @enviroment.deep.new.change_to_public_repo(@enviroment.client, @enviroment.config, params[0])
@@ -239,7 +253,7 @@ class Commands
 
   # Clone repository
   #
-  # @param [Array] params Regexp to match repositories to be cloned or individual repository to be cloned.
+  # @param [Array<String>] params Regexp to match repositories to be cloned or individual repository to be cloned.
   #   Second parameter is custom path to find cloned repositories. If not provided CWD is the path.
   def clone_repo(params)
     if @enviroment.deep.method_defined? :clone_repository
@@ -251,13 +265,13 @@ class Commands
 
   # Delete cloned repository
   def delete_cloned_repos(_params)
-    FileUtils.remove_entry_secure("#{Dir.pwd}", force = true)
+    ####### FileUtils.remove_entry_secure("", force = true)
     puts Rainbow("Cloned content deleted.\n").color('#00529B')
   end
 
   # Display commits
   #
-  # @param [Array] params repository name and baranch. If user is already inside a repository, a branch
+  # @param [Array<String>] params repository name and baranch. If user is already inside a repository, a branch
   # can be specified, if not 'master' is default branch.
   def display_commits(params)
     if @enviroment.deep.method_defined? :show_commits
@@ -270,7 +284,7 @@ class Commands
 
   # Display a table with GitHub IDs and membership type within an prganization
   #
-  # @param [Array] params Regexp to show matching people, if empty, shows all people.
+  # @param [Array<String>] params Regexp to show matching people, if empty, shows all people.
   def display_people(params)
     if @enviroment.deep.method_defined? :show_people
       @enviroment.deep.new.show_people(@enviroment.client, @enviroment.config, params[0])
@@ -282,7 +296,7 @@ class Commands
   
   # Show teams within an organization
   #
-  # @param [Array] params Regexp to show matching teams
+  # @param [Array<String>] params Regexp to show matching teams
   def display_teams(params)
     if @enviroment.deep.method_defined? :show_teams
       @enviroment.deep.new.show_teams(@enviroment.client, @enviroment.config, params[0])
@@ -294,7 +308,7 @@ class Commands
 
   # Create teams from file or by name
   #
-  # @param [Array] params path to JSON template or team name to be created
+  # @param [Array<String>] params path to JSON template or team name to be created
   def new_team(params)
     if @enviroment.deep.method_defined? :create_team
       @enviroment.deep.new.create_team(@enviroment.client, @enviroment.config, params[0])
@@ -334,7 +348,7 @@ class Commands
 
   # Display respositories
   #
-  # @param [Array] param Regexp to show matchin repository names. If not provided, show all
+  # @param [Array<String>] param Regexp to show matchin repository names. If not provided, show all
   def display_repos(params)
     if @enviroment.deep.method_defined? :show_repos
       @enviroment.deep.new.show_repos(@enviroment.client, @enviroment.config, params[0])
@@ -356,23 +370,21 @@ class Commands
     #     p file_path = file_path.delete('"')
     #     puts File.file?(file_path) ? true : false
     #
-    puts 'hola' if @enviroment.config['Repo']
-    options = { path: '' }
-    options[:path] = params[0] unless params.empty?
-    @enviroment.client.contents('ULL-ESIT-GRADOII-TFG/ghedsh', options).each do |i|
-      puts "#{i[:name]} (#{i[:type]})"
+    #puts 'hola' if @enviroment.config['Repo']
+    #options = { path: '' }
+    #options[:path] = params[0] unless params.empty?
+    #@enviroment.client.contents('ULL-ESIT-GRADOII-TFG/ghedsh', options).each do |i|
+      #puts "#{i[:name]} (#{i[:type]})"
+    #end
+    #FileUtils.mkdir_p("#{Dir.pwd}/eval_repo")
+    @enviroment.client.organization_repositories('ULL-ESIT-GRADOII-TFG').each do |i|
+      p i[:ssh_url]
     end
-    # ULL-ESIT-GRADOII-TFG/edit-privacy
-    # p @enviroment.client.set_public('prueba-permisos/test-repo')
-    # repos_to_clone = [{:name => 'ej1', :ssh_url => 'ssh'}, {:name => 'ej1', :ssh_url => 'ssh'}]
-    # repos_to_clone.each do |i|
-    # puts i[:name]
-    # end
   end
 
   # Change CLI context and move between repositories, organization, teams
   # Contexts are stored in a stack
-  # @param [Array] params cd operation
+  # @param [Array<String>] params cd operation
   # @example change to organization
   #   User > cd org /regexp/
   # @example change to repository

@@ -131,6 +131,41 @@ class Organization
     puts Rainbow(exception.message.to_s).color(ERROR_CODE)
   end
 
+  # Create a 'super repo' containing assignment repositories as submodules
+  #
+  # @param [Object] client Octokit client object
+  # @param [Hash] config user configuration tracking current org, repo, etc.
+  # @param [Array<String>] params 'super repo's' name and Regexp to match submodules
+  #   params[0] is the evaluation repository's name
+  #   params[1] Regexp of submodules
+  def new_eval(client, config, params)
+    options = { private: true, organization: config['Org'].to_s }
+    repo_name = params[0]
+    submodules = []
+    evaluation_repo = client.create_repository(repo_name, options)
+    pattern = build_regexp_from_string(params[1])
+    client.organization_repositories(config['Org'].to_s).each do |repo|
+      submodules << repo[:ssh_url] if pattern.match(repo[:name])
+    end
+    unless submodules.empty?
+      local_repo_path = "#{Dir.pwd}/#{repo_name}"
+      FileUtils.mkdir_p(local_repo_path)
+      FileUtils.cd(local_repo_path) do
+        system('git init')
+        submodules.each do |i|
+          system("git submodule add #{i}")
+        end
+        system('git add .')
+        system('git commit -m "First commit"')
+        system("git remote add origin #{evaluation_repo[:ssh_url]}")
+        system('git push -u origin master')
+      end
+    end
+    puts Rainbow("No submodule found with /#{pattern.source}/") if submodules.empty?
+  rescue StandardError => e
+    puts Rainbow(e.message.to_s).color(ERROR_CODE)
+  end
+
   # Display files and directories within a repository
   #
   # @param client [Object] Octokit client object
@@ -645,61 +680,6 @@ class Organization
   def remove_team(config)
     teams_url = "https://github.com/orgs/#{config['Org']}/teams"
     open_url(teams_url)
-  end
-
-  def search_rexp_people_info(_client, config, exp)
-    list = load_people
-    if !list.nil?
-      if list['users'] != []
-        list = list['orgs'].detect { |aux| aux['name'] == config['Org'] }
-        if exp =~ /^\//
-          sp = exp.split('/')
-          exp = Regexp.new(sp[1], sp[2])
-        end
-        list = Sys.new.search_rexp_peoplehash(list['users'], exp)
-
-        if list != []
-          fields = list[0].keys
-          list.each do |i|
-            puts "\n\e[31m#{i['github']}\e[0m"
-            fields.each do |j|
-              puts "#{j.capitalize}:\t #{i[j]}"
-            end
-            puts
-          end
-        end
-      else
-        puts 'Extended information has not been added yet'
-      end
-    else
-      list['orgs'].push('name' => config['Org'], 'users' => [])
-      Sys.new.save_people("#{ENV['HOME']}/.ghedsh", list)
-      puts 'Extended information has not been added yet'
-    end
-  end
-
-  def show_organization_members_bs(client, config)
-    orgslist = []
-    print "\n"
-    mem = client.organization_members(config['Org'])
-    mem.each do |i|
-      m = eval(i.inspect)
-      orgslist.push(m[:login])
-      puts m[:login]
-    end
-    puts
-    orgslist
-  end
-
-  def get_organization_members(client, config)
-    mem = client.organization_members(config['Org'])
-    list = []
-    unless mem.nil?
-      mem.each do |i|
-        list << i[:login]
-      end
-    end
-    list
   end
 
   def read_orgs(client)
