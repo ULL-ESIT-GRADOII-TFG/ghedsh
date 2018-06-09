@@ -417,7 +417,11 @@ class Commands
       end
     else
       begin
-      action = @enviroment.deep.new.build_cd_syntax(params[0], params[1])
+      name = params[1]
+      name = name.gsub(/\A("|')|("|')\Z/, '')
+      name.insert(0, '\'')
+      name.insert(-1, '\'')
+      action = @enviroment.deep.new.build_cd_syntax(params[0], name)
       env = OpenStruct.new
       env.config = Marshal.load(Marshal.dump(@enviroment.config))
       env.deep = @enviroment.deep
