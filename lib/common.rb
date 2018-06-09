@@ -4,7 +4,7 @@ require 'actions/repo'
 require 'actions/system'
 require 'actions/teams'
 require 'actions/user'
-require 'rainbow' 
+require 'rainbow'
 require 'tty-spinner'
 require 'tty-prompt'
 

@@ -12,8 +12,6 @@ class PluginLoader
 
   def find_plugins
     find_gems.map do |gem|
-      # puts "gema: #{gem.name}"
-      # puts gem.name.tr('-', '/')
       @plugins << { name: gem.name, path: gem_path(gem.name), plugin_klass: plugin_klass_name(gem.name) }
     end
 
