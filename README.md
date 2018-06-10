@@ -1,12 +1,14 @@
 # GITHUB EDUCATION SHELL
 
+![Gem](https://img.shields.io/badge/version-2.2.2-blue.svg)
+
 A command line program following the philosophy of GitHub Education.
 
 ## How does it work?
 
 This program give you an interaction with Github like you was using your command line simulating a tree structure. Each level on the tree gives you several options of managing your Github account or your Organization.
 
-Following the philosophy of Github Education, you can use this application to managing your own organization as a classroom where you can make assignments to your students using repository strategies.    
+Following the philosophy of Github Education, you can use this application to managing your own organization as a classroom where you can make assignments to your students using repository strategies.
 
 ## Installing GHEDSH
 
