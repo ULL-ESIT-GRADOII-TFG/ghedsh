@@ -145,7 +145,7 @@ class Organization
     evaluation_repo = client.create_repository(repo_name, options)
     pattern = build_regexp_from_string(params[1])
     client.organization_repositories(config['Org'].to_s).each do |repo|
-      submodules << repo[:ssh_url] if pattern.match(repo[:name])
+      submodules << repo[:ssh_url] if pattern.match(repo[:name]) && (repo[:name] != repo_name)
     end
     unless submodules.empty?
       local_repo_path = "#{Dir.pwd}/#{repo_name}"
@@ -171,7 +171,7 @@ class Organization
   # @param [Object] client Octokit client object
   # @param [Hash] config user configuration tracking current org, repo, etc.
   # @param [Array<String>] params bash command
-  def foreach_eval(client, config, params)
+  def foreach_eval(_client, _config, params)
     command = params.join(' ')
     FileUtils.cd(Dir.pwd) do
       system("git submodule foreach '#{command}'")
