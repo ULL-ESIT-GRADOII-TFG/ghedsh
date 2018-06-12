@@ -73,9 +73,10 @@ class Interface
     loop do
       begin
         input = Readline.readline(@shell_enviroment.prompt, true)
-        # handle ctrl-d (eof)
+        # handle ctrl-d (eof), equivalent to exit (saving configuration)
         if input.nil?
-          throw :ctrl_c
+          @shell_enviroment.commands['exit'].call(nil)
+          exit!(0)
         end
         input = input.strip.split
         command = input[0]
