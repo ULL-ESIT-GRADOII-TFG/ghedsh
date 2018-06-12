@@ -1,6 +1,6 @@
 # GITHUB EDUCATION SHELL
 
-![Gem](https://img.shields.io/badge/version-2.2.2-blue.svg)
+![Gem version badge](https://img.shields.io/badge/version-2.2.3-blue.svg)
 
 A command line program following the philosophy of GitHub Education.
 
@@ -14,7 +14,7 @@ Following the philosophy of Github Education, you can use this application to ma
 
 You can download the gem **ghdesh** from rubygem.
 
-``gem install ghdesh``
+``gem install ghedsh``
 
 To run the app you need to call the binary file "ghedsh" in your command line after install it. Configuration files are being set in a hidden directory called *.ghedsh*, in your Home path.  
 
