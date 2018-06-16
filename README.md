@@ -1,6 +1,6 @@
 # GITHUB EDUCATION SHELL
 
-![Gem version badge](https://img.shields.io/badge/version-2.2.3-blue.svg)
+![Gem version badge](https://img.shields.io/badge/version-2.2.4-blue.svg)
 
 A command line program following the philosophy of GitHub Education.
 
