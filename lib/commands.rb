@@ -122,6 +122,15 @@ class Commands
     puts
   end
 
+  def foreach_try(params)
+    if @enviroment.deep.method_defined? :foreach_try
+      @enviroment.deep.new.foreach_try(@enviroment.client, @enviroment.config, params)
+    else
+      puts Rainbow("Command not available in context \"#{@enviroment.deep.name}\"").color(WARNING_CODE)
+    end
+    puts
+  end
+
   # Display files from current repo.
   #
   # @param [Array<String>] params user provided parameters, like path within a repository

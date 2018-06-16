@@ -180,6 +180,15 @@ class Organization
     puts Rainbow(e.message.to_s).color(ERROR_CODE)
   end
 
+  def foreach_try(_client, _config, params)
+    command = params.join(' ')
+    FileUtils.cd(Dir.pwd) do
+      system("git submodule foreach '#{command}'")
+    end
+  rescue StandardError => e
+    puts Rainbow(e.message.to_s).color(ERROR_CODE)
+  end
+
   # Display files and directories within a repository
   #
   # @param client [Object] Octokit client object
