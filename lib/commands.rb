@@ -36,6 +36,7 @@ class Commands
     add_command('orgs', method(:display_orgs))
     add_command('new_eval', method(:new_eval))
     add_command('foreach', method(:foreach_eval))
+    add_command('foreach_try', method(:foreach_try))
     add_command('invite_member', method(:invite_member))
     add_command('remove_member', method(:remove_member))
     add_command('invite_member_from_file', method(:invite_member_from_file))
