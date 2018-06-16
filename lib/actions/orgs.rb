@@ -174,7 +174,7 @@ class Organization
   def foreach_eval(_client, _config, params)
     command = params.join(' ')
     FileUtils.cd(Dir.pwd) do
-      system("git submodule foreach '#{command}'")
+      system("git submodule foreach '#{command} || :'")
     end
   rescue StandardError => e
     puts Rainbow(e.message.to_s).color(ERROR_CODE)
