@@ -99,13 +99,13 @@ def select_member(config, pattern, client)
 end
 
 def perform_git_clone(repos_to_clone, custom_path)
-  dir_path = if custom_path.nil?
-               Dir.pwd.to_s
-             else
-               "#{Dir.home}#{custom_path}"
-             end
   begin
-    FileUtils.mkdir_p(dir_path)
+    dir_path = if custom_path.nil?
+      Dir.pwd.to_s
+    else
+      "#{Dir.home}#{custom_path}"
+      FileUtils.mkdir_p("#{Dir.home}#{custom_path}")
+    end
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color('#cc0000')
   end
@@ -117,7 +117,7 @@ def perform_git_clone(repos_to_clone, custom_path)
       else
         FileUtils.cd("#{dir_path}/#{repos[:name]}") do
           puts repos[:name]
-          system('git pull --all')
+          system('git pull --all --recurse-submodules')
           puts
         end
       end
