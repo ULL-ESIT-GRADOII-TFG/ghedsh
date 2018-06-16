@@ -166,24 +166,51 @@ class Organization
     puts Rainbow(e.message.to_s).color(ERROR_CODE)
   end
 
+  def foreach_setup(client, config)
+    repo_content = []
+    repo_ssh_clone = []
+    client.contents("#{config['Org']}/#{config['Repo']}").each do |i|
+      repo_content << i[:name]
+    end
+    unless repo_content.include?('.gitmodules')
+      puts Rainbow('Current repo does not include .gitmodules and command will not work.').color(WARNING_CODE)
+      return
+    end
+    current_repo_info = client.repository("#{config['Org']}/#{config['Repo']}")
+    repo_ssh_clone << { name: current_repo_info[:name], ssh_url: current_repo_info[:ssh_url] }
+    perform_git_clone(repo_ssh_clone, nil)
+  end
+
   # Evaluate a bash command in each submodule
   #
   # @param [Object] client Octokit client object
   # @param [Hash] config user configuration tracking current org, repo, etc.
   # @param [Array<String>] params bash command
-  def foreach_eval(_client, _config, params)
-    command = params.join(' ')
-    FileUtils.cd(Dir.pwd) do
-      system("git submodule foreach '#{command} || :'")
+  def foreach_eval(client, config, params)
+    if config['Repo']
+      foreach_setup(client, config)
+      command = params.join(' ')
+      FileUtils.cd("#{Dir.pwd}/#{config['Repo']}") do
+        system("git submodule foreach '#{command} || :'")
+      end
+    else
+      puts Rainbow('Please change to an organization repository to run this command.').color(INFO_CODE)
+      return
     end
   rescue StandardError => e
     puts Rainbow(e.message.to_s).color(ERROR_CODE)
   end
 
-  def foreach_try(_client, _config, params)
-    command = params.join(' ')
-    FileUtils.cd(Dir.pwd) do
-      system("git submodule foreach '#{command}'")
+  def foreach_try(client, config, params)
+    if config['Repo']
+      foreach_setup(client, config)
+      command = params.join(' ')
+      FileUtils.cd("#{Dir.pwd}/#{config['Repo']}") do
+        system("git submodule foreach '#{command}'")
+      end
+    else
+      puts Rainbow('Please change to an organization repository to run this command.').color(INFO_CODE)
+      return
     end
   rescue StandardError => e
     puts Rainbow(e.message.to_s).color(ERROR_CODE)
@@ -631,10 +658,10 @@ class Organization
     options[:organization] = enviroment.config['Org'].to_s
     client.create_repository(repo_name, options)
     puts Rainbow('Repository created correctly!').color(79, 138, 16)
- rescue StandardError => exception
-   puts Rainbow(exception.message.to_s).color(ERROR_CODE)
-   puts
- end
+  rescue StandardError => exception
+    puts Rainbow(exception.message.to_s).color(ERROR_CODE)
+    puts
+  end
 
   # Removes repository by name
   #
@@ -713,10 +740,5 @@ class Organization
       orgslist.push(o[:login])
     end
     orgslist
-  end
-
-  def open_org(client, config)
-    mem = client.organization(config['Org'])
-    Sys.new.open_url(mem[:html_url])
   end
 end
