@@ -383,6 +383,7 @@ class Commands
     puts
   end
 
+  # Show ghedsh current version
   def show_version(_params)
     puts "GitHub Education Shell v#{Ghedsh::VERSION}"
   end
@@ -398,7 +399,6 @@ class Commands
     #     p file_path[0]
     #     p file_path = file_path.delete('"')
     #     puts File.file?(file_path) ? true : false
-    puts "la version crema #{Ghedsh::VERSION}"
   end
 
   # Change CLI context and move between repositories, organization, teams
