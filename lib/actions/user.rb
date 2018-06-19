@@ -125,6 +125,7 @@ class User
     client.repositories.each do |repo|
       user_repos << repo[:name]
     end
+    user_repos.sort_by!(&:downcase)
     spinner.stop(Rainbow('done!').color(4, 255, 0))
     if params.nil?
       user_repos.each do |repo_name|
@@ -176,6 +177,7 @@ class User
     client.list_organizations.each do |org|
       user_orgs << org[:login]
     end
+    user_orgs.sort_by!(&:downcase)
     spinner.stop(Rainbow('done!').color(4, 255, 0))
     if params.empty?
       user_orgs.each do |org_name|

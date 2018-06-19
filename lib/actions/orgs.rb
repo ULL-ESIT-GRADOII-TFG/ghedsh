@@ -77,6 +77,7 @@ class Organization
     client.organization_repositories(config['Org'].to_s).each do |repo|
       org_repos << repo[:name]
     end
+    org_repos.sort_by!(&:downcase)
     spinner.stop(Rainbow('done!').color(4, 255, 0))
     if params.nil?
       org_repos.each do |repo_name|
@@ -247,6 +248,7 @@ class Organization
     client.organization_teams(config['Org'].to_s).each do |team|
       org_teams << team[:name]
     end
+    org_teams.sort_by!(&:downcase)
     spinner.stop(Rainbow('done!').color(4, 255, 0))
     if params.nil?
       org_teams.each do |name|
