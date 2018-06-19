@@ -20,6 +20,7 @@ class Commands
     add_command('clear', method(:clear))
     # add_command('help', method(:help))
     add_command('exit', method(:exit))
+    add_command('version', method(:show_version))
     add_command('new_issue', method(:new_issue))
     add_command('issues', method(:display_issues))
     add_command('repos', method(:display_repos))
@@ -382,6 +383,10 @@ class Commands
     puts
   end
 
+  def show_version(_params)
+    puts "GitHub Education Shell v#{Ghedsh::VERSION}"
+  end
+
   # Clear screen
   def clear(_params)
     system('clear')
@@ -393,6 +398,7 @@ class Commands
     #     p file_path[0]
     #     p file_path = file_path.delete('"')
     #     puts File.file?(file_path) ? true : false
+    puts "la version crema #{Ghedsh::VERSION}"
   end
 
   # Change CLI context and move between repositories, organization, teams
