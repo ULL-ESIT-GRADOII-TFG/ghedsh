@@ -80,13 +80,17 @@ class Organization
     org_repos.sort_by!(&:downcase)
     spinner.stop(Rainbow('done!').color(4, 255, 0))
     if params.nil?
+      item_counter = 0
       org_repos.each do |repo_name|
         puts repo_name
+        item_counter += 1
       end
+      puts "\n#{item_counter} #{config['Org']} repositories listed."
     else
       pattern = build_regexp_from_string(params)
       occurrences = show_matching_items(org_repos, pattern)
       puts Rainbow("No repository inside #{config['Org']} matched  \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
+      puts "\n#{occurrences} #{config['Org']} repositories listed."
     end
   end
 
@@ -167,19 +171,16 @@ class Organization
     puts Rainbow(e.message.to_s).color(ERROR_CODE)
   end
 
-  def foreach_setup(client, config)
+  def repo_has_submodules?(client, config)
     repo_content = []
-    repo_ssh_clone = []
     client.contents("#{config['Org']}/#{config['Repo']}").each do |i|
       repo_content << i[:name]
     end
     unless repo_content.include?('.gitmodules')
       puts Rainbow('Current repo does not include .gitmodules and command will not work.').color(WARNING_CODE)
-      return
+      return false
     end
-    current_repo_info = client.repository("#{config['Org']}/#{config['Repo']}")
-    repo_ssh_clone << { name: current_repo_info[:name], ssh_url: current_repo_info[:ssh_url] }
-    perform_git_clone(repo_ssh_clone, nil)
+    true
   end
 
   # Evaluate a bash command in each submodule
@@ -189,9 +190,9 @@ class Organization
   # @param [Array<String>] params bash command
   def foreach_eval(client, config, params)
     if config['Repo']
-      foreach_setup(client, config)
+      return unless repo_has_submodules?(client, config)
       command = params.join(' ')
-      FileUtils.cd("#{Dir.pwd}/#{config['Repo']}") do
+      FileUtils.cd(Dir.pwd) do
         system("git submodule foreach '#{command} || :'")
       end
     else
@@ -204,9 +205,9 @@ class Organization
 
   def foreach_try(client, config, params)
     if config['Repo']
-      foreach_setup(client, config)
+      return unless repo_has_submodules?(client, config)
       command = params.join(' ')
-      FileUtils.cd("#{Dir.pwd}/#{config['Repo']}") do
+      FileUtils.cd(Dir.pwd) do
         system("git submodule foreach '#{command}'")
       end
     else
