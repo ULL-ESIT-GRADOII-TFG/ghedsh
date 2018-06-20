@@ -128,13 +128,17 @@ class User
     user_repos.sort_by!(&:downcase)
     spinner.stop(Rainbow('done!').color(4, 255, 0))
     if params.nil?
+      item_counter = 0
       user_repos.each do |repo_name|
         puts repo_name
+        item_counter += 1
       end
+      puts "\n#{item_counter} user repositories listed."
     else
       pattern = build_regexp_from_string(params)
       occurrences = show_matching_items(user_repos, pattern)
       puts Rainbow("No repository matched \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
+      puts "\n#{occurrences} user repositories listed."
     end
   end
 
