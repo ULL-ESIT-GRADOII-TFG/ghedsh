@@ -178,7 +178,7 @@ class Commands
     end
     puts
   end
-  
+
   # Invite outside collaborators of an organization to be members of that organization.
   # @param [Array<String>] params path to file or Regexp to match outside collaborators to be invited.
   #   file_templates contains a JSON template for this command.
@@ -208,7 +208,7 @@ class Commands
     system(bash_command)
   end
 
-  # Open info depending on context. Within organization will open GitHub organization profile, member profile, etc. 
+  # Open info depending on context. Within organization will open GitHub organization profile, member profile, etc.
   def open(params)
     if @enviroment.deep.method_defined? :open_info
       @enviroment.deep.new.open_info(@enviroment.config, params[0], @enviroment.client)
@@ -318,7 +318,7 @@ class Commands
     end
     puts
   end
-  
+
   # Show teams within an organization
   #
   # @param [Array<String>] params Regexp to show matching teams
@@ -433,31 +433,31 @@ class Commands
       end
     else
       begin
-      name = params[1]
-      name = name.gsub(/\A("|')|("|')\Z/, '')
-      name.insert(0, '\'')
-      name.insert(-1, '\'')
-      action = @enviroment.deep.new.build_cd_syntax(params[0], name)
-      env = OpenStruct.new
-      env.config = Marshal.load(Marshal.dump(@enviroment.config))
-      env.deep = @enviroment.deep
-      client = @enviroment.client
-      changed_enviroment = eval(action)
-      unless changed_enviroment.nil?
-        current_enviroment = OpenStruct.new
-        current_enviroment.config = changed_enviroment.config
-        current_enviroment.deep = changed_enviroment.deep
-        @context_stack.push(current_enviroment)
-        @enviroment.config = changed_enviroment.config
-        @enviroment.deep = changed_enviroment.deep
+        name = params[1]
+        name = name.gsub(/\A("|')|("|')\Z/, '')
+        name.insert(0, '\'')
+        name.insert(-1, '\'')
+        action = @enviroment.deep.new.build_cd_syntax(params[0], name)
+        env = OpenStruct.new
+        env.config = Marshal.load(Marshal.dump(@enviroment.config))
+        env.deep = @enviroment.deep
+        client = @enviroment.client
+        changed_enviroment = eval(action)
+        unless changed_enviroment.nil?
+          current_enviroment = OpenStruct.new
+          current_enviroment.config = changed_enviroment.config
+          current_enviroment.deep = changed_enviroment.deep
+          @context_stack.push(current_enviroment)
+          @enviroment.config = changed_enviroment.config
+          @enviroment.deep = changed_enviroment.deep
+        end
+      rescue SyntaxError => err
+        puts Rainbow('Syntax Error typing the command. Tip: cd <type> <Regexp|String>').color('#cc0000')
+        puts Rainbow('Regexp options for Ruby: /i, /m, /x, /o').color('#cc0000')
+        puts
+      rescue StandardError => exception
+        puts Rainbow('Error while running cd command. Usage: cd <type> <Regexp|String>').color('#D8000C')
       end
-    rescue StandardError => exception
-      puts Rainbow(exception.message).color('#D8000C')
-    rescue SyntaxError => err
-      puts Rainbow('Syntax Error typing the command. Tip: cd <type> <Regexp|String>').color('#cc0000')
-      puts Rainbow('Regexp options for Ruby: /i, /m, /x, /o').color('#cc0000')
-      puts
-    end
     end
   end
 end
