@@ -227,9 +227,12 @@ class Organization
     if config['Repo']
       options = { path: '' }
       options[:path] = params[0] unless params.empty?
+      file_names_and_types = []
       client.contents("#{config['Org']}/#{config['Repo']}", options).each do |i|
-        puts "#{i[:name]} (#{i[:type]})"
+        file_names_and_types << "#{i[:name]} (#{i[:type]})"
       end
+      file_names_and_types.sort_by!(&:downcase)
+      puts file_names_and_types
     else
       puts Rainbow('Please change to organization repository to see its files.').color(INFO_CODE)
     end
