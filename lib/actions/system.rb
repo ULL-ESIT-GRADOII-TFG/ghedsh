@@ -1,10 +1,8 @@
 require 'readline'
 require 'fileutils'
 require 'octokit'
-require 'tty-prompt'
 require 'optparse'
 require 'json'
-require 'actions/system'
 require 'version'
 require 'common'
 

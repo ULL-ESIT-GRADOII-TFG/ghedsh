@@ -1,6 +1,4 @@
-require 'actions/help'
 require 'actions/orgs'
-require 'actions/repo'
 require 'actions/system'
 require 'actions/teams'
 require 'actions/user'
@@ -18,4 +16,3 @@ COMMANDS = {}
 User
 Organization
 Team
-Assignment
