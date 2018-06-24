@@ -79,19 +79,18 @@ class Interface
           exit!(0)
         end
         input = input.strip.split
-        command = input[0]
+        command_name = input[0]
         input.shift
         command_params = input
-        unless command.to_s.empty?
-          if @shell_enviroment.commands.key?(command)
-            result = @shell_enviroment.commands[command].call(command_params)
+        unless command_name.to_s.empty?
+          if @shell_enviroment.commands.key?(command_name)
+            result = @shell_enviroment.commands[command_name].call(command_params)
           else
-            puts Rainbow("-ghedsh: #{command}: command not found").yellow
+            puts Rainbow("-ghedsh: #{command_name}: command not found").yellow
           end
         end
       rescue StandardError => e
         puts e
-        puts e.backtrace
       end
       break if result == 0
     end
