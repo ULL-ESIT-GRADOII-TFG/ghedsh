@@ -17,5 +17,6 @@ Gem::Specification.new do |s|
  s.add_dependency 'octokit', '~> 4.8'
  s.add_dependency 'require_all', '~> 1.3.2'
  s.add_development_dependency 'rake'
+ s.add_development_dependency 'rspec', '~> 3.7'
  s.add_development_dependency 'bundler', '~> 1.5'
 end
