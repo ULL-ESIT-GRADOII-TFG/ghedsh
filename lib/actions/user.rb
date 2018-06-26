@@ -1,6 +1,7 @@
 require 'require_all'
-require_rel '.'
-require_relative '../common'
+require 'rainbow'
+require 'tty-spinner'
+require 'tty-prompt'
 require_relative '../helpers'
 require 'ostruct'
 

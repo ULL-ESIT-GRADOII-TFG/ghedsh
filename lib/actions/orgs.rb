@@ -2,11 +2,10 @@ require 'json'
 require 'csv'
 require 'fileutils'
 require 'require_all'
-require_relative '../common'
+require 'rainbow'
+require 'tty-spinner'
+require 'tty-prompt'
 require_relative '../helpers'
-
-GITHUB_LIST = %w[githubid github idgithub github_id id_github githubuser github_user].freeze
-MAIL_LIST = ['email', 'mail', 'e-mail'].freeze
 
 # Class containing actions available inside an organization
 #

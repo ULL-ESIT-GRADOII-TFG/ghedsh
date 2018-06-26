@@ -206,6 +206,7 @@ class Commands
   def bash(params)
     bash_command = params.join(' ')
     system(bash_command)
+    puts
   end
 
   # Open info depending on context. Within organization will open GitHub organization profile, member profile, etc.
@@ -461,3 +462,4 @@ class Commands
     end
   end
 end
+

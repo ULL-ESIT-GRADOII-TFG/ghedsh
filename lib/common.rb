@@ -1,10 +1,7 @@
-require 'actions/orgs'
 require 'actions/system'
+require 'actions/orgs'
 require 'actions/teams'
 require 'actions/user'
-require 'rainbow'
-require 'tty-spinner'
-require 'tty-prompt'
 
 #color codes
 ERROR_CODE = '#cc0000'

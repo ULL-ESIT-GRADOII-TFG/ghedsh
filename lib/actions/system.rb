@@ -4,7 +4,9 @@ require 'octokit'
 require 'optparse'
 require 'json'
 require 'version'
-require 'common'
+require 'rainbow'
+require 'tty-spinner'
+require 'tty-prompt'
 
 class Sys
   attr_reader :client
@@ -195,7 +197,7 @@ class Sys
     userhash = {}
 
     unless us.nil?
-      puts Rainbow("Login succesful as #{us.login}\n").green
+      puts Rainbow("Successful login as #{us.login}\n").green
       config['User'] = us.login
       config['user_url'] = us.web_endpoint << us.login
 
