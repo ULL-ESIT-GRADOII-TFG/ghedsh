@@ -13,6 +13,12 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require_relative '../lib/actions/user'
+require_relative '../lib/actions/teams'
+require_relative '../lib/actions/system'
+require_relative '../lib/actions/orgs'
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
