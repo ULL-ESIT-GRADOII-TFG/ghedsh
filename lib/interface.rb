@@ -53,7 +53,7 @@ class Interface
         else
           @shell_enviroment = ShellContext.new(options[:user], "#{ENV['HOME']}/.ghedsh", options[:token])
         end
-        spinner.stop(Rainbow('done').color(79, 138, 16))
+        spinner.stop
         run
       rescue SystemExit, Interrupt
         raise
