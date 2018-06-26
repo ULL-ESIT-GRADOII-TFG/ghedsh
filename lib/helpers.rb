@@ -67,15 +67,15 @@ def repo_creation_guide
   else
     puts Rainbow('Answer questions with yes/true or no/false').color('#f18973')
     custom_options = prompt.collect do
-      key(:private).ask('(Private repo? (Default: false) [yes/true, no/false]', convert: :bool)
+      key(:private).ask('Private repo? (Default: false) [yes/true, no/false]', convert: :bool)
       key(:description).ask('Write description of the repo')
-      key(:has_issues).ask('Has issues? (Default:false) [yes/true, no/false]', convert: :bool)
+      key(:has_issues).ask('Has issues? (Default:true) [yes/true, no/false]', convert: :bool)
       key(:has_wiki).ask('Has wiki? (Default: true) [yes/true, no/false]', convert: :bool)
       key(:auto_init).ask('Create an initial commit with empty README? (Default: false) (if you want .gitignore template must be yes/true)',
                           convert: :bool)
       key(:gitignore_template).ask('Desired language or platform for .gitignore template')
     end
-    return custom_options.compact!
+    return custom_options = custom_options.compact
   end
 end
 
