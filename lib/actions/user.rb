@@ -188,10 +188,13 @@ class User
       user_orgs.each do |org_name|
         puts org_name
       end
+      
+      puts "\nYou are currently member of #{user_orgs.size} organizations.\n"
     else
       pattern = build_regexp_from_string(params[0])
       occurrences = show_matching_items(user_orgs, pattern)
       puts Rainbow("No organization matched \/#{pattern.source}\/").color(INFO_CODE) if occurrences.zero?
+      puts "\nShowing #{occurrences} results."
     end
   end
 
