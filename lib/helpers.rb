@@ -104,8 +104,8 @@ def perform_git_clone(repos_to_clone, custom_path)
       Dir.pwd.to_s
     else
       "#{Dir.home}#{custom_path}"
-      FileUtils.mkdir_p("#{Dir.home}#{custom_path}")
     end
+    FileUtils.mkdir_p(dir_path)
   rescue StandardError => exception
     puts Rainbow(exception.message.to_s).color('#cc0000')
   end
