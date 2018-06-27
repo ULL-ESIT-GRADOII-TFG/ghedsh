@@ -143,7 +143,7 @@ class Organization
   #   params[0] is the evaluation repository's name
   #   params[1] Regexp of submodules
   def new_eval(client, config, params)
-    options = { private: true, organization: config['Org'].to_s }
+    options = { private: true, organization: config['Org'].to_s, description: 'Evaluation repository created using ghedsh.' }
     repo_name = params[0]
     submodules = []
     evaluation_repo = client.create_repository(repo_name, options)
