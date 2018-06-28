@@ -83,7 +83,11 @@ class Interface
         input.shift
         command_params = input
         unless command_name.to_s.empty?
-          if @shell_enviroment.commands.key?(command_name)
+          if command_name.start_with?('!')
+            command_name = command_name.delete('!')
+            command_params.unshift(command_name)
+            @shell_enviroment.commands['bash'].call(command_params)
+          elsif @shell_enviroment.commands.key?(command_name)
             result = @shell_enviroment.commands[command_name].call(command_params)
           else
             puts Rainbow("-ghedsh: #{command_name}: command not found").yellow
