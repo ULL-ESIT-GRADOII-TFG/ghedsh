@@ -18,8 +18,12 @@ describe "# GitHub Education Shell: ghedsh" do
   end
 
   context "# Test User class" do
-    it "easy test" do
-      expect(1).to be 1
+    it "initializes correctly" do
+      expect(@user).not_to eq(nil)
+    end
+
+    it "object is instance of class User" do
+      expect(@user).to be_instance_of(User)
     end
   end
 end
