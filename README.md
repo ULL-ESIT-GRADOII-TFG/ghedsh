@@ -1,18 +1,20 @@
 # GITHUB EDUCATION SHELL
 
+![Gem version badge](https://img.shields.io/badge/version-2.3.8-blue.svg)
+
 A command line program following the philosophy of GitHub Education.
 
 ## How does it work?
 
 This program give you an interaction with Github like you was using your command line simulating a tree structure. Each level on the tree gives you several options of managing your Github account or your Organization.
 
-Following the philosophy of Github Education, you can use this application to managing your own organization as a classroom where you can make assignments to your students using repository strategies.    
+Following the philosophy of Github Education, you can use this application to managing your own organization as a classroom where you can make assignments to your students using repository strategies.
 
 ## Installing GHEDSH
 
 You can download the gem **ghdesh** from rubygem.
 
-``gem install ghdesh``
+``gem install ghedsh``
 
 To run the app you need to call the binary file "ghedsh" in your command line after install it. Configuration files are being set in a hidden directory called *.ghedsh*, in your Home path.  
 

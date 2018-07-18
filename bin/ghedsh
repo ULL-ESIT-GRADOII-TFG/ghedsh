@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby -Ilib
 require 'interface'
 
-Interface.new
+console = Interface.new
+console.start
