@@ -1,6 +1,7 @@
 See:
 
-* [Chapter 3 of Carlos Memory](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/cap3.html) (HTML)
+* [Chapter 3 of Carlos Memory](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/cap3.html) (HTML) 
+    - A tutorial on how to use the current version of ghedsh
 * <a href="https://github.com/ULL-ESIT-GRADOII-TFG/carlos-armas-tfg/blob/master/memoria/TFG.pdf">Memoria de Carlos de Armas</a> (PDF)
 * [repo con la memoria de Carlos de Armas](https://github.com/ULL-ESIT-GRADOII-TFG/carlos-armas-tfg/tree/master/memoria)
 * [repo con la presentación de Carlos de Armas](https://github.com/ULL-ESIT-GRADOII-TFG/carlos-armas-tfg/tree/master/presentacion)
