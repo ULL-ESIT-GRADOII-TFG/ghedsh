@@ -46,7 +46,7 @@ de usuario y contraseña) de GitHub y se generará de forma automática un
 *token* de acceso con los permisos necesarios para usar la herramienta.
 
 ![Ejemplo de autenticación al usar ghedsh por primera
-vez.[]{label="fig:masterv1"}](docs/images/login-example.png)
+vez.[]{label="fig:masterv1"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/login-example.png)
 
 Comandos del núcleo de ghedsh {#3:sec:2}
 =============================
@@ -70,7 +70,7 @@ salir de *ghedsh*.
 [\[fig:bash-example\]](#fig:bash-example), se muestra un ejemplo de uso.
 
 ![Ejemplo de uso del comando
-bash.[]{label="fig:bash-example"}](docs/images/bash-example.png)
+bash.[]{label="fig:bash-example"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/bash-example.png)
 
 Change directory: cd {#3.2.2}
 --------------------
@@ -269,10 +269,10 @@ En la figura [\[fig:clone-example\]](#fig:clone-example) y
 de uso.
 
 ![Ejemplo de clonar un repositorio de
-usuario.[]{label="fig:clone-example"}](docs/images/clone-example.png)
+usuario.[]{label="fig:clone-example"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/clone-example.png)
 
 ![Ejemplo de clonar un repositorio de
-organización.[]{label="fig:clone-example-org"}](docs/images/clone-example-org.png)
+organización.[]{label="fig:clone-example-org"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/clone-example-org.png)
 
 commits {#3.3.3}
 -------
@@ -285,10 +285,10 @@ cualquiera de los siguientes contextos: **organización** o **usuario**.
 **Sintaxis**: `commits` `[rama_repositorio]` .
 
 ![Mostrar commits en un repositorio de
-usuario.[]{label="fig:user-commits"}](docs/images/user-commits.png)
+usuario.[]{label="fig:user-commits"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/user-commits.png)
 
 ![Mostrar commits de la rama de un repositorio de
-organización.[]{label="fig:user-commits"}](docs/images/orgs-commits.png)
+organización.[]{label="fig:user-commits"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/orgs-commits.png)
 
 exit {#3.3.4}
 ----
@@ -311,10 +311,10 @@ le especifica un subdirectorio, se mostrará su contenido.
 **Sintaxis**: `files` `[subdirectorio]` .
 
 ![Listar contenido del
-repositorio.[]{label="fig:dir-content"}](docs/images/dir-content.png)
+repositorio.[]{label="fig:dir-content"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/dir-content.png)
 
 ![Listar contenido de un
-subdirectorio.[]{label="fig:subdir-content"}](docs/images/subdir-content.png)
+subdirectorio.[]{label="fig:subdir-content"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/subdir-content.png)
 
 invite\_member {#3.3.6}
 --------------
@@ -327,7 +327,7 @@ Sólo puede ejecutarse en el contexto de una **organización**.
 **Sintaxis**: `invite_member` `<user1,` `user2,` `user3,` `...,` `n>` .
 
 ![Añadir miembros
-específicos.[]{label="fig:invite-member"}](docs/images/invite-member.png)
+específicos.[]{label="fig:invite-member"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/invite-member.png)
 
 invite\_member\_from\_file {#3.3.7}
 --------------------------
@@ -343,7 +343,7 @@ El comando se ejecuta, exclusivamente, dentro del contexto de una
 **Sintaxis**: `invite_member_from_file` `<ruta_home_fichero>` .
 
 ![Añadir miembros mediante
-fichero.[]{label="fig:add-members-fil"}](docs/images/add-members-file.png)
+fichero.[]{label="fig:add-members-fil"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/add-members-file.png)
 
 invite\_outside\_collaborators {#3.3.8}
 ------------------------------
@@ -360,7 +360,7 @@ en el contexto de una **organización**.
 **Sintaxis**: `invite_outside_collaborators` `[ruta_home_fichero]` .
 
 ![Invitación a ser miembros desde
-fichero.[]{label="fig:invite-collabs"}](docs/images/invite-collabs.png)
+fichero.[]{label="fig:invite-collabs"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/invite-collabs.png)
 
 issues {#3.3.9}
 ------
@@ -372,10 +372,10 @@ de **usuario** o repositorio de **organización**.
 **Sintaxis**: `issues` .
 
 ![Ver incidencias de un
-repositorio.[]{label="fig:list-issues"}](docs/images/list-issues.png)
+repositorio.[]{label="fig:list-issues"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/list-issues.png)
 
 ![Listado de incidencias del repositorio en
-GitHub.[]{label="fig:issues-list"}](docs/images/issues-list.png)
+GitHub.[]{label="fig:issues-list"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/issues-list.png)
 
 new\_issue {#3.3.10}
 ----------
@@ -395,10 +395,10 @@ Está disponible para:
     repositorio de la organización sobre la que está posicionado.
 
 ![Nuevo issue en repositorio de
-organización.[]{label="fig:new-issue"}](docs/images/new-issue.png)
+organización.[]{label="fig:new-issue"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/new-issue.png)
 
 ![Formulario de creación de incidencias
-(issues).[]{label="fig:new-issue"}](docs/images/issue-form.png)
+(issues).[]{label="fig:new-issue"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/issue-form.png)
 
 new\_repo {#3.3.11}
 ---------
@@ -425,10 +425,10 @@ En la figura [\[fig:create-repo\]](#fig:create-repo), vemos el menú de
 creación del repositorio.
 
 ![Menú para la creación de un
-repositorio.[]{label="fig:create-repo"}](docs/images/create-repo.png)
+repositorio.[]{label="fig:create-repo"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/create-repo.png)
 
 ![Creación de un repositorio de usuario con opciones
-específicas.[]{label="fig:custom-repo"}](docs/images/custom-repo.png)
+específicas.[]{label="fig:custom-repo"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/custom-repo.png)
 
 new\_team {#3.3.12}
 ---------
@@ -446,10 +446,10 @@ posicionado dentro de una organización en *ghedsh*.
 **Sintaxis**: `new_team` `[ruta_home_fichero]` .
 
 ![Formulario de creación de un equipo en
-GitHub.[]{label="fig:create-team-form"}](docs/images/create-team-form.png)
+GitHub.[]{label="fig:create-team-form"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/create-team-form.png)
 
 ![Creación de un equipo mediante
-fichero.[]{label="fig:create-team-file"}](docs/images/create-team-file.png)
+fichero.[]{label="fig:create-team-file"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/create-team-file.png)
 
 open {#3.3.13}
 ----
@@ -487,10 +487,10 @@ Sólo está disponible en contexto de **usuario**.
 **Sintaxis**: `orgs` `[/Regexp/]` .
 
 ![Mostrar todas las organizaciones del usuario autenticado en
-ghedsh.[]{label="fig:show-orgs-regexp"}](docs/images/show-all-orgs.png)
+ghedsh.[]{label="fig:show-orgs-regexp"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/show-all-orgs.png)
 
 ![Filtrar organizaciones mediante expresión
-regular.[]{label="fig:show-orgs-regexp"}](docs/images/show-orgs-regexp.png)
+regular.[]{label="fig:show-orgs-regexp"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/show-orgs-regexp.png)
 
 people {#3.3.15}
 ------
@@ -508,10 +508,10 @@ dentro del contexto de una **organización**.
 **Sintaxis**: `people` `[/Regexp/]` .
 
 ![Mostrar los miembros de una
-organización.[]{label="fig:org-people"}](docs/images/org-people.png)
+organización.[]{label="fig:org-people"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/org-people.png)
 
 ![Mostrar mediante expresión regular los miembros de una
-organización.[]{label="fig:org-people-regexp"}](docs/images/org-people-regexp.png)
+organización.[]{label="fig:org-people-regexp"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/org-people-regexp.png)
 
 repos {#3.3.16}
 -----
@@ -527,13 +527,13 @@ hayan casado.
     organización en la que se encuentra el usuario de *ghedsh*.
 
     ![Comando repos a nivel de
-    usuario.[]{label="fig:user-repos"}](docs/images/user-repos.png)
+    usuario.[]{label="fig:user-repos"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/user-repos.png)
 
 -   Contexto **usuario**: muestra los repositorios del usuario
     autenticado en *ghedsh*.
 
     ![Comando repos a nivel de
-    organización.[]{label="fig:org-repos"}](docs/images/org-repos.png)
+    organización.[]{label="fig:org-repos"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/org-repos.png)
 
 rm\_repo {#3.3.17}
 --------
@@ -544,7 +544,7 @@ Elimina el repositorio especificado. Se puede realizar tanto a nivel de
 **Sintaxis**: `rm_repo` `<nombre_repositorio>` .
 
 ![Eliminación de un
-repositorio.[]{label="fig:custom-repo"}](docs/images/delete-repo.png)
+repositorio.[]{label="fig:custom-repo"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/delete-repo.png)
 
 rm\_team {#3.3.18}
 --------
@@ -567,10 +567,10 @@ ella. Se ejecuta, exclusivamente, en el contexto de una
 **Sintaxis**: `teams` `[/Regexp/]` .
 
 ![Listar los equipos de una
-organización.[]{label="fig:org-teams"}](docs/images/org-teams.png)
+organización.[]{label="fig:org-teams"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/org-teams.png)
 
 ![Listar mediante expresión regular los equipos de una
-organización.[]{label="fig:org-regexp-teams"}](docs/images/org-regexp-teams.png)
+organización.[]{label="fig:org-regexp-teams"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/org-regexp-teams.png)
 
 Comandos que dan soporte al proceso de evaluación {#3:sec:4}
 =================================================
@@ -630,10 +630,10 @@ el contexto de **organización**.
 **Sintaxis**: `new_eval` `<nombre_repo_evaluacion>` `</Regexp/>` .
 
 ![Ejemplo de creación de un repositorio de
-evaluación.[]{label="fig:eval-example"}](docs/images/eval-example.png)
+evaluación.[]{label="fig:eval-example"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/eval-example.png)
 
 ![Estructura de un repositorio de evaluación en
-GitHub.[]{label="fig:eval-example"}](docs/images/eval-preview.png)
+GitHub.[]{label="fig:eval-example"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/eval-preview.png)
 
 foreach {#3.4.2}
 -------
@@ -677,7 +677,7 @@ Hay que tener en cuenta que *foreach* en ***ghedsh***, **ya incorpora
 este comportamiento** y no se detendrá ante errores.
 
 ![Ejemplo de ghedsh
-foreach.[]{label="fig:foreach-example"}](docs/images/foreach-example.png)
+foreach.[]{label="fig:foreach-example"}](https://ull-esit-gradoii-tfg.github.io/carlos-armas-tfg/memoria/docs/images/foreach-example.png)
 
 foreach\_try {#3.4.3}
 ------------
