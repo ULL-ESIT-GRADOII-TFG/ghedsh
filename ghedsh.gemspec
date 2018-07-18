@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
  s.version =  Ghedsh::VERSION
  s.summary ="A command line program following the philosophy of GitHub Education."
  s.description = "A command line program following the philosophy of GitHub Education. More information: https://github.com/ULL-ESIT-GRADOII-TFG/ghedsh"
- s.authors = ["Javier Clemente", "Casiano Rodriguez-Leon"]
+ s.authors = ["Carlos de Armas", "Javier Clemente", "Casiano Rodriguez-Leon"]
  s.email = 'nookstyle@gmail.com'
  s.licenses = ['MIT']
  s.files = `git ls-files`.split($/)
