@@ -14,6 +14,7 @@
 * `gem install ghedsh -v 1.1.40`
 * <a href='http://ull-esit-gradoii-tfg.github.io/ghedsh/javier-memoria-tfg/_book/'>Memoria de Javier Clemente (obsoleta)</a>
 * [README-javier-clemente.md](README-javier-clemente.md) Obsoleto
+* [Presentación de Javier Clemente](https://github.com/ULL-ESIT-GRADOII-TFG/ghedsh/blob/javier-clemente/docs/Javier-clemente-presentacionTFG-ghedsh.pdf)
 
 # See also
 
